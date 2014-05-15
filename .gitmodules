@@ -1,0 +1,3 @@
+[submodule "polyworksjs"]
+	path = polyworksjs
+	url = git@github.com:polyphonic13/polyworksjs.git
