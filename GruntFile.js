@@ -1,34 +1,31 @@
 module.exports = function(grunt) {
 
-	var project = grunt.option('pjt');
 	var srcDir = 'public/src';
 	var buildDir = 'public/build';
-	var projectSrcDir;
 	
-	if(typeof(project) !== 'undefined') {
-		// srcDir += '/' + project;
-		projectSrcDir = srcDir + '/' + project;
-		buildDir += '/' + project;
-	}
 	grunt.log.writeln('Starting Grunt Processing');
-	grunt.log.writeln('\tproject = ' + project 
-						+ '\n\tsrcDir = ' + srcDir 
-						+ '\n\tbuildDir = ' + buildDir 
-						+ '\n\tprojectSrcDir = ' + projectSrcDir);
-
 
 	grunt.initConfig({
 
 		pkg: grunt.file.readJSON('package.json'),
 
-		project: project,
 		srcDir: srcDir,
 		buildDir: buildDir,
-		projectSrcDir: projectSrcDir,
 
-/////// CONCAT 
+		// SUBGRUNT (GIT SUBMODULES) 
+		// docs: https://github.com/tusbar/grunt-subgrunt
+		subgrunt: {
+			lib: {
+				options: {},
+				projects: {
+					'polyworks': 'default'
+				}
+			}
+		},
+
+		// CONCAT 
+		// task docs: https://github.com/gruntjs/grunt-contrib-concat
 		concat: {
-			// task docs: https://github.com/gruntjs/grunt-contrib-concat
 
 			options: {
 
@@ -51,16 +48,16 @@ module.exports = function(grunt) {
 
 			project: {
 				options: {
-					banner: "(function(){(typeof console === 'undefined' || typeof console.log === 'undefined')?console={log:function(){}}:console.log('----- <%= project %> created: <%= grunt.template.today(\"isoDateTime\") %>')})();\n"
+					banner: "(function(){(typeof console === 'undefined' || typeof console.log === 'undefined')?console={log:function(){}}:console.log('----- Global Trader 3.0 created: <%= grunt.template.today(\"isoDateTime\") %>')})();\n"
 				},
 				src: '<%= projectJavascripts %>',
-				dest: '<%= buildDir %>/js/<%= project %>.js'
+				dest: '<%= buildDir %>/js/global_trader.js'
 			}
 
 		},
-/////// MINIFICATION
+		// MINIFICATION
+		// task docs: https://github.com/gruntjs/grunt-contrib-uglify
 		uglify: {
-			// task docs: https://github.com/gruntjs/grunt-contrib-uglify
 
 			options: {
 
@@ -73,26 +70,26 @@ module.exports = function(grunt) {
 			},
 
 			project: {
-				src: [ '<%= buildDir %>/js/<%= project %>.js' ],
-				dest: '<%= buildDir %>/js/<%= project %>.min.js'
+				src: [ '<%= buildDir %>/js/global_trader.js' ],
+				dest: '<%= buildDir %>/js/global_trader.min.js'
 			}
 			
 		},
-/////// COPYING
+		// COPYING
+		// task docs: https://github.com/gruntjs/grunt-contrib-copy
 		copy: {
-			// task docs: https://github.com/gruntjs/grunt-contrib-copy
 
 			project: {
 				files: [
 				{
 					expand: true,
-					cwd: '<%= projectSrcDir %>/assets/images/',
+					cwd: '<%= srcDir %>/images/',
 					src: [ '**/*' ],
-					dest: '<%= buildDir %>/assets/images/'
+					dest: '<%= buildDir %>/images/'
 				},
 				{
 					expand: true, 
-					cwd: '<%= projectSrcDir %>/css/',
+					cwd: '<%= srcDir %>/css/',
 					src: [ '**/*' ],
 					dest: '<%= buildDir %>/css/'
 				}
@@ -100,7 +97,7 @@ module.exports = function(grunt) {
 			}
 
 		},
-/////// CSS MINIFICATION
+		// CSS MINIFICATION
 		// cssmin: {
 		// 	project: {
 		// 		expand: true,
@@ -109,7 +106,7 @@ module.exports = function(grunt) {
 		// 		dest: '<%= buildDir %>/css/'
 		// 	}
 		// },
-/////// LOCAL SERVER
+		// LOCAL SERVER
 		connect: {
 			server: { 
 				port: 9998,
@@ -119,6 +116,7 @@ module.exports = function(grunt) {
 		}
 	});
 
+	grunt.loadNpmTasks('grunt-subgrunt');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
@@ -126,5 +124,16 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-connect');
 	grunt.loadTasks('grunt/tasks');
 	
-	grunt.registerTask('default', ['projectDeploySetup', 'concat:project', 'stripTraceStatements', 'uglify', 'copy:project', /*'cssmin',*/ 'createProjectHtml']);
+	grunt.registerTask(
+		'default', 
+		[
+			'subgrunt',
+			'projectDeploySetup', 
+			'concat:project', 
+			'stripTraceStatements', 
+			'uglify', 
+			'copy:project',
+			'createProjectHtml'
+		]
+	);
 };

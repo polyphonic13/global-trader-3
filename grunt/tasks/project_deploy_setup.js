@@ -5,7 +5,7 @@ module.exports = function(grunt) {
 			var project = grunt.config.get('project');
 			var srcDir = grunt.config.get('srcDir');
 			var fileName = 'index.html';
-			var filePath = srcDir + '/' + project + '/' + fileName;
+			var filePath = srcDir + '/' + fileName;
 			var htmlSource = grunt.file.read(filePath);
 
 			var startJsComment = '<!--START JS INCLUDES-->';
