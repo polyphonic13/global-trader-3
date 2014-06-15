@@ -2,7 +2,6 @@ module.exports = function(grunt) {
 	grunt.task.registerTask(
 		'projectDeploySetup', 
 		function() {
-			var project = grunt.config.get('project');
 			var srcDir = grunt.config.get('srcDir');
 			var fileName = 'index.html';
 			var filePath = srcDir + '/' + fileName;
@@ -49,7 +48,7 @@ module.exports = function(grunt) {
 				for(var i = 0; i < length; i++) {
 					temp = a[i].replace('{', '');
 					temp = temp.replace('}', '');
-					temp = temp.replace(/\"js/, (srcDir + '/' + project + '/js'));
+					temp = temp.replace(/\"js/, (srcDir + '/js'));
 					temp = temp.replace(/\"../, srcDir);
 					temp = temp.replace(/\"/, '');
 					ret.push(temp);

@@ -18,7 +18,7 @@ module.exports = function(grunt) {
 			lib: {
 				options: {},
 				projects: {
-					'polyworks': 'default'
+					'polyworksjs': 'default'
 				}
 			}
 		},
@@ -110,7 +110,6 @@ module.exports = function(grunt) {
 		connect: {
 			server: { 
 				port: 9998,
-				base: 'public',
 				keepAlive: true
 			}
 		}

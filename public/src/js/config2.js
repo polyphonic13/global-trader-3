@@ -896,7 +896,7 @@ var GameConfig = function() {
 				newMachine: false,
 				bank: 1000000,
 			},
-			defaultScreen: 'play',
+			defaultScreen: 'start',
 			dynamicViews: dynamicViews,
 			views: {
 				// start
