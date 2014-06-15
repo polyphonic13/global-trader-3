@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="50" height="50" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="factory_tileset" tilewidth="32" tileheight="32">
+  <image source="../../public/test/images/grey_tiles.gif" width="128" height="32"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="50" height="50">
+  <data encoding="base64" compression="zlib">
+   eJztmN0OwyAIhZva93/m3S6Efw+KTS9Iu04dn5wCblzXdb/ARgMfPo6Po6t9HL3s7RwPY/ffVbvnPu/ksJ7Te41rB4cUixM5pPEan6S/jhwaH3c9mYPGahfHiZblGM32wOPLYIz7riNH1L+VHNJ+onyqZqH+a/s848sKjuyzLiySvys5ZmtJRjuI3EPnZzmsXBPJtRUx4fK4ZJk4IXRmnQNQtSa6DmrsA/K/Yo+lcVy9R/aNaM1za3P6ruBAz/XmcBTH7Pvl6cM4PVVwIOfTd8HKlwgONIM3PpQDZdy+eP43yPzOPws6Fp5zMx2D6MU6aCqqq10c2R5lB4fV31pzZ8+RK3IuknEFR/YsgtivFT3JiRzRvBPt2StrueUXOh5SLZ/Zhx0cnF8WB+3xM7UCqSvpucRh9cqRd7qaQ9NVtkZXcVjjshySzio4PHqe4eDGZTiseu3x5RHWyuT1DEdmPS0eiPMc4hwR1ZOlK6T9ANGbFXA=
+  </data>
+ </layer>
+</map>
