@@ -2,15 +2,24 @@ module.exports = function(grunt) {
 
 	var srcDir = 'public/src';
 	var buildDir = 'public/build';
+	var polyworksDir = 'polyworksjs/public/build';
 	
 	grunt.log.writeln('Starting Grunt Processing');
 
 	grunt.initConfig({
 
 		pkg: grunt.file.readJSON('package.json'),
-
+		meta: grunt.file.readJSON('grunt/data/meta.json'),
+		
 		srcDir: srcDir,
 		buildDir: buildDir,
+		polyworksDir: polyworksDir,
+		
+		// CLEAN
+		// docs: https://github.com/gruntjs/grunt-contrib-clean
+		clean: {
+			removeBuildDir: ['<%= buildDir %>']
+		},
 
 		// SUBGRUNT (GIT SUBMODULES) 
 		// docs: https://github.com/tusbar/grunt-subgrunt
@@ -94,18 +103,40 @@ module.exports = function(grunt) {
 					dest: '<%= buildDir %>/css/'
 				}
 				]
+			},
+			
+			polyworks: {
+				files: [
+				{
+					expand: true,
+					cwd: '<%= polyworksDir %>/',
+					src: [ '**/*' ],
+					dest: '<%= buildDir %>/js/',
+					flatten: true,
+					filter: 'isFile'
+				}]
 			}
 
 		},
-		// CSS MINIFICATION
-		// cssmin: {
-		// 	project: {
-		// 		expand: true,
-		// 		cwd: '<%= buildDir %>/css/',
-		// 		src: ['*.css', '!*.min.css'],
-		// 		dest: '<%= buildDir %>/css/'
-		// 	}
-		// },
+		// SCP
+		// docs: https://www.npmjs.org/package/grunt-scp
+		scp: {
+			options: {
+				host: '<%= meta.server.host %>',
+				username: '<%= meta.server.user %>',
+				password: '<%= meta.server.pass%>'
+			},
+			game: {
+				files: [{
+					cwd: '<%= buildDir %>',
+					src: '**/*',
+					filter: 'isFile',
+					dest: '<%= meta.server.path %>'
+				}]
+			}
+		},
+
+
 		// LOCAL SERVER
 		connect: {
 			server: { 
@@ -115,24 +146,35 @@ module.exports = function(grunt) {
 		}
 	});
 
+	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-subgrunt');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-scp');
 	grunt.loadNpmTasks('grunt-connect');
+
 	grunt.loadTasks('grunt/tasks');
 	
 	grunt.registerTask(
 		'default', 
 		[
+			'clean:removeBuildDir',
 			'subgrunt',
 			'projectDeploySetup', 
 			'concat:project', 
 			'stripTraceStatements', 
 			'uglify', 
-			'copy:project',
+			'copy',
 			'createProjectHtml'
 		]
 	);
+	
+	grunt.registerTask(
+		'deploy',
+		[
+			'default',
+			'scp:game'
+		]
+	)
 };

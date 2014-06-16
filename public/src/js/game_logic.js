@@ -480,7 +480,7 @@ var gameLogic = {
 		},
 		buttonCallbacks: {
 			manualStart: function() {
-				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'manual' });
+				// PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'manual' });
 			},
 			manualClose: function() {
 				PWG.EventCenter.trigger({ type: PWG.Events.CHANGE_SCREEN, value: 'start' });
