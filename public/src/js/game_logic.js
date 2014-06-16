@@ -676,8 +676,18 @@ var gameLogic = {
 		},
 		buildingEdit: {
 			listeners: [
+			// open building menu
 			{
-				
+				event: PWG.Events.BUILDING_STATE_UPDATED,
+				handler: function(event) {
+					// trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + this.partsMenuOpen + ', partsMenuType = ' + this.partsMenuType);
+					var view = PWG.ViewManager.getControllerFromPath('buildingEdit:buildingEditDetails');
+					var buildingEditConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditDetails);
+					
+					view.age.text = buildingEditConfig.views.age.text + event.config.age;
+					view.equipment.text = buildingEditConfig.views.equipment.text + PWG.Utils.objLength(event.config.equipment);
+					view.inventory.text = buildingEditConfig.views.inventory.text + event.config.inventory.length;
+				}
 			}
 			],
 			create: function() {
