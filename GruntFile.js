@@ -163,7 +163,7 @@ module.exports = function(grunt) {
 			'subgrunt',
 			'projectDeploySetup', 
 			'concat:project', 
-			'stripTraceStatements', 
+			// 'stripTraceStatements', 
 			'uglify', 
 			'copy',
 			'createProjectHtml'

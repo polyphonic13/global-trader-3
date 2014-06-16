@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>polyworks js module tester</title>
+		<title>Global Trader 3.0</title>
 		<link rel="stylesheet" type="text/css" href="css/test.css" />
 		<script type="text/javascript" src="js/phaser.js"></script>
 		<script type="text/javascript" src="js/polyworks.js"></script>
 
 		<!--START JS INCLUDES-->
+		<script type="text/javascript" src="js/events.js"></script>
 		<script type="text/javascript" src="js/equipment_enum.js"></script>
 		<script type="text/javascript" src="js/us_sectors_enum.js"></script>
 		<script type="text/javascript" src="js/player_data.js"></script>
@@ -21,11 +22,5 @@
 	</head>
 	<body onload="startGame();">
 		<div id='game_container'></div>
-		<script type="text/javascript">
-		function startGame() {
-			var aspectRatio = [10, 16];
-			PhaserGame.init(aspectRatio);
-		}
-		</script>
 	</body>
 </html>

@@ -540,6 +540,28 @@ var GameConfig = function() {
 							font: (fontSizes.md + 'px Arial'),
 							fill: palette.black
 						}
+					},
+					equipment: {
+						type: 'text',
+						name: 'equipment',
+						text: 'Tractor / Skid Steer Models: ',
+						x: gameUnit * 1.5,
+						y: gameUnit * 9.5,
+						style: {
+							font: (fontSizes.sm + 'px Arial'),
+							fill: palette.black
+						}
+					},
+					inventory: {
+						type: 'text',
+						name: 'inventory',
+						text: 'Current Inventory: ',
+						x: gameUnit * 1.5,
+						y: gameUnit * 11,
+						style: {
+							font: (fontSizes.sm + 'px Arial'),
+							fill: palette.black
+						}
 					}
 				}
 			},

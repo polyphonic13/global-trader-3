@@ -4,6 +4,11 @@ var TURN_TIME_INTERVAL = 1000;
 var US_DETAIL_GRID_CELLS = 10;
 var TIME_TO_MANUFACTOR = 5;
 var MACHINE_LIST_COLUMNS = 2; 
+var aspectRatio = [10, 16];
+
+function startGame() {
+	PhaserGame.init(aspectRatio);
+}
 
 var buildingTypes = {
 	FACTORY: 'factory',
@@ -670,16 +675,24 @@ var gameLogic = {
 			}
 		},
 		buildingEdit: {
+			listeners: [
+			{
+				
+			}
+			],
 			create: function() {
 				var buildingEdit = PWG.ViewManager.getControllerFromPath('buildingEdit');
 				var building = PhaserGame.activeFactory;
+				trace('building = ', building);
 				var buildingEditConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditDetails);
 				// trace('buildingEditConfig = ', buildingEditConfig);
 				// trace('screen view = ', screenView, '\tactive factory = ', building);
 				buildingEditConfig.views.name.text += building.name;
 				buildingEditConfig.views.age.text += building.age;
-				buildingEditConfig.views.status.text += building.state;
-				
+				buildingEditConfig.views.status.text += building.state.toUpperCase();
+				buildingEditConfig.views.equipment.text += PWG.Utils.objLength(building.equipment);
+				buildingEditConfig.views.inventory.text += building.inventory.length;
+
 				PWG.ViewManager.addView(buildingEditConfig, buildingEdit, true);
 				PWG.ViewManager.showView('global:turnGroup:equipmentButton');
 			},
