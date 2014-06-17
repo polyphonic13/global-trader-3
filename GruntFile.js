@@ -2,7 +2,7 @@ module.exports = function(grunt) {
 
 	var srcDir = 'public/src';
 	var buildDir = 'public/build';
-	var polyworksDir = 'polyworksjs/public/build';
+	var polyworksjsDir = 'polyworksjs/public/build';
 	
 	grunt.log.writeln('Starting Grunt Processing');
 
@@ -13,7 +13,7 @@ module.exports = function(grunt) {
 		
 		srcDir: srcDir,
 		buildDir: buildDir,
-		polyworksDir: polyworksDir,
+		polyworksjsDir: polyworksjsDir,
 		
 		// CLEAN
 		// docs: https://github.com/gruntjs/grunt-contrib-clean
@@ -105,11 +105,11 @@ module.exports = function(grunt) {
 				]
 			},
 			
-			polyworks: {
+			polyworksjs: {
 				files: [
 				{
 					expand: true,
-					cwd: '<%= polyworksDir %>/',
+					cwd: '<%= polyworksjsDir %>/',
 					src: [ '**/*' ],
 					dest: '<%= buildDir %>/js/',
 					flatten: true,

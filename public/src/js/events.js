@@ -24,8 +24,5 @@ var Events = {
 	CLOSE_PARTS_MENU: 'closePartsMenu',
 	ADD_PART: 'addPart',
 	SAVE_MACHINE: 'saveMachine',
-	EDIT_MACHINE: 'editMachine',
-	ZOOM_IN: 'zoomIn',
-	ZOOM_OUT: 'zoomOut',
-	QUIT: 'quit'
+	EDIT_MACHINE: 'editMachine'
 };

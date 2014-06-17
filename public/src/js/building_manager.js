@@ -26,7 +26,7 @@ var BuildingManager = function() {
 		if(this.config.state === states.CONSTRUCTION && this.config.age >= this.buildTime) {
 			this.config.state = states.ACTIVE;
 			// trace('building construction completed');
-			PWG.EventCenter.trigger({ type: PWG.Events.BUILDING_STATE_UPDATED, config: this.config });
+			PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, config: this.config });
 		}
 		this.config.age++;
 		module.saveBuildingData.call(this, this.config);
@@ -45,7 +45,7 @@ var BuildingManager = function() {
 	PWG.Utils.inherit(Factory, Building);
 	
 	Factory.prototype.buildTime = 3;
-	Factory.prototype.typeCapacity = 10;
+	Factory.prototype.typeCapacity = 4;
 	Factory.prototype.outputCapacity = 100;
  	Factory.prototype.update = function() {
 		Factory._super.update.apply(this, arguments);
@@ -61,7 +61,7 @@ var BuildingManager = function() {
 							if(PhaserGame.playerData.bank > machine.cost) {
 								if(this.config.inventory.length < this.outputCapacity) {
 									// trace('build machine: machine = ', machine);
-									PWG.EventCenter.trigger({ type: PWG.Events.UPDATE_BANK, value: (-machine.cost) });
+									PWG.EventCenter.trigger({ type: Events.UPDATE_BANK, value: (-machine.cost) });
 									this.config.inventory.push(machine.id);
 								} else {
 									// notify output capacity reached
@@ -137,7 +137,7 @@ var BuildingManager = function() {
 			// trace('\tbuilding made');
 			PhaserGame.playerData.buildingCount[type]++;
 			// trace('\tremoving bank from bank');
-			PWG.EventCenter.trigger({ type: PWG.Events.UPDATE_BANK, value: (-gameData.buildings[type].cost) });
+			PWG.EventCenter.trigger({ type: Events.UPDATE_BANK, value: (-gameData.buildings[type].cost) });
 			// trace('\tabout to save building data, building  = ', building);
 			module.buildings[config.sector][building.config.id] = building;
 			module.saveNewBuilding(building.config);

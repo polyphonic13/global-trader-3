@@ -312,8 +312,10 @@ var GameConfig = function() {
 				x: 0,
 				y: (gameUnit * 3.5),
 				attrs: {
-					width: gameUnit,
-					height: gameUnit,
+					width: gameW/6,
+					height: gameW/6,
+					// width: gameUnit,
+					// height: gameUnit,
 					frame: 0
 				}
 			},
