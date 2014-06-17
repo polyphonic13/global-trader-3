@@ -62,6 +62,7 @@ var BuildingManager = function() {
 								if(this.config.inventory.length < this.outputCapacity) {
 									// trace('build machine: machine = ', machine);
 									PWG.EventCenter.trigger({ type: Events.UPDATE_BANK, value: (-machine.cost) });
+									PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, config: this.config });
 									this.config.inventory.push(machine.id);
 								} else {
 									// notify output capacity reached

@@ -682,12 +682,12 @@ var gameLogic = {
 				handler: function(event) {
 					trace('BUILDING_STATE_UPDATED event = ', event);
 					var config = event.config;
-					var view = PWG.ViewManager.getControllerFromPath('buildingEdit:buildingEditDetails');
-					var buildingEditConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditDetails);
-					
-					view.age.text = buildingEditConfig.views.age.text + config.age;
-					view.equipment.text = buildingEditConfig.views.equipment.text + PWG.Utils.objLength(config.equipment);
-					view.inventory.text = buildingEditConfig.views.inventory.text + config.inventory.length;
+ 					var buildingEditConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditDetails);
+					var equipmentUpdate = buildingEditConfig.views.equipment.text + PWG.Utils.objLength(config.equipment);
+					var inventoryUpdate = buildingEditConfig.views.inventory.text + config.inventory.length;
+
+					PWG.ViewManager.callMethod('buildingEdit:editDetails:equipment', 'setText', [equipmentUpdate], this);
+					PWG.ViewManager.callMethod('buildingEdit:editDetails:inventory', 'setText', [inventoryUpdate], this);
 				}
 			}
 			],
@@ -699,7 +699,6 @@ var gameLogic = {
 				// trace('buildingEditConfig = ', buildingEditConfig);
 				// trace('screen view = ', screenView, '\tactive factory = ', building);
 				buildingEditConfig.views.name.text += building.name;
-				buildingEditConfig.views.age.text += building.age;
 				buildingEditConfig.views.status.text += building.state.toUpperCase();
 				buildingEditConfig.views.equipment.text += PWG.Utils.objLength(building.equipment);
 				buildingEditConfig.views.inventory.text += building.inventory.length;

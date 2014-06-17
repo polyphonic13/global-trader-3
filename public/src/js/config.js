@@ -521,17 +521,6 @@ var GameConfig = function() {
 							fill: palette.black
 						}
 					},
-					age: {
-						type: 'text',
-						name: 'factoryAge',
-						text: 'Age: ',
-						x: gameUnit * 1.5,
-						y: gameUnit * 6.5,
-						style: {
-							font: (fontSizes.md + 'px Arial'),
-							fill: palette.black
-						}
-					},
 					status: {
 						type: 'text',
 						name: 'factorySatus',
