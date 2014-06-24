@@ -4,6 +4,8 @@ var BuildingManager = function() {
 	module.TIME_TO_BUILD = 5;
 	module.FACTORY_MAX_MODELS = 6;
 	module.FACTORY_MAX_INVENTORY = 100;
+	module.RETAILER_MAX_INVENTORY = 50;
+	module.RETAILER_
 	
 	var states = {
 		CONSTRUCTION: 'construction',
@@ -86,6 +88,24 @@ var BuildingManager = function() {
 				// notify equipment needed
 			}
 		
+		}
+	};
+
+	// SHOWROOM
+	function Showroom(config) {
+		Building.call(this, config);
+		this.config.inventory = [];
+	}
+	PWG.Utils.inherit(Showroom, Building);
+
+	Showroom.prototype.buildTime = 2;
+	Showroom.prototype.capacity = 50;
+	Showroom.prototype.update = function() {
+		Showroom._super.update.apply(this, arguments);
+		if(this.config.state === states.ACTIVE) {
+			if(this.config.inventory.length > 0) {
+
+			}
 		}
 	};
 

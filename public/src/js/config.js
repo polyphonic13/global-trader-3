@@ -771,13 +771,16 @@ var GameConfig = function() {
 			// assets
 			assets: {
 				images: {
+					gameBg: 'images/screens/metal_background.gif',
 					dashboardBottom: 'images/dashboard_bottom.gif',
 					dashboardTop: 'images/dashboard_top.gif',
 					startBg: 'images/screens/screen_mocks_start.gif',
 					manualBg: 'images/screens/screen_mocks_manual.gif',
 					briefBg: 'images/screens/screen_mocks_brief.gif',
 					usDetailBg: 'images/screens/screen_mocks_us.gif',
-					worldBg: 'images/screens/screen_mocks_world.gif',
+					// worldBg: 'images/screens/screen_mocks_world.gif',
+					mapWorld: 'images/screens/map_world.gif',
+					mapUS: 'images/screens/map_us.png',
 					equipmentListBg: 'images/screens/screen_mocks_inventory.gif',
 					buildBg: 'images/screens/screen_mocks_build.gif',
 					equipmentCreateBg: 'images/screens/screen_mocks_machine_picker.gif',
@@ -911,8 +914,29 @@ var GameConfig = function() {
 				bank: 1000000,
 			},
 			defaultScreen: 'start',
+			maxWorldZoom: 3.2,
+			minWorldZoom: 1,
 			dynamicViews: dynamicViews,
 			views: {
+				// background
+				background: {
+					name: 'background',
+					type: 'group',
+					views: {
+						gameBg: {
+							name: 'gameBg',
+							type: 'sprite',
+							img: 'gameBg',
+							x: 0,
+							y: 0,
+							attrs: {
+								width: gameW,
+								height: gameH,
+								fixedToCamera: true
+							}
+						}
+					}
+				},
 				// start
 				startScreen: {
 					name: 'start',
@@ -997,15 +1021,27 @@ var GameConfig = function() {
 					},
 					views: {
 						// bg
-						stateBg: {
+						worldMap: {
 							type: 'sprite',
-							name: 'playBg',
-							img: 'worldBg',
+							name: 'worldMap',
+							img: 'mapWorld',
 							x: 0,
 							y: 0,
 							attrs: {
 								width: gameW,
-								height: gameH,
+								height: gameH
+							}
+						},
+						// us map
+						usMap: {
+							type: 'sprite',
+							name: 'usMap',
+							img: 'mapUS',
+							x: 0,
+							y: gameUnit * 6,
+							attrs: {
+								width: gameW,
+								height: gameUnit * 5,
 								fixedToCamera: true
 							}
 						},
@@ -1045,12 +1081,12 @@ var GameConfig = function() {
 									type: 'button',
 									name: 'northwestDetail',
 									img: 'blockBlue',
-									x: gameUnit * 1.5,
-									y: (gameUnit * 7),
+									x: gameUnit * 0.2,
+									y: (gameUnit * 6),
 									attrs: {
-										width: (gameUnit * 2.5),
-										height: (gameUnit * 1.5),
-										alpha: 0.5
+										width: (gameUnit * 3.5),
+										height: (gameUnit * 2),
+										alpha: 0
 									},
 									callback: gameLogic.global.buttonCallbacks.northwestDetail,
 									context: this,
@@ -1060,12 +1096,12 @@ var GameConfig = function() {
 									type: 'button',
 									name: 'southwestDetail',
 									img: 'blockGreen',
-									x: gameUnit * 1.5,
-									y: (gameUnit * 8.5),
+									x: gameUnit * 0.2,
+									y: (gameUnit * 8),
 									attrs: {
-										width: (gameUnit * 2.5),
-										height: (gameUnit * 1.5),
-										alpha: 0.5
+										width: (gameUnit * 3.5),
+										height: (gameUnit * 2),
+										alpha: 0
 									},
 									callback: gameLogic.global.buttonCallbacks.southwestDetail,
 									context: this,
@@ -1075,12 +1111,12 @@ var GameConfig = function() {
 									type: 'button',
 									name: 'midwestDetail',
 									img: 'blockRed',
-									x: gameUnit * 4,
-									y: (gameUnit * 7),
+									x: gameUnit * 3.7,
+									y: (gameUnit * 6),
 									attrs: {
-										width: (gameUnit * 3),
-										height: (gameUnit * 3),
-										alpha: 0.5
+										width: (gameUnit * 2.25),
+										height: (gameUnit * 4.5),
+										alpha: 0
 									},
 									callback: gameLogic.global.buttonCallbacks.midwestDetail,
 									context: this,
@@ -1090,12 +1126,12 @@ var GameConfig = function() {
 									type: 'button',
 									name: 'northeastDetail',
 									img: 'blockWhite',
-									x: gameUnit * 7,
-									y: (gameUnit * 7),
+									x: gameUnit * 5.95,
+									y: (gameUnit * 6),
 									attrs: {
-										width: (gameUnit * 2.5),
-										height: (gameUnit * 1.5),
-										alpha: 0.5
+										width: (gameUnit * 4),
+										height: (gameUnit * 2.5),
+										alpha: 0
 									},
 									sector: usSectors.NORTH_EAST,
 									callback: gameLogic.global.buttonCallbacks.northeastDetail,
@@ -1106,12 +1142,12 @@ var GameConfig = function() {
 									type: 'button',
 									name: 'southeastDetail',
 									img: 'blockBlue',
-									x: gameUnit * 7,
-									y: (gameUnit * 8.5),
+									x: gameUnit * 5.95,
+									y: (gameUnit * 9),
 									attrs: {
-										width: (gameUnit * 2.5),
-										height: (gameUnit * 1.5),
-										alpha: 0.5
+										width: (gameUnit * 4),
+										height: (gameUnit * 2.5),
+										alpha: 0
 									},
 									callback: gameLogic.global.buttonCallbacks.southeastDetail,
 									context: this,
