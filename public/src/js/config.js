@@ -771,7 +771,8 @@ var GameConfig = function() {
 			// assets
 			assets: {
 				images: {
-					dashboard: 'images/screens/screen_mocks_dashboard.gif',
+					dashboardBottom: 'images/dashboard_bottom.gif',
+					dashboardTop: 'images/dashboard_top.gif',
 					startBg: 'images/screens/screen_mocks_start.gif',
 					manualBg: 'images/screens/screen_mocks_manual.gif',
 					briefBg: 'images/screens/screen_mocks_brief.gif',
@@ -1508,25 +1509,37 @@ var GameConfig = function() {
 					type: 'group',
 					name: 'global',
 					attrs: {
-						visible: false
+						visible: true
 					},
 					views: {
-						dashboardBg: {
-							name: 'dashboardBg',
+						dashboardBottom: {
+							name: 'dashboardBottom',
 							type: 'sprite',
-							img: 'dashboard',
+							img: 'dashboardBottom',
 							x: 0,
-							y: 0,
+							y: gameUnit * 13.5,
 							attrs: {
 								width: gameW,
-								height: gameH,
+								height: gameUnit * 2.5,
 								fixedToCamera: true
-							},
+							}
 						},
 						turnGroup: {
 							type: 'group',
 							name: 'turnGroup',
 							views: {
+								dashboardTop: {
+									name: 'dashboardTop',
+									type: 'sprite',
+									img: 'dashboardTop',
+									x: 0,
+									y: 0,
+									attrs: {
+										width: gameW,
+										height: gameUnit * 1.5,
+										fixedToCamera: true
+									}
+								},
 								timerText: {
 									type: 'text',
 									name: 'timerText',
@@ -1536,7 +1549,7 @@ var GameConfig = function() {
 								        fill: palette.orange1
 									},
 									x: 0,
-									y: (gameUnit * 0.33),
+									y: (gameUnit * 0.2),
 									position: {
 										centerX: true
 									}

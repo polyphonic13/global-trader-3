@@ -596,7 +596,7 @@ var gameLogic = {
 	screens: {
 		start: {
 			create: function() {
-				PWG.ViewManager.hideView('global');
+				PWG.ViewManager.hideView('global:turnGroup');
 			}
 		},
 		manual: {
