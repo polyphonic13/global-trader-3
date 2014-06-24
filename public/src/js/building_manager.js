@@ -1,11 +1,14 @@
-var TIME_TO_BUILD = 5;
-
 var BuildingManager = function() {
 	var module = {};
+	
+	module.TIME_TO_BUILD = 5;
+	module.FACTORY_MAX_MODELS = 6;
+	module.FACTORY_MAX_INVENTORY = 100;
 	
 	var states = {
 		CONSTRUCTION: 'construction',
 		ACTIVE: 'active',
+		PAUSED: 'paused',
 		INACTIVE: 'inactive'
 	};
 
@@ -26,7 +29,7 @@ var BuildingManager = function() {
 		if(this.config.state === states.CONSTRUCTION && this.config.age >= this.buildTime) {
 			this.config.state = states.ACTIVE;
 			// trace('building construction completed');
-			PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, config: this.config });
+			PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
 		}
 		this.config.age++;
 		module.saveBuildingData.call(this, this.config);
@@ -37,32 +40,30 @@ var BuildingManager = function() {
 	
 	// FACTORY
 	function Factory(config) {
-		
 		Building.call(this, config);
 		this.config.equipment = config.equipment || {};
 		this.config.inventory = config.inventory || [];
 	}
+
 	PWG.Utils.inherit(Factory, Building);
 	
 	Factory.prototype.buildTime = 3;
-	Factory.prototype.typeCapacity = 4;
+	Factory.prototype.modelCapacity = 6;
 	Factory.prototype.outputCapacity = 100;
  	Factory.prototype.update = function() {
 		Factory._super.update.apply(this, arguments);
 		if(this.config.state === states.ACTIVE) {
 			if(PWG.Utils.objLength(this.config.equipment) > 0) { 
-				this.buildTime++;
-				
-				if(this.buildTime === TIME_TO_BUILD) {
+				if(this.buildTime === module.TIME_TO_BUILD) {
 					PWG.Utils.each(
 						this.config.equipment,
 						function(machine) {
 							trace('machine = ', machine);
 							if(PhaserGame.playerData.bank > machine.cost) {
-								if(this.config.inventory.length < this.outputCapacity) {
+								if(this.config.inventory.length < module.FACTORY_MAX_INVENTORY) {
 									// trace('build machine: machine = ', machine);
 									PWG.EventCenter.trigger({ type: Events.UPDATE_BANK, value: (-machine.cost) });
-									PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, config: this.config });
+									PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
 									this.config.inventory.push(machine.id);
 								} else {
 									// notify output capacity reached
@@ -76,6 +77,8 @@ var BuildingManager = function() {
 						this
 					);
 					this.buildTime = 0;
+				} else {
+					this.buildTime++;
 				}
 			}
 			else
@@ -86,24 +89,6 @@ var BuildingManager = function() {
 		}
 	};
 
-	// SHOWROOM
-	function Showroom(config) {
-		Building.call(this, config);
-		this.config.inventory = [];
-	}
-	PWG.Utils.inherit(Showroom, Building);
-
-	Showroom.prototype.buildTime = 2;
-	Showroom.prototype.capacity = 50;
-	Showroom.prototype.update = function() {
-		Showroom._super.update.apply(this, arguments);
-		if(this.config.state === states.ACTIVE) {
-			if(this.config.inventory.length > 0) {
-
-			}
-		}
-	};
-	
 	module.buildings = [ {}, {}, {}, {}, {} ];
 	
 	module.init = function() {
@@ -213,6 +198,10 @@ var BuildingManager = function() {
 		// trace('BuildingManager/saveBuildingData, config = ', config);
 		PhaserGame.playerData.buildings[config.sector][config.id] = config;
 		PhaserGame.setSavedData();
+	};
+
+	module.getFactoryModelCapacity = function() {
+		return Factory.modelCapacity;
 	};
 	
 	module.move = function(type, buildingIdx, position) {

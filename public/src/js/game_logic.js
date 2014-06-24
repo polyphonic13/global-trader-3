@@ -113,7 +113,7 @@ var gameLogic = {
 		{
 			event: Events.BUILDING_STATE_UPDATED,
 			handler: function(event) {
-				var config = event.config;
+				var config = event.building.config;
 				// trace('BUILDING_STATE_UPDATED, config = ', config);
 				GridManager.updateBuildingState(config.sector, config.cell, config.type, config.state);
 			}
@@ -629,7 +629,7 @@ var gameLogic = {
 			{
 				event: Events.BUILDING_STATE_UPDATED,
 				handler: function(event) {
-					var config = event.config;
+					var config = event.building.config;
 					if(config.sector === PhaserGame.activeSector) {
 						var viewPath = 'usDetail:usDetailGrid:usDetailGridItem'+config.cell;
 						var view = PWG.ViewManager.getControllerFromPath(viewPath);
@@ -681,10 +681,10 @@ var gameLogic = {
 				event: Events.BUILDING_STATE_UPDATED,
 				handler: function(event) {
 					trace('BUILDING_STATE_UPDATED event = ', event);
-					var config = event.config;
+					var config = event.building.config;
  					var buildingEditConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditDetails);
-					var equipmentUpdate = buildingEditConfig.views.equipment.text + PWG.Utils.objLength(config.equipment);
-					var inventoryUpdate = buildingEditConfig.views.inventory.text + config.inventory.length;
+					var equipmentUpdate = buildingEditConfig.views.equipment.text + PWG.Utils.objLength(config.equipment) + ' / ' + BuildingManager.FACTORY_MAX_MODELS;
+					var inventoryUpdate = buildingEditConfig.views.inventory.text + config.inventory.length + ' / ' + BuildingManager.FACTORY_MAX_INVENTORY;
 
 					PWG.ViewManager.callMethod('buildingEdit:editDetails:equipment', 'setText', [equipmentUpdate], this);
 					PWG.ViewManager.callMethod('buildingEdit:editDetails:inventory', 'setText', [inventoryUpdate], this);
@@ -700,8 +700,8 @@ var gameLogic = {
 				// trace('screen view = ', screenView, '\tactive factory = ', building);
 				buildingEditConfig.views.name.text += building.name;
 				buildingEditConfig.views.status.text += building.state.toUpperCase();
-				buildingEditConfig.views.equipment.text += PWG.Utils.objLength(building.equipment);
-				buildingEditConfig.views.inventory.text += building.inventory.length;
+				buildingEditConfig.views.equipment.text += PWG.Utils.objLength(building.equipment) + ' / ' + BuildingManager.FACTORY_MAX_MODELS;
+				buildingEditConfig.views.inventory.text += building.inventory.length + ' / ' + BuildingManager.FACTORY_MAX_INVENTORY;
 
 				PWG.ViewManager.addView(buildingEditConfig, buildingEdit, true);
 				PWG.ViewManager.showView('global:turnGroup:equipmentButton');
