@@ -98,7 +98,7 @@ var BuildingManager = function() {
 	}
 	PWG.Utils.inherit(Showroom, Building);
 
-	Showroom.prototype.buildTime = 2;
+	Showroom.prototype.buildTime = 1;
 	Showroom.prototype.capacity = 50;
 	Showroom.prototype.update = function() {
 		Showroom._super.update.apply(this, arguments);

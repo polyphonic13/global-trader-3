@@ -95,7 +95,7 @@ var gameLogic = {
 			handler: function(event) {
 				PhaserGame.playerData.bank += event.value;
 				PhaserGame.setSavedData();
-				var text = '$ ' + PhaserGame.playerData.bank;
+				var text = '$' + PWG.Utils.formatMoney(PhaserGame.playerData.bank, 0);
 				// trace('bank updated to = ' + event.value);
 				PWG.ViewManager.callMethod('global:turnGroup:bankText', 'setText', [text], this);
 			}
@@ -168,7 +168,7 @@ var gameLogic = {
 					this
 				);
 				PhaserGame.turnTimer.start();
-				var text = '$ ' + PhaserGame.playerData.bank;
+				var text = '$' + PWG.Utils.formatMoney(PhaserGame.playerData.bank, 0);
 				PWG.ViewManager.callMethod('global:turnGroup:bankText', 'setText', [text], this);
 
 				PWG.ViewManager.showView('global');
