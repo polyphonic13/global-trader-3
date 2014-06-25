@@ -779,7 +779,8 @@ var GameConfig = function() {
 					briefBg: 'images/screens/screen_mocks_brief.gif',
 					usDetailBg: 'images/screens/screen_mocks_us.gif',
 					// worldBg: 'images/screens/screen_mocks_world.gif',
-					mapWorld: 'images/screens/map_world.gif',
+					mapOcean: 'images/screens/map_ocean.png',
+					mapWorld: 'images/screens/map_world.png',
 					mapUS: 'images/screens/map_us.png',
 					equipmentListBg: 'images/screens/screen_mocks_inventory.gif',
 					buildBg: 'images/screens/screen_mocks_build.gif',
@@ -1020,7 +1021,20 @@ var GameConfig = function() {
 						visible: false
 					},
 					views: {
-						// bg
+						// ocean map
+						oceanMap: {
+							type: 'sprite',
+							name: 'oceanMap',
+							img: 'mapOcean',
+							x: 0,
+							y: 0,
+							attrs: {
+								width: gameW,
+								height: gameH,
+								alpha: 0.75
+							}
+						},
+						// world map
 						worldMap: {
 							type: 'sprite',
 							name: 'worldMap',
@@ -1595,11 +1609,11 @@ var GameConfig = function() {
 									name: 'bankText',
 									text: '',
 									style: {
-									    font: (fontSizes.md + 'px Arial'),
+									    font: (fontSizes.sm + 'px Arial'),
 								        fill: palette.orange1
 									},
 									x: (gameUnit * 0.5),
-									y: (gameUnit * 0.33)
+									y: (gameUnit * 0.5)
 								},
 								equipmentButton: {
 									type: 'button',

@@ -612,9 +612,9 @@ var gameLogic = {
 
 				var gameUnit = PWG.Stage.unit;
 				var worldMap = PWG.ViewManager.getControllerFromPath('play:worldMap');
-				worldMap.view.scale.setTo(PhaserGame.config.maxWorldZoom, PhaserGame.config.maxWorldZoom);
-				worldMap.view.y = -(gameUnit * 31.2);
-				worldMap.view.x = -(gameUnit * 8.2);
+				// worldMap.view.scale.setTo(PhaserGame.config.maxWorldZoom, PhaserGame.config.maxWorldZoom);
+				// worldMap.view.y = -(gameUnit * 31.2);
+				// worldMap.view.x = -(gameUnit * 8.2);
 				
 				PhaserGame.activeSector = -1;
 			}
