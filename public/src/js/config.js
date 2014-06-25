@@ -1039,11 +1039,11 @@ var GameConfig = function() {
 							type: 'sprite',
 							name: 'worldMap',
 							img: 'mapWorld',
-							x: 0,
-							y: 0,
+							x: -(gameW * 0.825),
+							y: -(gameH * 1.97),
 							attrs: {
-								width: gameW,
-								height: gameH
+								width: gameW * 5.9,
+								height: gameH * 5.9
 							}
 						},
 						// us map
