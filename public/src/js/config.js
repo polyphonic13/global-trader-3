@@ -569,45 +569,57 @@ var GameConfig = function() {
 					name: {
 						type: 'text',
 						name: 'factoryName',
-						text: 'Name: ',
+						text: '',
 						x: gameUnit * 1.5,
-						y: gameUnit * 5,
+						y: gameUnit * 3.5,
 						style: {
-							font: (fontSizes.md + 'px Arial'),
-							fill: palette.black
-						}
+							font: (fontSizes.lg + 'px Arial'),
+								fill: palette.white
+							},
+							position: {
+								centerX: true
+							}
 					},
 					status: {
 						type: 'text',
 						name: 'factorySatus',
-						text: 'Status: ',
+						text: '',
 						x: gameUnit * 1.5,
-						y: gameUnit * 8,
+						y: gameUnit * 6,
 						style: {
 							font: (fontSizes.md + 'px Arial'),
-							fill: palette.black
-						}
+								fill: palette.white
+							},
+							position: {
+								centerX: true
+							}
 					},
 					equipment: {
 						type: 'text',
 						name: 'equipment',
-						text: 'Tractor / Skid Steer Models: ',
+						text: '',
 						x: gameUnit * 1.5,
-						y: gameUnit * 9.5,
+						y: gameUnit * 8.5,
 						style: {
-							font: (fontSizes.sm + 'px Arial'),
-							fill: palette.black
-						}
+							font: (fontSizes.xl + 'px Arial'),
+								fill: palette.white
+							},
+							position: {
+								centerX: true
+							}
 					},
 					inventory: {
 						type: 'text',
 						name: 'inventory',
-						text: 'Current Inventory: ',
+						text: '',
 						x: gameUnit * 1.5,
 						y: gameUnit * 11,
 						style: {
-							font: (fontSizes.sm + 'px Arial'),
-							fill: palette.black
+							font: (fontSizes.xl + 'px Arial'),
+							fill: palette.white
+						},
+						position: {
+							centerX: true
 						}
 					}
 				}
@@ -840,7 +852,7 @@ var GameConfig = function() {
 					mapOcean: 'images/screens/play/map_ocean.png',
 					mapWorld: 'images/screens/play/map_world.png',
 					mapUS: 'images/screens/play/map_us.png',
-					equipmentListBg: 'images/screens/screen_mocks_inventory.gif',
+					equipmentListBg: 'images/screens/factory_detail/factory_detail.png',
 					buildBg: 'images/screens/screen_mocks_build.gif',
 					equipmentCreateBg: 'images/screens/screen_mocks_machine_picker.gif',
 					equipmentEditBg: 'images/screens/screen_mocks_equipment_editor.gif',
@@ -1335,20 +1347,6 @@ var GameConfig = function() {
 								width: gameW,
 								height: gameH,
 								fixedToCamera: true
-							}
-						},
-						title: {
-							type: 'text',
-							name: 'editTitle',
-							text: 'Factory Details',
-							x: 0,
-							y: gameUnit * 3,
-							style: {
-								font: (fontSizes.lg + 'px Arial'),
-								fill: palette.black
-							},
-							position: {
-								centerX: true
 							}
 						}
 					}

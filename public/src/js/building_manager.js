@@ -71,19 +71,19 @@ var BuildingManager = function() {
 									
 									if(this.config.showrooms.length === 0 && this.config.inventory.length > module.FACTORY_MIN_SELL_INVENTORY) {
 										if(!this.notifiedOfShowroomAdd) {
-											alert(this.config.id + ' needs a showroom to sell inventory');
+											// alert(this.config.id + ' needs a showroom to sell inventory');
 											this.notifiedOfShowroomAdd = true;
 										}
 									}
 								} else {
 									// notify output capacity reached
-									alert(this.config.id + ' created max inventory');
+									// alert(this.config.id + ' created max inventory');
 								}
 							} 
 							else 
 							{
 								// notifiy out of bank
-								alert('not enough money to create inventory');
+								// alert('not enough money to create inventory');
 							}
 						},
 						this
@@ -96,7 +96,7 @@ var BuildingManager = function() {
 				// notify equipment needed
 				if(!this.notifiedOfEquipmentNeeded) {
 					this.notifiedOfEquipmentNeeded = true;
-					alert(this.config.id + ' needs Tractor and Skid Steer models to manufacture');
+					// alert(this.config.id + ' needs Tractor and Skid Steer models to manufacture');
 				}
 			}
 		
