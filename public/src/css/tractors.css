@@ -1,3 +1,7 @@
+body {
+	background: black;
+}
+
 .button {
 	position: absolute;
 	z-index: 99;
