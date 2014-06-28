@@ -325,6 +325,37 @@ var GameConfig = function() {
 					}
 				}
 			},
+			retailerNotification: {
+				type: 'group',
+				name: 'retailerNotification',
+				views: {
+					bg: {
+						type: 'sprite',
+						name: 'notificationBg',
+						img: 'retailerGirl',
+						x: 0,
+						y: 0,
+						attrs: {
+							width: gameW,
+							height: gameH
+						}
+					},
+					text: {
+						type: 'text',
+						name: 'notificationText',
+						text: '',
+						x: 0,
+						y: gameUnit * 3,
+						style: {
+						    font: (fontSizes.xs + 'px Arial'),
+					        fill: palette.black
+						},
+						position: {
+							centerX: true
+						}
+					}
+				}
+			},
 			usDetailGrid: {
 				type: 'group',
 				name: 'usDetailGrid',
@@ -350,7 +381,7 @@ var GameConfig = function() {
 				views: {
 					menuBg: {
 						type: 'sprite',
-						name: 'menu-bg',
+						name: 'menuBg',
 						img: 'blockWhite',
 						x: (gameUnit/2),
 						y: (gameUnit/2),
@@ -666,7 +697,7 @@ var GameConfig = function() {
 				views: {
 					menuBg: {
 						type: 'sprite',
-						name: 'menu-bg',
+						name: 'menuBg',
 						img: 'blockWhite',
 						x: (gameUnit/2),
 						y: (gameUnit/2),
@@ -853,7 +884,9 @@ var GameConfig = function() {
 					cabGrey: 'images/parts/cab_grey.gif',
 					cabGreen: 'images/parts/cab_green.gif',
 					cabOrange: 'images/parts/cab_orange.gif',
-					cabRed: 'images/parts/cab_red.gif'
+					cabRed: 'images/parts/cab_red.gif',
+					// NOTIFICATIONS
+					retailerGirl: 'images/notifications/retailer.png'
 				},
 				sprites: {
 					buttonSettings: {

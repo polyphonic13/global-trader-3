@@ -17,6 +17,7 @@ var Events = {
 	ADD_BUILDING: 'addBuilding',
 	BUILDING_AGE_UPDATED: 'buildingAgeUpdated',
 	BUILDING_STATE_UPDATED: 'buildingStateUpdated',
+	SHOWROOM_ADD_NOTIFICATION: 'showRoomAddNotification',
 	SHOW_BUILD_GROUP: 'showBuildGroup',
 	MACHINE_TYPE_SELECTION: 'machineTypeSelection',
 	MACHINE_SIZE_SELECTION: 'machineSizeSelection',

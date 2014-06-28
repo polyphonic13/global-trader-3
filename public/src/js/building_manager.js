@@ -3,6 +3,7 @@ var BuildingManager = function() {
 	
 	module.TIME_TO_BUILD = 5;
 	module.FACTORY_MAX_MODELS = 6;
+	module.FACTORY_MIN_SELL_INVENTORY = 3;
 	module.FACTORY_MAX_INVENTORY = 100;
 	module.RETAILER_MAX_INVENTORY = 50;
 	module.RETAILER_TIME_TO_SELL = 5;
@@ -45,13 +46,13 @@ var BuildingManager = function() {
 		Building.call(this, config);
 		this.config.equipment = config.equipment || {};
 		this.config.inventory = config.inventory || [];
+		this.config.showrooms = config.showrooms || [];
 	}
 
 	PWG.Utils.inherit(Factory, Building);
 	
 	Factory.prototype.buildTime = 3;
 	Factory.prototype.modelCapacity = 6;
-	Factory.prototype.outputCapacity = 50;
  	Factory.prototype.update = function() {
 		Factory._super.update.apply(this, arguments);
 		if(this.config.state === states.ACTIVE) {
@@ -67,6 +68,13 @@ var BuildingManager = function() {
 									PWG.EventCenter.trigger({ type: Events.UPDATE_BANK, value: (-machine.cost) });
 									PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
 									this.config.inventory.push(machine.id);
+									
+									if(this.config.showrooms.length === 0 && this.config.inventory.length > module.FACTORY_MIN_SELL_INVENTORY) {
+										if(!this.notifiedOfShowroomAdd) {
+											alert(this.config.id + ' needs a showroom to sell inventory');
+											this.notifiedOfShowroomAdd = true;
+										}
+									}
 								} else {
 									// notify output capacity reached
 									alert(this.config.id + ' created max inventory');
@@ -84,9 +92,7 @@ var BuildingManager = function() {
 				} else {
 					this.buildTime++;
 				}
-			}
-			else
-			{
+			} else {
 				// notify equipment needed
 				if(!this.notifiedOfEquipmentNeeded) {
 					this.notifiedOfEquipmentNeeded = true;
