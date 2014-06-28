@@ -82,6 +82,8 @@ var gameLogic = {
 		{
 			event: Events.TURN_ENDED,
 			handler: function(event) {
+				alert('turn ended');
+				PhaserGame.turnActive = false;
 				PWG.PhaserTime.removeTimer('turnTime');
 				// trace('turn ended');
 				PWG.ViewManager.callMethod('global:turnGroup:timerText', 'setText', [TIME_PER_TURN], this);
@@ -306,18 +308,6 @@ var gameLogic = {
 			}
 		},
 		input: {
-			plusButton: {
-				inputUp: function() {
-					// trace('plus pressed');
-					PWG.EventCenter.trigger({ type: Events.ZOOM_IN });
-				}
-			},
-			minusButton: {
-				inputUp: function() {
-					// trace('plus pressed');
-					PWG.EventCenter.trigger({ type: Events.ZOOM_OUT });
-				}
-			},
 			newFactory: {
 				inputDown: function() {
 					// trace('factoryIcon/inputDown, this = ', this);
@@ -477,19 +467,10 @@ var gameLogic = {
 			manualStart: function() {
 				// PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'manual' });
 			},
-			manualClose: function() {
-				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'start' });
-			},
 			playStart: function() {
 				var ignitionKey = PWG.ViewManager.getControllerFromPath('start:ignitionKey');
 				ignitionKey.view.events.onAnimationComplete.add(PhaserGame.ignitionAnimationCompleted, this);
 				PWG.PhaserAnimation.play(ignitionKey.name, 'turnOn');
-			},
-			usDetailClose: function() {
-				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'play' });
-			},
-			notificationClose: function() {
-				PWG.EventCenter.trigger({ type: Events.CLOSE_NOTIFICATION });
 			},
 			// us detail
 			usDetailStart: function(param) {
@@ -525,9 +506,6 @@ var gameLogic = {
 			equipmentListStart: function() {
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentList' });
 			},
-			equipmentListClose: function() {
-				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'play' });
-			},
 			// add equipment
 			addEquipment: function() {
 				// trace('add equipment button clicked');
@@ -542,6 +520,27 @@ var gameLogic = {
 			},
 			saveMachine: function() {
 				PWG.EventCenter.trigger({ type: Events.SAVE_MACHINE });
+			},
+			plusButton: function() {
+				switch(PWG.ScreenManager.currentId) {
+					case 'play':
+					break;
+					
+					case 'equipmentList':
+					break;
+					
+					default:
+					break;
+				}
+			},
+			minusButton: function() {
+				switch(PWG.ScreenManager.currentId) {
+					case 'play':
+					break;
+
+					default:
+					break;
+				}
 			},
 			closeButton: function() {
 				switch(PWG.ScreenManager.currentId) {
@@ -613,8 +612,8 @@ var gameLogic = {
 		play: {
 			create: function() {
 				PWG.ViewManager.showView('global:turnGroup');
+				PWG.ViewManager.showView('global:plusMinusGroup');
 				PWG.ViewManager.showView('global:closeButton');
-
 				var gameUnit = PWG.Stage.unit;
 				var worldMap = PWG.ViewManager.getControllerFromPath('play:worldMap');
 				// worldMap.view.scale.setTo(PhaserGame.config.maxWorldZoom, PhaserGame.config.maxWorldZoom);
@@ -624,6 +623,7 @@ var gameLogic = {
 				PhaserGame.activeSector = -1;
 			},
 			shutdown: function() {
+				PWG.ViewManager.hideView('global:plusMinusGroup');
 			}
 		},
 		usDetail: {

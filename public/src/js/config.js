@@ -824,8 +824,6 @@ var GameConfig = function() {
 					iconShowroom: 'images/icon_showroom.gif',
 					iconTractor: 'images/icon_tractor.gif',
 					iconSkidsteer: 'images/icon_skidsteer.gif',
-					buttonPlus: 'images/button_plus.png',
-					buttonMinus: 'images/button_minus.png',
 					buttonEquipmentSave: 'images/button_red_check.gif',
 					// parts icons
 					wheels1: 'images/parts_icons/wheels1.gif',
@@ -939,6 +937,18 @@ var GameConfig = function() {
 					buttonCancel: {
 						url: 'images/controls/cancel.png',
 						width: 50,
+						height: 50,
+						frames: 2
+					},
+					buttonPlus: {
+						url: 'images/icons/plus.png',
+						width: 150,
+						height: 50,
+						frames: 2
+					},
+					buttonMinus: {
+						url: 'images/icons/minus.png',
+						width: 150,
 						height: 50,
 						frames: 2
 					},
@@ -1168,30 +1178,6 @@ var GameConfig = function() {
 								fixedToCamera: true
 							},
 							views: {
-								plusButton: {
-									type: 'sprite',
-									name: 'plus-button',
-									img: 'buttonPlus',
-									x: gameUnit * 0.2,
-									y: gameUnit * 4,
-									attrs: {
-										width: gameUnit,
-										height: gameUnit
-									},
-									input: gameLogic.global.input.plusButton
-								},
-								minusButton: {
-									type: 'sprite',
-									name: 'minusButton',
-									img: 'buttonMinus',
-									x: gameUnit * 0.2,
-									y: gameUnit * 5.2,
-									attrs: {
-										width: gameUnit,
-										height: gameUnit
-									},
-									input: gameLogic.global.input.minusButton
-								},
 								northwestDetail: {
 									type: 'button',
 									name: 'northwestDetail',
@@ -1740,6 +1726,43 @@ var GameConfig = function() {
 									},
 									x: (gameUnit * 0.5),
 									y: (gameUnit * 0.5)
+								}
+							}
+						},
+						plusMinusGroup: {
+							type: 'group',
+							name: 'plusMinusGroup',
+							attrs: {
+								visible: false
+							},
+							views: {
+								plusButton: {
+									type: 'button',
+									name: 'plusButton',
+									img: 'buttonPlus',
+									x: (gameW/2) - (gameUnit * 2),
+									y: gameH - (gameUnit * 1),
+									attrs: {
+										width: gameUnit * 1.5,
+										height: gameUnit * 0.5
+									},
+									callback: gameLogic.global.buttonCallbacks.plusButton,
+									context: this,
+									frames: [0, 1, 1, 0]
+								},
+								minusButton: {
+									type: 'button',
+									name: 'minusButton',
+									img: 'buttonMinus',
+									x: (gameW/2) + (gameUnit * 0.5),
+									y: gameH - (gameUnit * 1),
+									attrs: {
+										width: gameUnit * 1.5,
+										height: gameUnit * 0.5
+									},
+									callback: gameLogic.global.buttonCallbacks.minusButton,
+									context: this,
+									frames: [0, 1, 1, 0]
 								}
 							}
 						},
