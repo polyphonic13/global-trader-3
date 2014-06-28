@@ -566,7 +566,11 @@ var gameLogic = {
 			closeButton: function() {
 				switch(PWG.ScreenManager.currentId) {
 					case 'play':
-					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'start' });
+					var endTurn = confirm('Are you sure you want to end the turn?');
+					if(endTurn) {
+						PWG.EventCenter.trigger({ type: Events.TURN_ENDED });
+						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'start' });
+					}
 					break; 
 					
 					case 'usDetail':
@@ -604,6 +608,10 @@ var gameLogic = {
 		start: {
 			create: function() {
 				PWG.ViewManager.hideView('global:turnGroup');
+			},
+			shutdown: function() {
+				var ignitionKey = PWG.ViewManager.getControllerFromPath('start:ignitionKey');
+				PWG.PhaserAnimation.play(ignitionKey.name, 'idle');
 			}
 		},
 		manual: {
