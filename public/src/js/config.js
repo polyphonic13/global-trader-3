@@ -774,14 +774,16 @@ var GameConfig = function() {
 					gameBg: 'images/screens/metal_background.gif',
 					dashboardBottom: 'images/dashboard_bottom.gif',
 					dashboardTop: 'images/dashboard_top.gif',
-					startBg: 'images/screens/screen_mocks_start.gif',
+					
+					startBg: 'images/screens/start/start.png',
+
 					manualBg: 'images/screens/screen_mocks_manual.gif',
 					briefBg: 'images/screens/screen_mocks_brief.gif',
 					usDetailBg: 'images/screens/screen_mocks_us.gif',
 					// worldBg: 'images/screens/screen_mocks_world.gif',
-					mapOcean: 'images/screens/map_ocean.png',
-					mapWorld: 'images/screens/map_world.png',
-					mapUS: 'images/screens/map_us.png',
+					mapOcean: 'images/screens/play/map_ocean.png',
+					mapWorld: 'images/screens/play/map_world.png',
+					mapUS: 'images/screens/play/map_us.png',
 					equipmentListBg: 'images/screens/screen_mocks_inventory.gif',
 					buildBg: 'images/screens/screen_mocks_build.gif',
 					equipmentCreateBg: 'images/screens/screen_mocks_machine_picker.gif',
@@ -832,6 +834,12 @@ var GameConfig = function() {
 					cabRed: 'images/parts/cab_red.gif'
 				},
 				sprites: {
+					ignitionKey: {
+						url: 'images/screens/start/key_spritesheet.png',
+						width: 320,
+						height: 573,
+						frames: 3
+					},
 					buttonGameStart: {
 						url: 'images/button_game_start.gif',
 						width: 800,
@@ -958,6 +966,33 @@ var GameConfig = function() {
 								height: gameH
 							}
 						},
+						// ignitionKey
+						ignitionKey: {
+							type: 'sprite',
+							name: 'ignitionKey',
+							img: 'ignitionKey',
+							x: 0,
+							y: 0,
+							attrs: {
+								width: gameW,
+								height: gameH
+							},
+							animation: {
+								defaultAnimation: 'idle',
+								animations: {
+									idle: {
+										frameRate: 10,
+										looped: false,
+										keyFrames: [0]
+									},
+									turnOn: {
+										frameRate: 10,
+										looped: false,
+										keyFrames: [0, 0, 0, 1, 1, 1, 2, 2, 2]
+									}
+								}
+							}
+						},
 						// game start button
 						startButton: {
 							type: 'button',
@@ -968,7 +1003,7 @@ var GameConfig = function() {
 							attrs: {
 								width: (gameUnit * 5),
 								height: (gameUnit * 5),
-								alpha: 0.5
+								alpha: 0
 							},
 							callback: gameLogic.global.buttonCallbacks.playStart,
 							context: this,

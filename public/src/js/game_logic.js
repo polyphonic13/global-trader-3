@@ -150,6 +150,15 @@ var gameLogic = {
 				params[GAME_NAME] = PhaserGame.playerData;
 				PWG.Storage.set(params);
 			},
+			turnOnComplete: function() {
+				trace('PhaserGame/turnOnComplete');
+				if(PhaserGame.isFirstPlay) {
+					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'manual' });
+					PhaserGame.isFirstPlay = false;
+				} else {
+					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'play' });
+				}
+			},
 			startTurn: function() {
 				// trace('START TURN');
 				PhaserGame.turnActive = true;
@@ -491,12 +500,10 @@ var gameLogic = {
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'start' });
 			},
 			playStart: function() {
-				if(PhaserGame.isFirstPlay) {
-					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'manual' });
-					PhaserGame.isFirstPlay = false;
-				} else {
-					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'play' });
-				}
+				trace('play start');
+				var ignitionKey = PWG.ViewManager.getControllerFromPath('start:ignitionKey');
+				ignitionKey.view.events.onAnimationComplete.add(PhaserGame.turnOnComplete, this);
+				PWG.PhaserAnimation.play(ignitionKey.name, 'turnOn');
 			},
 			usDetailClose: function() {
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'play' });
