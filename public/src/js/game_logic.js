@@ -152,6 +152,8 @@ var gameLogic = {
 			},
 			turnOnComplete: function() {
 				trace('PhaserGame/turnOnComplete');
+				var ignitionKey = PWG.ViewManager.getControllerFromPath('start:ignitionKey');
+				ignitionKey.view.events.onAnimationComplete.remove(PhaserGame.turnOnComplete, this);
 				if(PhaserGame.isFirstPlay) {
 					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'manual' });
 					PhaserGame.isFirstPlay = false;
