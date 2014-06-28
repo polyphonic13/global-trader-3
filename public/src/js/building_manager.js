@@ -5,7 +5,7 @@ var BuildingManager = function() {
 	module.FACTORY_MAX_MODELS = 6;
 	module.FACTORY_MAX_INVENTORY = 100;
 	module.RETAILER_MAX_INVENTORY = 50;
-	module.RETAILER_
+	module.RETAILER_TIME_TO_SELL = 5;
 	
 	var states = {
 		CONSTRUCTION: 'construction',
@@ -51,12 +51,12 @@ var BuildingManager = function() {
 	
 	Factory.prototype.buildTime = 3;
 	Factory.prototype.modelCapacity = 6;
-	Factory.prototype.outputCapacity = 100;
+	Factory.prototype.outputCapacity = 50;
  	Factory.prototype.update = function() {
 		Factory._super.update.apply(this, arguments);
 		if(this.config.state === states.ACTIVE) {
 			if(PWG.Utils.objLength(this.config.equipment) > 0) { 
-				if(this.buildTime === module.TIME_TO_BUILD) {
+				if(this.buildTime >= module.TIME_TO_BUILD) {
 					PWG.Utils.each(
 						this.config.equipment,
 						function(machine) {
@@ -69,11 +69,13 @@ var BuildingManager = function() {
 									this.config.inventory.push(machine.id);
 								} else {
 									// notify output capacity reached
+									alert(this.config.id + ' created max inventory');
 								}
 							} 
 							else 
 							{
 								// notifiy out of bank
+								alert('not enough money to create inventory');
 							}
 						},
 						this
@@ -86,6 +88,10 @@ var BuildingManager = function() {
 			else
 			{
 				// notify equipment needed
+				if(!this.notifiedOfEquipmentNeeded) {
+					this.notifiedOfEquipmentNeeded = true;
+					alert(this.config.id + ' needs Tractor and Skid Steer models to manufacture');
+				}
 			}
 		
 		}
@@ -98,7 +104,7 @@ var BuildingManager = function() {
 	}
 	PWG.Utils.inherit(Showroom, Building);
 
-	Showroom.prototype.buildTime = 1;
+	Showroom.prototype.buildTime = 0;
 	Showroom.prototype.capacity = 50;
 	Showroom.prototype.update = function() {
 		Showroom._super.update.apply(this, arguments);

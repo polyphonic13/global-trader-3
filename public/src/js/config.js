@@ -211,6 +211,27 @@ var gameData = {
 		]
 	}
 };
+var buildingTypes = {
+	FACTORY: 'factory',
+	SHOWROOM: 'showroom'
+};
+var tileCellFrames = {
+	EMPTY: 0,
+	FACTORY_CONSTRUCTION: 1,
+	FACTORY_ACTIVE: 2,
+	SHOWROOM_ACTIVE: 3,
+	SHOWROOM_PAUSED: 4
+};
+
+var turnGroups = [
+	'play',
+	'usDetail',
+	'buildingEdit',
+	'equipmentList',
+	'equipmentCreate',
+	'equipmentEdit'
+];
+
 
 var GameConfig = function() {
 	
@@ -231,6 +252,10 @@ var GameConfig = function() {
 			height: gameH
 		};
 
+		var controlButtonSizes = {
+			width: (gameUnit * 7)/3,
+			height: (gameUnit * 6)/3
+		};
 		var fontSizes = {
 			xxs: (gameUnit * 0.25),
 			xs: (gameUnit * 0.30),
@@ -248,7 +273,7 @@ var GameConfig = function() {
 			black: '#000000',
 			white: '#ffffff'
 		};
-
+		
 		var dynamicViews = {
 			notification: {
 				type: 'group',
@@ -801,7 +826,6 @@ var GameConfig = function() {
 					iconSkidsteer: 'images/icon_skidsteer.gif',
 					buttonPlus: 'images/button_plus.png',
 					buttonMinus: 'images/button_minus.png',
-					buttonEquipment: 'images/button_equipment.gif',
 					buttonEquipmentSave: 'images/button_red_check.gif',
 					// parts icons
 					wheels1: 'images/parts_icons/wheels1.gif',
@@ -834,6 +858,48 @@ var GameConfig = function() {
 					cabRed: 'images/parts/cab_red.gif'
 				},
 				sprites: {
+					buttonSettings: {
+						url: 'images/icons/settings.png',
+						width: 175,
+						height: 150,
+						frames: 2
+					},
+					buttonShare: {
+						url: 'images/icons/share.png',
+						width: 175,
+						height: 150,
+						frames: 2
+					},
+					buttonConfirm: {
+						url: 'images/icons/confirm.png',
+						width: 175,
+						height: 150,
+						frames: 2
+					},
+					buttonBack: {
+						url: 'images/icons/back.png',
+						width: 175,
+						height: 150,
+						frames: 2
+					},
+					buttonUndo: {
+						url: 'images/icons/undo.png',
+						width: 175,
+						height: 150,
+						frames: 2
+					},
+					buttonEquipment: {
+						url: 'images/icons/equipment.png',
+						width: 175,
+						height: 150,
+						frames: 2
+					},
+					buttonInventory: {
+						url: 'images/icons/inventory.png',
+						width: 175,
+						height: 150,
+						frames: 2
+					},
 					ignitionKey: {
 						url: 'images/screens/start/key_spritesheet.png',
 						width: 320,
@@ -877,10 +943,10 @@ var GameConfig = function() {
 						frames: 2
 					},
 					usDetailTiles: {
-						url: 'images/us_detail_tiles.png',
-						width: 64,
-						height: 64,
-						frames: 8
+						url: 'images/screens/us_detail/us_detail_grid_icon.png',
+						width: 110,
+						height: 110,
+						frames: 5
 					},
 					wheelsSprites: {
 						url: 'images/parts/wheels_spritesheet.gif',
@@ -1215,18 +1281,6 @@ var GameConfig = function() {
 					},
 					views: {
 						// bg
-						stateBg: {
-							type: 'sprite',
-							name: 'usBg',
-							img: 'usDetailBg',
-							x: 0,
-							y: 0,
-							attrs: {
-								width: gameW,
-								height: gameH,
-								fixedToCamera: true
-							}
-						},
 						sectorTitle: {
 							type: 'text',
 							name: 'sectorTitle',
@@ -1609,9 +1663,46 @@ var GameConfig = function() {
 								fixedToCamera: true
 							}
 						},
+						homeGroup: {
+							type: 'group',
+							name: 'homeGroup',
+							views: {
+								buttonSettings: {
+									type: 'button',
+									name: 'buttonSettings',
+									img: 'buttonSettings',
+									x: (gameUnit * 0.25),
+									y: gameH - (gameUnit * 2.25),
+									attrs: {
+										width: controlButtonSizes.width,
+										height: controlButtonSizes.height
+									},
+									callback: gameLogic.global.buttonCallbacks.settings,
+									context: this,
+									frames: [0, 1, 1, 0]
+								},
+								buttonShare: {
+									type: 'button',
+									name: 'buttonShare',
+									img: 'buttonShare',
+									x: (gameUnit * 7.5),
+									y: gameH - (gameUnit * 2.25),
+									attrs: {
+										width: controlButtonSizes.width,
+										height: controlButtonSizes.height
+									},
+									callback: gameLogic.global.buttonCallbacks.share,
+									context: this,
+									frames: [0, 1, 1, 0]
+								}
+							}
+						},
 						turnGroup: {
 							type: 'group',
 							name: 'turnGroup',
+							attrs: {
+								visible: false
+							},
 							views: {
 								dashboardTop: {
 									name: 'dashboardTop',
@@ -1649,22 +1740,39 @@ var GameConfig = function() {
 									},
 									x: (gameUnit * 0.5),
 									y: (gameUnit * 0.5)
-								},
+								}
+							}
+						},
+						factoryDetailGroup: {
+							type: 'group',
+							name: 'factoryDetailGroup',
+							attrs: {
+								visible: false
+							},
+							views: {
 								equipmentButton: {
 									type: 'button',
 									name: 'equipmentButton',
 									img: 'buttonEquipment',
-									x: gameUnit * 8,
-									y: (gameH - gameUnit * 2),
+									x: (gameUnit * 7.5),
+									y: gameH - (gameUnit * 2.25),
 									attrs: {
-										width: (gameUnit * 2),
-										height: (gameUnit * 2),
-										visible: false
+										width: controlButtonSizes.width,
+										height: controlButtonSizes.height
 									},
 									callback: gameLogic.global.buttonCallbacks.equipmentListStart,
 									context: this,
 									frames: [0, 0, 0, 0]
-								},
+								}
+							}
+						},
+						equipmentListGroup: {
+							type: 'group',
+							name: 'equipmentListGroup',
+							attrs: {
+								visible: false
+							},
+							views: {
 								addEquipmentButton: {
 									type: 'button',
 									name: 'addEquipment',
@@ -1679,7 +1787,16 @@ var GameConfig = function() {
 									callback: gameLogic.global.buttonCallbacks.addEquipment,
 									context: this,
 									frames: [0, 0, 0, 0]
-								},
+								}
+							}
+						},
+						equipmentEditGroup: {
+							type: 'group',
+							name: 'equipmentEditGroup',
+							attrs: {
+								visible: false
+							},
+							views: {
 								saveMachineButton: {
 									type: 'button',
 									name: 'saveMachineButton',
@@ -1694,22 +1811,22 @@ var GameConfig = function() {
 									callback: gameLogic.global.buttonCallbacks.saveMachine,
 									context: this,
 									frames: [0, 0, 0, 0]
-								},
-								closeButton: {
-									type: 'button',
-									name: 'closeButton',
-									img: 'buttonClose',
-									x: gameUnit * 0.5,
-									y: gameH - (gameUnit * 1.5),
-									attrs: {
-										width: gameUnit * 1,
-										height: gameUnit * 1
-									},
-									callback: gameLogic.global.buttonCallbacks.closeButton,
-									context: this,
-									frames: [0, 1, 1, 0]
 								}
 							}
+						},
+						closeButton: {
+							type: 'button',
+							name: 'closeButton',
+							img: 'buttonBack',
+							x: (gameUnit * 0.25),
+							y: gameH - (gameUnit * 2.25),
+							attrs: {
+								width: controlButtonSizes.width,
+								height: controlButtonSizes.height
+							},
+							callback: gameLogic.global.buttonCallbacks.closeButton,
+							context: this,
+							frames: [0, 1, 1, 0]
 						}
 					}
 				}

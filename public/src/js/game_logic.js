@@ -10,28 +10,6 @@ function startGame() {
 	PhaserGame.init(aspectRatio);
 }
 
-var buildingTypes = {
-	FACTORY: 'factory',
-	SHOWROOM: 'showroom'
-};
-var tileCellFrames = {
-	EMPTY: 0,
-	ACTIVE: 1,
-	FACTORY_CONSTRUCTION: 2,
-	FACTORY_ACTIVE: 3,
-	SHOWROOM_CONSTRUCTION: 5,
-	SHOWROOM_ACTIVE: 6
-};
-
-var turnGroups = [
-	'play',
-	'usDetail',
-	'buildingEdit',
-	'equipmentList',
-	'equipmentCreate',
-	'equipmentEdit'
-];
-
 var gameLogic = {
 	global: {
 		listeners: 
@@ -150,10 +128,10 @@ var gameLogic = {
 				params[GAME_NAME] = PhaserGame.playerData;
 				PWG.Storage.set(params);
 			},
-			turnOnComplete: function() {
-				trace('PhaserGame/turnOnComplete');
+			ignitionAnimationCompleted: function() {
+				trace('PhaserGame/ignitionAnimationCompleted');
 				var ignitionKey = PWG.ViewManager.getControllerFromPath('start:ignitionKey');
-				ignitionKey.view.events.onAnimationComplete.remove(PhaserGame.turnOnComplete, this);
+				ignitionKey.view.events.onAnimationComplete.remove(PhaserGame.ignitionAnimationCompleted, this);
 				if(PhaserGame.isFirstPlay) {
 					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'manual' });
 					PhaserGame.isFirstPlay = false;
@@ -182,16 +160,10 @@ var gameLogic = {
 				var text = '$' + PWG.Utils.formatMoney(PhaserGame.playerData.bank, 0);
 				PWG.ViewManager.callMethod('global:turnGroup:bankText', 'setText', [text], this);
 
-				PWG.ViewManager.showView('global');
-				PWG.ViewManager.hideView('global:turnGroup:saveMachineButton');
-				PWG.ViewManager.hideView('global:turnGroup:equipmentButton');
-				PWG.ViewManager.hideView('global:turnGroup:addEquipment');
 			},
 			stopTurn: function() {
 				PWG.PhaserTime.removeTimer('turnTime');
 				PhaserGame.turnActive = false;
-				PWG.ViewManager.hideView('global:turnGroup:closeButton');
-				PWG.ViewManager.hideView('global:turnGroup:equipmentButton');
 			},
 			buildUSDetailGrid: function() {
 				// trace('BUILD DETAIL GRID, this = ', this);
@@ -495,6 +467,13 @@ var gameLogic = {
 			}
 		},
 		buttonCallbacks: {
+			settings: function() {
+				trace('settings click');
+				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'manual' });
+			},
+			share: function() {
+				trace('share click');
+			},
 			manualStart: function() {
 				// PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'manual' });
 			},
@@ -502,9 +481,8 @@ var gameLogic = {
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'start' });
 			},
 			playStart: function() {
-				trace('play start');
 				var ignitionKey = PWG.ViewManager.getControllerFromPath('start:ignitionKey');
-				ignitionKey.view.events.onAnimationComplete.add(PhaserGame.turnOnComplete, this);
+				ignitionKey.view.events.onAnimationComplete.add(PhaserGame.ignitionAnimationCompleted, this);
 				PWG.PhaserAnimation.play(ignitionKey.name, 'turnOn');
 			},
 			usDetailClose: function() {
@@ -575,6 +553,10 @@ var gameLogic = {
 					}
 					break; 
 					
+					case 'manual':
+					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'start' });
+					break;
+					
 					case 'usDetail':
 					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'play' });
 					break;
@@ -595,37 +577,43 @@ var gameLogic = {
 					if(PhaserGame.machineDirty) {
 						// notify of unsaved changes
 					}
-					PWG.ViewManager.hideView('global:turnGroup:saveMachineButton');
+					PWG.ViewManager.hideView('global:equipmentEditGroup');
 					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentList' });
 					break;
 					
 					default:
 					break;
 				}
-				// PWG.ViewManager.hideView('global:turnGroup:closeButton');
+				// PWG.ViewManager.hideView('global:closeButton');
 			}
 		}
 	},
 	screens: {
 		start: {
 			create: function() {
+				PWG.ViewManager.showView('global:homeGroup');
 				PWG.ViewManager.hideView('global:turnGroup');
+				PWG.ViewManager.hideView('global:closeButton');
 			},
 			shutdown: function() {
+				PWG.ViewManager.hideView('global:homeGroup');
 				var ignitionKey = PWG.ViewManager.getControllerFromPath('start:ignitionKey');
 				PWG.PhaserAnimation.play(ignitionKey.name, 'idle');
 			}
 		},
 		manual: {
 			create: function() {
-				
+				PWG.ViewManager.hideView('global:homeGroup');
+				PWG.ViewManager.showView('global:closeButton');
+			},
+			shutdown: function() {
+				PWG.ViewManager.hideView('global:closeButton');
 			}
 		},
 		play: {
 			create: function() {
-				PWG.ViewManager.showView('global');
-				PWG.ViewManager.hideView('global:turnGroup:equipmentButton');
-				PWG.ViewManager.showView('global:turnGroup:closeButton');
+				PWG.ViewManager.showView('global:turnGroup');
+				PWG.ViewManager.showView('global:closeButton');
 
 				var gameUnit = PWG.Stage.unit;
 				var worldMap = PWG.ViewManager.getControllerFromPath('play:worldMap');
@@ -634,6 +622,8 @@ var gameLogic = {
 				// worldMap.view.x = -(gameUnit * 8.2);
 				
 				PhaserGame.activeSector = -1;
+			},
+			shutdown: function() {
 			}
 		},
 		usDetail: {
@@ -689,7 +679,7 @@ var gameLogic = {
 			create: function() {
 				// show add building button
 				// trace('show add building button');
-				PWG.ViewManager.showView('global:turnGroup:closeButton');
+				// PWG.ViewManager.showView('global:closeButton');
 				
 				PhaserGame.buildUSDetailGrid.call(this);
 			},
@@ -728,12 +718,11 @@ var gameLogic = {
 				buildingEditConfig.views.inventory.text += building.inventory.length + ' / ' + BuildingManager.FACTORY_MAX_INVENTORY;
 
 				PWG.ViewManager.addView(buildingEditConfig, buildingEdit, true);
-				PWG.ViewManager.showView('global:turnGroup:equipmentButton');
+				PWG.ViewManager.showView('global:factoryDetailGroup');
 			},
 			shutdown: function() {
 				PWG.ViewManager.removeView('editDetails', 'buildingEdit');
-				PWG.ViewManager.hideView('global:turnGroup:equipmentButton');
-				PWG.ViewManager.hideView('global:turnGroup:addEquipment');
+				PWG.ViewManager.hideView('global:factoryDetailGroup');
 			}
 		},
 		equipmentList: {
@@ -753,7 +742,6 @@ var gameLogic = {
 			],
 			create: function() {
 				// show add equipment button
-				PWG.ViewManager.showView('global:turnGroup:closeButton');
 				
 				var equipment = PhaserGame.activeFactory.equipment;
 				trace('build equipment list = ', equipment);
@@ -805,11 +793,12 @@ var gameLogic = {
 				// trace('machineList = ', machineList);
 				var equipmentListView = PWG.ViewManager.getControllerFromPath('equipmentList');
 				PWG.ViewManager.addView(machineList, equipmentListView, true);
-				PWG.ViewManager.showView('global:turnGroup:addEquipment');
+				// PWG.ViewManager.showView('global:closeButton');
+				PWG.ViewManager.showView('global:equipmentListGroup');
 			},
 			shutdown: function() {
 				PWG.ViewManager.removeView('machineList', 'equipmentList');
-				PWG.ViewManager.hideView('global:turnGroup:addEquipment');
+				PWG.ViewManager.hideView('global:equipmentListGroup');
 			}
 		},
 		equipmentCreate: {
@@ -851,7 +840,7 @@ var gameLogic = {
 				// trace('EQUIPMENT CREATE CREATE METHOD');
 				PWG.ViewManager.hideView('equipmentCreate:createIcons:tractorSize');
 				PWG.ViewManager.hideView('equipmentCreate:createIcons:skidsteerSize');
-				PWG.ViewManager.showView('global:turnGroup:closeButton');
+				// PWG.ViewManager.showView('global:closeButton');
 			}
 		},
 		equipmentEdit: {
@@ -924,14 +913,14 @@ var gameLogic = {
 					PhaserGame.setSavedData();
 					PhaserGame.activeMachine = null;
 					PhaserGame.machineDirty = false;
-					PWG.ViewManager.hideView('global:turnGroup:saveMachineButton');
+					PWG.ViewManager.hideView('global:equipmentEditGroup');
 					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentList' });
 				}
 			}
 			],
 			create: function() {
-				PWG.ViewManager.showView('global:turnGroup:saveMachineButton');
-				PWG.ViewManager.showView('global:turnGroup:closeButton');
+				PWG.ViewManager.showView('global:equipmentEditGroup');
+				// PWG.ViewManager.showView('global:closeButton');
 				
 				PWG.ViewManager.setChildFrames('equipmentEdit:editorParts', 0);
 				var activeMachineParts = PhaserGame.activeMachine.config.parts;
