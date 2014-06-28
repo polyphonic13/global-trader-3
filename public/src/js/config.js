@@ -852,7 +852,8 @@ var GameConfig = function() {
 					mapOcean: 'images/screens/play/map_ocean.png',
 					mapWorld: 'images/screens/play/map_world.png',
 					mapUS: 'images/screens/play/map_us.png',
-					equipmentListBg: 'images/screens/factory_detail/factory_detail.png',
+					factoryDetailBg: 'images/screens/factory_detail/factory_detail.png',
+					equipmentListBg: 'images/screens/equipment_list/equipment_list.png',
 					buildBg: 'images/screens/screen_mocks_build.gif',
 					equipmentCreateBg: 'images/screens/screen_mocks_machine_picker.gif',
 					equipmentEditBg: 'images/screens/screen_mocks_equipment_editor.gif',
@@ -933,6 +934,12 @@ var GameConfig = function() {
 					},
 					buttonEquipment: {
 						url: 'images/icons/equipment.png',
+						width: 175,
+						height: 150,
+						frames: 2
+					},
+					buttonEquipmentAdd: {
+						url: 'images/icons/equipment_add.png',
 						width: 175,
 						height: 150,
 						frames: 2
@@ -1340,7 +1347,7 @@ var GameConfig = function() {
 						bg: {
 							type: 'sprite',
 							name: 'background',
-							img: 'equipmentListBg',
+							img: 'factoryDetailBg',
 							x: 0,
 							y: 0,
 							attrs: {
@@ -1829,18 +1836,17 @@ var GameConfig = function() {
 							views: {
 								addEquipmentButton: {
 									type: 'button',
-									name: 'addEquipment',
-									img: 'buttonPlus',
-									x: (gameW/2 - gameUnit/2),
-									y: (gameH - gameUnit * 1.25),
+									name: 'buttonEquipmentAdd',
+									img: 'buttonEquipmentAdd',
+									x: (gameW/2) - (controlButtonSizes.width/2),
+									y: gameH - (gameUnit * 1.75),
 									attrs: {
-										width: (gameUnit),
-										height: (gameUnit),
-										visible: false
+										width: controlButtonSizes.width,
+										height: controlButtonSizes.height
 									},
 									callback: gameLogic.global.buttonCallbacks.addEquipment,
 									context: this,
-									frames: [0, 0, 0, 0]
+									frames: [0, 1, 1, 0]
 								}
 							}
 						},
