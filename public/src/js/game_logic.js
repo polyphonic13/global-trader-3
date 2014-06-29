@@ -157,6 +157,7 @@ var gameLogic = {
 						trace('\ttext['+idx+'] = ' + text);
 						var item = PWG.Utils.clone(goalText);
 						trace('\titem = ', item);
+						item.name += idx;
 						item.views.goal.text = text;
 						item.views.goal.y += (idx * item.offsetY);
 						missionBrief.views['goal'+idx] = item;
@@ -569,6 +570,10 @@ var gameLogic = {
 			},
 			closeButton: function() {
 				switch(PWG.ScreenManager.currentId) {
+					case 'brief': 
+					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'home' });
+					break;
+					
 					case 'world':
 					var endTurn = confirm('Are you sure you want to end the turn?');
 					if(endTurn) {
@@ -637,16 +642,16 @@ var gameLogic = {
 		brief: {
 			create: function() {
 				PhaserGame.buildMissionBrief.call(this);
+				PWG.ViewManager.showView('global:closeButton');
 			},
 			shutdown: function() {
-				
+				PWG.ViewManager.removeView('missionBrief', 'brief');
 			}
 		},
 		world: {
 			create: function() {
 				PWG.ViewManager.showView('global:turnGroup');
 				PWG.ViewManager.showView('global:plusMinusGroup');
-				PWG.ViewManager.showView('global:closeButton');
 				var gameUnit = PWG.Stage.unit;
 				var worldMap = PWG.ViewManager.getControllerFromPath('world:worldMap');
 				// worldMap.view.scale.setTo(PhaserGame.config.maxWorldZoom, PhaserGame.config.maxWorldZoom);

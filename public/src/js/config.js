@@ -444,7 +444,7 @@ var GameConfig = function() {
 					},
 					goalsText: {
 						type: 'sprite',
-						name: 'goalsText',
+						name: 'goalsTextImg',
 						img: 'goalsText',
 						x: 0,
 						y: gameUnit * 2,
