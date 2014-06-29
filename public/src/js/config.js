@@ -2050,9 +2050,23 @@ var GameConfig = function() {
 								}
 							}
 						},
-						closeButton: {
+						confirmButton: {
 							type: 'button',
-							name: 'closeButton',
+							name: 'confirmButton',
+							img: 'buttonConfirm',
+							x: (gameUnit * 7.5),
+							y: gameH - (gameUnit * 2.25),
+							attrs: {
+								width: controlButtonSizes.width,
+								height: controlButtonSizes.height
+							},
+							callback: gameLogic.global.buttonCallbacks.confirmButton,
+							context: this,
+							frames: [0, 1, 1, 0]
+						},
+						backButton: {
+							type: 'button',
+							name: 'backButton',
 							img: 'buttonBack',
 							x: (gameUnit * 0.25),
 							y: gameH - (gameUnit * 2.25),
@@ -2060,7 +2074,7 @@ var GameConfig = function() {
 								width: controlButtonSizes.width,
 								height: controlButtonSizes.height
 							},
-							callback: gameLogic.global.buttonCallbacks.closeButton,
+							callback: gameLogic.global.buttonCallbacks.backButton,
 							context: this,
 							frames: [0, 1, 1, 0]
 						}

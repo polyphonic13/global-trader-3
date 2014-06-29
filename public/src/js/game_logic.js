@@ -87,6 +87,7 @@ var gameLogic = {
 				PWG.PhaserTime.removeTimer('turnTime');
 				// trace('turn ended');
 				PWG.ViewManager.callMethod('global:turnGroup:timerText', 'setText', [TIME_PER_TURN], this);
+				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'brief' });
 			}
 		},
 		// building state updated
@@ -568,7 +569,17 @@ var gameLogic = {
 					break;
 				}
 			},
-			closeButton: function() {
+			confirmButton: function() {
+				switch(PWG.ScreenManager.currentId) {
+					case 'brief':
+					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
+					break;
+					
+					default:
+					break;
+				}
+			},
+			backButton: function() {
 				switch(PWG.ScreenManager.currentId) {
 					case 'brief': 
 					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'home' });
@@ -613,7 +624,6 @@ var gameLogic = {
 					default:
 					break;
 				}
-				// PWG.ViewManager.hideView('global:closeButton');
 			}
 		}
 	},
@@ -622,7 +632,8 @@ var gameLogic = {
 			create: function() {
 				PWG.ViewManager.showView('global:homeGroup');
 				PWG.ViewManager.hideView('global:turnGroup');
-				PWG.ViewManager.hideView('global:closeButton');
+				PWG.ViewManager.hideView('global:confirmButton');
+				PWG.ViewManager.hideView('global:backButton');
 			},
 			shutdown: function() {
 				PWG.ViewManager.hideView('global:homeGroup');
@@ -633,18 +644,19 @@ var gameLogic = {
 		manual: {
 			create: function() {
 				PWG.ViewManager.hideView('global:homeGroup');
-				PWG.ViewManager.showView('global:closeButton');
+				PWG.ViewManager.showView('global:backButton');
 			},
 			shutdown: function() {
-				PWG.ViewManager.hideView('global:closeButton');
 			}
 		},
 		brief: {
 			create: function() {
 				PhaserGame.buildMissionBrief.call(this);
-				PWG.ViewManager.showView('global:closeButton');
+				PWG.ViewManager.showView('global:confirmButton');
+				PWG.ViewManager.showView('global:backButton');
 			},
 			shutdown: function() {
+				PWG.ViewManager.hideView('global:confirmButton');
 				PWG.ViewManager.removeView('missionBrief', 'brief');
 			}
 		},
@@ -717,8 +729,6 @@ var gameLogic = {
 			create: function() {
 				// show add building button
 				// trace('show add building button');
-				// PWG.ViewManager.showView('global:closeButton');
-				
 				PhaserGame.buildUSDetailGrid.call(this);
 			},
 			shutdown: function() {
@@ -831,7 +841,6 @@ var gameLogic = {
 				// trace('machineList = ', machineList);
 				var equipmentListView = PWG.ViewManager.getControllerFromPath('equipmentList');
 				PWG.ViewManager.addView(machineList, equipmentListView, true);
-				// PWG.ViewManager.showView('global:closeButton');
 				PWG.ViewManager.showView('global:equipmentListGroup');
 			},
 			shutdown: function() {
@@ -878,7 +887,6 @@ var gameLogic = {
 				// trace('EQUIPMENT CREATE CREATE METHOD');
 				PWG.ViewManager.hideView('equipmentCreate:createIcons:tractorSize');
 				PWG.ViewManager.hideView('equipmentCreate:createIcons:skidsteerSize');
-				// PWG.ViewManager.showView('global:closeButton');
 			}
 		},
 		equipmentEdit: {
@@ -958,7 +966,6 @@ var gameLogic = {
 			],
 			create: function() {
 				PWG.ViewManager.showView('global:equipmentEditGroup');
-				// PWG.ViewManager.showView('global:closeButton');
 				
 				PWG.ViewManager.setChildFrames('equipmentEdit:editorParts', 0);
 				var activeMachineParts = PhaserGame.activeMachine.config.parts;
