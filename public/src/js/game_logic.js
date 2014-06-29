@@ -82,7 +82,7 @@ var gameLogic = {
 		{
 			event: Events.TURN_ENDED,
 			handler: function(event) {
-				alert('turn ended');
+				// alert('turn ended');
 				PhaserGame.turnActive = false;
 				PWG.PhaserTime.removeTimer('turnTime');
 				// trace('turn ended');

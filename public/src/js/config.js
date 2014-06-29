@@ -632,28 +632,28 @@ var GameConfig = function() {
 			machineIcon: {
 				type: 'group',
 				name: 'machineIcon',
-				offsetY: (gameUnit * 3.5),
-				offsetX: 0,
-				iconW: (gameUnit * 5),
-				iconH: (gameUnit * 5),
+				offsetY: (gameUnit * 1.5),
+				offsetX: (gameUnit * 0.5),
+				iconW: (gameUnit * 4),
+				iconH: (gameUnit * 4),
 				views: {
 					bg: {
 						type: 'sprite',
 						name: 'machineIconBg',
 						img: 'machineListIcon',
 						x: 0,
-						y: 0,
+						y: (gameUnit * 0.25),
 						attrs: {
-							width: (gameUnit * 5),
-							height: (gameUnit * 5)
+							width: (gameUnit * 4),
+							height: (gameUnit * 3.5)
 						}
 					},
 					name: {
 						type: 'text',
 						name: 'name',
 						text: '',
-						x: (gameUnit * 0.9),
-						y: gameUnit * 4.2,
+						x: (gameUnit * 0.5),
+						y: gameUnit * 3.25,
 						style: {
 						    font: (fontSizes.sm + 'px Arial'),
 					        fill: palette.lightRed,
@@ -664,8 +664,8 @@ var GameConfig = function() {
 						type: 'text',
 						name: 'machineCost',
 						text: '$',
-						x: gameUnit * 0.25,
-						y: gameUnit * 1.1,
+						x: gameUnit * 0,
+						y: gameUnit * 0.85,
 						style: {
 						    font: (fontSizes.xs + 'px Arial'),
 					        fill: palette.black
@@ -678,11 +678,14 @@ var GameConfig = function() {
 						type: 'text',
 						name: 'sell',
 						text: '',
-						x: gameUnit * 4,
-						y: gameUnit * 0.6,
+						x: gameUnit * 3.4,
+						y: (gameUnit * 0.25),
 						style: {
 						    font: (fontSizes.xs + 'px Arial'),
-					        fill: palette.black
+					        fill: palette.white
+						},
+						attrs: {
+							angle: 45
 						}
 					},
 					invisButton: {
@@ -693,8 +696,8 @@ var GameConfig = function() {
 						x: 0,
 						y: 0,
 						attrs: {
-							width: (gameUnit * 5),
-							height: (gameUnit * 5)
+							width: (gameUnit * 4),
+							height: (gameUnit * 4)
 						},
 						input: gameLogic.global.input.editMachine
 					}
@@ -857,7 +860,7 @@ var GameConfig = function() {
 					buildBg: 'images/screens/screen_mocks_build.gif',
 					equipmentCreateBg: 'images/screens/screen_mocks_machine_picker.gif',
 					equipmentEditBg: 'images/screens/screen_mocks_equipment_editor.gif',
-					machineListIcon: 'images/machine_list_icon.gif',
+					machineListIcon: 'images/screens/equipment_list/machine_list_icon.png',
 					blockWhite: 'images/block_white.png',
 					blockClear: 'images/block_clear.png',
 					blockBlue: 'images/block_blue.gif',
