@@ -132,13 +132,13 @@ var gameLogic = {
 			},
 			ignitionAnimationCompleted: function() {
 				trace('PhaserGame/ignitionAnimationCompleted');
-				var ignitionKey = PWG.ViewManager.getControllerFromPath('start:ignitionKey');
+				var ignitionKey = PWG.ViewManager.getControllerFromPath('home:ignitionKey');
 				ignitionKey.view.events.onAnimationComplete.remove(PhaserGame.ignitionAnimationCompleted, this);
 				if(PhaserGame.isFirstPlay) {
 					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'manual' });
 					PhaserGame.isFirstPlay = false;
 				} else {
-					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'play' });
+					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
 				}
 			},
 			startTurn: function() {
@@ -467,8 +467,8 @@ var gameLogic = {
 			manualStart: function() {
 				// PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'manual' });
 			},
-			playStart: function() {
-				var ignitionKey = PWG.ViewManager.getControllerFromPath('start:ignitionKey');
+			worldStart: function() {
+				var ignitionKey = PWG.ViewManager.getControllerFromPath('home:ignitionKey');
 				ignitionKey.view.events.onAnimationComplete.add(PhaserGame.ignitionAnimationCompleted, this);
 				PWG.PhaserAnimation.play(ignitionKey.name, 'turnOn');
 			},
@@ -523,7 +523,7 @@ var gameLogic = {
 			},
 			plusButton: function() {
 				switch(PWG.ScreenManager.currentId) {
-					case 'play':
+					case 'world':
 					break;
 					
 					case 'equipmentList':
@@ -535,7 +535,7 @@ var gameLogic = {
 			},
 			minusButton: function() {
 				switch(PWG.ScreenManager.currentId) {
-					case 'play':
+					case 'world':
 					break;
 
 					default:
@@ -544,20 +544,20 @@ var gameLogic = {
 			},
 			closeButton: function() {
 				switch(PWG.ScreenManager.currentId) {
-					case 'play':
+					case 'world':
 					var endTurn = confirm('Are you sure you want to end the turn?');
 					if(endTurn) {
 						PWG.EventCenter.trigger({ type: Events.TURN_ENDED });
-						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'start' });
+						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'home' });
 					}
 					break; 
 					
 					case 'manual':
-					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'start' });
+					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'home' });
 					break;
 					
 					case 'usDetail':
-					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'play' });
+					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
 					break;
 					
 					case 'buildingEdit':
@@ -588,7 +588,7 @@ var gameLogic = {
 		}
 	},
 	screens: {
-		start: {
+		home: {
 			create: function() {
 				PWG.ViewManager.showView('global:homeGroup');
 				PWG.ViewManager.hideView('global:turnGroup');
@@ -596,7 +596,7 @@ var gameLogic = {
 			},
 			shutdown: function() {
 				PWG.ViewManager.hideView('global:homeGroup');
-				var ignitionKey = PWG.ViewManager.getControllerFromPath('start:ignitionKey');
+				var ignitionKey = PWG.ViewManager.getControllerFromPath('home:ignitionKey');
 				PWG.PhaserAnimation.play(ignitionKey.name, 'idle');
 			}
 		},
@@ -609,13 +609,13 @@ var gameLogic = {
 				PWG.ViewManager.hideView('global:closeButton');
 			}
 		},
-		play: {
+		world: {
 			create: function() {
 				PWG.ViewManager.showView('global:turnGroup');
 				PWG.ViewManager.showView('global:plusMinusGroup');
 				PWG.ViewManager.showView('global:closeButton');
 				var gameUnit = PWG.Stage.unit;
-				var worldMap = PWG.ViewManager.getControllerFromPath('play:worldMap');
+				var worldMap = PWG.ViewManager.getControllerFromPath('world:worldMap');
 				// worldMap.view.scale.setTo(PhaserGame.config.maxWorldZoom, PhaserGame.config.maxWorldZoom);
 				// worldMap.view.y = -(gameUnit * 31.2);
 				// worldMap.view.x = -(gameUnit * 8.2);

@@ -224,7 +224,7 @@ var tileCellFrames = {
 };
 
 var turnGroups = [
-	'play',
+	'world',
 	'usDetail',
 	'buildingEdit',
 	'equipmentList',
@@ -846,15 +846,15 @@ var GameConfig = function() {
 					dashboardBottom: 'images/dashboard_bottom.gif',
 					dashboardTop: 'images/dashboard_top.gif',
 					
-					startBg: 'images/screens/start/start.png',
+					homeBg: 'images/screens/start/start.png',
 
 					manualBg: 'images/screens/screen_mocks_manual.gif',
 					briefBg: 'images/screens/screen_mocks_brief.gif',
 					usDetailBg: 'images/screens/screen_mocks_us.gif',
 					// worldBg: 'images/screens/screen_mocks_world.gif',
-					mapOcean: 'images/screens/play/map_ocean.png',
-					mapWorld: 'images/screens/play/map_world.png',
-					mapUS: 'images/screens/play/map_us.png',
+					mapOcean: 'images/screens/world/map_ocean.png',
+					mapWorld: 'images/screens/world/map_world.png',
+					mapUS: 'images/screens/world/map_us.png',
 					factoryDetailBg: 'images/screens/factory_detail/factory_detail.png',
 					equipmentListBg: 'images/screens/equipment_list/equipment_list.png',
 					buildBg: 'images/screens/screen_mocks_build.gif',
@@ -1044,6 +1044,7 @@ var GameConfig = function() {
 				firstPlay: false,
 				turnActive: false,
 				turnTime: TIME_PER_TURN,
+				turnEnded: false,
 				activeSector: -1,
 				activeTile: null,
 				activeFactor: null,
@@ -1053,7 +1054,7 @@ var GameConfig = function() {
 				newMachine: false,
 				bank: 1000000,
 			},
-			defaultScreen: 'start',
+			defaultScreen: 'home',
 			maxWorldZoom: 3.2,
 			minWorldZoom: 1,
 			dynamicViews: dynamicViews,
@@ -1077,9 +1078,9 @@ var GameConfig = function() {
 						}
 					}
 				},
-				// start
-				startScreen: {
-					name: 'start',
+				// home
+				homeScreen: {
+					name: 'home',
 					type: 'group',
 					attrs: {
 						visible: false
@@ -1088,8 +1089,8 @@ var GameConfig = function() {
 						// bg
 						stateBg: {
 							type: 'sprite',
-							name: 'startBg',
-							img: 'startBg',
+							name: 'homeBg',
+							img: 'homeBg',
 							x: 0,
 							y: 0,
 							attrs: {
@@ -1136,7 +1137,7 @@ var GameConfig = function() {
 								height: (gameUnit * 5),
 								alpha: 0
 							},
-							callback: gameLogic.global.buttonCallbacks.playStart,
+							callback: gameLogic.global.buttonCallbacks.worldStart,
 							context: this,
 							frames: [0, 1, 1, 0]
 						},
@@ -1179,9 +1180,13 @@ var GameConfig = function() {
 						}
 					}
 				},
-				// play
-				playScreen: {
-					name: 'play',
+				// brief
+				// briefScreen: {
+				// 	
+				// },
+				// world
+				worldScreen: {
+					name: 'world',
 					type: 'group',
 					attrs: {
 						visible: false
