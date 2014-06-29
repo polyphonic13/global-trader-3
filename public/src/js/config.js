@@ -209,7 +209,109 @@ var gameData = {
 			}
 		}
 		]
+	},
+	levels: [
+	{
+		brief: {
+			background: 'briefBg01',
+			goals: [
+				'Build 1 Factory',
+				'Create 2 Machine Models',
+				'Produce 10 Machines'
+			]
+		}
+	},
+	{
+		brief: {
+			background: 'briefBg02',
+			goals: [
+				'Build 1 Factory',
+				'Create 2 Machine Models',
+				'Produce 10 Machines'
+			]
+		}
+	},
+	{
+		brief: {
+			background: 'briefBg03',
+			goals: [
+				'Build 1 Factory',
+				'Create 2 Machine Models',
+				'Produce 10 Machines'
+			]
+		}
+	},
+	{
+		brief: {
+			background: 'briefBg04',
+			goals: [
+				'Build 1 Factory',
+				'Create 2 Machine Models',
+				'Produce 10 Machines'
+			]
+		}
+	},
+	{
+		brief: {
+			background: 'briefBg05',
+			goals: [
+				'Build 1 Factory',
+				'Create 2 Machine Models',
+				'Produce 10 Machines'
+			]
+		}
+	},
+	{
+		brief: {
+			background: 'briefBg01',
+			goals: [
+				'Build 1 Factory',
+				'Create 2 Machine Models',
+				'Produce 10 Machines'
+			]
+		}
+	},
+	{
+		brief: {
+			background: 'briefBg02',
+			goals: [
+				'Build 1 Factory',
+				'Create 2 Machine Models',
+				'Produce 10 Machines'
+			]
+		}
+	},
+	{
+		brief: {
+			background: 'briefBg03',
+			goals: [
+				'Build 1 Factory',
+				'Create 2 Machine Models',
+				'Produce 10 Machines'
+			]
+		}
+	},
+	{
+		brief: {
+			background: 'briefBg04',
+			goals: [
+				'Build 1 Factory',
+				'Create 2 Machine Models',
+				'Produce 10 Machines'
+			]
+		}
+	},
+	{
+		brief: {
+			background: 'briefBg05',
+			goals: [
+				'Build 1 Factory',
+				'Create 2 Machine Models',
+				'Produce 10 Machines'
+			]
+		}
 	}
+	]
 };
 var buildingTypes = {
 	FACTORY: 'factory',
@@ -322,6 +424,57 @@ var GameConfig = function() {
 						callback: gameLogic.global.buttonCallbacks.notificationClose,
 						context: this,
 						frames: [0, 1, 1, 0]
+					}
+				}
+			},
+			missionBrief: {
+				type: 'group',
+				name: 'missionBrief',
+				views: {
+					briefBg: {
+						type: 'sprite',
+						name: 'briefBg',
+						img: '',
+						x: 0,
+						y: 0,
+						attrs: {
+							width: gameW,
+							height: gameH
+						}
+					},
+					goalsText: {
+						type: 'sprite',
+						name: 'goalsText',
+						img: 'goalsText',
+						x: 0,
+						y: gameUnit * 2,
+						attrs: {
+							width: gameW,
+							height: gameW * 0.25
+						}
+					}
+				}
+			},
+			goalText: {
+				type: 'group',
+				name: 'goalText',
+				offsetX: 0,
+				offsetY: (gameUnit * 1.5),
+				views: {
+					goal: {
+						type: 'text',
+						name: 'name',
+						text: '',
+						x: (gameUnit * 0.5),
+						y: gameUnit * 5,
+						style: {
+						    font: (fontSizes.md + 'px Arial'),
+					        fill: palette.black,
+							'text-align': 'center'
+						},
+						position: {
+							centerX: true
+						}
 					}
 				}
 			},
@@ -842,20 +995,28 @@ var GameConfig = function() {
 			// assets
 			assets: {
 				images: {
+					// global
 					gameBg: 'images/screens/metal_background.gif',
 					dashboardBottom: 'images/dashboard_bottom.gif',
 					dashboardTop: 'images/dashboard_top.gif',
-					
+					// home
 					homeBg: 'images/screens/start/start.png',
-
+					// manual
 					manualBg: 'images/screens/screen_mocks_manual.gif',
-					briefBg: 'images/screens/screen_mocks_brief.gif',
-					usDetailBg: 'images/screens/screen_mocks_us.gif',
-					// worldBg: 'images/screens/screen_mocks_world.gif',
+					// mission brief
+					briefBg01: 'images/screens/brief/mission_brief01.png',
+					briefBg02: 'images/screens/brief/mission_brief02.png',
+					briefBg03: 'images/screens/brief/mission_brief03.png',
+					briefBg04: 'images/screens/brief/mission_brief04.png',
+					briefBg05: 'images/screens/brief/mission_brief05.png',
+					goalsText: 'images/screens/brief/goals_text_img.png',
+					// world
 					mapOcean: 'images/screens/world/map_ocean.png',
 					mapWorld: 'images/screens/world/map_world.png',
 					mapUS: 'images/screens/world/map_us.png',
+					// factory detail
 					factoryDetailBg: 'images/screens/factory_detail/factory_detail.png',
+					// equipment list
 					equipmentListBg: 'images/screens/equipment_list/equipment_list.png',
 					buildBg: 'images/screens/screen_mocks_build.gif',
 					equipmentCreateBg: 'images/screens/screen_mocks_machine_picker.gif',
@@ -1181,9 +1342,16 @@ var GameConfig = function() {
 					}
 				},
 				// brief
-				// briefScreen: {
-				// 	
-				// },
+				briefScreen: {
+					name: 'brief',
+					type: 'group',
+					attrs: {
+						visible: false
+					},
+					views: {
+						
+					}
+				},
 				// world
 				worldScreen: {
 					name: 'world',

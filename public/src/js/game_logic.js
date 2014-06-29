@@ -134,12 +134,37 @@ var gameLogic = {
 				trace('PhaserGame/ignitionAnimationCompleted');
 				var ignitionKey = PWG.ViewManager.getControllerFromPath('home:ignitionKey');
 				ignitionKey.view.events.onAnimationComplete.remove(PhaserGame.ignitionAnimationCompleted, this);
-				if(PhaserGame.isFirstPlay) {
-					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'manual' });
-					PhaserGame.isFirstPlay = false;
-				} else {
-					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
-				}
+				// if(PhaserGame.isFirstPlay) {
+				// 	PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'manual' });
+				// 	PhaserGame.isFirstPlay = false;
+				// } else {
+					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'brief' });
+				// }
+			},
+			buildMissionBrief: function() {
+				var brief = PWG.ViewManager.getControllerFromPath('brief');
+
+				var levelBrief = gameData.levels[PhaserGame.playerData.level].brief;
+				var missionBrief = PWG.Utils.clone(PhaserGame.config.dynamicViews.missionBrief);
+				var goalText = PhaserGame.config.dynamicViews.goalText;
+				
+				trace('levelBrief = ', levelBrief, '\tgoalText = ', goalText);
+				missionBrief.views.briefBg.img = levelBrief.background;
+				
+				PWG.Utils.each(
+					levelBrief.goals,
+					function(text, idx) {
+						trace('\ttext['+idx+'] = ' + text);
+						var item = PWG.Utils.clone(goalText);
+						trace('\titem = ', item);
+						item.views.goal.text = text;
+						item.views.goal.y += (idx * item.offsetY);
+						missionBrief.views['goal'+idx] = item;
+					},
+					this
+				);
+				trace('missionBrief config now = ', missionBrief, '\tbrief = ', brief);
+				PWG.ViewManager.addView(missionBrief, brief, true);
 			},
 			startTurn: function() {
 				// trace('START TURN');
@@ -548,7 +573,7 @@ var gameLogic = {
 					var endTurn = confirm('Are you sure you want to end the turn?');
 					if(endTurn) {
 						PWG.EventCenter.trigger({ type: Events.TURN_ENDED });
-						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'home' });
+						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'brief' });
 					}
 					break; 
 					
@@ -607,6 +632,14 @@ var gameLogic = {
 			},
 			shutdown: function() {
 				PWG.ViewManager.hideView('global:closeButton');
+			}
+		},
+		brief: {
+			create: function() {
+				PhaserGame.buildMissionBrief.call(this);
+			},
+			shutdown: function() {
+				
 			}
 		},
 		world: {
