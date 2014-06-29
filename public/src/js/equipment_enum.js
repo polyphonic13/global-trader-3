@@ -16,7 +16,7 @@ var EquipmentSizes = {
 };
 
 var PartTypes = {
-	WHEELS: 'wheels',
+	WHEELS: 'tires',
 	ENGINE: 'engine',
 	TRANSMISSION: 'transmission',
 	CAB: 'cab',

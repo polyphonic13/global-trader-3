@@ -21,7 +21,7 @@ var gameLogic = {
 				PWG.ViewManager.switchGroup(event.value);
 				PWG.ScreenManager.changeScreen(event.value);
 
-				if(turnGroups.indexOf(event.value) > -1) {
+				if(turnScreens.indexOf(event.value) > -1) {
 					// trace('this is a turn group!');
 					if(!PhaserGame.turnActive) {
 						PhaserGame.startTurn();
@@ -292,6 +292,33 @@ var gameLogic = {
 				// trace('cancel add building');
 				PhaserGame.activeTile = null;
 			},
+			buildEquipmentEdit: function() {
+				var equipmentEdit = PWG.ViewManager.getControllerFromPath('equipmentEdit');
+				var machineEdit = PWG.Utils.clone(PhaserGame.config.dynamicViews.machineEdit);
+				
+				machineEdit.views.bg.img = PhaserGame.config.machineEditBackgrounds[PhaserGame.activeMachineType][PhaserGame.activeMachineSize];
+				
+				PWG.ViewManager.addView(machineEdit, equipmentEdit, true);
+				
+				PWG.ViewManager.showView('global:equipmentEditGroup');
+				
+				PWG.ViewManager.setChildFrames('equipmentEdit:machineEdit:editorParts', 0);
+				var activeMachineParts = PhaserGame.activeMachine.config.parts;
+				if(activeMachineParts) {
+					// TODO: show the views/frames of the machine as it currently exists
+					// trace('--------- activeMachineParts = ', activeMachineParts);
+					PWG.Utils.each(
+						activeMachineParts,
+						function(value, key) {
+							var partView = key + 'Part';
+							var frame = gameData.parts[key][value].frame;
+							PWG.ViewManager.setFrame('equipmentEdit:machineEdit:editorParts:'+partView, frame);
+						},
+						this
+					);
+				}
+				PhaserGame.machineDirty = true;
+			},
 			addPartItemsMenu: function(type, collection) {
 				PhaserGame.activePartType = type;
 				var partsData = gameData.parts[type];
@@ -403,15 +430,37 @@ var gameLogic = {
 					// trace('view x/y is now: ' + view.x + '/' + view.y);
 				}
 			},
-			newTractor: {
+			newBasicTractor: {
 				inputDown: function() {
 					// trace('new tractor callback');
-					PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.TRACTOR });
+					PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.TRACTOR, size: EquipmentSizes.BASIC });
 				}
 			},
-			newSkidsteer: {
+			newBasicSkidsteer: {
 				inputDown: function() {
-					PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.SKIDSTEER });
+					PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.SKIDSTEER, size: EquipmentSizes.BASIC });
+				}
+			},
+			newMediumTractor: {
+				inputDown: function() {
+					// trace('new tractor callback');
+					PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.TRACTOR, size: EquipmentSizes.MEDIUM });
+				}
+			},
+			newMediumSkidsteer: {
+				inputDown: function() {
+					PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.SKIDSTEER, size: EquipmentSizes.MEDIUM });
+				}
+			},
+			newHeavyTractor: {
+				inputDown: function() {
+					// trace('new tractor callback');
+					PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.TRACTOR, size: EquipmentSizes.HEAVY });
+				}
+			},
+			newHeavySkidsteer: {
+				inputDown: function() {
+					PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.SKIDSTEER, size: EquipmentSizes.HEAVY });
 				}
 			},
 			editMachine: {
@@ -419,24 +468,9 @@ var gameLogic = {
 					PWG.EventCenter.trigger({ type: Events.EDIT_MACHINE, value: this.controller.config.machineIdx });
 				}
 			},
-			basicSize: {
+			tireIcon: {
 				inputDown: function() {
-					PWG.EventCenter.trigger({ type: Events.MACHINE_SIZE_SELECTION, value: EquipmentSizes.BASIC });
-				}
-			},
-			mediumSize: {
-				inputDown: function() {
-					PWG.EventCenter.trigger({ type: Events.MACHINE_SIZE_SELECTION, value: EquipmentSizes.MEDIUM });
-				}
-			},
-			heavySize: {
-				inputDown: function() {
-					PWG.EventCenter.trigger({ type: Events.MACHINE_SIZE_SELECTION, value: EquipmentSizes.HEAVY });
-				}
-			},
-			wheelIcon: {
-				inputDown: function() {
-					// trace('wheel icon input down');
+					// trace('tire icon input down');
 					PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PartTypes.WHEELS });
 				}
 			},
@@ -654,6 +688,7 @@ var gameLogic = {
 				PhaserGame.buildMissionBrief.call(this);
 				PWG.ViewManager.showView('global:confirmButton');
 				PWG.ViewManager.showView('global:backButton');
+				PWG.ViewManager.hideView('global:turnGroup');
 			},
 			shutdown: function() {
 				PWG.ViewManager.hideView('global:confirmButton');
@@ -857,27 +892,11 @@ var gameLogic = {
 					// activate size category buttons
 					// trace('machine type selection, event = ', event);
 					PhaserGame.activeMachineType = event.value;
-					PWG.ViewManager.hideView('equipmentCreate:createIcons:machineType');
-					if(event.value === EquipmentTypes.TRACTOR) {
-						PWG.ViewManager.showView('equipmentCreate:createIcons:tractorSize');
-						PWG.ViewManager.hideView('equipmentCreate:createIcons:skidsteerSize');
-					} else {
-						PWG.ViewManager.showView('equipmentCreate:createIcons:skidsteerSize');
-						PWG.ViewManager.hideView('equipmentCreate:createIcons:tractorSize');
-					}
-				}
-			},
-			// machine size selection
-			{
-				event: Events.MACHINE_SIZE_SELECTION,
-				handler: function(event) {
-					// 
-					var type = PhaserGame.activeMachineType;
-					var letter = alphabet.UPPER[PhaserGame.playerData.machineCount[type]];
-					var id = type + letter;
-					var name = type.toUpperCase() + ' ' + letter;
-					PhaserGame.activeMachineSize = event.value;
-					PhaserGame.activeMachine = new Machine({ id: id, type: PhaserGame.activeMachineType, size: event.value, name: name, factoryId: PhaserGame.activeFactory.id });
+					var letter = alphabet.UPPER[PhaserGame.playerData.machineCount[event.value]];
+					var id = event.value + letter;
+					var name = event.value.toUpperCase() + ' ' + letter;
+					PhaserGame.activeMachineSize = event.size;
+					PhaserGame.activeMachine = new Machine({ id: id, type: PhaserGame.activeMachineType, size: event.size, name: name, factoryId: PhaserGame.activeFactory.id });
 					PhaserGame.newMachine = true;
 					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentEdit' });
 				}
@@ -885,8 +904,6 @@ var gameLogic = {
 			],
 			create: function() {
 				// trace('EQUIPMENT CREATE CREATE METHOD');
-				PWG.ViewManager.hideView('equipmentCreate:createIcons:tractorSize');
-				PWG.ViewManager.hideView('equipmentCreate:createIcons:skidsteerSize');
 			}
 		},
 		equipmentEdit: {
@@ -900,7 +917,7 @@ var gameLogic = {
 					var frame = gameData.parts[this.partsMenuType][event.value].frame;
 					// trace('frame = ' + frame + ', type = ' + this.partsMenuType + ', collection = ', this.views);
 					var partView = this.partsMenuType + 'Part';
-					PWG.ViewManager.setFrame('equipmentEdit:editorParts:'+partView, frame);
+					PWG.ViewManager.setFrame('equipmentEdit:machineEdit:editorParts:'+partView, frame);
 					PWG.EventCenter.trigger({ type: Events.CLOSE_PARTS_MENU });
 				}
 			},
@@ -965,26 +982,11 @@ var gameLogic = {
 			}
 			],
 			create: function() {
-				PWG.ViewManager.showView('global:equipmentEditGroup');
-				
-				PWG.ViewManager.setChildFrames('equipmentEdit:editorParts', 0);
-				var activeMachineParts = PhaserGame.activeMachine.config.parts;
-				if(activeMachineParts) {
-					// TODO: show the views/frames of the machine as it currently exists
-					// trace('--------- activeMachineParts = ', activeMachineParts);
-					PWG.Utils.each(
-						activeMachineParts,
-						function(value, key) {
-							var partView = key + 'Part';
-							var frame = gameData.parts[key][value].frame;
-							PWG.ViewManager.setFrame('equipmentEdit:editorParts:'+partView, frame);
-						},
-						this
-					);
-				}
-				PhaserGame.machineDirty = true;
+				PhaserGame.buildEquipmentEdit();
 			},
 			shutdown: function() {
+				PWG.ViewManager.removeView('machineEdit', 'equipmentEdit');
+				PWG.ViewManager.hideView('global:equipmentEditGroup');
 				this.partsMenuType = '';
 				this.partsMenuOpen = false;
 				PhaserGame.machineDirty = false;

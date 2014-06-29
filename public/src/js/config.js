@@ -14,12 +14,12 @@ var gameData = {
 		}
 	},
 	parts: {
-		wheels: [
+		tires: [
 		{
 			id: 'w3',
-			icon: 'wheels2',
+			icon: 'tires2',
 			frame: 1,
-			description: 'basic wheels',
+			description: 'basic tires',
 			basic: {
 				cost: 350,
 				build: 50,
@@ -38,9 +38,9 @@ var gameData = {
 		},
 		{
 			id: 'w1',
-			icon: 'wheels1',
+			icon: 'tires1',
 			frame: 2,
-			description: 'standard wheels',
+			description: 'standard tires',
 			basic: {
 				cost: 500,
 				build: 100,
@@ -59,9 +59,9 @@ var gameData = {
 		},
 		{
 			id: 'w4',
-			icon: 'wheels3',
+			icon: 'tires3',
 			frame: 3,
-			description: 'deluxe wheels',
+			description: 'deluxe tires',
 			basic: {
 				cost: 1000,
 				build: 250,
@@ -313,6 +313,16 @@ var gameData = {
 	}
 	]
 };
+
+var turnScreens = [
+	'world',
+	'usDetail',
+	'buildingEdit',
+	'equipmentList',
+	'equipmentCreate',
+	'equipmentEdit'
+];
+
 var buildingTypes = {
 	FACTORY: 'factory',
 	SHOWROOM: 'showroom'
@@ -324,16 +334,6 @@ var tileCellFrames = {
 	SHOWROOM_ACTIVE: 3,
 	SHOWROOM_PAUSED: 4
 };
-
-var turnGroups = [
-	'world',
-	'usDetail',
-	'buildingEdit',
-	'equipmentList',
-	'equipmentCreate',
-	'equipmentEdit'
-];
-
 
 var GameConfig = function() {
 	
@@ -376,6 +376,39 @@ var GameConfig = function() {
 			white: '#ffffff'
 		};
 		
+		var machineEditBackgrounds = {
+			tractor: {
+				basic: 'tractorBasicBg',
+				medium: 'tractorMediumBg',
+				heavy: 'tractorHeavyBg'
+			},
+			skidsteer: {
+				basic: 'skidsteerBasicBg',
+				medium: 'skidsteerMediumBg',
+				heavy: 'skidsteerHeavyBg'
+			}
+		};
+		var equipmentCreateImages = {
+			tires: {
+				x: (gameUnit * 1),
+				y: (gameUnit * 5.5),
+				width: gameUnit * 8,
+				height: gameUnit * 8
+			},
+			engine: {
+				x: (gameUnit * 2.5),
+				y: (gameUnit * 6.9),
+				width: gameUnit * 4.25,
+				height: gameUnit * 4.25
+			},
+			cab: {
+				x: (gameUnit * 4.5),
+				y: (gameUnit * 5.25),
+				width: gameUnit * 3,
+				height: gameUnit * 3
+			}
+		};
+
 		var dynamicViews = {
 			notification: {
 				type: 'group',
@@ -856,6 +889,69 @@ var GameConfig = function() {
 					}
 				}
 			},
+			machineEdit: {
+				type: 'group',
+				name: 'machineEdit',
+				views: {
+					bg: {
+						type: 'sprite',
+						name: 'editorBg',
+						img: '',
+						x: 0,
+						y: 0,
+						attrs: {
+							width: gameW,
+							height: gameH
+						}
+					},
+					parts: {
+						type: 'group',
+						name: 'editorParts',
+						views: 
+						{
+							tiresPart: {
+								type: 'sprite',
+								name: 'tiresPart',
+								img: 'tiresSprites',
+								x: equipmentCreateImages.tires.x,
+								y: equipmentCreateImages.tires.y,
+								attrs: {
+									width: equipmentCreateImages.tires.width,
+									height: equipmentCreateImages.tires.height,
+									frame: 0
+								},
+								input: gameLogic.global.input.tireIcon
+							},
+							enginePart: {
+								type: 'sprite',
+								name: 'enginePart',
+								img: 'engineSprites',
+								x: equipmentCreateImages.engine.x,
+								y: equipmentCreateImages.engine.y,
+								attrs: {
+									width: equipmentCreateImages.engine.width,
+									height: equipmentCreateImages.engine.height,
+									frame: 0
+								},
+								input: gameLogic.global.input.engineIcon
+							},
+							cabIcon: {
+								type: 'sprite',
+								name: 'cabPart',
+								img: 'cabSprites',
+								x: equipmentCreateImages.cab.x,
+								y: equipmentCreateImages.cab.y,
+								attrs: {
+									width: equipmentCreateImages.cab.width,
+									height: equipmentCreateImages.cab.height,
+									frame: 0
+								},
+								input: gameLogic.global.input.cabIcon
+							}
+						}
+					}
+				}
+			},
 			partsMenu: {
 				type: 'group',
 				name: 'partsMenu',
@@ -968,27 +1064,6 @@ var GameConfig = function() {
 			}
 		};
 
-		var equipmentCreateImages = {
-			wheels: {
-				x: (gameUnit * 1),
-				y: (gameUnit * 5.5),
-				width: gameUnit * 8,
-				height: gameUnit * 8
-			},
-			engine: {
-				x: (gameUnit * 2.5),
-				y: (gameUnit * 6.9),
-				width: gameUnit * 4.25,
-				height: gameUnit * 4.25
-			},
-			cab: {
-				x: (gameUnit * 4.5),
-				y: (gameUnit * 5.25),
-				width: gameUnit * 3,
-				height: gameUnit * 3
-			}
-		};
-
 		var config = {
 			gameEl: 'game_container',
 			gameType: 'phaser',
@@ -1019,9 +1094,16 @@ var GameConfig = function() {
 					// equipment list
 					equipmentListBg: 'images/screens/equipment_list/equipment_list.png',
 					buildBg: 'images/screens/screen_mocks_build.gif',
-					equipmentCreateBg: 'images/screens/screen_mocks_machine_picker.gif',
-					equipmentEditBg: 'images/screens/screen_mocks_equipment_editor.gif',
 					machineListIcon: 'images/screens/equipment_list/machine_list_icon.png',
+					// equipment create
+					equipmentCreateBg: 'images/screens/equipment_add/equipment_add_bg.png',
+					// equipment edit
+					tractorBasicBg: 'images/screens/equipment_edit/tractor_basic.png',
+					tractorMediumBg: 'images/screens/equipment_edit/tractor_medium.png',
+					tractorHeavyBg: 'images/screens/equipment_edit/tractor_heavy.png',
+					skidsteerBasicBg: 'images/screens/equipment_edit/skid_steer_basic.png',
+					skidsteerMediumBg: 'images/screens/equipment_edit/skid_steer_medium.png',
+					skidsteerHeavyBg: 'images/screens/equipment_edit/skid_steer_heavy.png',
 					blockWhite: 'images/block_white.png',
 					blockClear: 'images/block_clear.png',
 					blockBlue: 'images/block_blue.gif',
@@ -1034,9 +1116,9 @@ var GameConfig = function() {
 					iconSkidsteer: 'images/icon_skidsteer.gif',
 					buttonEquipmentSave: 'images/button_red_check.gif',
 					// parts icons
-					wheels1: 'images/parts_icons/wheels1.gif',
-					wheels2: 'images/parts_icons/wheels2.gif',
-					wheels3: 'images/parts_icons/wheels3.gif',
+					tires1: 'images/parts_icons/tires1.gif',
+					tires2: 'images/parts_icons/tires2.gif',
+					tires3: 'images/parts_icons/tires3.gif',
 					transmission1: 'images/parts_icons/transmission1.gif',
 					transmission2: 'images/parts_icons/transmission2.gif',
 					transmission3: 'images/parts_icons/transmission3.gif',
@@ -1050,10 +1132,10 @@ var GameConfig = function() {
 					headlights2: 'images/parts_icons/headlights2.gif',
 					headlights3: 'images/parts_icons/headlights3.gif',
 					// parts
-					wheelsGrey: 'images/parts/wheels_grey.gif',
-					wheelsGreen: 'images/parts/wheels_green.gif',
-					wheelsOrange: 'images/parts/wheels_orange.gif',
-					wheelsRed: 'images/parts/wheels_red.gif',
+					tiresGrey: 'images/parts/tires_grey.gif',
+					tiresGreen: 'images/parts/tires_green.gif',
+					tiresOrange: 'images/parts/tires_orange.gif',
+					tiresRed: 'images/parts/tires_red.gif',
 					engineGrey: 'images/parts/engine_grey.gif',
 					engineGreen: 'images/parts/engine_green.gif',
 					engineOrange: 'images/parts/engine_orange.gif',
@@ -1174,8 +1256,8 @@ var GameConfig = function() {
 						height: 110,
 						frames: 5
 					},
-					wheelsSprites: {
-						url: 'images/parts/wheels_spritesheet.gif',
+					tiresSprites: {
+						url: 'images/parts/tires_spritesheet.gif',
 						width: 125,
 						height: 125,
 						frames: 16
@@ -1219,6 +1301,8 @@ var GameConfig = function() {
 			maxWorldZoom: 3.2,
 			minWorldZoom: 1,
 			dynamicViews: dynamicViews,
+			machineEditBackgrounds: machineEditBackgrounds,
+			equipmentCreateImages: equipmentCreateImages,
 			views: {
 				// background
 				background: {
@@ -1646,127 +1730,83 @@ var GameConfig = function() {
 									type: 'group',
 									name: 'machineType',
 									views: {
-										tractor: {
+										tractorBasic: {
 											type: 'sprite',
-											name: 'newTractor',
+											name: 'newTractorBasic',
 											img: 'blockWhite',
 											x: gameUnit * 0.5,
-											y: gameUnit * 4,
+											y: gameUnit * 2,
 											attrs: {
-												width: gameUnit * 3,
+												width: gameUnit * 4,
 												height: gameUnit * 3,
 												alpha: 0.3
 											},
-											input: gameLogic.global.input.newTractor
+											input: gameLogic.global.input.newBasicTractor
 										},
-										skidsteer: {
+										tractorMedium: {
 											type: 'sprite',
-											name: 'newSkidsteer',
+											name: 'newTractorMedium',
 											img: 'blockWhite',
-											x: gameW - (gameUnit * 3.5),
-											y: gameUnit * 9,
+											x: gameUnit * 0.5,
+											y: gameUnit * 6,
 											attrs: {
-												width: gameUnit * 3,
+												width: gameUnit * 4,
 												height: gameUnit * 3,
 												alpha: 0.3
 											},
-											input: gameLogic.global.input.newSkidsteer
-										}
-									}
-								},
-								tractorSize: {
-									type: 'group',
-									name: 'tractorSize',
-									attrs: {
-										visible: false
-									},
-									views: {
-										basic: {
-											type: 'sprite',
-											name: 'basicSize',
-											img: 'blockBlue',
-											x: gameUnit * 5.5,
-											y: gameUnit * 3.8,
-											attrs: {
-												width: gameUnit * 4,
-												height: gameUnit * 1,
-												alpha: 0.5
-											},
-											input: gameLogic.global.input.basicSize
+											input: gameLogic.global.input.newMediumTractor
 										},
-										medium: {
+										tractorHeavy: {
 											type: 'sprite',
-											name: 'mediumSize',
-											img: 'blockGreen',
-											x: gameUnit * 5.5,
-											y: gameUnit * 5,
-											attrs: {
-												width: gameUnit * 4,
-												height: gameUnit * 1,
-												alpha: 0.5
-											},
-											input: gameLogic.global.input.mediumSize
-										},
-										heavy: {
-											type: 'sprite',
-											name: 'heavySize',
-											img: 'blockRed',
-											x: gameUnit * 5.5,
-											y: gameUnit * 6.3,
-											attrs: {
-												width: gameUnit * 4,
-												height: gameUnit * 1,
-												alpha: 0.5
-											},
-											input: gameLogic.global.input.heavySize
-										}
-									}
-								},
-								skidsteerSize: {
-									type: 'group',
-									name: 'skidsteerSize',
-									attrs: {
-										visible: false
-									},
-									views: {
-										basic: {
-											type: 'sprite',
-											name: 'basicSize',
-											img: 'blockBlue',
-											x: gameUnit * 0.25,
-											y: gameUnit * 8.8,
-											attrs: {
-												width: gameUnit * 4,
-												height: gameUnit * 1,
-												alpha: 0.5
-											},
-											input: gameLogic.global.input.basicSize
-										},
-										medium: {
-											type: 'sprite',
-											name: 'mediumSize',
-											img: 'blockGreen',
-											x: gameUnit * 0.25,
+											name: 'newTractorHeavy',
+											img: 'blockWhite',
+											x: gameUnit * 0.5,
 											y: gameUnit * 10,
 											attrs: {
 												width: gameUnit * 4,
-												height: gameUnit * 1,
-												alpha: 0.5
+												height: gameUnit * 3,
+												alpha: 0.3
 											},
-											input: gameLogic.global.input.mediumSize
+											input: gameLogic.global.input.newHeavyTractor
 										},
-										heavy: {
+										skidsteerBasic: {
 											type: 'sprite',
-											name: 'heavySize',
-											img: 'blockRed',
-											x: gameUnit * 0.25,
-											y: gameUnit * 11.2,
+											name: 'newSkidsteerBasic',
+											img: 'blockWhite',
+											x: gameW - (gameUnit * 4.5),
+											y: gameUnit * 2,
 											attrs: {
 												width: gameUnit * 4,
-												height: gameUnit * 1,
-												alpha: 0.5
+												height: gameUnit * 3,
+												alpha: 0.3
 											},
-											input: gameLogic.global.input.heavySize
+											input: gameLogic.global.input.newBasicSkidsteer
+										},
+										skidsteerMedium: {
+											type: 'sprite',
+											name: 'newSkidsteerMedium',
+											img: 'blockWhite',
+											x: gameW - (gameUnit * 4.5),
+											y: gameUnit * 6,
+											attrs: {
+												width: gameUnit * 4,
+												height: gameUnit * 3,
+												alpha: 0.3
+											},
+											input: gameLogic.global.input.newMediumSkidsteer
+										},
+										skidsteerHeavy: {
+											type: 'sprite',
+											name: 'newSkidsteerHeavy',
+											img: 'blockWhite',
+											x: gameW - (gameUnit * 4.5),
+											y: gameUnit * 10,
+											attrs: {
+												width: gameUnit * 4,
+												height: gameUnit * 3,
+												alpha: 0.3
+											},
+											input: gameLogic.global.input.newHeavySkidsteer
 										}
 									}
 								}
@@ -1782,65 +1822,7 @@ var GameConfig = function() {
 						visible: false
 					},
 					views: {
-						// bg
-						bg: {
-							type: 'sprite',
-							name: 'editorBg',
-							img: 'equipmentEditBg',
-							x: 0,
-							y: 0,
-							attrs: {
-								width: gameW,
-								height: gameH
-							}
-						},
 						// parts group
-						parts: {
-							type: 'group',
-							name: 'editorParts',
-							views: 
-							{
-								wheelsPart: {
-									type: 'sprite',
-									name: 'wheelsPart',
-									img: 'wheelsSprites',
-									x: equipmentCreateImages.wheels.x,
-									y: equipmentCreateImages.wheels.y,
-									attrs: {
-										width: equipmentCreateImages.wheels.width,
-										height: equipmentCreateImages.wheels.height,
-										frame: 0
-									},
-									input: gameLogic.global.input.wheelIcon
-								},
-								enginePart: {
-									type: 'sprite',
-									name: 'enginePart',
-									img: 'engineSprites',
-									x: equipmentCreateImages.engine.x,
-									y: equipmentCreateImages.engine.y,
-									attrs: {
-										width: equipmentCreateImages.engine.width,
-										height: equipmentCreateImages.engine.height,
-										frame: 0
-									},
-									input: gameLogic.global.input.engineIcon
-								},
-								cabIcon: {
-									type: 'sprite',
-									name: 'cabPart',
-									img: 'cabSprites',
-									x: equipmentCreateImages.cab.x,
-									y: equipmentCreateImages.cab.y,
-									attrs: {
-										width: equipmentCreateImages.cab.width,
-										height: equipmentCreateImages.cab.height,
-										frame: 0
-									},
-									input: gameLogic.global.input.cabIcon
-								}
-							}
-						}
 					}
 				},
 				// global
