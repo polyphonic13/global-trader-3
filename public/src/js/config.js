@@ -1145,7 +1145,10 @@ var GameConfig = function() {
 					cabOrange: 'images/parts/cab_orange.gif',
 					cabRed: 'images/parts/cab_red.gif',
 					// NOTIFICATIONS
-					retailerGirl: 'images/notifications/retailer.png'
+					retailerGirl: 'images/notifications/retailer.png',
+					// TURN END
+					turnEnd01: 'images/screens/turn_end/turn_end01.png',
+					turnEnd02: 'images/screens/turn_end/turn_end02.png'
 				},
 				sprites: {
 					buttonSettings: {
@@ -1823,6 +1826,39 @@ var GameConfig = function() {
 					},
 					views: {
 						// parts group
+					}
+				},
+				// turn end
+				turnEndScreen: {
+					type: 'group',
+					name: 'turnEnd',
+					attrs: {
+						visible: false
+					},
+					views: {
+						openedEnvelope: {
+							type: 'sprite',
+							name: 'openedEnvelope',
+							img: 'turnEnd02',
+							x: 0,
+							y: 0,
+							attrs: {
+								width: gameW,
+								height: gameH
+							}
+						},
+						closedEnvelope: {
+							type: 'sprite',
+							name: 'closedEnvelope',
+							img: 'turnEnd01',
+							x: 0,
+							y: 0,
+							attrs: {
+								width: gameW,
+								height: gameH
+							},
+							input: gameLogic.global.input.closedEnvelope
+						}
 					}
 				},
 				// global

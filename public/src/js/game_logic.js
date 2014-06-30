@@ -87,7 +87,7 @@ var gameLogic = {
 				PWG.PhaserTime.removeTimer('turnTime');
 				// trace('turn ended');
 				PWG.ViewManager.callMethod('global:turnGroup:timerText', 'setText', [TIME_PER_TURN], this);
-				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'brief' });
+				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'turnEnd' });
 			}
 		},
 		// building state updated
@@ -514,6 +514,11 @@ var gameLogic = {
 			partSelectionIcon: {
 				inputDown: function(event) {
 					PWG.EventCenter.trigger({ type: Events.ADD_PART, value: this.controller.config.partIdx });
+				}
+			},
+			closedEnvelope: {
+				inputDown: function(event) {
+					PWG.ViewManager.hideView('turnEnd:closedEnvelope');
 				}
 			}
 		},
@@ -990,6 +995,14 @@ var gameLogic = {
 				this.partsMenuType = '';
 				this.partsMenuOpen = false;
 				PhaserGame.machineDirty = false;
+			}
+		},
+		turnEnd: {
+			create: function() {
+				
+			},
+			shutdown: function() {
+				
 			}
 		}
 	}
