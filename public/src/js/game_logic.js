@@ -82,9 +82,10 @@ var gameLogic = {
 			handler: function(event) {
 				// alert('turn ended');
 				PhaserGame.turnActive = false;
+				TurnManager.completeTurn();
 				PWG.PhaserTime.removeTimer('turnTime');
 				// trace('turn ended');
-				PWG.ViewManager.callMethod('global:turnGroup:timerText', 'setText', [TIME_PER_TURN], this);
+				PWG.ViewManager.callMethod('global:turnGroup:timerText', 'setText', [''], this);
 
 				if(PhaserGame.playerData.level < (gameData.levels.length - 1)) {
 					PWG.EventCenter.trigger({ type: Events.INCREMENT_LEVEL });
@@ -183,6 +184,7 @@ var gameLogic = {
 			},
 			startTurn: function() {
 				// trace('START TURN');
+				TurnManager.startTurn();
 				PhaserGame.turnActive = true;
 				PhaserGame.timePerTurn = TIME_PER_TURN;
 				PhaserGame.turnTimer = new PWG.PhaserTime.Controller('turnTime');

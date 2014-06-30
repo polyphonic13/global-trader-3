@@ -1973,7 +1973,7 @@ var GameConfig = function() {
 									type: 'sprite',
 									name: 'turnIndicator',
 									img: 'turnIndicators',
-									x: gameUnit * 3.75,
+									x: (gameW/2) - (gameUnit * 1.25),
 									y: gameUnit * 0.33,
 									attrs: {
 										width: gameUnit * 2.5,

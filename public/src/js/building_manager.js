@@ -156,8 +156,6 @@ var BuildingManager = function() {
 		if(TurnManager.playerData.bank >= gameData.buildings[type].cost) {
 			var building = new Factory(config);
 			// trace('\tbuilding made');
-			TurnManager.playerData.buildingCount[type]++;
-			// trace('\tremoving bank from bank');
 			PWG.EventCenter.trigger({ type: Events.UPDATE_BANK, value: (-gameData.buildings[type].cost) });
 			// trace('\tabout to save building data, building  = ', building);
 			module.buildings[config.sector][building.config.id] = building;
@@ -169,6 +167,22 @@ var BuildingManager = function() {
 		}
 	};
 	
+	module.update = function() {
+		PWG.Utils.each(
+			module.buildings,
+			function(sector) {
+				PWG.Utils.each(
+					sector,
+					function(building) {
+						building.update();
+					},
+					this
+				)
+			},
+			module
+		);
+	};
+
 	module.getBuilding = function(sector, cell) {
 		var config = {};
 		// trace('BuildingManager/getBuilding, sector = ' + sector + ', cell = ' + cell);
