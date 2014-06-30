@@ -87,7 +87,15 @@ var gameLogic = {
 				PWG.PhaserTime.removeTimer('turnTime');
 				// trace('turn ended');
 				PWG.ViewManager.callMethod('global:turnGroup:timerText', 'setText', [TIME_PER_TURN], this);
-				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'turnEnd' });
+				
+				if(PhaserGame.playerData.level < (gameData.levels.length - 1)) {
+					PhaserGame.playerData.level++;
+					PhaserGame.setSavedData();
+					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'turnEnd' });
+				} else {
+					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'home' });
+					alert('you won!');
+				}
 			}
 		},
 		// building state updated
@@ -519,6 +527,11 @@ var gameLogic = {
 			closedEnvelope: {
 				inputDown: function(event) {
 					PWG.ViewManager.hideView('turnEnd:closedEnvelope');
+				}
+			},
+			openedEnvelope: {
+				inputDown: function(event) {
+					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'brief' });
 				}
 			}
 		},
