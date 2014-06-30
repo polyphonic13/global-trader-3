@@ -214,11 +214,14 @@ var gameData = {
 	{
 		brief: {
 			background: 'briefBg01',
-			goals: [
+			text: [
 				'Build 1 Factory',
 				'Create 2 Machine Models',
 				'Produce 10 Machines'
 			]
+		},
+		goals: {
+			
 		}
 	},
 	{
@@ -1253,6 +1256,12 @@ var GameConfig = function() {
 						height: 50,
 						frames: 2
 					},
+					turnIndicators: {
+						url: 'images/turn_spritesheet.png',
+						width: 300,
+						height: 100,
+						frames: 10
+					},
 					usDetailTiles: {
 						url: 'images/screens/us_detail/us_detail_grid_icon.png',
 						width: 110,
@@ -1290,7 +1299,7 @@ var GameConfig = function() {
 				firstPlay: false,
 				turnActive: false,
 				turnTime: TIME_PER_TURN,
-				turnEnded: false,
+				turnCompleted: false,
 				activeSector: -1,
 				activeTile: null,
 				activeFactor: null,
@@ -1298,7 +1307,7 @@ var GameConfig = function() {
 				activeMachineId: -1,
 				activePartType: '',
 				newMachine: false,
-				bank: 1000000,
+				bank: 1000000
 			},
 			defaultScreen: 'home',
 			maxWorldZoom: 3.2,
@@ -1845,7 +1854,8 @@ var GameConfig = function() {
 							attrs: {
 								width: gameW,
 								height: gameH
-							}
+							},
+							input: gameLogic.global.input.openedEnvelope
 						},
 						closedEnvelope: {
 							type: 'sprite',
@@ -1958,6 +1968,17 @@ var GameConfig = function() {
 									},
 									x: (gameUnit * 0.5),
 									y: (gameUnit * 0.5)
+								},
+								turnIndicator: {
+									type: 'sprite',
+									name: 'turnIndicator',
+									img: 'turnIndicators',
+									x: gameUnit * 3.75,
+									y: gameUnit * 0.33,
+									attrs: {
+										width: gameUnit * 2.5,
+										height: (gameUnit * 2.5)/3
+									}
 								}
 							}
 						},

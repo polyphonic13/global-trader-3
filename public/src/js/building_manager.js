@@ -35,7 +35,7 @@ var BuildingManager = function() {
 			PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
 		}
 		this.config.age++;
-		module.saveBuildingData.call(this, this.config);
+		module.updateBuildingData.call(this, this.config);
 	};
 	Building.prototype.move = function(position) {
 		this.location = position;
@@ -62,12 +62,15 @@ var BuildingManager = function() {
 						this.config.equipment,
 						function(machine) {
 							trace('machine = ', machine);
-							if(PhaserGame.playerData.bank > machine.cost) {
+							if(TurnManager.playerData.bank > machine.cost) {
 								if(this.config.inventory.length < module.FACTORY_MAX_INVENTORY) {
 									// trace('build machine: machine = ', machine);
 									PWG.EventCenter.trigger({ type: Events.UPDATE_BANK, value: (-machine.cost) });
 									PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
 									this.config.inventory.push(machine.id);
+
+									TurnManager.addInventory(machine);
+									TurnManager.updateBuilding(this.config);
 									
 									if(this.config.showrooms.length === 0 && this.config.inventory.length > module.FACTORY_MIN_SELL_INVENTORY) {
 										if(!this.notifiedOfShowroomAdd) {
@@ -124,9 +127,9 @@ var BuildingManager = function() {
 	module.buildings = [ {}, {}, {}, {}, {} ];
 	
 	module.init = function() {
-		// trace('initializing building data with: ', PhaserGame.playerData.buildings);
+		// trace('initializing building data with: ', TurnManager.playerData.buildings);
 		PWG.Utils.each(
-			PhaserGame.playerData.buildings,
+			TurnManager.playerData.buildings,
 			function(sector, s) {
 				// trace('\tsectors['+s+'] = ', sector)
 				PWG.Utils.each(
@@ -144,21 +147,21 @@ var BuildingManager = function() {
 	};
 	
 	module.create = function(type, config) {
-		// trace('BuildingManager/create, type = ' + type + ', cost = ' + gameData.buildings[type].cost + ', bank = ' + PhaserGame.playerData.bank);
-		var count = PhaserGame.playerData.buildingCount[type];
+		// trace('BuildingManager/create, type = ' + type + ', cost = ' + gameData.buildings[type].cost + ', bank = ' + TurnManager.playerData.bank);
+		var count = TurnManager.playerData.buildingCount[type];
 		config.type = type;
 		config.id = type + count;
 		config.name = type.toUpperCase() + ' ' + (count + 1);
 		
-		if(PhaserGame.playerData.bank >= gameData.buildings[type].cost) {
+		if(TurnManager.playerData.bank >= gameData.buildings[type].cost) {
 			var building = new Factory(config);
 			// trace('\tbuilding made');
-			PhaserGame.playerData.buildingCount[type]++;
+			TurnManager.playerData.buildingCount[type]++;
 			// trace('\tremoving bank from bank');
 			PWG.EventCenter.trigger({ type: Events.UPDATE_BANK, value: (-gameData.buildings[type].cost) });
 			// trace('\tabout to save building data, building  = ', building);
 			module.buildings[config.sector][building.config.id] = building;
-			module.saveNewBuilding(building.config);
+			module.addNewBuilding(building.config);
 			return true;
 		} else {
 			// trace('no more money');
@@ -204,32 +207,14 @@ var BuildingManager = function() {
 		}
 	};
 	
-	module.update = function() {
-		PWG.Utils.each(
-			module.buildings,
-			function(sector) {
-				PWG.Utils.each(
-					sector,
-					function(building) {
-						building.update();
-					},
-					this
-				)
-			},
-			module
-		);
-	};
-	
-	module.saveNewBuilding = function(config) {
+	module.addNewBuilding = function(config) {
 		// trace('save new building, config = ', config);
-		PhaserGame.playerData.buildings[config.sector][config.id] = config;
-		PhaserGame.setSavedData();
+		TurnManager.addBuilding(config);
 	};
 	
-	module.saveBuildingData = function(config) {
-		// trace('BuildingManager/saveBuildingData, config = ', config);
-		PhaserGame.playerData.buildings[config.sector][config.id] = config;
-		PhaserGame.setSavedData();
+	module.updateBuildingData = function(config) {
+		// trace('BuildingManager/updateBuildingData, config = ', config);
+		TurnManager.updateBuilding(config);
 	};
 
 	module.getFactoryModelCapacity = function() {

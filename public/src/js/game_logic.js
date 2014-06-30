@@ -71,31 +71,35 @@ var gameLogic = {
 		{
 			event: Events.UPDATE_BANK,
 			handler: function(event) {
-				PhaserGame.playerData.bank += event.value;
-				PhaserGame.setSavedData();
-				var text = '$' + PWG.Utils.formatMoney(PhaserGame.playerData.bank, 0);
-				// trace('bank updated to = ' + event.value);
+				TurnManager.updateBank(event);
+				var text = '$' + PWG.Utils.formatMoney(TurnManager.get('bank'), 0);
 				PWG.ViewManager.callMethod('global:turnGroup:bankText', 'setText', [text], this);
 			}
 		},
-		// turn ended
+		// turn completed
 		{
-			event: Events.TURN_ENDED,
+			event: Events.TURN_COMPLETED,
 			handler: function(event) {
 				// alert('turn ended');
 				PhaserGame.turnActive = false;
 				PWG.PhaserTime.removeTimer('turnTime');
 				// trace('turn ended');
 				PWG.ViewManager.callMethod('global:turnGroup:timerText', 'setText', [TIME_PER_TURN], this);
-				
+
 				if(PhaserGame.playerData.level < (gameData.levels.length - 1)) {
-					PhaserGame.playerData.level++;
-					PhaserGame.setSavedData();
-					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'turnEnd' });
+					PWG.EventCenter.trigger({ type: Events.INCREMENT_LEVEL });
 				} else {
 					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'home' });
 					alert('you won!');
 				}
+			}
+		},
+		// increment level
+		{
+			event: Events.INCREMENT_LEVEL,
+			handler: function(event) {
+				PWG.ViewManager.setFrame('global:turnGroup', TurnManager.playerData.level);
+				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'turnEnd' });
 			}
 		},
 		// building state updated
@@ -112,6 +116,7 @@ var gameLogic = {
 			// INITIAIZATION
 			init: function() {
 				PhaserGame.getSavedData();
+				TurnManager.init();
 				BuildingManager.init();
 			},
 			preload: function() {
@@ -153,7 +158,7 @@ var gameLogic = {
 			buildMissionBrief: function() {
 				var brief = PWG.ViewManager.getControllerFromPath('brief');
 
-				var levelBrief = gameData.levels[PhaserGame.playerData.level].brief;
+				var levelBrief = gameData.levels[TurnManager.currentLevel].brief;
 				var missionBrief = PWG.Utils.clone(PhaserGame.config.dynamicViews.missionBrief);
 				var goalText = PhaserGame.config.dynamicViews.goalText;
 				
@@ -161,7 +166,7 @@ var gameLogic = {
 				missionBrief.views.briefBg.img = levelBrief.background;
 				
 				PWG.Utils.each(
-					levelBrief.goals,
+					levelBrief.text,
 					function(text, idx) {
 						trace('\ttext['+idx+'] = ' + text);
 						var item = PWG.Utils.clone(goalText);
@@ -185,7 +190,7 @@ var gameLogic = {
 						// trace('\ttimePerTurn = ' + PhaserGame.timePerTurn + ', views = ', this.views);
 						PhaserGame.timePerTurn--;
 						if(PhaserGame.timePerTurn <= 0) {
-							PWG.EventCenter.trigger({ type: Events.TURN_ENDED });
+							PWG.EventCenter.trigger({ type: Events.TURN_COMPLETED });
 						} else {
 							BuildingManager.update();
 							PWG.EventCenter.trigger({ type: Events.GAME_TIME_UPDATED, value: PhaserGame.timePerTurn });
@@ -194,7 +199,7 @@ var gameLogic = {
 					this
 				);
 				PhaserGame.turnTimer.start();
-				var text = '$' + PWG.Utils.formatMoney(PhaserGame.playerData.bank, 0);
+				var text = '$' + PWG.Utils.formatMoney(TurnManager.get('bank'), 0);
 				PWG.ViewManager.callMethod('global:turnGroup:bankText', 'setText', [text], this);
 
 			},
@@ -640,7 +645,7 @@ var gameLogic = {
 					case 'world':
 					var endTurn = confirm('Are you sure you want to end the turn?');
 					if(endTurn) {
-						PWG.EventCenter.trigger({ type: Events.TURN_ENDED });
+						PWG.EventCenter.trigger({ type: Events.TURN_COMPLETED });
 						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'brief' });
 					}
 					break; 
@@ -831,7 +836,7 @@ var gameLogic = {
 			{
 				event: Events.EDIT_MACHINE,
 				handler: function(event) {
-					var config = PhaserGame.playerData.buildings[PhaserGame.activeSector][PhaserGame.activeFactory.id].equipment[event.value];
+					var config = TurnManager.playerData.buildings[PhaserGame.activeSector][PhaserGame.activeFactory.id].equipment[event.value];
 					// trace('edit machine: event = ', event, 'config = ', config);
 					PhaserGame.activeMachineType = config.type;
 					PhaserGame.activeMachineSize = config.size;
@@ -910,7 +915,7 @@ var gameLogic = {
 					// activate size category buttons
 					// trace('machine type selection, event = ', event);
 					PhaserGame.activeMachineType = event.value;
-					var letter = alphabet.UPPER[PhaserGame.playerData.machineCount[event.value]];
+					var letter = alphabet.UPPER[TurnManager.playerData.machineCount[event.value]];
 					var id = event.value + letter;
 					var name = event.value.toUpperCase() + ' ' + letter;
 					PhaserGame.activeMachineSize = event.size;
@@ -986,12 +991,9 @@ var gameLogic = {
 					PhaserGame.activeMachine.save();
 					if(PhaserGame.newMachine) {
 						// trace('active factory = ', PhaserGame.activeFactory);
-						PhaserGame.playerData.buildings[PhaserGame.activeSector][PhaserGame.activeFactory.id].equipment[PhaserGame.activeMachine.config.id] = PhaserGame.activeMachine.config;
-						PhaserGame.playerData.machineCount[PhaserGame.activeMachineType]++;
+						TurnManager.addMachineModel(PhaserGame.activeMachine.config);
 						PhaserGame.newMachine = false;
 					}
-					trace('about to save playerData: ', PhaserGame.playerData);
-					PhaserGame.setSavedData();
 					PhaserGame.activeMachine = null;
 					PhaserGame.machineDirty = false;
 					PWG.ViewManager.hideView('global:equipmentEditGroup');
@@ -1012,7 +1014,7 @@ var gameLogic = {
 		},
 		turnEnd: {
 			create: function() {
-				
+				PWG.ViewManager.hideView('global:backButton');
 			},
 			shutdown: function() {
 				
