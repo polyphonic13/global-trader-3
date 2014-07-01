@@ -169,7 +169,7 @@ var gameLogic = {
 				PhaserGame.turnTimer.start();
 				var text = '$' + PWG.Utils.formatMoney(TurnManager.get('bank'), 0);
 				PWG.ViewManager.callMethod('global:turnGroup:bankText', 'setText', [text], this);
-
+				PWG.ViewManager.setFrame('global:turnGroup:turnIndicator', TurnManager.playerData.level);
 			},
 			stopTurn: function() {
 				PWG.PhaserTime.removeTimer('turnTime');
@@ -350,7 +350,6 @@ var gameLogic = {
 				if(PhaserGame.levelPassed) {
 					PhaserGame.playerData.level++;
 					PhaserGame.setSavedData();
-					PWG.ViewManager.setFrame('global:turnGroup', TurnManager.playerData.level);
 				}
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'turnEnd' });
 			},
@@ -831,7 +830,7 @@ var gameLogic = {
 				handler: function(event) {
 					trace('BUILDING_STATE_UPDATED event = ', event);
 					var config = event.building.config;
-					if(conifig.id === PhaserGame.activeBuilding.id) {
+					if(config.id === PhaserGame.activeBuilding.id) {
 	 					var buildingEditConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditDetails);
 						var equipmentUpdate = buildingEditConfig.views.equipment.text + PWG.Utils.objLength(config.equipment) + ' / ' + BuildingManager.FACTORY_MAX_MODELS;
 						var inventoryUpdate = buildingEditConfig.views.inventory.text + config.inventory.length + ' / ' + BuildingManager.FACTORY_MAX_INVENTORY;
