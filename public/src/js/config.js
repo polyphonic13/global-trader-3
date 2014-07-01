@@ -221,7 +221,9 @@ var gameData = {
 			]
 		},
 		goals: {
-			
+			newBuildings: 1,
+			newMachineModels: 2,
+			newMachines: 5
 		}
 	},
 	{
@@ -1268,6 +1270,42 @@ var GameConfig = function() {
 						height: 110,
 						frames: 5
 					},
+					newTractorBasic: {
+						url: 'images/screens/equipment_add/tractor_basic.png',
+						width: 310,
+						height: 218,
+						frames: 2
+					},
+					newSkidsteerBasic: {
+						url: 'images/screens/equipment_add/skid_steer_basic.png',
+						width: 310,
+						height: 218,
+						frames: 2
+					},
+					newTractorMedium: {
+						url: 'images/screens/equipment_add/tractor_medium.png',
+						width: 310,
+						height: 218,
+						frames: 2
+					},
+					newSkidsteerMedium: {
+						url: 'images/screens/equipment_add/skid_steer_medium.png',
+						width: 310,
+						height: 218,
+						frames: 2
+					},
+					newTractorHeavy: {
+						url: 'images/screens/equipment_add/tractor_heavy.png',
+						width: 310,
+						height: 218,
+						frames: 2
+					},
+					newSkidsteerHeavy: {
+						url: 'images/screens/equipment_add/skid_steer_heavy.png',
+						width: 310,
+						height: 218,
+						frames: 2
+					},
 					tiresSprites: {
 						url: 'images/parts/tires_spritesheet.gif',
 						width: 125,
@@ -1731,7 +1769,7 @@ var GameConfig = function() {
 							y: 0,
 							attrs: {
 								width: gameW,
-								height: gameH
+								height: gameH - (gameUnit * 1.5)
 							}
 						},
 						icons: {
@@ -1743,82 +1781,88 @@ var GameConfig = function() {
 									name: 'machineType',
 									views: {
 										tractorBasic: {
-											type: 'sprite',
+											type: 'button',
 											name: 'newTractorBasic',
-											img: 'blockWhite',
-											x: gameUnit * 0.5,
-											y: gameUnit * 2,
+											img: 'newTractorBasic',
+											x: gameW/2 - (gameUnit * 4.5),
+											y: gameUnit * 1.5,
 											attrs: {
 												width: gameUnit * 4,
-												height: gameUnit * 3,
-												alpha: 0.3
+												height: gameUnit * 3
 											},
-											input: gameLogic.global.input.newBasicTractor
+											callback: gameLogic.global.buttonCallbacks.newBasicTractor,
+											context: this,
+											frames: [0, 1, 1, 0]
 										},
 										tractorMedium: {
-											type: 'sprite',
+											type: 'button',
 											name: 'newTractorMedium',
-											img: 'blockWhite',
-											x: gameUnit * 0.5,
+											img: 'newTractorMedium',
+											x: gameW/2 - (gameUnit * 4.5),
 											y: gameUnit * 6,
 											attrs: {
 												width: gameUnit * 4,
-												height: gameUnit * 3,
-												alpha: 0.3
+												height: gameUnit * 3
 											},
-											input: gameLogic.global.input.newMediumTractor
+											callback: gameLogic.global.buttonCallbacks.newMediumTractor,
+											context: this,
+											frames: [0, 1, 1, 0]
 										},
 										tractorHeavy: {
-											type: 'sprite',
+											type: 'button',
 											name: 'newTractorHeavy',
-											img: 'blockWhite',
-											x: gameUnit * 0.5,
-											y: gameUnit * 10,
+											img: 'newTractorHeavy',
+											x: gameW/2 - (gameUnit * 4.5),
+											y: gameUnit * 10.5,
 											attrs: {
 												width: gameUnit * 4,
-												height: gameUnit * 3,
-												alpha: 0.3
+												height: gameUnit * 3
 											},
-											input: gameLogic.global.input.newHeavyTractor
+											callback: gameLogic.global.buttonCallbacks.newHeavyTractor,
+											context: this,
+											frames: [0, 1, 1, 0]
 										},
 										skidsteerBasic: {
-											type: 'sprite',
+											type: 'button',
 											name: 'newSkidsteerBasic',
-											img: 'blockWhite',
-											x: gameW - (gameUnit * 4.5),
-											y: gameUnit * 2,
+											img: 'newSkidsteerBasic',
+											x: gameW/2 + (gameUnit * 0.5),
+											y: gameUnit * 1.5,
 											attrs: {
 												width: gameUnit * 4,
-												height: gameUnit * 3,
-												alpha: 0.3
+												height: gameUnit * 3
 											},
-											input: gameLogic.global.input.newBasicSkidsteer
+											callback: gameLogic.global.buttonCallbacks.newBasicSkidsteer,
+											context: this,
+											frames: [0, 1, 1, 0]
 										},
 										skidsteerMedium: {
-											type: 'sprite',
+											type: 'button',
 											name: 'newSkidsteerMedium',
-											img: 'blockWhite',
-											x: gameW - (gameUnit * 4.5),
+											img: 'newSkidsteerMedium',
+											x: gameW/2 + (gameUnit * 0.5),
 											y: gameUnit * 6,
 											attrs: {
 												width: gameUnit * 4,
-												height: gameUnit * 3,
-												alpha: 0.3
+												height: gameUnit * 3
 											},
-											input: gameLogic.global.input.newMediumSkidsteer
+											callback: gameLogic.global.buttonCallbacks.newMediumSkidsteer,
+											context: this,
+											frames: [0, 1, 1, 0]
 										},
 										skidsteerHeavy: {
-											type: 'sprite',
+											type: 'button',
 											name: 'newSkidsteerHeavy',
-											img: 'blockWhite',
-											x: gameW - (gameUnit * 4.5),
-											y: gameUnit * 10,
+											img: 'newSkidsteerHeavy',
+											x: gameW/2 + (gameUnit * 0.5),
+											y: gameUnit * 10.5,
 											attrs: {
 												width: gameUnit * 4,
-												height: gameUnit * 3,
-												alpha: 0.3
+												height: gameUnit * 3
 											},
-											input: gameLogic.global.input.newHeavySkidsteer
+											callback: gameLogic.global.buttonCallbacks.newHeavySkidsteer,
+											context: this,
+											frames: [0, 1, 1, 0]
 										}
 									}
 								}

@@ -88,7 +88,7 @@ var gameLogic = {
 				PWG.ViewManager.callMethod('global:turnGroup:timerText', 'setText', [''], this);
 
 				if(PhaserGame.playerData.level < (gameData.levels.length - 1)) {
-					PWG.EventCenter.trigger({ type: Events.INCREMENT_LEVEL });
+					PhaserGame.endYear();
 				} else {
 					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'home' });
 					alert('you won!');
@@ -374,6 +374,32 @@ var gameLogic = {
 				// trace('partsMenuConfig = ', partsMenuConfig);
 				PWG.ViewManager.addView(partsMenuConfig);
 				// trace('\tcreated partsMenu from: ', partsMenuConfig, '\tcollection now = ', collection);
+			},
+			endYear: function() {
+				var levelGoals = gameData.levels[TurnManager.playerData.level].goals;
+				var currentData = TurnManager.currentData;
+				var passed = true;
+				trace('PhaserGame/endYear, levelGoals = ', levelGoals);
+				PWG.Utils.each(
+					levelGoals,
+					function(goal, key) {
+						trace('\tgoal['+key+'] = ' + goal);
+						// if(currentData.hasOwnProperty(key)) {
+						// 	trace('\tkey not found on current data');
+						// 	passed = false;
+						// } else if(currentData[key].length < goal) {
+						if(currentData[key].length < goal) {
+							trace('\tcurrentData['+key+'].length: ' + currentData[key].length + ' is less than goal: ' + goal);
+							passed = false;
+						}
+						
+					},
+					this
+				);
+				trace('\tlevel passed = ' + passed);
+				if(passed) {
+					PWG.EventCenter.trigger({ type: Events.INCREMENT_LEVEL });
+				}
 			}
 		},
 		input: {
@@ -443,39 +469,6 @@ var gameLogic = {
 						view.x = 0;
 					}
 					// trace('view x/y is now: ' + view.x + '/' + view.y);
-				}
-			},
-			newBasicTractor: {
-				inputDown: function() {
-					// trace('new tractor callback');
-					PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.TRACTOR, size: EquipmentSizes.BASIC });
-				}
-			},
-			newBasicSkidsteer: {
-				inputDown: function() {
-					PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.SKIDSTEER, size: EquipmentSizes.BASIC });
-				}
-			},
-			newMediumTractor: {
-				inputDown: function() {
-					// trace('new tractor callback');
-					PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.TRACTOR, size: EquipmentSizes.MEDIUM });
-				}
-			},
-			newMediumSkidsteer: {
-				inputDown: function() {
-					PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.SKIDSTEER, size: EquipmentSizes.MEDIUM });
-				}
-			},
-			newHeavyTractor: {
-				inputDown: function() {
-					// trace('new tractor callback');
-					PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.TRACTOR, size: EquipmentSizes.HEAVY });
-				}
-			},
-			newHeavySkidsteer: {
-				inputDown: function() {
-					PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.SKIDSTEER, size: EquipmentSizes.HEAVY });
 				}
 			},
 			editMachine: {
@@ -596,6 +589,27 @@ var gameLogic = {
 			addEquipment: function() {
 				// trace('add equipment button clicked');
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentCreate' });
+			},
+			newBasicTractor: function() {
+					// trace('new tractor callback');
+				PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.TRACTOR, size: EquipmentSizes.BASIC });
+			},
+			newBasicSkidsteer: function() {
+				PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.SKIDSTEER, size: EquipmentSizes.BASIC });
+			},
+			newMediumTractor: function() {
+					// trace('new tractor callback');
+				PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.TRACTOR, size: EquipmentSizes.MEDIUM });
+			},
+			newMediumSkidsteer: function() {
+				PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.SKIDSTEER, size: EquipmentSizes.MEDIUM });
+			},
+			newHeavyTractor: function() {
+					// trace('new tractor callback');
+				PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.TRACTOR, size: EquipmentSizes.HEAVY });
+			},
+			newHeavySkidsteer: function() {
+				PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.SKIDSTEER, size: EquipmentSizes.HEAVY });
 			},
 			// equipment edit
 			partsMenuClose: function() {
