@@ -386,18 +386,18 @@ var gameLogic = {
 						trace('\tgoal['+idx+'] = ', goal);
 						switch(goal.calculation) {
 							case 'number':
+							textValue = currentData[goal.type];
 							if(currentData[goal.type] < goal.value) {
 								trace('\tcurrentData['+goal.type+']: ' + currentData[goal.type] + ' is less than goal: ' + goal.value);
-								textValue = currentData[goal.type];
 								PhaserGame.levelPassed = false;
 								goalPassed = false;
 							}
 							break;
 							
 							case 'length':
+							textValue = currentData[goal.type].length;
 							if(currentData[goal.type].length < goal.value) {
 								trace('\tcurrentData['+goal.type+'].length: ' + currentData[goal.type].length + ' is less than goal: ' + goal.value);
-								textValue = currentData[goal.type].length;
 								PhaserGame.levelPassed = false;
 								goalPassed = false;
 							}

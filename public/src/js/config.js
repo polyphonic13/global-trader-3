@@ -217,8 +217,7 @@ var gameData = {
 			text: [
 				'Build 1 Factory',
 				'Create 2 Machine Models',
-				'Produce 10 Machines',
-				'Generate $1000 in profits'
+				'Produce 10 Machines'
 			]
 		},
 		goals: [
@@ -338,7 +337,7 @@ var gameData = {
 };
 
 var goalsText = {
-	passed: 'Congratulations: you met the goals.',
+	passed: 'All goals met. Congratulations.',
 	failed: 'Goals not met. Please try again.',
 	types: {
 		profit: 'Profits: ',
