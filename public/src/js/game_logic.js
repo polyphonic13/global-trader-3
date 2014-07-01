@@ -435,9 +435,9 @@ var gameLogic = {
 				PhaserGame.yearSummary = yearSummary;
 				trace('\tlevel PhaserGame.levelPassed = ' + PhaserGame.levelPassed + '\n\tyearSummary = ', yearSummary);
 				if(PhaserGame.levelPassed) {
-					// PhaserGame.playerData.level++;
-					// PhaserGame.setSavedData();
-					// PWG.ViewManager.setFrame('global:turnGroup', TurnManager.playerData.level);
+					PhaserGame.playerData.level++;
+					PhaserGame.setSavedData();
+					PWG.ViewManager.setFrame('global:turnGroup', TurnManager.playerData.level);
 				}
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'turnEnd' });
 			},
@@ -866,12 +866,14 @@ var gameLogic = {
 				handler: function(event) {
 					trace('BUILDING_STATE_UPDATED event = ', event);
 					var config = event.building.config;
- 					var buildingEditConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditDetails);
-					var equipmentUpdate = buildingEditConfig.views.equipment.text + PWG.Utils.objLength(config.equipment) + ' / ' + BuildingManager.FACTORY_MAX_MODELS;
-					var inventoryUpdate = buildingEditConfig.views.inventory.text + config.inventory.length + ' / ' + BuildingManager.FACTORY_MAX_INVENTORY;
+					if(conifig.id === PhaserGame.activeFactory.id) {
+	 					var buildingEditConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditDetails);
+						var equipmentUpdate = buildingEditConfig.views.equipment.text + PWG.Utils.objLength(config.equipment) + ' / ' + BuildingManager.FACTORY_MAX_MODELS;
+						var inventoryUpdate = buildingEditConfig.views.inventory.text + config.inventory.length + ' / ' + BuildingManager.FACTORY_MAX_INVENTORY;
 
-					PWG.ViewManager.callMethod('buildingEdit:editDetails:equipment', 'setText', [equipmentUpdate], this);
-					PWG.ViewManager.callMethod('buildingEdit:editDetails:inventory', 'setText', [inventoryUpdate], this);
+						PWG.ViewManager.callMethod('buildingEdit:editDetails:equipment', 'setText', [equipmentUpdate], this);
+						PWG.ViewManager.callMethod('buildingEdit:editDetails:inventory', 'setText', [inventoryUpdate], this);
+					}
 				}
 			}
 			],
@@ -1083,7 +1085,7 @@ var gameLogic = {
 				PWG.ViewManager.hideView('global:backButton');
 			},
 			shutdown: function() {
-				PWG.ViewManager.removeView('yearSummary', 'turnEnd:openedEnvelope');
+				PWG.ViewManager.removeView('yearSummary', 'turnEnd');
 			}
 		}
 		

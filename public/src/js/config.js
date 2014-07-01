@@ -245,93 +245,279 @@ var gameData = {
 	},
 	{
 		brief: {
-			background: 'briefBg02',
-			goals: [
-				'Build 1 Factory',
-				'Create 2 Machine Models',
-				'Produce 10 Machines'
+			background: 'briefBg01',
+			text: [
+				'Build 2 Factories'
 			]
+		},
+		goals: [
+		{
+			type: 'profit',
+			value: 0,
+			calculation: 'number'
+		},
+		{
+			type: 'newBuildings',
+			value: 2,
+			calculation: 'length'
 		}
-	},
-	{
-		brief: {
-			background: 'briefBg03',
-			goals: [
-				'Build 1 Factory',
-				'Create 2 Machine Models',
-				'Produce 10 Machines'
-			]
-		}
-	},
-	{
-		brief: {
-			background: 'briefBg04',
-			goals: [
-				'Build 1 Factory',
-				'Create 2 Machine Models',
-				'Produce 10 Machines'
-			]
-		}
-	},
-	{
-		brief: {
-			background: 'briefBg05',
-			goals: [
-				'Build 1 Factory',
-				'Create 2 Machine Models',
-				'Produce 10 Machines'
-			]
-		}
+		]
 	},
 	{
 		brief: {
 			background: 'briefBg01',
-			goals: [
-				'Build 1 Factory',
-				'Create 2 Machine Models',
+			text: [
+				'Build 2 Factories',
+				'Create 1 Machine Models',
 				'Produce 10 Machines'
 			]
+		},
+		goals: [
+		{
+			type: 'profit',
+			value: 0,
+			calculation: 'number'
+		},
+		{
+			type: 'newBuildings',
+			value: 1,
+			calculation: 'length'
+		},
+		{
+			type: 'newMachineModels',
+			value: 2,
+			calculation: 'length'
+		},
+		{
+			type: 'newMachines',
+			value: 5,
+			calculation: 'length'
 		}
+		]
 	},
 	{
 		brief: {
-			background: 'briefBg02',
-			goals: [
+			background: 'briefBg01',
+			text: [
 				'Build 1 Factory',
 				'Create 2 Machine Models',
 				'Produce 10 Machines'
 			]
+		},
+		goals: [
+		{
+			type: 'profit',
+			value: 0,
+			calculation: 'number'
+		},
+		{
+			type: 'newBuildings',
+			value: 1,
+			calculation: 'length'
+		},
+		{
+			type: 'newMachineModels',
+			value: 2,
+			calculation: 'length'
+		},
+		{
+			type: 'newMachines',
+			value: 5,
+			calculation: 'length'
 		}
+		]
 	},
 	{
 		brief: {
-			background: 'briefBg03',
-			goals: [
+			background: 'briefBg01',
+			text: [
 				'Build 1 Factory',
 				'Create 2 Machine Models',
 				'Produce 10 Machines'
 			]
+		},
+		goals: [
+		{
+			type: 'profit',
+			value: 0,
+			calculation: 'number'
+		},
+		{
+			type: 'newBuildings',
+			value: 1,
+			calculation: 'length'
+		},
+		{
+			type: 'newMachineModels',
+			value: 2,
+			calculation: 'length'
+		},
+		{
+			type: 'newMachines',
+			value: 5,
+			calculation: 'length'
 		}
+		]
 	},
 	{
 		brief: {
-			background: 'briefBg04',
-			goals: [
+			background: 'briefBg01',
+			text: [
 				'Build 1 Factory',
 				'Create 2 Machine Models',
 				'Produce 10 Machines'
 			]
+		},
+		goals: [
+		{
+			type: 'profit',
+			value: 0,
+			calculation: 'number'
+		},
+		{
+			type: 'newBuildings',
+			value: 1,
+			calculation: 'length'
+		},
+		{
+			type: 'newMachineModels',
+			value: 2,
+			calculation: 'length'
+		},
+		{
+			type: 'newMachines',
+			value: 5,
+			calculation: 'length'
 		}
+		]
 	},
 	{
 		brief: {
-			background: 'briefBg05',
-			goals: [
+			background: 'briefBg01',
+			text: [
 				'Build 1 Factory',
 				'Create 2 Machine Models',
 				'Produce 10 Machines'
 			]
+		},
+		goals: [
+		{
+			type: 'profit',
+			value: 0,
+			calculation: 'number'
+		},
+		{
+			type: 'newBuildings',
+			value: 1,
+			calculation: 'length'
+		},
+		{
+			type: 'newMachineModels',
+			value: 2,
+			calculation: 'length'
+		},
+		{
+			type: 'newMachines',
+			value: 5,
+			calculation: 'length'
 		}
+		]
+	},
+	{
+		brief: {
+			background: 'briefBg01',
+			text: [
+				'Build 1 Factory',
+				'Create 2 Machine Models',
+				'Produce 10 Machines'
+			]
+		},
+		goals: [
+		{
+			type: 'profit',
+			value: 0,
+			calculation: 'number'
+		},
+		{
+			type: 'newBuildings',
+			value: 1,
+			calculation: 'length'
+		},
+		{
+			type: 'newMachineModels',
+			value: 2,
+			calculation: 'length'
+		},
+		{
+			type: 'newMachines',
+			value: 5,
+			calculation: 'length'
+		}
+		]
+	},
+	{
+		brief: {
+			background: 'briefBg01',
+			text: [
+				'Build 1 Factory',
+				'Create 2 Machine Models',
+				'Produce 10 Machines'
+			]
+		},
+		goals: [
+		{
+			type: 'profit',
+			value: 0,
+			calculation: 'number'
+		},
+		{
+			type: 'newBuildings',
+			value: 1,
+			calculation: 'length'
+		},
+		{
+			type: 'newMachineModels',
+			value: 2,
+			calculation: 'length'
+		},
+		{
+			type: 'newMachines',
+			value: 5,
+			calculation: 'length'
+		}
+		]
+	},
+	{
+		brief: {
+			background: 'briefBg01',
+			text: [
+				'Build 1 Factory',
+				'Create 2 Machine Models',
+				'Produce 10 Machines'
+			]
+		},
+		goals: [
+		{
+			type: 'profit',
+			value: 0,
+			calculation: 'number'
+		},
+		{
+			type: 'newBuildings',
+			value: 1,
+			calculation: 'length'
+		},
+		{
+			type: 'newMachineModels',
+			value: 2,
+			calculation: 'length'
+		},
+		{
+			type: 'newMachines',
+			value: 5,
+			calculation: 'length'
+		}
+		]
 	}
 	]
 };
