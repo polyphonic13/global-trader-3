@@ -372,19 +372,68 @@ var gameLogic = {
 				var currentData = TurnManager.currentData;
 				PhaserGame.levelPassed = true;
 				trace('PhaserGame/endYear, levelGoals = ', levelGoals);
+				
+				var yearSummary = PWG.Utils.clone(PhaserGame.config.dynamicViews.yearSummary);
+				var achievedGoalText = PhaserGame.config.dynamicViews.achievedGoalText;
+				var failedGoalText = PhaserGame.config.dynamicViews.failedGoalText;
+				var item;
+				
 				PWG.Utils.each(
 					levelGoals,
-					function(goal, key) {
-						trace('\tgoal['+key+'] = ' + goal);
-						if(currentData[key].length < goal) {
-							trace('\tcurrentData['+key+'].length: ' + currentData[key].length + ' is less than goal: ' + goal);
-							PhaserGame.levelPassed = false;
+					function(goal, idx) {
+						var textValue;
+						var goalPassed = true;
+						trace('\tgoal['+idx+'] = ', goal);
+						switch(goal.calculation) {
+							case 'number':
+							if(currentData[goal.type] < goal.value) {
+								trace('\tcurrentData['+goal.type+']: ' + currentData[goal.type] + ' is less than goal: ' + goal.value);
+								textValue = currentData[goal.type];
+								PhaserGame.levelPassed = false;
+								goalPassed = false;
+							}
+							break;
+							
+							case 'length':
+							if(currentData[goal.type].length < goal.value) {
+								trace('\tcurrentData['+goal.type+'].length: ' + currentData[goal.type].length + ' is less than goal: ' + goal.value);
+								textValue = currentData[goal.type].length;
+								PhaserGame.levelPassed = false;
+								goalPassed = false;
+							}
+							break;
+							
+							default:
+							break;
 						}
 						
+						if(goalPassed) {
+							item = PWG.Utils.clone(achievedGoalText);
+						} else {
+							item = PWG.Utils.clone(failedGoalText);
+						}
+						item.name += 'summary-' + goal.type;
+						item.text = goalsText.types[goal.type] + textValue;
+						item.y += (idx * item.offsetY);
+						yearSummary.views['goal'+goal.type] = item;
 					},
 					this
 				);
-				trace('\tlevel PhaserGame.levelPassed = ' + PhaserGame.levelPassed);
+				
+				if(PhaserGame.levelPassed) {
+					item = PWG.Utils.clone(achievedGoalText);
+					item.text = goalsText.passed;
+				} else {
+					item = PWG.Utils.clone(failedGoalText);
+					item.text = goalsText.failed;
+				}
+				item.name += 'levelPassed';
+				item.y += (levelGoals.length * item.offsetY);
+
+				yearSummary.views[item.name] = item;
+
+				PhaserGame.yearSummary = yearSummary;
+				trace('\tlevel PhaserGame.levelPassed = ' + PhaserGame.levelPassed + '\n\tyearSummary = ', yearSummary);
 				if(PhaserGame.levelPassed) {
 					// PhaserGame.playerData.level++;
 					// PhaserGame.setSavedData();
@@ -394,29 +443,9 @@ var gameLogic = {
 			},
 			buildYearEndReport: function() {
 				var openedEnvelope = PWG.ViewManager.getControllerFromPath('turnEnd');
-				trace('openedEnvelope = ', openedEnvelope);
-				var levelGoals = gameData.levels[TurnManager.playerData.level].goals;
-				trace('levelGoals = ', levelGoals);
-				var yearSummary = PWG.Utils.clone(PhaserGame.config.dynamicViews.yearSummary);
-				var yearSummaryText = PhaserGame.config.dynamicViews.yearSummaryText;
-				
-				var goalCount = 0;
-				
-				PWG.Utils.each(
-					levelGoals,
-					function(goal, key) {
-						var item = PWG.Utils.clone(yearSummaryText);
-						trace('\titem = ', item);
-						item.name += 'summary-' + key;
-						item.text = goalsText[key] + TurnManager.currentData[key].length;
-						item.y += (goalCount * item.offsetY);
-						yearSummary.views['goal'+key] = item;
-						goalCount++;
-					},
-					this
-				);
-				trace('yearSummary config now = ', yearSummary);
-				PWG.ViewManager.addView(yearSummary, openedEnvelope, true);
+
+				PWG.ViewManager.addView(PhaserGame.yearSummary, openedEnvelope, true);
+				PhaserGame.yearSummary = {};
 			}
 		},
 		input: {

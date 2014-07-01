@@ -221,12 +221,28 @@ var gameData = {
 				'Generate $1000 in profits'
 			]
 		},
-		goals: {
-			profit: 1000,
-			newBuildings: 1,
-			newMachineModels: 2,
-			newMachines: 5
+		goals: [
+		{
+			type: 'profit',
+			value: 0,
+			calculation: 'number'
+		},
+		{
+			type: 'newBuildings',
+			value: 1,
+			calculation: 'length'
+		},
+		{
+			type: 'newMachineModels',
+			value: 2,
+			calculation: 'length'
+		},
+		{
+			type: 'newMachines',
+			value: 5,
+			calculation: 'length'
 		}
+		]
 	},
 	{
 		brief: {
@@ -322,10 +338,14 @@ var gameData = {
 };
 
 var goalsText = {
-	profit: 'Profits: ',
-	newBuildings: 'Factories Built: ',
-	newMachineModels: 'Machine Models Created: ',
-	newMachines: 'Machines Manufactured: '
+	passed: 'Congratulations: you met the goals.',
+	failed: 'Goals not met. Please try again.',
+	types: {
+		profit: 'Profits: ',
+		newBuildings: 'Factories Built: ',
+		newMachineModels: 'Machine Models Created: ',
+		newMachines: 'Machines Manufactured: '
+	}
 };
 
 var turnScreens = [
@@ -1092,9 +1112,9 @@ var GameConfig = function() {
 					
 				}
 			},
-			yearSummaryText: {
+			achievedGoalText: {
 				type: 'text',
-				name: 'yearSummaryText',
+				name: 'achievedGoalText',
 				text: '',
 				offsetX: 0,
 				offsetY: (gameUnit * 0.75),
@@ -1103,6 +1123,19 @@ var GameConfig = function() {
 				style: {
 				    font: (fontSizes.sm + 'px Arial'),
 			        fill: palette.black
+				}
+			},
+			failedGoalText: {
+				type: 'text',
+				name: 'failedGoalText',
+				text: '',
+				offsetX: 0,
+				offsetY: (gameUnit * 0.75),
+				x: gameUnit * 1.5,
+				y: gameUnit * 6,
+				style: {
+				    font: (fontSizes.sm + 'px Arial'),
+			        fill: palette.lightRed
 				}
 			}
 		};
