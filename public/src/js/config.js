@@ -542,18 +542,6 @@ var turnScreens = [
 	'equipmentEdit'
 ];
 
-var buildingTypes = {
-	FACTORY: 'factory',
-	SHOWROOM: 'showroom'
-};
-var tileCellFrames = {
-	EMPTY: 0,
-	FACTORY_CONSTRUCTION: 1,
-	FACTORY_ACTIVE: 2,
-	SHOWROOM_ACTIVE: 3,
-	SHOWROOM_PAUSED: 4
-};
-
 var GameConfig = function() {
 	
 	var module = {};

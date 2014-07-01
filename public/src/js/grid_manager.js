@@ -57,14 +57,14 @@ var GridManager = function() {
 		trace('GridManager/addBuilding, sector = ' + sector + ', building = ', building, module.grids);
 		var config = building.config;
 		var frameKey = config.type.toUpperCase() + '_' + config.state.toUpperCase();
-		module.grids[sector][config.cell].frame = tileCellFrames[frameKey];
-		// trace('\tsetting grid['+config.sector+']['+config.cell+'].frame to ' + tileCellFrames[frameKey]);
+		module.grids[sector][config.cell].frame = TileCellFrames[frameKey];
+		// trace('\tsetting grid['+config.sector+']['+config.cell+'].frame to ' + TileCellFrames[frameKey]);
 	};
 	
 	module.updateBuildingState = function(sector, cell, type, state) {
 		// trace('GridManager/updateBuildingState, sector: ' + sector + ', cell = ' + cell + ', type = ' + type + ', state = ' + state);
 		var frameKey = type.toUpperCase() + '_' + state.toUpperCase();
-		module.grids[sector][cell].frame = tileCellFrames[frameKey];
+		module.grids[sector][cell].frame = TileCellFrames[frameKey];
 	};
 	
 	module.update = function(sector, cell, value) {

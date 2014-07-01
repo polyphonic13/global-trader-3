@@ -148,32 +148,6 @@ var gameLogic = {
 					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'brief' });
 				// }
 			},
-			buildMissionBrief: function() {
-				var brief = PWG.ViewManager.getControllerFromPath('brief');
-
-				var levelBrief = gameData.levels[TurnManager.currentLevel].brief;
-				var missionBrief = PWG.Utils.clone(PhaserGame.config.dynamicViews.missionBrief);
-				var goalText = PhaserGame.config.dynamicViews.goalText;
-				
-				trace('levelBrief = ', levelBrief, '\tgoalText = ', goalText);
-				missionBrief.views.briefBg.img = levelBrief.background;
-				
-				PWG.Utils.each(
-					levelBrief.text,
-					function(text, idx) {
-						trace('\ttext['+idx+'] = ' + text);
-						var item = PWG.Utils.clone(goalText);
-						trace('\titem = ', item);
-						item.name += idx;
-						item.views.goal.text = text;
-						item.views.goal.y += (idx * item.offsetY);
-						missionBrief.views['goal'+idx] = item;
-					},
-					this
-				);
-				trace('missionBrief config now = ', missionBrief, '\tbrief = ', brief);
-				PWG.ViewManager.addView(missionBrief, brief, true);
-			},
 			startTurn: function() {
 				// trace('START TURN');
 				TurnManager.startTurn();
@@ -201,40 +175,6 @@ var gameLogic = {
 				PWG.PhaserTime.removeTimer('turnTime');
 				PhaserGame.turnActive = false;
 			},
-			buildUSDetailGrid: function() {
-				// trace('BUILD DETAIL GRID, this = ', this);
-				var usDetail = PWG.ViewManager.getControllerFromPath('usDetail');
-				var gridCoordinates = GridManager.grids[PhaserGame.activeSector];
-				var usDetailGrid = PWG.Utils.clone(PhaserGame.config.dynamicViews.usDetailGrid);
-				var gridItem = PhaserGame.config.dynamicViews.usDetailGridItem;
-				var gridConfig = {};
-				PWG.Utils.each(
-					gridCoordinates,
-					function(coordinate, idx) {
-						// trace('\tcoordinate = ', coordinate);
-						var item = PWG.Utils.clone(gridItem);
-						item.name += idx;
-						item.x += coordinate.x;
-						item.y += coordinate.y;
-						item.attrs.frame = coordinate.frame;
-						item.cell = idx;
-						item.sector = PhaserGame.activeSector;
-						item.input = {
-							inputDown: function() {
-								return function(item) {
-									PhaserGame.tileClicked(item);
-								}(item);
-							}
-						};
-						usDetailGrid.views[idx] = item;
-					},
-					this
-				);
-
-				PWG.ViewManager.addView(usDetailGrid, usDetail, true);
-				// trace('CURRENT US SECTOR = ' + PhaserGame.activeSector);
-				PWG.ViewManager.callMethod('usDetail:sectorTitle', 'setText', [sectorTitles[PhaserGame.activeSector]], this);
-			},
 			tileClicked: function(tile) {
 				if(PhaserGame.turnActive) {
 					var view = PWG.ViewManager.getControllerFromPath('usDetail:usDetailGrid:'+tile.name);
@@ -242,34 +182,34 @@ var gameLogic = {
 					var frame = tile.attrs.frame;
 					PhaserGame.activeTile = tile;
 					switch(frame) {
-						case tileCellFrames.EMPTY:
+						case TileCellFrames.EMPTY:
 							// trace('\topen buildings menu');
 							PWG.EventCenter.trigger({ type: Events.OPEN_BUILDINGS_MENU });
 						break;
 
-						case tileCellFrames.ACTIVE:
+						case TileCellFrames.ACTIVE:
 						tile.attrs.frame = 0;
-						PWG.ViewManager.setFrame('usDetail:usDetailGrid:'+tile.name, tileCellFrames.EMPTY);
+						PWG.ViewManager.setFrame('usDetail:usDetailGrid:'+tile.name, TileCellFrames.EMPTY);
 						PhaserGame.activeTile = null;
 						break; 
 
-						case tileCellFrames.FACTORY_CONSTRUCTION:
+						case TileCellFrames.FACTORY_CONSTRUCTION:
 						// trace('factory construction'); 
 						break;
 
-						case tileCellFrames.FACTORY_ACTIVE:
+						case TileCellFrames.FACTORY_ACTIVE:
 						// trace('factory active'); 
 						// show factory detail
-						PhaserGame.activeFactory = BuildingManager.getBuilding(PhaserGame.activeSector, PhaserGame.activeTile.cell);
-						// trace('active factory = ', PhaserGame.activeFactory);
+						PhaserGame.activeBuilding = BuildingManager.getBuilding(PhaserGame.activeSector, PhaserGame.activeTile.cell);
+						// trace('active factory = ', PhaserGame.activeBuilding);
 						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'buildingEdit' });
 						break;
 
-						// case tileCellFrames.SHOWROOM_CONSTRUCTION: 
+						// case TileCellFrames.SHOWROOM_CONSTRUCTION: 
 						// trace('showroom construction'); 
 						// break;
 						// 
-						// case tileCellFrames.SHOWROOM_ACTIVE: 
+						// case TileCellFrames.SHOWROOM_ACTIVE: 
 						// trace('showroom active'); 
 						// break;
 
@@ -291,40 +231,13 @@ var gameLogic = {
 				var added = BuildingManager.create('factory', { sector: PhaserGame.activeSector, cell: tile.cell });
 				if(added) {
 					tile.attrs.frame = 1;
-					PWG.ViewManager.setFrame('usDetail:usDetailGrid:'+tile.name, tileCellFrames.FACTORY_CONSTRUCTION);
+					PWG.ViewManager.setFrame('usDetail:usDetailGrid:'+tile.name, TileCellFrames.FACTORY_CONSTRUCTION);
 				}
 			},
 			cancelAddBuilding: function() {
 				PWG.EventCenter.trigger({ type: Events.CLOSE_BUILDINGS_MENU });
 				// trace('cancel add building');
 				PhaserGame.activeTile = null;
-			},
-			buildEquipmentEdit: function() {
-				var equipmentEdit = PWG.ViewManager.getControllerFromPath('equipmentEdit');
-				var machineEdit = PWG.Utils.clone(PhaserGame.config.dynamicViews.machineEdit);
-				
-				machineEdit.views.bg.img = PhaserGame.config.machineEditBackgrounds[PhaserGame.activeMachineType][PhaserGame.activeMachineSize];
-				
-				PWG.ViewManager.addView(machineEdit, equipmentEdit, true);
-				
-				PWG.ViewManager.showView('global:equipmentEditGroup');
-				
-				PWG.ViewManager.setChildFrames('equipmentEdit:machineEdit:editorParts', 0);
-				var activeMachineParts = PhaserGame.activeMachine.config.parts;
-				if(activeMachineParts) {
-					// TODO: show the views/frames of the machine as it currently exists
-					// trace('--------- activeMachineParts = ', activeMachineParts);
-					PWG.Utils.each(
-						activeMachineParts,
-						function(value, key) {
-							var partView = key + 'Part';
-							var frame = gameData.parts[key][value].frame;
-							PWG.ViewManager.setFrame('equipmentEdit:machineEdit:editorParts:'+partView, frame);
-						},
-						this
-					);
-				}
-				PhaserGame.machineDirty = true;
 			},
 			addPartItemsMenu: function(type, collection) {
 				PhaserGame.activePartType = type;
@@ -386,7 +299,7 @@ var gameLogic = {
 						trace('\tgoal['+idx+'] = ', goal);
 						switch(goal.calculation) {
 							case 'number':
-							textValue = currentData[goal.type];
+							textValue = currentData[goal.type] + ' / ' + goal.value;
 							if(currentData[goal.type] < goal.value) {
 								trace('\tcurrentData['+goal.type+']: ' + currentData[goal.type] + ' is less than goal: ' + goal.value);
 								PhaserGame.levelPassed = false;
@@ -395,7 +308,7 @@ var gameLogic = {
 							break;
 							
 							case 'length':
-							textValue = currentData[goal.type].length;
+							textValue = currentData[goal.type].length + ' / ' + goal.value;
 							if(currentData[goal.type].length < goal.value) {
 								trace('\tcurrentData['+goal.type+'].length: ' + currentData[goal.type].length + ' is less than goal: ' + goal.value);
 								PhaserGame.levelPassed = false;
@@ -772,7 +685,30 @@ var gameLogic = {
 		},
 		brief: {
 			create: function() {
-				PhaserGame.buildMissionBrief.call(this);
+				var brief = PWG.ViewManager.getControllerFromPath('brief');
+
+				var levelBrief = gameData.levels[TurnManager.currentLevel].brief;
+				var missionBrief = PWG.Utils.clone(PhaserGame.config.dynamicViews.missionBrief);
+				var goalText = PhaserGame.config.dynamicViews.goalText;
+				
+				trace('levelBrief = ', levelBrief, '\tgoalText = ', goalText);
+				missionBrief.views.briefBg.img = levelBrief.background;
+				
+				PWG.Utils.each(
+					levelBrief.text,
+					function(text, idx) {
+						trace('\ttext['+idx+'] = ' + text);
+						var item = PWG.Utils.clone(goalText);
+						trace('\titem = ', item);
+						item.name += idx;
+						item.views.goal.text = text;
+						item.views.goal.y += (idx * item.offsetY);
+						missionBrief.views['goal'+idx] = item;
+					},
+					this
+				);
+				trace('missionBrief config now = ', missionBrief, '\tbrief = ', brief);
+				PWG.ViewManager.addView(missionBrief, brief, true);
 				PWG.ViewManager.showView('global:confirmButton');
 				PWG.ViewManager.showView('global:backButton');
 				PWG.ViewManager.hideView('global:turnGroup');
@@ -820,7 +756,7 @@ var gameLogic = {
 						var viewPath = 'usDetail:usDetailGrid:usDetailGridItem'+config.cell;
 						var view = PWG.ViewManager.getControllerFromPath(viewPath);
 						var frameKey = config.type.toUpperCase() + '_' + config.state.toUpperCase();
-						var frame = tileCellFrames[frameKey];
+						var frame = TileCellFrames[frameKey];
 						// trace('\tviewPath = ' + viewPath + ', view = ', view);
 
 						PWG.ViewManager.setFrame(viewPath, frame);
@@ -849,9 +785,38 @@ var gameLogic = {
 			}
 			],
 			create: function() {
-				// show add building button
-				// trace('show add building button');
-				PhaserGame.buildUSDetailGrid.call(this);
+				// trace('BUILD DETAIL GRID, this = ', this);
+				var usDetail = PWG.ViewManager.getControllerFromPath('usDetail');
+				var gridCoordinates = GridManager.grids[PhaserGame.activeSector];
+				var usDetailGrid = PWG.Utils.clone(PhaserGame.config.dynamicViews.usDetailGrid);
+				var gridItem = PhaserGame.config.dynamicViews.usDetailGridItem;
+				var gridConfig = {};
+				PWG.Utils.each(
+					gridCoordinates,
+					function(coordinate, idx) {
+						// trace('\tcoordinate = ', coordinate);
+						var item = PWG.Utils.clone(gridItem);
+						item.name += idx;
+						item.x += coordinate.x;
+						item.y += coordinate.y;
+						item.attrs.frame = coordinate.frame;
+						item.cell = idx;
+						item.sector = PhaserGame.activeSector;
+						item.input = {
+							inputDown: function() {
+								return function(item) {
+									PhaserGame.tileClicked(item);
+								}(item);
+							}
+						};
+						usDetailGrid.views[idx] = item;
+					},
+					this
+				);
+
+				PWG.ViewManager.addView(usDetailGrid, usDetail, true);
+				// trace('CURRENT US SECTOR = ' + PhaserGame.activeSector);
+				PWG.ViewManager.callMethod('usDetail:sectorTitle', 'setText', [sectorTitles[PhaserGame.activeSector]], this);
 			},
 			shutdown: function() {
 				// hide add building button
@@ -866,7 +831,7 @@ var gameLogic = {
 				handler: function(event) {
 					trace('BUILDING_STATE_UPDATED event = ', event);
 					var config = event.building.config;
-					if(conifig.id === PhaserGame.activeFactory.id) {
+					if(conifig.id === PhaserGame.activeBuilding.id) {
 	 					var buildingEditConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditDetails);
 						var equipmentUpdate = buildingEditConfig.views.equipment.text + PWG.Utils.objLength(config.equipment) + ' / ' + BuildingManager.FACTORY_MAX_MODELS;
 						var inventoryUpdate = buildingEditConfig.views.inventory.text + config.inventory.length + ' / ' + BuildingManager.FACTORY_MAX_INVENTORY;
@@ -879,7 +844,7 @@ var gameLogic = {
 			],
 			create: function() {
 				var buildingEdit = PWG.ViewManager.getControllerFromPath('buildingEdit');
-				var building = PhaserGame.activeFactory;
+				var building = PhaserGame.activeBuilding;
 				trace('building = ', building);
 				var buildingEditConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditDetails);
 				// trace('buildingEditConfig = ', buildingEditConfig);
@@ -902,7 +867,7 @@ var gameLogic = {
 			{
 				event: Events.EDIT_MACHINE,
 				handler: function(event) {
-					var config = TurnManager.playerData.buildings[PhaserGame.activeSector][PhaserGame.activeFactory.id].equipment[event.value];
+					var config = TurnManager.playerData.buildings[PhaserGame.activeSector][PhaserGame.activeBuilding.id].equipment[event.value];
 					// trace('edit machine: event = ', event, 'config = ', config);
 					PhaserGame.activeMachineType = config.type;
 					PhaserGame.activeMachineSize = config.size;
@@ -915,7 +880,7 @@ var gameLogic = {
 			create: function() {
 				// show add equipment button
 				
-				var equipment = PhaserGame.activeFactory.equipment;
+				var equipment = PhaserGame.activeBuilding.equipment;
 				trace('build equipment list = ', equipment);
 				var machineList = PWG.Utils.clone(PhaserGame.config.dynamicViews.machineList);
 				var machineIcon = PhaserGame.config.dynamicViews.machineIcon;
@@ -985,7 +950,7 @@ var gameLogic = {
 					var id = event.value + letter;
 					var name = event.value.toUpperCase() + ' ' + letter;
 					PhaserGame.activeMachineSize = event.size;
-					PhaserGame.activeMachine = new Machine({ id: id, type: PhaserGame.activeMachineType, size: event.size, name: name, factoryId: PhaserGame.activeFactory.id });
+					PhaserGame.activeMachine = new Machine({ id: id, type: PhaserGame.activeMachineType, size: event.size, name: name, factoryId: PhaserGame.activeBuilding.id });
 					PhaserGame.newMachine = true;
 					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentEdit' });
 				}
@@ -1056,7 +1021,7 @@ var gameLogic = {
 					// trace('time to save activeMachine: ', PhaserGame.activeMachine);
 					PhaserGame.activeMachine.save();
 					if(PhaserGame.newMachine) {
-						// trace('active factory = ', PhaserGame.activeFactory);
+						// trace('active factory = ', PhaserGame.activeBuilding);
 						TurnManager.addMachineModel(PhaserGame.activeMachine.config);
 						PhaserGame.newMachine = false;
 					}
@@ -1068,7 +1033,31 @@ var gameLogic = {
 			}
 			],
 			create: function() {
-				PhaserGame.buildEquipmentEdit();
+				var equipmentEdit = PWG.ViewManager.getControllerFromPath('equipmentEdit');
+				var machineEdit = PWG.Utils.clone(PhaserGame.config.dynamicViews.machineEdit);
+				
+				machineEdit.views.bg.img = PhaserGame.config.machineEditBackgrounds[PhaserGame.activeMachineType][PhaserGame.activeMachineSize];
+				
+				PWG.ViewManager.addView(machineEdit, equipmentEdit, true);
+				
+				PWG.ViewManager.showView('global:equipmentEditGroup');
+				
+				PWG.ViewManager.setChildFrames('equipmentEdit:machineEdit:editorParts', 0);
+				var activeMachineParts = PhaserGame.activeMachine.config.parts;
+				if(activeMachineParts) {
+					// TODO: show the views/frames of the machine as it currently exists
+					// trace('--------- activeMachineParts = ', activeMachineParts);
+					PWG.Utils.each(
+						activeMachineParts,
+						function(value, key) {
+							var partView = key + 'Part';
+							var frame = gameData.parts[key][value].frame;
+							PWG.ViewManager.setFrame('equipmentEdit:machineEdit:editorParts:'+partView, frame);
+						},
+						this
+					);
+				}
+				PhaserGame.machineDirty = true;
 				PWG.ViewManager.showView('global:confirmButton');
 			},
 			shutdown: function() {

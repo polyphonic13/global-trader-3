@@ -8,19 +8,12 @@ var BuildingManager = function() {
 	module.RETAILER_MAX_INVENTORY = 50;
 	module.RETAILER_TIME_TO_SELL = 5;
 	
-	var states = {
-		CONSTRUCTION: 'construction',
-		ACTIVE: 'active',
-		PAUSED: 'paused',
-		INACTIVE: 'inactive'
-	};
-
 	// BUILDING BASE CLASS
 	function Building(config) {
 		// trace('Building/constructor, config = ', config);
 		this.config = config;
 		this.config.type = config.type;
-		this.config.state = config.state || states.CONSTRUCTION;
+		this.config.state = config.state || BuildingStates.CONSTRUCTION;
 		this.config.age = config.age || 0;
 	};
 	
@@ -29,8 +22,8 @@ var BuildingManager = function() {
 	Building.prototype.inventory = [];
 	Building.prototype.update = function() {
 		// trace('Building/update');
-		if(this.config.state === states.CONSTRUCTION && this.config.age >= this.buildTime) {
-			this.config.state = states.ACTIVE;
+		if(this.config.state === BuildingStates.CONSTRUCTION && this.config.age >= this.buildTime) {
+			this.config.state = BuildingStates.ACTIVE;
 			// trace('building construction completed');
 			PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
 		}
@@ -55,7 +48,7 @@ var BuildingManager = function() {
 	Factory.prototype.modelCapacity = 6;
  	Factory.prototype.update = function() {
 		Factory._super.update.apply(this, arguments);
-		if(this.config.state === states.ACTIVE) {
+		if(this.config.state === BuildingStates.ACTIVE) {
 			if(PWG.Utils.objLength(this.config.equipment) > 0) { 
 				if(this.buildTime >= module.TIME_TO_BUILD) {
 					PWG.Utils.each(
@@ -117,7 +110,7 @@ var BuildingManager = function() {
 	Showroom.prototype.capacity = 50;
 	Showroom.prototype.update = function() {
 		Showroom._super.update.apply(this, arguments);
-		if(this.config.state === states.ACTIVE) {
+		if(this.config.state === BuildingStates.ACTIVE) {
 			if(this.config.inventory.length > 0) {
 
 			}

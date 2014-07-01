@@ -2,6 +2,12 @@ var TurnManager = function() {
 	var turnData = {
 		bankAdjustments: 0,
 		profit: 0,
+		newFactories: 0,
+		newShowrooms: 0,
+		newTractorModels: 0,
+		newSkidsteerModels: 0,
+		newTractors: 0,
+		newSkidsteers: 0,
 		newBuildings: [],
 		newMachineModels: [],
 		newMachines: []
@@ -50,6 +56,11 @@ var TurnManager = function() {
 		// trace('--- TurnManager/addBuilding, buildin = ', building);
 		module.playerData.buildings[building.sector][building.id] = building;
 		module.currentData.newBuildings.push(building);
+		if(building.type === BuildingTypes.FACTORY) {
+			module.currentData.newFactories++;
+		} else if(building.type === BuildingTypes.SHOW_ROOM) {
+			module.currentData.newShowrooms++;
+		}
 	};
 	
 	module.updateBuilding = function(building) {
@@ -58,15 +69,25 @@ var TurnManager = function() {
 	};
 	
 	module.addMachineModel = function(machine) {
-		// trace('--- TurnManager/addMachineModel, machine = ', machine);
-		module.playerData.buildings[PhaserGame.activeSector][PhaserGame.activeFactory.id].equipment[PhaserGame.activeMachine.config.id] = machine;
+		trace('--- TurnManager/addMachineModel, machine = ', machine);
+		module.playerData.buildings[PhaserGame.activeSector][PhaserGame.activeBuilding.id].equipment[PhaserGame.activeMachine.config.id] = machine;
 		module.playerData.machineCount[PhaserGame.activeMachineType]++;
 		module.currentData.newMachineModels.push(machine);
+		if(machine.type === EquipmentTypes.TRACTOR) {
+			module.currentData.newTractorModels++;
+		} else if(machine.type === EquipmentTypes.SKID_STEER) {
+			module.currentData.newSkidsteerModels++;
+		}
 	};
 
 	module.addInventory = function(machine) {
-		// trace('--- TurnManager/addMachineModel, machine = ', machine);
+		trace('--- TurnManager/addInventory, machine = ', machine);
 		module.currentData.newMachines.push(machine);
+		if(machine.type === EquipmentTypes.TRACTOR) {
+			module.currentData.newTractors++;
+		} else if(machine.type === EquipmentTypes.SKID_STEER) {
+			module.currentData.newSkidsteers++;
+		}
 	};
 	
 	module.get = function(prop) {
