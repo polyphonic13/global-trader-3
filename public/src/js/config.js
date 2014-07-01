@@ -325,7 +325,7 @@ var goalsText = {
 	profit: 'Profits: ',
 	newBuildings: 'Factories Built: ',
 	newMachineModels: 'Machine Models Created: ',
-	newMachines: 'Newly Manufactured Machines: '
+	newMachines: 'Machines Manufactured: '
 };
 
 var turnScreens = [
@@ -368,7 +368,16 @@ var GameConfig = function() {
 			height: gameH
 		};
 
-		var controlButtonSizes = {
+		var controlButtons = {
+			left: {
+				x: 0,
+			},
+			right: {
+				x: (gameW - ((gameUnit * 7)/3))
+			},
+			bottom: {
+				y: gameH - (gameUnit * 2.2)
+			},
 			width: (gameUnit * 7)/3,
 			height: (gameUnit * 6)/3
 		};
@@ -1973,11 +1982,11 @@ var GameConfig = function() {
 									type: 'button',
 									name: 'buttonSettings',
 									img: 'buttonSettings',
-									x: (gameUnit * 0.25),
-									y: gameH - (gameUnit * 2.25),
+									x: controlButtons.left.x,
+									y: controlButtons.bottom.y,
 									attrs: {
-										width: controlButtonSizes.width,
-										height: controlButtonSizes.height
+										width: controlButtons.width,
+										height: controlButtons.height
 									},
 									callback: gameLogic.global.buttonCallbacks.settings,
 									context: this,
@@ -1987,11 +1996,11 @@ var GameConfig = function() {
 									type: 'button',
 									name: 'buttonShare',
 									img: 'buttonShare',
-									x: (gameUnit * 7.5),
-									y: gameH - (gameUnit * 2.25),
+									x: controlButtons.right.x,
+									y: controlButtons.bottom.y,
 									attrs: {
-										width: controlButtonSizes.width,
-										height: controlButtonSizes.height
+										width: controlButtons.width,
+										height: controlButtons.height
 									},
 									callback: gameLogic.global.buttonCallbacks.share,
 									context: this,
@@ -2104,11 +2113,11 @@ var GameConfig = function() {
 									type: 'button',
 									name: 'equipmentButton',
 									img: 'buttonEquipment',
-									x: (gameUnit * 7.5),
-									y: gameH - (gameUnit * 2.25),
+									x: controlButtons.right.x,
+									y: controlButtons.bottom.y,
 									attrs: {
-										width: controlButtonSizes.width,
-										height: controlButtonSizes.height
+										width: controlButtons.width,
+										height: controlButtons.height
 									},
 									callback: gameLogic.global.buttonCallbacks.equipmentListStart,
 									context: this,
@@ -2127,11 +2136,11 @@ var GameConfig = function() {
 									type: 'button',
 									name: 'buttonEquipmentAdd',
 									img: 'buttonEquipmentAdd',
-									x: (gameW/2) - (controlButtonSizes.width/2),
-									y: gameH - (gameUnit * 1.75),
+									x: (gameW/2) - (controlButtons.width/2),
+									y: gameH - (gameUnit * 1.66),
 									attrs: {
-										width: controlButtonSizes.width,
-										height: controlButtonSizes.height
+										width: controlButtons.width,
+										height: controlButtons.height
 									},
 									callback: gameLogic.global.buttonCallbacks.addEquipment,
 									context: this,
@@ -2145,33 +2154,17 @@ var GameConfig = function() {
 							attrs: {
 								visible: false
 							},
-							views: {
-								saveMachineButton: {
-									type: 'button',
-									name: 'saveMachineButton',
-									img: 'buttonEquipmentSave',
-									x: gameUnit * 8,
-									y: (gameH - gameUnit * 2),
-									attrs: {
-										width: (gameUnit * 2),
-										height: (gameUnit * 2),
-										visible: false
-									},
-									callback: gameLogic.global.buttonCallbacks.saveMachine,
-									context: this,
-									frames: [0, 0, 0, 0]
-								}
-							}
+							views: {}
 						},
 						confirmButton: {
 							type: 'button',
 							name: 'confirmButton',
 							img: 'buttonConfirm',
-							x: (gameUnit * 7.5),
-							y: gameH - (gameUnit * 2.25),
+							x: controlButtons.right.x,
+							y: controlButtons.bottom.y,
 							attrs: {
-								width: controlButtonSizes.width,
-								height: controlButtonSizes.height
+								width: controlButtons.width,
+								height: controlButtons.height
 							},
 							callback: gameLogic.global.buttonCallbacks.confirmButton,
 							context: this,
@@ -2181,11 +2174,11 @@ var GameConfig = function() {
 							type: 'button',
 							name: 'backButton',
 							img: 'buttonBack',
-							x: (gameUnit * 0.25),
-							y: gameH - (gameUnit * 2.25),
+							x: controlButtons.left.x,
+							y: controlButtons.bottom.y,
 							attrs: {
-								width: controlButtonSizes.width,
-								height: controlButtonSizes.height
+								width: controlButtons.width,
+								height: controlButtons.height
 							},
 							callback: gameLogic.global.buttonCallbacks.backButton,
 							context: this,

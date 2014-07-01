@@ -1,13 +1,13 @@
 var GAME_NAME = 'global_trader_3_0';
-var TIME_PER_TURN = 2;
+var TIME_PER_TURN = 52;
 var TURN_TIME_INTERVAL = 1000;
 var US_DETAIL_GRID_CELLS = 6;
 var TIME_TO_MANUFACTOR = 5;
 var MACHINE_LIST_COLUMNS = 2; 
-var aspectRatio = [10, 16];
+var ASPECT_RATIO = [9, 16];
 
 function startGame() {
-	PhaserGame.init(aspectRatio);
+	PhaserGame.init(ASPECT_RATIO);
 }
 
 var gameLogic = {
@@ -636,9 +636,6 @@ var gameLogic = {
 			equipmentCreateClose: function() {
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentList' });
 			},
-			saveMachine: function() {
-				PWG.EventCenter.trigger({ type: Events.SAVE_MACHINE });
-			},
 			plusButton: function() {
 				switch(PWG.ScreenManager.currentId) {
 					case 'world':
@@ -664,6 +661,10 @@ var gameLogic = {
 				switch(PWG.ScreenManager.currentId) {
 					case 'brief':
 					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
+					break;
+					
+					case 'equipmentEdit':
+					PWG.EventCenter.trigger({ type: Events.SAVE_MACHINE });
 					break;
 					
 					default:
@@ -1037,10 +1038,12 @@ var gameLogic = {
 			],
 			create: function() {
 				PhaserGame.buildEquipmentEdit();
+				PWG.ViewManager.showView('global:confirmButton');
 			},
 			shutdown: function() {
 				PWG.ViewManager.removeView('machineEdit', 'equipmentEdit');
 				PWG.ViewManager.hideView('global:equipmentEditGroup');
+				PWG.ViewManager.hideView('global:confirmButton');
 				this.partsMenuType = '';
 				this.partsMenuOpen = false;
 				PhaserGame.machineDirty = false;
