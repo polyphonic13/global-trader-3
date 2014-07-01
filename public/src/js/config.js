@@ -217,10 +217,12 @@ var gameData = {
 			text: [
 				'Build 1 Factory',
 				'Create 2 Machine Models',
-				'Produce 10 Machines'
+				'Produce 10 Machines',
+				'Generate $1000 in profits'
 			]
 		},
 		goals: {
+			profit: 1000,
 			newBuildings: 1,
 			newMachineModels: 2,
 			newMachines: 5
@@ -317,6 +319,13 @@ var gameData = {
 		}
 	}
 	]
+};
+
+var goalsText = {
+	profit: 'Profits: ',
+	newBuildings: 'Factories Built: ',
+	newMachineModels: 'Machine Models Created: ',
+	newMachines: 'Newly Manufactured Machines: '
 };
 
 var turnScreens = [
@@ -854,7 +863,7 @@ var GameConfig = function() {
 					cost: {
 						type: 'text',
 						name: 'machineCost',
-						text: '$',
+						text: '',
 						x: gameUnit * 0,
 						y: gameUnit * 0.85,
 						style: {
@@ -1065,6 +1074,26 @@ var GameConfig = function() {
 						input: gameLogic.global.input.partSelectionIcon
 					}
 					
+				}
+			},
+			yearSummary: {
+				type: 'group',
+				name: 'yearSummary',
+				views: {
+					
+				}
+			},
+			yearSummaryText: {
+				type: 'text',
+				name: 'yearSummaryText',
+				text: '',
+				offsetX: 0,
+				offsetY: (gameUnit * 0.75),
+				x: gameUnit * 1.5,
+				y: gameUnit * 6,
+				style: {
+				    font: (fontSizes.sm + 'px Arial'),
+			        fill: palette.black
 				}
 			}
 		};
@@ -1338,6 +1367,7 @@ var GameConfig = function() {
 				turnActive: false,
 				turnTime: TIME_PER_TURN,
 				turnCompleted: false,
+				levelPassed: false,
 				activeSector: -1,
 				activeTile: null,
 				activeFactor: null,

@@ -1,5 +1,5 @@
 var GAME_NAME = 'global_trader_3_0';
-var TIME_PER_TURN = 52;
+var TIME_PER_TURN = 2;
 var TURN_TIME_INTERVAL = 1000;
 var US_DETAIL_GRID_CELLS = 6;
 var TIME_TO_MANUFACTOR = 5;
@@ -93,14 +93,6 @@ var gameLogic = {
 					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'home' });
 					alert('you won!');
 				}
-			}
-		},
-		// increment level
-		{
-			event: Events.INCREMENT_LEVEL,
-			handler: function(event) {
-				PWG.ViewManager.setFrame('global:turnGroup', TurnManager.playerData.level);
-				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'turnEnd' });
 			}
 		},
 		// building state updated
@@ -378,28 +370,53 @@ var gameLogic = {
 			endYear: function() {
 				var levelGoals = gameData.levels[TurnManager.playerData.level].goals;
 				var currentData = TurnManager.currentData;
-				var passed = true;
+				PhaserGame.levelPassed = true;
 				trace('PhaserGame/endYear, levelGoals = ', levelGoals);
 				PWG.Utils.each(
 					levelGoals,
 					function(goal, key) {
 						trace('\tgoal['+key+'] = ' + goal);
-						// if(currentData.hasOwnProperty(key)) {
-						// 	trace('\tkey not found on current data');
-						// 	passed = false;
-						// } else if(currentData[key].length < goal) {
 						if(currentData[key].length < goal) {
 							trace('\tcurrentData['+key+'].length: ' + currentData[key].length + ' is less than goal: ' + goal);
-							passed = false;
+							PhaserGame.levelPassed = false;
 						}
 						
 					},
 					this
 				);
-				trace('\tlevel passed = ' + passed);
-				if(passed) {
-					PWG.EventCenter.trigger({ type: Events.INCREMENT_LEVEL });
+				trace('\tlevel PhaserGame.levelPassed = ' + PhaserGame.levelPassed);
+				if(PhaserGame.levelPassed) {
+					// PhaserGame.playerData.level++;
+					// PhaserGame.setSavedData();
+					// PWG.ViewManager.setFrame('global:turnGroup', TurnManager.playerData.level);
 				}
+				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'turnEnd' });
+			},
+			buildYearEndReport: function() {
+				var openedEnvelope = PWG.ViewManager.getControllerFromPath('turnEnd');
+				trace('openedEnvelope = ', openedEnvelope);
+				var levelGoals = gameData.levels[TurnManager.playerData.level].goals;
+				trace('levelGoals = ', levelGoals);
+				var yearSummary = PWG.Utils.clone(PhaserGame.config.dynamicViews.yearSummary);
+				var yearSummaryText = PhaserGame.config.dynamicViews.yearSummaryText;
+				
+				var goalCount = 0;
+				
+				PWG.Utils.each(
+					levelGoals,
+					function(goal, key) {
+						var item = PWG.Utils.clone(yearSummaryText);
+						trace('\titem = ', item);
+						item.name += 'summary-' + key;
+						item.text = goalsText[key] + TurnManager.currentData[key].length;
+						item.y += (goalCount * item.offsetY);
+						yearSummary.views['goal'+key] = item;
+						goalCount++;
+					},
+					this
+				);
+				trace('yearSummary config now = ', yearSummary);
+				PWG.ViewManager.addView(yearSummary, openedEnvelope, true);
 			}
 		},
 		input: {
@@ -527,6 +544,7 @@ var gameLogic = {
 			closedEnvelope: {
 				inputDown: function(event) {
 					PWG.ViewManager.hideView('turnEnd:closedEnvelope');
+					PhaserGame.buildYearEndReport();
 				}
 			},
 			openedEnvelope: {
@@ -889,7 +907,7 @@ var gameLogic = {
 						item.name = 'machine' + idx;
 						item.views.name.text = machine.name;
 						item.views.cost.text = '$' + machine.cost;
-						item.views.sell.text = machine.sell;
+						item.views.sell.text = '$' + machine.sell;
 						item.views.invisButton.machineIdx = machine.id;
 						// increment y to next row:
 						if(count % MACHINE_LIST_COLUMNS === 0) {
@@ -1033,8 +1051,9 @@ var gameLogic = {
 				PWG.ViewManager.hideView('global:backButton');
 			},
 			shutdown: function() {
-				
+				PWG.ViewManager.removeView('yearSummary', 'turnEnd:openedEnvelope');
 			}
 		}
+		
 	}
 };
