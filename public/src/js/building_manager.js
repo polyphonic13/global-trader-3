@@ -142,6 +142,7 @@ var BuildingManager = function() {
 	module.create = function(type, config) {
 		// trace('BuildingManager/create, type = ' + type + ', cost = ' + gameData.buildings[type].cost + ', bank = ' + TurnManager.playerData.bank);
 		var count = TurnManager.playerData.buildingCount[type];
+		trace('======== count = ' + count);
 		config.type = type;
 		config.id = type + count;
 		config.name = type.toUpperCase() + ' ' + (count + 1);

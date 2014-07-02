@@ -222,6 +222,7 @@ var gameLogic = {
 				// PhaserGame.addBuildingItemsOverlay.call(this, event.value, this.views);
 				var buildingMenuConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingMenu);
 				// trace('addBuildingMenu, buildingMenuConfig = ', buildingMenuConfig);
+				PWG.ViewManager.hideView('global:backButton');
 				PWG.ViewManager.addView(buildingMenuConfig);
 				this.buildingMenuOpen = true;
 			},
@@ -236,7 +237,6 @@ var gameLogic = {
 			},
 			cancelAddBuilding: function() {
 				PWG.EventCenter.trigger({ type: Events.CLOSE_BUILDINGS_MENU });
-				// trace('cancel add building');
 				PhaserGame.activeTile = null;
 			},
 			addPartItemsMenu: function(type, collection) {
@@ -485,6 +485,7 @@ var gameLogic = {
 			closedEnvelope: {
 				inputDown: function(event) {
 					PWG.ViewManager.hideView('turnEnd:closedEnvelope');
+					PWG.ViewManager.showView('global:confirmButton');
 					PhaserGame.buildYearEndReport();
 				}
 			},
@@ -608,6 +609,10 @@ var gameLogic = {
 					PWG.EventCenter.trigger({ type: Events.SAVE_MACHINE });
 					break;
 					
+					case 'turnEnd':
+					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'brief' });
+					break;
+					
 					default:
 					break;
 				}
@@ -686,7 +691,7 @@ var gameLogic = {
 			create: function() {
 				var brief = PWG.ViewManager.getControllerFromPath('brief');
 
-				var levelBrief = gameData.levels[TurnManager.currentLevel].brief;
+				var levelBrief = gameData.levels[TurnManager.playerData.level].brief;
 				var missionBrief = PWG.Utils.clone(PhaserGame.config.dynamicViews.missionBrief);
 				var goalText = PhaserGame.config.dynamicViews.goalText;
 				
@@ -778,6 +783,7 @@ var gameLogic = {
 					if(this.buildingMenuOpen) {
 						// trace('\toverlay-menu = ', (this.views['overlay-menu']));
 						PWG.ViewManager.hideView('buildingMenu');
+						PWG.ViewManager.showView('global:backButton');
 						this.buildingMenuOpen = false;
 					}
 				}

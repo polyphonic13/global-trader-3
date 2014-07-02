@@ -16,7 +16,6 @@ var TurnManager = function() {
 	var module = {};
 
 	module.turns;
-	module.currentLevel = 0;
 	module.currentData = {};
 	module.playerData = {};
 
@@ -28,7 +27,6 @@ var TurnManager = function() {
 	module.startTurn = function() {
 		// trace('--- TurnManager/startTurn');
 		module.currentData = PWG.Utils.clone(turnData);
-		module.currentLevel++;
 	};
 	
 	module.completeTurn = function() {
@@ -53,9 +51,10 @@ var TurnManager = function() {
 	};
 
 	module.addBuilding = function(building) {
-		// trace('--- TurnManager/addBuilding, buildin = ', building);
+		trace('--- TurnManager/addBuilding, building = ', building);
 		module.playerData.buildings[building.sector][building.id] = building;
 		module.currentData.newBuildings.push(building);
+		module.playerData.buildingCount[building.type]++;
 		if(building.type === BuildingTypes.FACTORY) {
 			module.currentData.newFactories++;
 		} else if(building.type === BuildingTypes.SHOW_ROOM) {

@@ -786,10 +786,10 @@ var GameConfig = function() {
 						name: 'menuBg',
 						img: 'blockWhite',
 						x: (gameUnit/2),
-						y: (gameUnit/2),
+						y: (gameUnit * 2),
 						attrs: {
 							width: (gameW - gameUnit),
-							height: (gameH - gameUnit),
+							height: (gameH - (gameUnit * 6)),
 							alpha: 0.75,
 							fixedToCamera: true
 						}
@@ -797,12 +797,12 @@ var GameConfig = function() {
 					confirmButton: {
 						type: 'button',
 						name: 'confirmButton',
-						img: 'buttonEquipmentSave',
-						x: (gameW - (gameUnit * 2.5)),
-						y: (gameH - (gameUnit  * 2.5)),
+						img: 'buttonConfirm',
+						x: controlButtons.right.x,
+						y: controlButtons.bottom.y,
 						attrs: {
-							width: gameUnit * 2,
-							height: gameUnit * 2
+							width: controlButtons.width,
+							height: controlButtons.height
 						},
 						callback: gameLogic.global.buttonCallbacks.buildingAddConfirm,
 						context: this,
@@ -812,11 +812,11 @@ var GameConfig = function() {
 						type: 'button',
 						name: 'cancelButton',
 						img: 'buttonCancel',
-						x: (gameUnit * 0.5),
-						y: (gameH - (gameUnit  * 2.5)),
+						x: controlButtons.left.x,
+						y: controlButtons.bottom.y,
 						attrs: {
-							width: gameUnit * 2,
-							height: gameUnit * 2
+							width: controlButtons.width,
+							height: controlButtons.height
 						},
 						callback: gameLogic.global.buttonCallbacks.buildingAddCancel,
 						context: this,
@@ -843,10 +843,10 @@ var GameConfig = function() {
 								name: 'menuItemIcon',
 								img: 'iconFactory',
 								x: gameUnit * 2,
-								y: gameUnit * 6,
+								y: gameUnit * 4,
 								attrs: {
 									width: gameUnit * 6,
-									height: gameUnit * 3
+									height: gameUnit * 6
 								}
 							},
 							title: {
@@ -856,7 +856,7 @@ var GameConfig = function() {
 								x: 0,
 								y: gameUnit * 3,
 								style: {
-									font: (fontSizes.lg + 'px Arial'),
+									font: (fontSizes.md + 'px Arial'),
 									fill: palette.black
 								},
 								position: {
@@ -1359,8 +1359,7 @@ var GameConfig = function() {
 					blockGreen: 'images/block_green.gif',
 					blockRed: 'images/block_red.gif',
 					greyTiles: 'images/grey_tiles2.gif',
-					iconFactory: 'images/icon_factory.gif',
-					iconShowroom: 'images/icon_showroom.gif',
+					iconFactory: 'images/screens/us_detail/icon_factory.png',
 					iconTractor: 'images/icon_tractor.gif',
 					iconSkidsteer: 'images/icon_skidsteer.gif',
 					buttonEquipmentSave: 'images/button_red_check.gif',
@@ -1408,6 +1407,12 @@ var GameConfig = function() {
 					},
 					buttonShare: {
 						url: 'images/icons/share.png',
+						width: 175,
+						height: 150,
+						frames: 2
+					},
+					buttonCancel: {
+						url: 'images/icons/cancel.png',
 						width: 175,
 						height: 150,
 						frames: 2
@@ -1480,12 +1485,6 @@ var GameConfig = function() {
 					},
 					buttonCheck: {
 						url: 'images/controls/check.png',
-						width: 50,
-						height: 50,
-						frames: 2
-					},
-					buttonCancel: {
-						url: 'images/controls/cancel.png',
 						width: 50,
 						height: 50,
 						frames: 2
@@ -2262,10 +2261,10 @@ var GameConfig = function() {
 									type: 'sprite',
 									name: 'turnIndicator',
 									img: 'turnIndicators',
-									x: (gameW/2) - (gameUnit * 1.25),
+									x: (gameW/2) - (gameUnit * 1.2),
 									y: gameUnit * 0.33,
 									attrs: {
-										width: gameUnit * 2.5,
+										width: gameUnit * 2.4,
 										height: (gameUnit * 2.5)/3
 									}
 								}
