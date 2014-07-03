@@ -242,6 +242,9 @@ var gameLogic = {
 				PWG.EventCenter.trigger({ type: Events.CLOSE_BUILDINGS_MENU });
 				PhaserGame.activeTile = null;
 			},
+			getCurrentMachinePiecePath: function() {
+				return 'equipmentEdit:machineEdit:machinePieceMenu:' + PhaserGame.machinePieces[PhaserGame.currentMachinePiece];
+			},
 			addPartItemsMenu: function(type, collection) {
 				PhaserGame.activePartType = type;
 				var partsData = gameData.parts[type];
@@ -456,6 +459,16 @@ var gameLogic = {
 			editMachine: {
 				inputDown: function() {
 					PWG.EventCenter.trigger({ type: Events.EDIT_MACHINE, value: this.controller.config.machineIdx });
+				}
+			},
+			machinePieceForwardIcon: {
+				inputDown: function() {
+					PWG.EventCenter.trigger({ type: Events.NEXT_MACHINE_PIECE_ICON });
+				}
+			},
+			machinePieceBackwardIcon: {
+				inputDown: function() {
+					PWG.EventCenter.trigger({ type: Events.PREV_MACHINE_PIECE_ICON });
 				}
 			},
 			tireIcon: {
@@ -1019,6 +1032,34 @@ var gameLogic = {
 		},
 		equipmentEdit: {
 			listeners: [
+			// next machine piece icon
+			{
+				event: Events.NEXT_MACHINE_PIECE_ICON,
+				handler: function(event) {
+					var path = PhaserGame.getCurrentMachinePiecePath();
+					trace('path = ' + path);
+					PWG.ViewManager.hideView();
+					if(PhaserGame.currentMachinePiece < PhaserGame.machinePieces.length - 1) {
+						PhaserGame.currentMachinePiece++;
+					} else {
+						PhaserGame.currentMachinePiece = 0;
+					}
+					PWG.ViewManager.showView(PhaserGame.getCurrentMachinePiecePath());
+				}
+			},
+			// prev machine piece icon
+			{
+				event: Events.PREV_MACHINE_PIECE_ICON,
+				handler: function(event) {
+					PWG.ViewManager.hideView(PhaserGame.getCurrentMachinePiecePath());
+					if(PhaserGame.currentMachinePiece > 1) {
+						PhaserGame.currentMachinePiece--;
+					} else {
+						PhaserGame.currentMachinePiece = PhaserGame.machinePieces.length;
+					}
+					PWG.ViewManager.showView(PhaserGame.getCurrentMachinePiecePath());
+				}
+			},
 			// add part
 			{
 				event: Events.ADD_PART,
@@ -1090,40 +1131,73 @@ var gameLogic = {
 			}
 			],
 			create: function() {
+				PhaserGame.machinePieces = [];
+				PhaserGame.currentMachinePiece = 0;
+				
+				var type = PhaserGame.activeMachineType;
+				var size = PhaserGame.activeMachineSize;
+				var pieces = gameData.machines[type][size];
+				var count = 0;
+				trace('pieces = ', pieces); 
+				
 				var equipmentEdit = PWG.ViewManager.getControllerFromPath('equipmentEdit');
 				var machineEdit = PWG.Utils.clone(PhaserGame.config.dynamicViews.machineEdit);
+				var machinePieceMenuItem = PhaserGame.config.dynamicViews.machinePieceMenuItem;
 				var machinePartIcons = PWG.Utils.clone(PhaserGame.config.dynamicViews.machinePartIcons);
 				var machinePartIconConfig = PhaserGame.config.machinePartIconConfig;
-				
-				machineEdit.views.bg.img = PhaserGame.config.machineEditBackgrounds[PhaserGame.activeMachineType][PhaserGame.activeMachineSize];
-				
+
+				machineEdit.views.bg.img = PhaserGame.config.machineEditBackgrounds[type][size];
+
 				PWG.Utils.each(
-					machinePartIcons.views,
-					function(part, p) {
-						var config = machinePartIconConfig[PhaserGame.activeMachineType][PhaserGame.activeMachineSize][p];
-						// trace('\tconfig = ', config);
-						part.img = config.img;
-						part.x = config.x;
-						part.y = config.y;
+					pieces,
+					function(requiredType) {
 						PWG.Utils.each(
-							config.attrs,
-							function(attr, a) {
-								part.attrs[a] = attr;
+							requiredType,
+							function(piece) {
+								var item = PWG.Utils.clone(machinePieceMenuItem);
+								item.name = piece;
+								item.views.name.text = piece.toUpperCase();
+								if(count > 0) {
+									item.attrs.visible = false;
+								} else {
+									item.x += 100;
+								}
+								PhaserGame.machinePieces.push(item.name);
+								count++;
+								machineEdit.views.machinePieceMenu.views[piece] = item;
 							},
 							this
-						);
-						
-						machineEdit.views[p] = part;
+						)
 					},
 					this
 				);
-				
+				// PWG.Utils.each(
+				// 	machinePartIcons.views,
+				// 	function(part, p) {
+				// 		var config = machinePartIconConfig[type][size][p];
+				// 		// trace('\tconfig = ', config);
+				// 		part.img = config.img;
+				// 		part.x = config.x;
+				// 		part.y = config.y;
+				// 		PWG.Utils.each(
+				// 			config.attrs,
+				// 			function(attr, a) {
+				// 				part.attrs[a] = attr;
+				// 			},
+				// 			this
+				// 		);
+				// 
+				// 		machineEdit.views[p] = part;
+				// 	},
+				// 	this
+				// );
+
 				// trace('machineEdit now = ', machineEdit);
-				
+
 				PWG.ViewManager.addView(machineEdit, equipmentEdit, true);
-				
+
 				PWG.ViewManager.showView('global:equipmentEditGroup');
-				
+
 				// PWG.ViewManager.setChildFrames('equipmentEdit:machineEdit:editorParts', 0);
 				var activeMachineParts = PhaserGame.activeMachine.config.parts;
 				if(activeMachineParts) {
@@ -1143,6 +1217,7 @@ var gameLogic = {
 				PWG.ViewManager.showView('global:confirmButton');
 			},
 			shutdown: function() {
+				PhaserGame.machinePieces = null;
 				PWG.ViewManager.removeView('machineEdit', 'equipmentEdit');
 				PWG.ViewManager.hideView('global:equipmentEditGroup');
 				PWG.ViewManager.hideView('global:confirmButton');

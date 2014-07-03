@@ -44,7 +44,7 @@ var BuildingManager = function() {
 
 	PWG.Utils.inherit(Factory, Building);
 	
-	Factory.prototype.buildTime = 3;
+	Factory.prototype.buildTime = 0;
 	Factory.prototype.modelCapacity = 6;
  	Factory.prototype.update = function() {
 		Factory._super.update.apply(this, arguments);

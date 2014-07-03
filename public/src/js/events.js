@@ -20,6 +20,8 @@ var Events = {
 	BUILDING_STATE_UPDATED: 'buildingStateUpdated',
 	SHOWROOM_ADD_NOTIFICATION: 'showRoomAddNotification',
 	SHOW_BUILD_GROUP: 'showBuildGroup',
+	NEXT_MACHINE_PIECE_ICON: 'nextMachinePieceIcon',
+	PREV_MACHINE_PIECE_ICON: 'prevMachinePieceIcon',
 	MACHINE_TYPE_SELECTION: 'machineTypeSelection',
 	MACHINE_SIZE_SELECTION: 'machineSizeSelection',
 	OPEN_PARTS_MENU: 'openPartsMenu',

@@ -810,28 +810,81 @@ var GameConfig = function() {
 							height: gameH
 						}
 					},
-					machinePartNavigator: {
+					machinePieceMenu: {
 						type: 'group',
-						name: 'machinePart',
+						name: 'machinePieceMenu',
 						views: {
 							
+						}
+					},
+					machinePieceMenuButtons: {
+						type: 'group',
+						name: 'machinePieceMenuButtons',
+						views: {
+							forward: {
+								type: 'sprite',
+								name: 'forward',
+								img: 'blockWhite',
+								x: (gameW/2) + gameUnit * 2,
+								y: gameUnit * 1.75,
+								attrs: {
+									width: gameUnit * 0.5,
+									height: gameUnit * 0.5,
+									alpha: 0.3
+								},
+								input: gameLogic.global.input.machinePieceForwardIcon
+							},
+							backward: {
+								type: 'sprite',
+								name: 'backward',
+								img: 'blockWhite',
+								x: (gameW/2) - gameUnit * 2.5,
+								y: gameUnit * 1.75,
+								attrs: {
+									width: gameUnit * 0.5,
+									height: gameUnit * 0.5,
+									alpha: 0.3
+								},
+								input: gameLogic.global.input.machinePieceBackwardIcon
+							}
 						}
 					}
 				}
 			},
-			machinePartNavigatorItem: {
+			machinePieceMenuItem: {
 				type: 'group',
-				name: 'machinePartNavigatorItem',
+				name: 'machinePieceMenuItem',
+				x: (gameW/2) - (gameUnit * 1.75),
+				y: gameUnit * 1.5,
+				attrs: {
+					width: gameUnit * 3.5,
+					height: gameUnit * 1.5
+				},
 				views: {
 					name: {
 						type: 'text',
 						name: 'partName',
 						text: '',
 						x: gameUnit * 3,
-						y: gameUnit * 0.25,
+						y: gameUnit * 1.75,
 						style: {
 						    font: (fontSizes.md + 'px Arial'),
 					        fill: palette.orange3
+						},
+						position: {
+							centerX: true
+						}
+					},
+					button: {
+						type: 'sprite',
+						name: 'button',
+						img: 'blockWhite',
+						x: (gameW/2) - (gameUnit * 1.75),
+						y: gameUnit * 1.5,
+						attrs: {
+							width: gameUnit * 3.5,
+							height: gameUnit * 1,
+							alpha: 0.3
 						}
 					}
 				}
