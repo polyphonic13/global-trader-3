@@ -1037,9 +1037,10 @@ var GameConfig = function() {
 				type: 'group',
 				name: 'machineIcon',
 				offsetY: (gameUnit * 1.5),
-				offsetX: (gameUnit * 0.5),
+				offsetX: (gameUnit * 0.25),
 				iconW: (gameUnit * 4),
 				iconH: (gameUnit * 4),
+				width: (gameW/2),
 				views: {
 					bg: {
 						type: 'sprite',
@@ -1594,9 +1595,6 @@ var GameConfig = function() {
 						height: 100,
 						frames: 16
 					}
-				},
-				tilemaps: {
-					greyTilesMap: 'data/factory_world.json'
 				}
 			},
 			stage: {
