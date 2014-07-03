@@ -545,6 +545,8 @@ var turnScreens = [
 var GameConfig = function() {
 	
 	var module = {};
+
+	module.loadingAnimation = true;
 	
 	module.init = function(callback, context) {
 		// stage sizes cached

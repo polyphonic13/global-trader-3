@@ -7,7 +7,7 @@ var GridManager = function() {
 	
 	module.init = function(sectors, xCells, yCells, gridSize) {
 		module.initGrid(sectors, xCells, yCells, gridSize);
-		module.initBuildings(BuildingManager.buildings);
+		module.initBuildings(TurnManager.playerData.buildings);
 	}
 	
 	module.initGrid = function(sectors, xCells, yCells, gridSize) {

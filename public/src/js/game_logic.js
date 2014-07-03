@@ -110,14 +110,12 @@ var gameLogic = {
 			init: function() {
 				PhaserGame.getSavedData();
 				TurnManager.init();
-				BuildingManager.init();
 			},
 			preload: function() {
 				PWG.PhaserLoader.load(PhaserGame.config.assets);
 				// PWG.ScreenManager.preload();
 			},
 			create: function() {
-				GridManager.init(usSectors, US_DETAIL_GRID_CELLS, US_DETAIL_GRID_CELLS, PWG.Stage.gameW/6);
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: PhaserGame.config.defaultScreen });
 			},
 			render: function() {
@@ -151,6 +149,10 @@ var gameLogic = {
 			startTurn: function() {
 				// trace('START TURN');
 				TurnManager.startTurn();
+				BuildingManager.init();
+
+				GridManager.init(usSectors, US_DETAIL_GRID_CELLS, US_DETAIL_GRID_CELLS, PWG.Stage.gameW/6);
+
 				PhaserGame.turnActive = true;
 				PhaserGame.timePerTurn = TIME_PER_TURN;
 				PhaserGame.turnTimer = new PWG.PhaserTime.Controller('turnTime');
@@ -348,9 +350,16 @@ var gameLogic = {
 				PhaserGame.yearSummary = yearSummary;
 				trace('\tlevel PhaserGame.levelPassed = ' + PhaserGame.levelPassed + '\n\tyearSummary = ', yearSummary);
 				if(PhaserGame.levelPassed) {
+					// only save the player data if the user passed the level. 
+					PhaserGame.playerData = TurnManager.playerData;
 					PhaserGame.playerData.level++;
 					PhaserGame.setSavedData();
+				} else {
+					// if failed, reset turn manager to pre-level playerData
+					trace('\tfailed to pass level, playerData is: ', PhaserGame.playerData);
+					TurnManager.playerData = PhaserGame.playerData;
 				}
+				
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'turnEnd' });
 			},
 			buildYearEndReport: function() {
@@ -691,7 +700,7 @@ var gameLogic = {
 			create: function() {
 				var brief = PWG.ViewManager.getControllerFromPath('brief');
 
-				var levelBrief = gameData.levels[TurnManager.playerData.level].brief;
+				var levelBrief = gameData.levels[PhaserGame.playerData.level].brief;
 				var missionBrief = PWG.Utils.clone(PhaserGame.config.dynamicViews.missionBrief);
 				var goalText = PhaserGame.config.dynamicViews.goalText;
 				

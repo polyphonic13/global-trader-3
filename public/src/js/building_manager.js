@@ -120,7 +120,7 @@ var BuildingManager = function() {
 	module.buildings = [ {}, {}, {}, {}, {} ];
 	
 	module.init = function() {
-		// trace('initializing building data with: ', TurnManager.playerData.buildings);
+		trace('initializing building data with: ', TurnManager.playerData.buildings);
 		PWG.Utils.each(
 			TurnManager.playerData.buildings,
 			function(sector, s) {

@@ -25,14 +25,14 @@ var TurnManager = function() {
 	};
 	
 	module.startTurn = function() {
-		// trace('--- TurnManager/startTurn');
+		trace('--- TurnManager/startTurn');
 		module.currentData = PWG.Utils.clone(turnData);
 	};
 	
 	module.completeTurn = function() {
 		// trace('--- TurnManager/completeTurn');
-		PhaserGame.playerData = module.playerData;
-		PhaserGame.setSavedData();
+		// PhaserGame.playerData = module.playerData;
+		// PhaserGame.setSavedData();
 	};
 	
 	module.stopTurn = function() {
