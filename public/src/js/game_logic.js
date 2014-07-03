@@ -980,7 +980,7 @@ var gameLogic = {
 					);
 					
 					machineList.views[empty.name] = empty;
-					trace('\tadding empty icon: ', empty);
+					// trace('\tadding empty icon: ', empty);
 					count++;
 				}
 				
@@ -1028,7 +1028,7 @@ var gameLogic = {
 					var frame = gameData.parts[this.partsMenuType][event.value].frame;
 					// trace('frame = ' + frame + ', type = ' + this.partsMenuType + ', collection = ', this.views);
 					var partView = this.partsMenuType + 'Part';
-					PWG.ViewManager.setFrame('equipmentEdit:machineEdit:editorParts:'+partView, frame);
+					// PWG.ViewManager.setFrame('equipmentEdit:machineEdit:editorParts:'+partView, frame);
 					PWG.EventCenter.trigger({ type: Events.CLOSE_PARTS_MENU });
 				}
 			},
@@ -1092,27 +1092,52 @@ var gameLogic = {
 			create: function() {
 				var equipmentEdit = PWG.ViewManager.getControllerFromPath('equipmentEdit');
 				var machineEdit = PWG.Utils.clone(PhaserGame.config.dynamicViews.machineEdit);
+				var machinePartIcons = PWG.Utils.clone(PhaserGame.config.dynamicViews.machinePartIcons);
+				var machinePartIconConfig = PhaserGame.config.machinePartIconConfig;
 				
 				machineEdit.views.bg.img = PhaserGame.config.machineEditBackgrounds[PhaserGame.activeMachineType][PhaserGame.activeMachineSize];
+				
+				PWG.Utils.each(
+					machinePartIcons.views,
+					function(part, p) {
+						var config = machinePartIconConfig[PhaserGame.activeMachineType][PhaserGame.activeMachineSize][p];
+						// trace('\tconfig = ', config);
+						part.img = config.img;
+						part.x = config.x;
+						part.y = config.y;
+						PWG.Utils.each(
+							config.attrs,
+							function(attr, a) {
+								part.attrs[a] = attr;
+							},
+							this
+						);
+						
+						machineEdit.views[p] = part;
+					},
+					this
+				);
+				
+				// trace('machineEdit now = ', machineEdit);
 				
 				PWG.ViewManager.addView(machineEdit, equipmentEdit, true);
 				
 				PWG.ViewManager.showView('global:equipmentEditGroup');
 				
-				PWG.ViewManager.setChildFrames('equipmentEdit:machineEdit:editorParts', 0);
+				// PWG.ViewManager.setChildFrames('equipmentEdit:machineEdit:editorParts', 0);
 				var activeMachineParts = PhaserGame.activeMachine.config.parts;
 				if(activeMachineParts) {
 					// TODO: show the views/frames of the machine as it currently exists
 					// trace('--------- activeMachineParts = ', activeMachineParts);
-					PWG.Utils.each(
-						activeMachineParts,
-						function(value, key) {
-							var partView = key + 'Part';
-							var frame = gameData.parts[key][value].frame;
-							PWG.ViewManager.setFrame('equipmentEdit:machineEdit:editorParts:'+partView, frame);
-						},
-						this
-					);
+					// PWG.Utils.each(
+					// 	activeMachineParts,
+					// 	function(value, key) {
+					// 		var partView = key + 'Part';
+					// 		var frame = gameData.parts[key][value].frame;
+					// 		// PWG.ViewManager.setFrame('equipmentEdit:machineEdit:editorParts:'+partView, frame);
+					// 	},
+					// 	this
+					// );
 				}
 				PhaserGame.machineDirty = true;
 				PWG.ViewManager.showView('global:confirmButton');
