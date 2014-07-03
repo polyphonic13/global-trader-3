@@ -68,6 +68,7 @@ var BuildingManager = function() {
 									if(this.config.showrooms.length === 0 && this.config.inventory.length > module.FACTORY_MIN_SELL_INVENTORY) {
 										if(!this.notifiedOfShowroomAdd) {
 											// alert(this.config.id + ' needs a showroom to sell inventory');
+											PWG.EventCenter.trigger({ type: Events.SHOWROOM_ADD_NOTIFICATION, factory: this.config });
 											this.notifiedOfShowroomAdd = true;
 										}
 									}

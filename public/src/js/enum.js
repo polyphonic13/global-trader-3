@@ -41,6 +41,31 @@ var PartTypes = {
 	TRANSMISSION: 'transmission',
 	CAB: 'cab',
 	HEADLIGHTS: 'headlights',
-	BUCKET: 'bucket'
+	BUCKET: 'bucket',
+	TRACK: 'track',
+	THREE_POINT_HITCH: 'threePointHitch',
+	POWER_TAKE_OFF: 'powerTakeoff',
+	QUICK_COUPLER: 'quickCoupler',
+	CAB_HEATER: 'cabHeater',
+	AUTO_PILOT: 'autoPilot',
+	STAINLESS_EXHAUST: 'stainlessExhaust',
+	GPS: 'gps',
+	DECAL: 'decal'
 };
+
+var usSectors = {
+	NORTH_EAST: 0,
+	SOUTH_EAST: 1,
+	MID_WEST: 2,
+	NORTH_WEST: 3,
+	SOUTH_WEST: 4
+};
+
+var sectorTitles = [
+	'Northeast',
+	'Southeast',
+	'Midwest',
+	'Northwest',
+	'Southwest'
+];
 

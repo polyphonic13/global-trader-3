@@ -1,21 +1,21 @@
+Trires
 Headlights
 Quick Coupler
 Three Point Hitch
+Engine
+	Basic
+	Heavy
+	Medium
 Transmission
 	Basic
 	Heavy
 	Medium
 Cab
+Bucket Attachment
 Power Takeoff
-Wheel
 Track
+Cab Heater
 Decal
 Stainless Exhaust
 Autopilot
 GPS
-Engine
-	Basic
-	Heavy
-	Medium
-Bucket Attachment
-Cab Heater
