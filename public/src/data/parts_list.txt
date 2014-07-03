@@ -1,0 +1,21 @@
+Headlights
+Quick Coupler
+Three Point Hitch
+Transmission
+	Basic
+	Heavy
+	Medium
+Cab
+Power Takeoff
+Wheel
+Track
+Decal
+Stainless Exhaust
+Autopilot
+GPS
+Engine
+	Basic
+	Heavy
+	Medium
+Bucket Attachment
+Cab Heater
