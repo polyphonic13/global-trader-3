@@ -65,6 +65,7 @@ var GameConfig = function() {
 			lightRed: '#e21a49',
 			orange1: '#fca600',
 			orange2: '#e9a547',
+			orange3: '#e58f25',
 			green: '#009b1d',
 			black: '#000000',
 			white: '#ffffff'
@@ -148,10 +149,10 @@ var GameConfig = function() {
 					engine: {
 						img: 'blockRed',
 						x: 0,
-						y: (gameUnit * 8),
+						y: (gameUnit * 7),
 						attrs: {
 							width: gameUnit * 4,
-							height: gameUnit * 4,
+							height: gameUnit * 5,
 						}
 					},
 					tires: {
@@ -160,17 +161,17 @@ var GameConfig = function() {
 						y: (gameUnit * 10.5),
 						attrs: {
 							width: gameUnit * 6.5,
-							height: gameUnit * 3,
+							height: gameUnit * 4,
 							angle: -35
 						}
 					},
 					cab: {
 						img: 'blockBlue',
 						x: (gameUnit * 4),
-						y: (gameUnit * 6),
+						y: (gameUnit * 4),
 						attrs: {
-							width: gameUnit * 2,
-							height: gameUnit * 2.5
+							width: gameUnit * 3,
+							height: gameUnit * 4
 						}
 					}
 				}
@@ -191,9 +192,9 @@ var GameConfig = function() {
 						x: (gameUnit * 2.5),
 						y: (gameUnit * 10.5),
 						attrs: {
-							width: gameUnit * 6.5,
+							width: gameUnit * 4,
 							height: gameUnit * 3,
-							angle: -35
+							angle: 30
 						}
 					},
 					cab: {
@@ -207,52 +208,82 @@ var GameConfig = function() {
 					}
 				},
 				medium: {
-					tires: {
-						x: (gameUnit * 1),
-						y: (gameUnit * 5.5),
-						width: gameUnit * 8,
-						height: gameUnit * 8
-					},
 					engine: {
-						x: (gameUnit * 2.5),
-						y: (gameUnit * 6.9),
-						width: gameUnit * 4.25,
-						height: gameUnit * 4.25
+						img: 'blockRed',
+						x: (gameUnit * 4),
+						y: (gameUnit * 10),
+						attrs: {
+							width: gameUnit * 4,
+							height: gameUnit * 2.5,
+							angle: -20
+						}
+					},
+					tires: {
+						img: 'blockWhite',
+						x: gameUnit * 1.5,
+						y: (gameUnit * 8),
+						attrs: {
+							width: gameUnit * 4,
+							height: gameUnit * 2,
+							angle: 40
+						}
 					},
 					cab: {
-						x: (gameUnit * 4.5),
-						y: (gameUnit * 5.25),
-						width: gameUnit * 3,
-						height: gameUnit * 3
+						img: 'blockBlue',
+						x: (gameUnit * 2),
+						y: (gameUnit * 6.5),
+						attrs: {
+							width: gameUnit * 4,
+							height: gameUnit * 2.5
+						}
+					},
+					bucket: {
+						img: 'blockGreen',
+						x: gameUnit * 4,
+						y: gameUnit * 2,
+						attrs: {
+							width: gameUnit * 4,
+							height: gameUnit * 3
+						}
 					}
 				},
 				heavy: {
 					engine: {
 						img: 'blockRed',
-						x: 0,
-						y: (gameUnit * 8),
+						x: (gameUnit * 4),
+						y: (gameUnit * 10),
 						attrs: {
 							width: gameUnit * 4,
-							height: gameUnit * 4,
+							height: gameUnit * 2.5,
+							angle: -20
 						}
 					},
 					tires: {
 						img: 'blockWhite',
-						x: (gameUnit * 2.5),
-						y: (gameUnit * 10.5),
+						x: gameUnit * 1.5,
+						y: (gameUnit * 8),
 						attrs: {
-							width: gameUnit * 6.5,
-							height: gameUnit * 3,
-							angle: -35
+							width: gameUnit * 4,
+							height: gameUnit * 2,
+							angle: 40
 						}
 					},
 					cab: {
 						img: 'blockBlue',
-						x: (gameUnit * 4),
-						y: (gameUnit * 6),
+						x: (gameUnit * 2),
+						y: (gameUnit * 6.5),
 						attrs: {
-							width: gameUnit * 2,
+							width: gameUnit * 4,
 							height: gameUnit * 2.5
+						}
+					},
+					bucket: {
+						img: 'blockGreen',
+						x: gameUnit * 4,
+						y: gameUnit * 2,
+						attrs: {
+							width: gameUnit * 4,
+							height: gameUnit * 3
 						}
 					}
 				}
@@ -773,10 +804,34 @@ var GameConfig = function() {
 						name: 'editorBg',
 						img: '',
 						x: 0,
-						y: 0,
+						y: gameUnit * 0.15,
 						attrs: {
 							width: gameW,
 							height: gameH
+						}
+					},
+					machinePartNavigator: {
+						type: 'group',
+						name: 'machinePart',
+						views: {
+							
+						}
+					}
+				}
+			},
+			machinePartNavigatorItem: {
+				type: 'group',
+				name: 'machinePartNavigatorItem',
+				views: {
+					name: {
+						type: 'text',
+						name: 'partName',
+						text: '',
+						x: gameUnit * 3,
+						y: gameUnit * 0.25,
+						style: {
+						    font: (fontSizes.md + 'px Arial'),
+					        fill: palette.orange3
 						}
 					}
 				}
