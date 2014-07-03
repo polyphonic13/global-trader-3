@@ -54,7 +54,7 @@ var BuildingManager = function() {
 					PWG.Utils.each(
 						this.config.equipment,
 						function(machine) {
-							trace('machine = ', machine);
+							// trace('machine = ', machine);
 							if(TurnManager.playerData.bank > machine.cost) {
 								if(this.config.inventory.length < module.FACTORY_MAX_INVENTORY) {
 									// trace('build machine: machine = ', machine);
@@ -229,9 +229,13 @@ var BuildingManager = function() {
 		return Factory.modelCapacity;
 	};
 	
-	module.move = function(type, buildingIdx, position) {
-		this.buildings[type][buildingIdx].move(position);
+	module.removeBuilding = function(sector, factoryIdx) {
+		trace('BuildingManager/removeBuilding, sector = ' + sector + ', factoryIdx = ' + factoryIdx + ', buildings = ', this.buildings);
+		if(this.buildings[sector].hasOwnProperty(factoryIdx)) {
+			delete this.buildings[sector][factoryIdx];
+		}
 	};
+	
 	
 	return module;
 	

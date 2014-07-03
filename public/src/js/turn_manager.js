@@ -51,7 +51,7 @@ var TurnManager = function() {
 	};
 
 	module.addBuilding = function(building) {
-		trace('--- TurnManager/addBuilding, building = ', building);
+		// trace('--- TurnManager/addBuilding, building = ', building);
 		module.playerData.buildings[building.sector][building.id] = building;
 		module.currentData.newBuildings.push(building);
 		module.playerData.buildingCount[building.type]++;
@@ -80,7 +80,7 @@ var TurnManager = function() {
 	};
 
 	module.addInventory = function(machine) {
-		trace('--- TurnManager/addInventory, machine = ', machine);
+		// trace('--- TurnManager/addInventory, machine = ', machine);
 		module.currentData.newMachines.push(machine);
 		if(machine.type === EquipmentTypes.TRACTOR) {
 			module.currentData.newTractors++;

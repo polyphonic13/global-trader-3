@@ -1,10 +1,11 @@
+var ASPECT_RATIO = [9, 16];
 var GAME_NAME = 'global_trader_3_0';
 var TIME_PER_TURN = 52;
 var TURN_TIME_INTERVAL = 1000;
 var US_DETAIL_GRID_CELLS = 6;
 var TIME_TO_MANUFACTOR = 5;
 var MACHINE_LIST_COLUMNS = 2; 
-var ASPECT_RATIO = [9, 16];
+var MACHINE_LIST_ICONS = 6;
 
 function startGame() {
 	PhaserGame.init(ASPECT_RATIO);
@@ -357,6 +358,20 @@ var gameLogic = {
 				} else {
 					// if failed, reset turn manager to pre-level playerData
 					trace('\tfailed to pass level, playerData is: ', PhaserGame.playerData);
+					var buildings = TurnManager.playerData.buildings;
+					PWG.Utils.each(
+						buildings,
+						function(sector, idx) {
+							PWG.Utils.each(
+								sector,
+								function(building) {
+									BuildingManager.removeBuilding(idx, building.id);
+								},
+								this
+							);
+						},
+						this
+					);
 					TurnManager.playerData = PhaserGame.playerData;
 				}
 				
@@ -843,7 +858,7 @@ var gameLogic = {
 			{
 				event: Events.BUILDING_STATE_UPDATED,
 				handler: function(event) {
-					trace('BUILDING_STATE_UPDATED event = ', event);
+					// trace('BUILDING_STATE_UPDATED event = ', event);
 					var config = event.building.config;
 					if(config.id === PhaserGame.activeBuilding.id) {
 	 					var buildingEditConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditDetails);
@@ -898,7 +913,8 @@ var gameLogic = {
 				trace('build equipment list = ', equipment);
 				var machineList = PWG.Utils.clone(PhaserGame.config.dynamicViews.machineList);
 				var machineIcon = PhaserGame.config.dynamicViews.machineIcon;
-
+				var emptyIcon = PhaserGame.config.dynamicViews.emptyIcon; 
+				
 				var offsetX = machineIcon.offsetX;
 				var offsetY = machineIcon.offsetY;
 				var iconW = machineIcon.iconW;
@@ -908,7 +924,9 @@ var gameLogic = {
 				var column = 0;
 				var count = 0;
 				var itemY = 0;
-			
+				var emptyTotal = MACHINE_LIST_ICONS - PWG.Utils.objLength(equipment); 
+				trace('EMPTY TOTAL = ' + emptyTotal);
+				
 				PWG.Utils.each(
 					equipment,
 					function(machine, idx) {
@@ -918,7 +936,7 @@ var gameLogic = {
 						item.name = 'machine' + idx;
 						item.views.name.text = machine.name;
 						item.views.cost.text = '$' + machine.cost;
-						item.views.sell.text = '$' + machine.sell;
+						item.views.size.text = machine.size;
 						item.views.invisButton.machineIdx = machine.id;
 						// increment y to next row:
 						if(count % MACHINE_LIST_COLUMNS === 0) {
@@ -941,7 +959,32 @@ var gameLogic = {
 					},
 					this
 				);
-				// trace('machineList = ', machineList);
+
+				for(var i = 0; i < emptyTotal; i++) {
+					var empty = PWG.Utils.clone(emptyIcon);
+
+					if(count % MACHINE_LIST_COLUMNS === 0) {
+						itemY = (iconH * (count/MACHINE_LIST_COLUMNS)) + offsetY;
+					}
+					
+					var columnX = offsetX + ((PWG.Stage.gameW/2) * (count % MACHINE_LIST_COLUMNS));
+					empty.name = 'empty' + i;
+
+					PWG.Utils.each(
+						empty.views,
+						function(view) {
+							view.x += columnX;
+							view.y += itemY;
+						},
+						this
+					);
+					
+					machineList.views[empty.name] = empty;
+					trace('\tadding empty icon: ', empty);
+					count++;
+				}
+				
+				trace('machineList = ', machineList);
 				var equipmentListView = PWG.ViewManager.getControllerFromPath('equipmentList');
 				PWG.ViewManager.addView(machineList, equipmentListView, true);
 				PWG.ViewManager.showView('global:equipmentListGroup');

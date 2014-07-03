@@ -1078,14 +1078,14 @@ var GameConfig = function() {
 							angle: -45
 						}
 					},
-					sell: {
+					size: {
 						type: 'text',
-						name: 'sell',
+						name: 'size',
 						text: '',
 						x: gameUnit * 3.4,
 						y: (gameUnit * 0.25),
 						style: {
-						    font: (fontSizes.xs + 'px Arial'),
+						    font: (fontSizes.xxs + 'px Arial'),
 					        fill: palette.white
 						},
 						attrs: {
@@ -1107,6 +1107,31 @@ var GameConfig = function() {
 					}
 				}
 			},
+			emptyIcon: {
+				type: 'group',
+				name: 'emptyIcon',
+				offsetY: (gameUnit * 1.5),
+				offsetX: (gameUnit * 0.5),
+				iconW: (gameUnit * 4),
+				iconH: (gameUnit * 4),
+				views: {
+					bg: {
+						type: 'button',
+						name: 'emptyIcon',
+						img: 'emptyIcon',
+						x: 0,
+						y: (gameUnit * 0.25),
+						attrs: {
+							width: (gameUnit * 4),
+							height: (gameUnit * 3.5)
+						},
+						callback: gameLogic.global.buttonCallbacks.addEquipment,
+						context: this,
+						frames: [0]
+					}
+				}
+			},
+
 			machineEdit: {
 				type: 'group',
 				name: 'machineEdit',
@@ -1344,8 +1369,8 @@ var GameConfig = function() {
 					factoryDetailBg: 'images/screens/factory_detail/factory_detail.png',
 					// equipment list
 					equipmentListBg: 'images/screens/equipment_list/equipment_list.png',
-					buildBg: 'images/screens/screen_mocks_build.gif',
 					machineListIcon: 'images/screens/equipment_list/machine_list_icon.png',
+					emptyIcon: 'images/screens/equipment_list/empty_icon.png',
 					// equipment create
 					equipmentCreateBg: 'images/screens/equipment_add/equipment_add_bg.png',
 					// equipment edit
@@ -1758,11 +1783,11 @@ var GameConfig = function() {
 							type: 'sprite',
 							name: 'worldMap',
 							img: 'mapWorld',
-							x: -(gameW * 0.825),
-							y: -(gameH * 1.97),
+							x: -(gameW * 0.816),
+							y: -(gameH * 1.947),
 							attrs: {
 								width: gameW * 5.9,
-								height: gameH * 5.9
+								height: gameH * 5.85
 							}
 						},
 						// us map
@@ -1922,20 +1947,6 @@ var GameConfig = function() {
 						visible: false
 					},
 					views: {
-						// bg
-						bg: 
-						{
-							type: 'sprite',
-							name: 'background',
-							img: 'equipmentListBg',
-							x: 0,
-							y: 0,
-							attrs: {
-								width: gameW,
-								height: gameH,
-								fixedToCamera: true
-							}
-						},
 						// buttons group
 						buttons: {
 							type: 'group',

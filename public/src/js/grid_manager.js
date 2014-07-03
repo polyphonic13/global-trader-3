@@ -55,9 +55,8 @@ var GridManager = function() {
 
 	module.addBuilding = function(building, sector) {
 		trace('GridManager/addBuilding, sector = ' + sector + ', building = ', building, module.grids);
-		var config = building.config;
-		var frameKey = config.type.toUpperCase() + '_' + config.state.toUpperCase();
-		module.grids[sector][config.cell].frame = TileCellFrames[frameKey];
+		var frameKey = building.type.toUpperCase() + '_' + building.state.toUpperCase();
+		module.grids[sector][building.cell].frame = TileCellFrames[frameKey];
 		// trace('\tsetting grid['+config.sector+']['+config.cell+'].frame to ' + TileCellFrames[frameKey]);
 	};
 	
