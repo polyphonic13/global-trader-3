@@ -985,42 +985,42 @@ var GameConfig = function() {
 					}
 				}
 			},
-			partSelectionIcon: {
+			partIcon: {
 				type: 'group',
-				name: 'partSelectionIcon',
-				offset: (gameUnit * 3),
-				iconH: (gameUnit * 2.5),
+				name: 'partIcon',
+				offset: (gameUnit * 2),
+				iconH: (gameUnit * 4.5),
 				views: {
 					bg: {
 						type: 'sprite',
 						name: 'menuItemBg',
 						img: 'blockBlue',
-						x: 0,
+						x: gameUnit * 0.5,
 						y: 0,
 						attrs: {
-							width: gameW,
-							height: (gameUnit * 2),
+							width: gameW - gameUnit,
+							height: (gameUnit * 3),
 							alpha: 0.33
 						},
-						input: gameLogic.global.input.partSelectionIcon
+						input: gameLogic.global.input.partIcon
 					},
 					icon: {
 						type: 'sprite',
 						name: 'menuItemIcon',
 						img: '',
-						x: gameUnit,
-						y: gameUnit * 0.25,
+						x: gameUnit * 0.5,
+						y: 0,
 						attrs: {
-							width: gameUnit * 1.5,
-							height: gameUnit * 1.5
+							width: gameUnit * 3,
+							height: gameUnit * 3
 						}
 					},
 					description: {
 						type: 'text',
 						name: 'menuItemDescription',
 						text: '',
-						x: gameUnit * 3,
-						y: gameUnit * 0.25,
+						x: gameUnit * 4,
+						y: gameUnit * 1,
 						style: {
 						    font: (fontSizes.sm + 'px Arial'),
 					        fill: palette.black
@@ -1030,10 +1030,10 @@ var GameConfig = function() {
 						type: 'text',
 						name: 'menuItemCost',
 						text: '',
-						x: gameUnit * 3,
-						y: gameUnit * 1,
+						x: gameUnit * 4,
+						y: gameUnit * 1.5,
 						style: {
-						    font: (fontSizes.sm + 'px Arial'),
+						    font: (fontSizes.md + 'px Arial'),
 					        fill: palette.black
 						}
 					},
@@ -1042,14 +1042,13 @@ var GameConfig = function() {
 						name: 'menuItemInvisBtn',
 						img: 'blockClear',
 						partId: -1,
-						x: 0,
+						x: gameUnit * 0.5,
 						y: 0,
 						attrs: {
-							width: gameW,
-							height: (gameUnit * 2),
-							alpha: 0.33
+							width: gameW - gameUnit,
+							height: (gameUnit * 3)
 						},
-						input: gameLogic.global.input.partSelectionIcon
+						input: gameLogic.global.input.partIcon
 					}
 					
 				}
@@ -1146,8 +1145,8 @@ var GameConfig = function() {
 					engineMediumDeluxe: 'images/parts_icons/temp/deluxe/engine_medium.png',
 					engineBasicDeluxe: 'images/parts_icons/temp/deluxe/engine_basic.png',
 					headlightsDeluxe: 'images/parts_icons/temp/deluxe/headlights.png',
-					heaterDeluxeDeluxe: 'images/parts_icons/temp/deluxe/heater.png',
-					powerTakeOffDeluxe: 'images/parts_icons/temp/deluxe/power_take_off.png',
+					heaterDeluxe: 'images/parts_icons/temp/deluxe/heater.png',
+					powerTakeoffDeluxe: 'images/parts_icons/temp/deluxe/power_take_off.png',
 					quickCouplerDeluxe: 'images/parts_icons/temp/deluxe/quick_coupler.png',
 					threePointHitchDeluxe: 'images/parts_icons/temp/deluxe/three_point_hitch.png',
 					tiresDeluxe: 'images/parts_icons/temp/deluxe/tires.png',
@@ -1161,7 +1160,7 @@ var GameConfig = function() {
 					engineBasicStandard: 'images/parts_icons/temp/standard/engine_basic.png',
 					headlightsStandard: 'images/parts_icons/temp/standard/headlights.png',
 					heaterStandard: 'images/parts_icons/temp/standard/heater.png',
-					powerTakeOffStandard: 'images/parts_icons/temp/standard/power_take_off.png',
+					powerTakeoffStandard: 'images/parts_icons/temp/standard/power_take_off.png',
 					quickCouplerStandard: 'images/parts_icons/temp/standard/quick_coupler.png',
 					threePointHitchStandard: 'images/parts_icons/temp/standard/three_point_hitch.png',
 					tiresStandard: 'images/parts_icons/temp/standard/tires.png',
@@ -1175,7 +1174,7 @@ var GameConfig = function() {
 					engineBasicDiscount: 'images/parts_icons/temp/discount/engine_basic.png',
 					headlightsDiscount: 'images/parts_icons/temp/discount/headlights.png',
 					heaterDiscount: 'images/parts_icons/temp/discount/heater.png',
-					powerTakeOffDiscount: 'images/parts_icons/temp/discount/power_take_off.png',
+					powerTakeoffDiscount: 'images/parts_icons/temp/discount/power_take_off.png',
 					quickCouplerDiscount: 'images/parts_icons/temp/discount/quick_coupler.png',
 					threePointHitchDiscount: 'images/parts_icons/temp/discount/three_point_hitch.png',
 					tiresDiscount: 'images/parts_icons/temp/discount/tires.png',

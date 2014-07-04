@@ -23,7 +23,7 @@ var gameData = {
 					'headlights'
 				],
 				optionalParts: [
-					'decal',
+					'flameDecal',
 					'autoPilot',
 					'gps'
 				]
@@ -36,7 +36,7 @@ var gameData = {
 					'headlights'
 				],
 				optionalParts: [
-					'decal',
+					'flameDecal',
 					'autoPilot',
 					'gps'
 				]
@@ -50,7 +50,7 @@ var gameData = {
 					'threePointHitch'
 				],
 				optionalParts: [
-					'decal',
+					'flameDecal',
 					'autoPilot',
 					'gps',
 					'heater',
@@ -68,7 +68,7 @@ var gameData = {
 					'bucket'
 				],
 				optionalParts: [
-					'decal',
+					'flameDecal',
 					'autoPilot',
 					'gps'
 				]
@@ -82,7 +82,7 @@ var gameData = {
 					'bucket'
 				],
 				optionalParts: [
-					'decal',
+					'flameDecal',
 					'autoPilot',
 					'gps'
 				]
@@ -98,7 +98,7 @@ var gameData = {
 					'quickCoupler'
 				],
 				optionalParts: [
-					'decal',
+					'flameDecal',
 					'autoPilot',
 					'gps',
 					'heater',
@@ -307,7 +307,7 @@ var gameData = {
 				sell: 2000
 			},
 			heavy: {
-				img: 'transmissionHeacyDiscount',
+				img: 'transmissionHeavyDiscount',
 				cost: 900,
 				build: 150,
 				sell: 3000
@@ -364,7 +364,7 @@ var gameData = {
 		{
 			id: 'c1',
 			frame: 1,
-			description: 'discount transmission',
+			description: 'discount headlights',
 			basic: {
 				img: 'headlightsDiscount',
 				cost: 300,
@@ -471,7 +471,7 @@ var gameData = {
 			id: 'c1',
 			img: 'transmission1',
 			frame: 1,
-			description: 'discount transmission',
+			description: 'discount three point hitch',
 			heavy: {
 				img: 'threePointHitchDiscount',
 				cost: 900,
@@ -483,7 +483,7 @@ var gameData = {
 			id: 'c2',
 			img: 'transmission2',
 			frame: 2,
-			description: 'standard transmission',
+			description: 'standard three point hitch',
 			heavy: {
 				img: 'threePointHitchStandard',
 				cost: 1200,
@@ -494,7 +494,7 @@ var gameData = {
 		{
 			id: 'c3',
 			frame: 3,
-			description: 'deluxe transmission',
+			description: 'deluxe three point hitch',
 			heavy: {
 				img: 'threePointHitchDeluxe',
 				cost: 3000,
@@ -506,9 +506,8 @@ var gameData = {
 		powerTakeoff: [
 		{
 			id: 'c1',
-			img: 'transmission1',
 			frame: 1,
-			description: 'discount transmission',
+			description: 'discount power takeoff',
 			heavy: {
 				img: 'powerTakeoffDiscount',
 				cost: 900,
@@ -518,9 +517,8 @@ var gameData = {
 		},
 		{
 			id: 'c2',
-			img: 'transmission2',
 			frame: 2,
-			description: 'standard transmission',
+			description: 'standard power takeoff',
 			heavy: {
 				img: 'powerTakeoffStandard',
 				cost: 1200,
@@ -530,11 +528,45 @@ var gameData = {
 		},
 		{
 			id: 'c3',
-			img: 'transmission3',
 			frame: 3,
-			description: 'deluxe transmission',
+			description: 'deluxe power takeoff',
 			heavy: {
 				img: 'powerTakeoffDeluxe',
+				cost: 3000,
+				build: 1000,
+				sell: 2000
+			}
+		}
+		],
+		heater: [
+		{
+			id: 'c1',
+			frame: 1,
+			description: 'discount heater',
+			heavy: {
+				img: 'heaterDiscount',
+				cost: 900,
+				build: 150,
+				sell: 3000
+			}
+		},
+		{
+			id: 'c2',
+			frame: 2,
+			description: 'standard heater',
+			heavy: {
+				img: 'heaterStandard',
+				cost: 1200,
+				build: 225,
+				sell: 4500
+			}
+		},
+		{
+			id: 'c3',
+			frame: 3,
+			description: 'deluxe heater',
+			heavy: {
+				img: 'heaterDeluxe',
 				cost: 3000,
 				build: 1000,
 				sell: 2000
@@ -546,7 +578,7 @@ var gameData = {
 			id: 'c1',
 			img: 'transmission1',
 			frame: 1,
-			description: 'discount transmission',
+			description: 'discount bucket',
 			basic: {
 				img: 'bucketDiscount',
 				cost: 300,
@@ -570,7 +602,7 @@ var gameData = {
 			id: 'c2',
 			img: 'transmission2',
 			frame: 2,
-			description: 'standard transmission',
+			description: 'standard bucket',
 			basic: {
 				img: 'bucketDiscount',
 				cost: 400,
@@ -594,7 +626,7 @@ var gameData = {
 			id: 'c3',
 			img: 'transmission3',
 			frame: 3,
-			description: 'deluxe transmission',
+			description: 'deluxe bucket',
 			basic: {
 				img: 'bucketDiscount',
 				cost: 1000,
@@ -612,6 +644,106 @@ var gameData = {
 				cost: 3000,
 				build: 1000,
 				sell: 2000
+			}
+		}
+		],
+		flameDecal: [
+		{
+			id: 'c1',
+			frame: 1,
+			description: 'flame decal',
+			basic: {
+				img: 'flameDecal',
+				cost: 300,
+				build: 50,
+				sell: 1000
+			},
+			medium: {
+				img: 'flameDecal',
+				cost: 300,
+				build: 50,
+				sell: 1000
+			},
+			heavy: {
+				img: 'flameDecal',
+				cost: 300,
+				build: 50,
+				sell: 1000
+			}
+		}
+		],
+		gps: [
+		{
+			id: 'c1',
+			frame: 1,
+			description: 'GPS',
+			basic: {
+				img: 'gps',
+				cost: 300,
+				build: 50,
+				sell: 1000
+			},
+			medium: {
+				img: 'gps',
+				cost: 300,
+				build: 50,
+				sell: 1000
+			},
+			heavy: {
+				img: 'gps',
+				cost: 300,
+				build: 50,
+				sell: 1000
+			}
+		}
+		],
+		stainlessExhaust: [
+		{
+			id: 'c1',
+			frame: 1,
+			description: 'stainless exhaust',
+			basic: {
+				img: 'stainlessExhause',
+				cost: 300,
+				build: 50,
+				sell: 1000
+			},
+			medium: {
+				img: 'stainlessExhause',
+				cost: 300,
+				build: 50,
+				sell: 1000
+			},
+			heavy: {
+				img: 'stainlessExhause',
+				cost: 300,
+				build: 50,
+				sell: 1000
+			}
+		}
+		],
+		autoPilot: [
+		{
+			id: 'c1',
+			frame: 1,
+			description: 'auto pilot',
+			basic: {
+				img: 'autoPilot',
+				cost: 300,
+				build: 50,
+				sell: 1000
+			},
+			medium: {
+				img: 'autoPilot',
+				cost: 300,
+				build: 50,
+				sell: 1000
+			},
+			heavy: {
+				img: 'autoPilot',
+				cost: 300,
+				build: 50,
+				sell: 1000
 			}
 		}
 		]

@@ -1,7 +1,7 @@
 var ASPECT_RATIO = [9, 16];
 var GAME_NAME = 'global_trader_3_0';
 var TIME_PER_TURN = 52;
-var TURN_TIME_INTERVAL = 1000;
+var TURN_TIME_INTERVAL = 2000;
 var US_DETAIL_GRID_CELLS = 6;
 var TIME_TO_MANUFACTOR = 5;
 var MACHINE_LIST_COLUMNS = 2; 
@@ -252,7 +252,7 @@ var gameLogic = {
 				var partsData = gameData.parts[type];
 				// trace('populatePartsMenu, type = ' + type + '\tparts data = ', partsData);
 				var partsMenuConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.partsMenu);
-				var itemConfig = PhaserGame.config.dynamicViews.partSelectionIcon;
+				var itemConfig = PhaserGame.config.dynamicViews.partIcon;
 				var offset = itemConfig.offset;
 				var iconH = itemConfig.iconH;
 				var size = PhaserGame.activeMachineSize;
@@ -262,11 +262,11 @@ var gameLogic = {
 				PWG.Utils.each(
 					partsData,
 					function(part, idx) {
-						// trace('\tadding part[' + p + '] info to views');
+						trace('\tadding part[' + idx + '] info to views');
 						var item = PWG.Utils.clone(itemConfig);
 						item.name = part.id;
-						item.views.icon.img = part.img;
-						item.views.description.text = part.description;
+						item.views.icon.img = part[size].img;
+						item.views.description.text = part.description.toUpperCase();
 						item.views.cost.text = '$' + part[size].cost;
 						item.views.invisButton.partIdx = idx;
 
@@ -522,7 +522,7 @@ var gameLogic = {
 					}
 				}
 			},
-			partSelectionIcon: {
+			partIcon: {
 				inputDown: function(event) {
 					PWG.EventCenter.trigger({ type: Events.ADD_PART, value: this.controller.config.partIdx });
 				}
@@ -1152,9 +1152,8 @@ var gameLogic = {
 				
 				var type = PhaserGame.activeMachineType;
 				var size = PhaserGame.activeMachineSize;
-				var pieces = gameData.machines[type][size];
+				var requiredParts = gameData.machines[type][size].requiredParts;
 				var count = 0;
-				trace('pieces = ', pieces); 
 				
 				var equipmentEdit = PWG.ViewManager.getControllerFromPath('equipmentEdit');
 				var machineEdit = PWG.Utils.clone(PhaserGame.config.dynamicViews.machineEdit);
@@ -1165,27 +1164,21 @@ var gameLogic = {
 				machineEdit.views.bg.img = PhaserGame.config.machineEditBackgrounds[type][size];
 
 				PWG.Utils.each(
-					pieces,
-					function(requiredType) {
-						PWG.Utils.each(
-							requiredType,
-							function(piece) {
-								var item = PWG.Utils.clone(machinePieceMenuItem);
-								item.name = piece;
-								item.views.name.text = piece.toUpperCase();
-								if(count > 0) {
-									item.attrs.visible = false;
-								} else {
-									item.x += 100;
-								}
-								item.views.button.partValue = piece;
-								
-								PhaserGame.machinePieces.push(item.name);
-								count++;
-								machineEdit.views.machinePieceMenu.views[piece] = item;
-							},
-							this
-						)
+					requiredParts,
+					function(part) {
+						var item = PWG.Utils.clone(machinePieceMenuItem);
+						item.name = part;
+						item.views.name.text = part.toUpperCase();
+						if(count > 0) {
+							item.attrs.visible = false;
+						} else {
+							item.x += 100;
+						}
+						item.views.button.partValue = part;
+						
+						PhaserGame.machinePieces.push(item.name);
+						count++;
+						machineEdit.views.machinePieceMenu.views[part] = item;
 					},
 					this
 				);

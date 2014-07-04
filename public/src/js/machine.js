@@ -60,7 +60,7 @@ var Machine = function() {
 			if(this.requiredParts.hasOwnProperty(part) && !this.requiredParts[part]) {
 				this.requiredParts[part] = true;
 				this.requiredPartsCount++;
-				trace('\trequiredParts now: ', this.requiredParts);
+				trace('\trequiredPartsCount now: ' + this.requiredPartsCount + '/' + this.requiredPartsTotal);
 				if(this.requiredPartsCount >= this.requiredPartsTotal) {
 					this.isComplete = true;
 					PWG.EventCenter.trigger({ type: Events.MACHINE_PARTS_COMPLETE, value: this.config });
