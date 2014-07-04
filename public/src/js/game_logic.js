@@ -82,6 +82,7 @@ var gameLogic = {
 			event: Events.TURN_COMPLETED,
 			handler: function(event) {
 				// alert('turn ended');
+				PWG.EventCenter.trigger({ type: Events.CLOSE_PARTS_MENU });
 				PhaserGame.turnActive = false;
 				TurnManager.completeTurn();
 				PWG.PhaserTime.removeTimer('turnTime');
@@ -175,6 +176,7 @@ var gameLogic = {
 				PWG.ViewManager.setFrame('global:turnGroup:turnIndicator', TurnManager.playerData.level);
 			},
 			stopTurn: function() {
+				PWG.EventCenter.trigger({ type: Events.CLOSE_PARTS_MENU });
 				PWG.PhaserTime.removeTimer('turnTime');
 				PhaserGame.turnActive = false;
 			},
@@ -471,7 +473,7 @@ var gameLogic = {
 					PWG.EventCenter.trigger({ type: Events.PREV_MACHINE_PIECE_ICON });
 				}
 			},
-			showPartMenu: {
+			openPartsMenu: {
 				inputDown: function() {
 					trace('show part menu, partValue = ', this.controller.config.partValue);
 					PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: this.controller.config.partValue });

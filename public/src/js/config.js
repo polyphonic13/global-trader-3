@@ -900,7 +900,7 @@ var GameConfig = function() {
 							height: gameUnit * 1,
 							alpha: 0.3
 						},
-						input: gameLogic.global.input.showPartMenu
+						input: gameLogic.global.input.openPartsMenu
 					}
 				}
 			},
