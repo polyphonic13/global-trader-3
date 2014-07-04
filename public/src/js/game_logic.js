@@ -1038,7 +1038,7 @@ var gameLogic = {
 				handler: function(event) {
 					var path = PhaserGame.getCurrentMachinePiecePath();
 					trace('path = ' + path);
-					PWG.ViewManager.hideView();
+					PWG.ViewManager.hideView(path);
 					if(PhaserGame.currentMachinePiece < PhaserGame.machinePieces.length - 1) {
 						PhaserGame.currentMachinePiece++;
 					} else {
@@ -1055,7 +1055,7 @@ var gameLogic = {
 					if(PhaserGame.currentMachinePiece > 1) {
 						PhaserGame.currentMachinePiece--;
 					} else {
-						PhaserGame.currentMachinePiece = PhaserGame.machinePieces.length;
+						PhaserGame.currentMachinePiece = PhaserGame.machinePieces.length - 1;
 					}
 					PWG.ViewManager.showView(PhaserGame.getCurrentMachinePiecePath());
 				}
