@@ -250,7 +250,7 @@ var gameLogic = {
 			addPartItemsMenu: function(type, collection) {
 				PhaserGame.activePartType = type;
 				var partsData = gameData.parts[type];
-				// trace('addPartItemsMenu, type = ' + type + '\tparts data = ', partsData);
+				trace('addPartItemsMenu, type = ' + type + '\tparts data = ', partsData);
 				var partsMenuConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.partsMenu);
 				var itemConfig = PhaserGame.config.dynamicViews.partSelectionIcon;
 				var offset = itemConfig.offset;

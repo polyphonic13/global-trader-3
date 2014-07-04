@@ -148,6 +148,41 @@ var gameData = {
 			}
 		}
 		],
+		track: [
+		{
+			id: 'w3',
+			icon: 'tires2',
+			frame: 1,
+			description: 'basic track',
+			heavy: {
+				cost: 1000,
+				build: 150,
+				sell: 3000
+			}
+		},
+		{
+			id: 'w1',
+			icon: 'tires1',
+			frame: 2,
+			description: 'standard track',
+			heavy: {
+				cost: 1500,
+				build: 250,
+				sell: 5000
+			}
+		},
+		{
+			id: 'w4',
+			icon: 'tires3',
+			frame: 3,
+			description: 'deluxe track',
+			heavy: {
+				cost: 4000,
+				build: 1000,
+				sell: 20000
+			}
+		}
+		],
 		engine: [
 		{
 			id: 'e1',
