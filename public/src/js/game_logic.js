@@ -247,10 +247,10 @@ var gameLogic = {
 			getCurrentMachinePiecePath: function() {
 				return 'equipmentEdit:machineEdit:machinePieceMenu:' + PhaserGame.machinePieces[PhaserGame.currentMachinePiece];
 			},
-			addPartItemsMenu: function(type, collection) {
+			populatePartsMenu: function(type, collection) {
 				PhaserGame.activePartType = type;
 				var partsData = gameData.parts[type];
-				trace('addPartItemsMenu, type = ' + type + '\tparts data = ', partsData);
+				// trace('populatePartsMenu, type = ' + type + '\tparts data = ', partsData);
 				var partsMenuConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.partsMenu);
 				var itemConfig = PhaserGame.config.dynamicViews.partSelectionIcon;
 				var offset = itemConfig.offset;
@@ -265,7 +265,7 @@ var gameLogic = {
 						// trace('\tadding part[' + p + '] info to views');
 						var item = PWG.Utils.clone(itemConfig);
 						item.name = part.id;
-						item.views.icon.img = part.icon;
+						item.views.icon.img = part.img;
 						item.views.description.text = part.description;
 						item.views.cost.text = '$' + part[size].cost;
 						item.views.invisButton.partIdx = idx;
@@ -1100,7 +1100,7 @@ var gameLogic = {
 					{
 						if(this.partsMenuType !== event.value) 
 						{
-							PhaserGame.addPartItemsMenu.call(this, event.value, this.views);
+							PhaserGame.populatePartsMenu.call(this, event.value, this.views);
 						}
 						PWG.ViewManager.showView('partsMenu');
 						this.partsMenuType = event.value;
@@ -1118,6 +1118,14 @@ var gameLogic = {
 						PWG.ViewManager.hideView('partsMenu');
 						this.partsMenuOpen = false;
 					}
+				}
+			},
+			// machine complete
+			{
+				event: Events.MACHINE_PARTS_COMPLETE,
+				handler: function(event) {
+					trace('machine complete, event = ', event);
+					PWG.ViewManager.showView('global:confirmButton');
 				}
 			},
 			// save machine

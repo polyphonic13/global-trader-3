@@ -2,13 +2,13 @@ var gameData = {
 	buildings: {
 		factory: {
 			id: 'factory',
-			icon: 'iconFactory',
+			img: 'iconFactory',
 			description: 'Build your machines',
 			cost: 100000
 		},
 		showroom: {
 			id: 'showroom',
-			icon: 'iconShowroom',
+			img: 'iconShowroom',
 			description: 'Sell your machines',
 			cost: 50000
 		}
@@ -18,31 +18,43 @@ var gameData = {
 			basic: {
 				requiredParts: [
 					'tires',
-					'cab',
+					'transmission',
 					'engine',
 					'headlights'
 				],
 				optionalParts: [
+					'decal',
+					'autoPilot',
+					'gps'
 				]
 			},
 			medium: {
 				requiredParts: [
 					'tires',
-					'cab',
+					'transmission',
 					'engine',
 					'headlights'
 				],
 				optionalParts: [
+					'decal',
+					'autoPilot',
+					'gps'
 				]
 			},
 			heavy: {
 				requiredParts: [
-					'track',
-					'cab',
+					'tires',
+					'transmission',
 					'engine',
-					'headlights'
+					'headlights',
+					'threePointHitch'
 				],
 				optionalParts: [
+					'decal',
+					'autoPilot',
+					'gps',
+					'heater',
+					'track'
 				]
 			}
 		},
@@ -50,34 +62,47 @@ var gameData = {
 			basic: {
 				requiredParts: [
 					'tires',
-					'cab',
+					'transmission',
 					'engine',
 					'headlights',
 					'bucket'
 				],
 				optionalParts: [
+					'decal',
+					'autoPilot',
+					'gps'
 				]
 			},
 			medium: {
 				requiredParts: [
 					'tires',
-					'cab',
+					'transmission',
 					'engine',
 					'headlights',
 					'bucket'
 				],
 				optionalParts: [
+					'decal',
+					'autoPilot',
+					'gps'
 				]
 			},
 			heavy: {
 				requiredParts: [
-					'track',
-					'cab',
+					'tires',
+					'transmission',
 					'engine',
 					'headlights',
-					'bucket'
+					'bucket',
+					'powerTakeoff',
+					'quickCoupler'
 				],
 				optionalParts: [
+					'decal',
+					'autoPilot',
+					'gps',
+					'heater',
+					'track'
 				]
 			}
 		}
@@ -86,20 +111,22 @@ var gameData = {
 		tires: [
 		{
 			id: 'w3',
-			icon: 'tires2',
 			frame: 1,
-			description: 'basic tires',
+			description: 'discount tires',
 			basic: {
+				img: 'tiresDiscount',
 				cost: 350,
 				build: 50,
 				sell: 1000
 			},
 			medium: {
+				img: 'tiresDiscount',
 				cost: 700,
 				build: 100,
 				sell: 2000
 			},
 			heavy: {
+				img: 'tiresDiscount',
 				cost: 1000,
 				build: 150,
 				sell: 3000
@@ -107,20 +134,22 @@ var gameData = {
 		},
 		{
 			id: 'w1',
-			icon: 'tires1',
 			frame: 2,
 			description: 'standard tires',
 			basic: {
+				img: 'tiresStandard',
 				cost: 500,
 				build: 100,
 				sell: 2000
 			},
 			medium: {
+				img: 'tiresStandard',
 				cost: 1000,
 				build: 200,
 				sell: 4000
 			},
 			heavy: {
+				img: 'tiresStandard',
 				cost: 1500,
 				build: 250,
 				sell: 5000
@@ -128,20 +157,23 @@ var gameData = {
 		},
 		{
 			id: 'w4',
-			icon: 'tires3',
+			img: 'tires3',
 			frame: 3,
 			description: 'deluxe tires',
 			basic: {
+				img: 'tiresDeluxe',
 				cost: 1000,
 				build: 250,
 				sell: 5000
 			},
 			medium: {
+				img: 'tiresDeluxe',
 				cost: 2000,
 				build: 500,
 				sell: 10000
 			},
 			heavy: {
+				img: 'tiresDeluxe',
 				cost: 4000,
 				build: 1000,
 				sell: 20000
@@ -151,10 +183,11 @@ var gameData = {
 		track: [
 		{
 			id: 'w3',
-			icon: 'tires2',
+			img: 'tires2',
 			frame: 1,
-			description: 'basic track',
+			description: 'discount track',
 			heavy: {
+				img: 'track',
 				cost: 1000,
 				build: 150,
 				sell: 3000
@@ -162,10 +195,11 @@ var gameData = {
 		},
 		{
 			id: 'w1',
-			icon: 'tires1',
+			img: 'tires1',
 			frame: 2,
 			description: 'standard track',
 			heavy: {
+				img: 'track',
 				cost: 1500,
 				build: 250,
 				sell: 5000
@@ -173,10 +207,11 @@ var gameData = {
 		},
 		{
 			id: 'w4',
-			icon: 'tires3',
+			img: 'tires3',
 			frame: 3,
 			description: 'deluxe track',
 			heavy: {
+				img: 'track',
 				cost: 4000,
 				build: 1000,
 				sell: 20000
@@ -186,20 +221,22 @@ var gameData = {
 		engine: [
 		{
 			id: 'e1',
-			icon: 'engine1',
 			frame: 1,
-			description: 'basic engine',
+			description: 'discount engine',
 			basic: {
+				img: 'engineBasicDiscount',
 				cost: 2000,
 				build: 500,
 				sell: 10000
 			},
 			medium: {
+				img: 'engineMediumDiscount',
 				cost: 4000,
 				build: 1000,
 				sell: 20000
 			},
 			heavy: {
+				img: 'engineHeavyDiscount',
 				cost: 6000,
 				build: 1500,
 				sell: 30000
@@ -207,20 +244,22 @@ var gameData = {
 		},
 		{
 			id: 'e2',
-			icon: 'engine2',
 			frame: 2,
 			description: 'standard engine',
 			basic: {
+				img: 'engineBasicStandard',
 				cost: 3000,
 				build: 750,
 				sell: 15000
 			},
 			medium: {
+				img: 'engineMediumStandard',
 				cost: 6000,
 				build: 1500,
 				sell: 30000
 			},
 			heavy: {
+				img: 'engineHeavyStandard',
 				cost: 9000,
 				build: 2000,
 				sell: 40000
@@ -228,20 +267,22 @@ var gameData = {
 		},
 		{
 			id: 'e3',
-			icon: 'engine3',
 			frame: 3,
 			description: 'deluxe engine',
 			basic: {
+				img: 'engineBasicDeluxe',
 				cost: 5000,
 				build: 500,
 				sell: 10000
 			},
 			medium: {
+				img: 'engineMediumDeluxe',
 				cost: 10000,
 				build: 1000,
 				sell: 20000
 			},
 			heavy: {
+				img: 'engineHeavyDeluxe',
 				cost: 15000,
 				build: 1500,
 				sell: 30000
@@ -251,20 +292,22 @@ var gameData = {
 		transmission: [
 		{
 			id: 'c1',
-			icon: 'cab1',
 			frame: 1,
-			description: 'basic cab',
+			description: 'discount transmission',
 			basic: {
+				img: 'transmissionBasicDiscount',
 				cost: 300,
 				build: 50,
 				sell: 1000
 			},
 			medium: {
+				img: 'transmissionMediumDiscount',
 				cost: 600,
 				build: 100,
 				sell: 2000
 			},
 			heavy: {
+				img: 'transmissionHeacyDiscount',
 				cost: 900,
 				build: 150,
 				sell: 3000
@@ -272,20 +315,22 @@ var gameData = {
 		},
 		{
 			id: 'c2',
-			icon: 'cab2',
 			frame: 2,
-			description: 'standard cab',
+			description: 'standard transmission',
 			basic: {
+				img: 'transmissionBasicStandard',
 				cost: 400,
 				build: 75,
 				sell: 1500
 			},
 			medium: {
+				img: 'transmissionMediumStandard',
 				cost: 800,
 				build: 150,
 				sell: 3000
 			},
 			heavy: {
+				img: 'transmissionHeavyStandard',
 				cost: 1200,
 				build: 225,
 				sell: 4500
@@ -293,85 +338,22 @@ var gameData = {
 		},
 		{
 			id: 'c3',
-			icon: 'cab3',
 			frame: 3,
-			description: 'deluxe cab',
+			description: 'deluxe transmission',
 			basic: {
+				img: 'transmissionBasicDeluxe',
 				cost: 1000,
 				build: 250,
 				sell: 500
 			},
 			medium: {
+				img: 'transmissionMediumDeluxe',
 				cost: 2000,
 				build: 500,
 				sell: 1000
 			},
 			heavy: {
-				cost: 3000,
-				build: 1000,
-				sell: 2000
-			}
-		}
-		],
-		cab: [
-		{
-			id: 'c1',
-			icon: 'cab1',
-			frame: 1,
-			description: 'basic cab',
-			basic: {
-				cost: 300,
-				build: 50,
-				sell: 1000
-			},
-			medium: {
-				cost: 600,
-				build: 100,
-				sell: 2000
-			},
-			heavy: {
-				cost: 900,
-				build: 150,
-				sell: 3000
-			}
-		},
-		{
-			id: 'c2',
-			icon: 'cab2',
-			frame: 2,
-			description: 'standard cab',
-			basic: {
-				cost: 400,
-				build: 75,
-				sell: 1500
-			},
-			medium: {
-				cost: 800,
-				build: 150,
-				sell: 3000
-			},
-			heavy: {
-				cost: 1200,
-				build: 225,
-				sell: 4500
-			}
-		},
-		{
-			id: 'c3',
-			icon: 'cab3',
-			frame: 3,
-			description: 'deluxe cab',
-			basic: {
-				cost: 1000,
-				build: 250,
-				sell: 500
-			},
-			medium: {
-				cost: 2000,
-				build: 500,
-				sell: 1000
-			},
-			heavy: {
+				img: 'transmissionHeavyDeluxe',
 				cost: 3000,
 				build: 1000,
 				sell: 2000
@@ -381,20 +363,22 @@ var gameData = {
 		headlights: [
 		{
 			id: 'c1',
-			icon: 'cab1',
 			frame: 1,
-			description: 'basic cab',
+			description: 'discount transmission',
 			basic: {
+				img: 'headlightsDiscount',
 				cost: 300,
 				build: 50,
 				sell: 1000
 			},
 			medium: {
+				img: 'headlightsDiscount',
 				cost: 600,
 				build: 100,
 				sell: 2000
 			},
 			heavy: {
+				img: 'headlightsDiscount',
 				cost: 900,
 				build: 150,
 				sell: 3000
@@ -402,20 +386,22 @@ var gameData = {
 		},
 		{
 			id: 'c2',
-			icon: 'cab2',
 			frame: 2,
-			description: 'standard cab',
+			description: 'standard headlights',
 			basic: {
+				img: 'headlightsStandard',
 				cost: 400,
 				build: 75,
 				sell: 1500
 			},
 			medium: {
+				img: 'headlightsStandard',
 				cost: 800,
 				build: 150,
 				sell: 3000
 			},
 			heavy: {
+				img: 'headlightsStandard',
 				cost: 1200,
 				build: 225,
 				sell: 4500
@@ -423,20 +409,22 @@ var gameData = {
 		},
 		{
 			id: 'c3',
-			icon: 'cab3',
 			frame: 3,
-			description: 'deluxe cab',
+			description: 'deluxe headlights',
 			basic: {
+				img: 'headlightsDeluxe',
 				cost: 1000,
 				build: 250,
 				sell: 500
 			},
 			medium: {
+				img: 'headlightsDeluxe',
 				cost: 2000,
 				build: 500,
 				sell: 1000
 			},
 			heavy: {
+				img: 'headlightsDeluxe',
 				cost: 3000,
 				build: 1000,
 				sell: 2000
@@ -446,20 +434,10 @@ var gameData = {
 		quickCoupler: [
 		{
 			id: 'c1',
-			icon: 'cab1',
 			frame: 1,
-			description: 'basic cab',
-			basic: {
-				cost: 300,
-				build: 50,
-				sell: 1000
-			},
-			medium: {
-				cost: 600,
-				build: 100,
-				sell: 2000
-			},
+			description: 'discount quick coupler',
 			heavy: {
+				img: 'quickCouplerDiscount',
 				cost: 900,
 				build: 150,
 				sell: 3000
@@ -467,20 +445,10 @@ var gameData = {
 		},
 		{
 			id: 'c2',
-			icon: 'cab2',
 			frame: 2,
-			description: 'standard cab',
-			basic: {
-				cost: 400,
-				build: 75,
-				sell: 1500
-			},
-			medium: {
-				cost: 800,
-				build: 150,
-				sell: 3000
-			},
+			description: 'standard quick coupler',
 			heavy: {
+				img: 'quickCouplerStandard',
 				cost: 1200,
 				build: 225,
 				sell: 4500
@@ -488,20 +456,10 @@ var gameData = {
 		},
 		{
 			id: 'c3',
-			icon: 'cab3',
 			frame: 3,
-			description: 'deluxe cab',
-			basic: {
-				cost: 1000,
-				build: 250,
-				sell: 500
-			},
-			medium: {
-				cost: 2000,
-				build: 500,
-				sell: 1000
-			},
+			description: 'deluxe quick coupler',
 			heavy: {
+				img: 'quickCouplerDeluxe',
 				cost: 3000,
 				build: 1000,
 				sell: 2000
@@ -511,20 +469,11 @@ var gameData = {
 		threePointHitch: [
 		{
 			id: 'c1',
-			icon: 'cab1',
+			img: 'transmission1',
 			frame: 1,
-			description: 'basic cab',
-			basic: {
-				cost: 300,
-				build: 50,
-				sell: 1000
-			},
-			medium: {
-				cost: 600,
-				build: 100,
-				sell: 2000
-			},
+			description: 'discount transmission',
 			heavy: {
+				img: 'threePointHitchDiscount',
 				cost: 900,
 				build: 150,
 				sell: 3000
@@ -532,20 +481,11 @@ var gameData = {
 		},
 		{
 			id: 'c2',
-			icon: 'cab2',
+			img: 'transmission2',
 			frame: 2,
-			description: 'standard cab',
-			basic: {
-				cost: 400,
-				build: 75,
-				sell: 1500
-			},
-			medium: {
-				cost: 800,
-				build: 150,
-				sell: 3000
-			},
+			description: 'standard transmission',
 			heavy: {
+				img: 'threePointHitchStandard',
 				cost: 1200,
 				build: 225,
 				sell: 4500
@@ -553,20 +493,10 @@ var gameData = {
 		},
 		{
 			id: 'c3',
-			icon: 'cab3',
 			frame: 3,
-			description: 'deluxe cab',
-			basic: {
-				cost: 1000,
-				build: 250,
-				sell: 500
-			},
-			medium: {
-				cost: 2000,
-				build: 500,
-				sell: 1000
-			},
+			description: 'deluxe transmission',
 			heavy: {
+				img: 'threePointHitchDeluxe',
 				cost: 3000,
 				build: 1000,
 				sell: 2000
@@ -576,20 +506,11 @@ var gameData = {
 		powerTakeoff: [
 		{
 			id: 'c1',
-			icon: 'cab1',
+			img: 'transmission1',
 			frame: 1,
-			description: 'basic cab',
-			basic: {
-				cost: 300,
-				build: 50,
-				sell: 1000
-			},
-			medium: {
-				cost: 600,
-				build: 100,
-				sell: 2000
-			},
+			description: 'discount transmission',
 			heavy: {
+				img: 'powerTakeoffDiscount',
 				cost: 900,
 				build: 150,
 				sell: 3000
@@ -597,20 +518,11 @@ var gameData = {
 		},
 		{
 			id: 'c2',
-			icon: 'cab2',
+			img: 'transmission2',
 			frame: 2,
-			description: 'standard cab',
-			basic: {
-				cost: 400,
-				build: 75,
-				sell: 1500
-			},
-			medium: {
-				cost: 800,
-				build: 150,
-				sell: 3000
-			},
+			description: 'standard transmission',
 			heavy: {
+				img: 'powerTakeoffStandard',
 				cost: 1200,
 				build: 225,
 				sell: 4500
@@ -618,20 +530,11 @@ var gameData = {
 		},
 		{
 			id: 'c3',
-			icon: 'cab3',
+			img: 'transmission3',
 			frame: 3,
-			description: 'deluxe cab',
-			basic: {
-				cost: 1000,
-				build: 250,
-				sell: 500
-			},
-			medium: {
-				cost: 2000,
-				build: 500,
-				sell: 1000
-			},
+			description: 'deluxe transmission',
 			heavy: {
+				img: 'powerTakeoffDeluxe',
 				cost: 3000,
 				build: 1000,
 				sell: 2000
@@ -641,20 +544,23 @@ var gameData = {
 		bucket: [
 		{
 			id: 'c1',
-			icon: 'cab1',
+			img: 'transmission1',
 			frame: 1,
-			description: 'basic cab',
+			description: 'discount transmission',
 			basic: {
+				img: 'bucketDiscount',
 				cost: 300,
 				build: 50,
 				sell: 1000
 			},
 			medium: {
+				img: 'bucketStandard',
 				cost: 600,
 				build: 100,
 				sell: 2000
 			},
 			heavy: {
+				img: 'bucketDeluxe',
 				cost: 900,
 				build: 150,
 				sell: 3000
@@ -662,20 +568,23 @@ var gameData = {
 		},
 		{
 			id: 'c2',
-			icon: 'cab2',
+			img: 'transmission2',
 			frame: 2,
-			description: 'standard cab',
+			description: 'standard transmission',
 			basic: {
+				img: 'bucketDiscount',
 				cost: 400,
 				build: 75,
 				sell: 1500
 			},
 			medium: {
+				img: 'bucketStandard',
 				cost: 800,
 				build: 150,
 				sell: 3000
 			},
 			heavy: {
+				img: 'bucketDeluxe',
 				cost: 1200,
 				build: 225,
 				sell: 4500
@@ -683,20 +592,23 @@ var gameData = {
 		},
 		{
 			id: 'c3',
-			icon: 'cab3',
+			img: 'transmission3',
 			frame: 3,
-			description: 'deluxe cab',
+			description: 'deluxe transmission',
 			basic: {
+				img: 'bucketDiscount',
 				cost: 1000,
 				build: 250,
 				sell: 500
 			},
 			medium: {
+				img: 'bucketStandard',
 				cost: 2000,
 				build: 500,
 				sell: 1000
 			},
 			heavy: {
+				img: 'bucketDeluxe',
 				cost: 3000,
 				build: 1000,
 				sell: 2000
