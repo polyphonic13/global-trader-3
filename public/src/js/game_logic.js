@@ -471,6 +471,12 @@ var gameLogic = {
 					PWG.EventCenter.trigger({ type: Events.PREV_MACHINE_PIECE_ICON });
 				}
 			},
+			showPartMenu: {
+				inputDown: function() {
+					trace('show part menu, partValue = ', this.controller.config.partValue);
+					PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: this.controller.config.partValue });
+				}
+			},
 			tireIcon: {
 				inputDown: function() {
 					// trace('tire icon input down');
@@ -1162,6 +1168,8 @@ var gameLogic = {
 								} else {
 									item.x += 100;
 								}
+								item.views.button.partValue = piece;
+								
 								PhaserGame.machinePieces.push(item.name);
 								count++;
 								machineEdit.views.machinePieceMenu.views[piece] = item;
@@ -1214,7 +1222,7 @@ var gameLogic = {
 					// );
 				}
 				PhaserGame.machineDirty = true;
-				PWG.ViewManager.showView('global:confirmButton');
+				// PWG.ViewManager.showView('global:confirmButton');
 			},
 			shutdown: function() {
 				PhaserGame.machinePieces = null;

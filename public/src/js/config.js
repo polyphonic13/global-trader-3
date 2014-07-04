@@ -821,6 +821,20 @@ var GameConfig = function() {
 						type: 'group',
 						name: 'machinePieceMenuButtons',
 						views: {
+							title: {
+								type: 'text',
+								name: 'partName',
+								text: 'Choose Part Type',
+								x: gameUnit * 3,
+								y: gameUnit * 1.75,
+								style: {
+								    font: (fontSizes.sm + 'px Arial'),
+							        fill: palette.orange3
+								},
+								position: {
+									centerX: true
+								}
+							},
 							forward: {
 								type: 'sprite',
 								name: 'forward',
@@ -854,10 +868,10 @@ var GameConfig = function() {
 			machinePieceMenuItem: {
 				type: 'group',
 				name: 'machinePieceMenuItem',
-				x: (gameW/2) - (gameUnit * 1.75),
-				y: gameUnit * 1.5,
+				x: (gameW/2) - (gameUnit * 2.5),
+				y: gameUnit * 2.5,
 				attrs: {
-					width: gameUnit * 3.5,
+					width: gameUnit * 5,
 					height: gameUnit * 1.5
 				},
 				views: {
@@ -866,7 +880,7 @@ var GameConfig = function() {
 						name: 'partName',
 						text: '',
 						x: gameUnit * 3,
-						y: gameUnit * 1.75,
+						y: gameUnit * 2.75,
 						style: {
 						    font: (fontSizes.md + 'px Arial'),
 					        fill: palette.orange3
@@ -877,15 +891,16 @@ var GameConfig = function() {
 					},
 					button: {
 						type: 'sprite',
-						name: 'button',
+						name: 'partButton',
 						img: 'blockWhite',
-						x: (gameW/2) - (gameUnit * 1.75),
-						y: gameUnit * 1.5,
+						x: (gameW/2) - (gameUnit * 2.5),
+						y: gameUnit * 2.5,
 						attrs: {
-							width: gameUnit * 3.5,
+							width: gameUnit * 5,
 							height: gameUnit * 1,
 							alpha: 0.3
-						}
+						},
+						input: gameLogic.global.input.showPartMenu
 					}
 				}
 			},
