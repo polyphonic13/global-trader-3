@@ -25,6 +25,7 @@ var Events = {
 	MACHINE_TYPE_SELECTION: 'machineTypeSelection',
 	MACHINE_SIZE_SELECTION: 'machineSizeSelection',
 	MACHINE_PARTS_COMPLETE: 'machinePartsComplete',
+	OPEN_OPTIONAL_PARTS_MENU: 'openOptionalPartsMenu',
 	OPEN_PARTS_MENU: 'openPartsMenu',
 	CLOSE_PARTS_MENU: 'closePartsMenu',
 	ADD_PART: 'addPart',

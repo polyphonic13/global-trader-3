@@ -383,7 +383,7 @@ var GameConfig = function() {
 						y: gameUnit * 5,
 						style: {
 						    font: (fontSizes.md + 'px Arial'),
-					        fill: palette.black,
+					        fill: palette.white,
 							'text-align': 'center'
 						},
 						position: {
@@ -810,6 +810,18 @@ var GameConfig = function() {
 							height: gameH
 						}
 					},
+					optionalPartsPlus: {
+						type: 'sprite',
+						name: 'optionalPartsPlus',
+						img: 'optionalPartsPlus',
+						x: gameUnit * 0.1,
+						y: gameUnit * 5,
+						attrs: {
+							width: gameUnit * 1.5,
+							height: gameUnit * 1.5
+						},
+						input: gameLogic.global.input.openOptionalPartsMenu
+					},
 					machinePieceMenu: {
 						type: 'group',
 						name: 'machinePieceMenu',
@@ -893,10 +905,10 @@ var GameConfig = function() {
 						type: 'sprite',
 						name: 'partButton',
 						img: 'blockWhite',
-						x: (gameW/2) - (gameUnit * 2.5),
+						x: (gameW/2) - (gameUnit * 3),
 						y: gameUnit * 2.5,
 						attrs: {
-							width: gameUnit * 5,
+							width: gameUnit * 6,
 							height: gameUnit * 1,
 							alpha: 0.3
 						},
@@ -1053,6 +1065,9 @@ var GameConfig = function() {
 					
 				}
 			},
+			optionalPartsMenu: {
+				
+			},
 			yearSummary: {
 				type: 'group',
 				name: 'yearSummary',
@@ -1094,6 +1109,16 @@ var GameConfig = function() {
 			// assets
 			assets: {
 				images: {
+					// generic
+					blockWhite: 'images/block_white.png',
+					blockClear: 'images/block_clear.png',
+					blockBlue: 'images/block_blue.gif',
+					blockGreen: 'images/block_green.gif',
+					blockRed: 'images/block_red.gif',
+					greyTiles: 'images/grey_tiles2.gif',
+					iconFactory: 'images/screens/us_detail/icon_factory.png',
+					iconTractor: 'images/icon_tractor.gif',
+					iconSkidsteer: 'images/icon_skidsteer.gif',
 					// global
 					gameBg: 'images/screens/metal_background.gif',
 					dashboardBottom: 'images/dashboard_bottom.gif',
@@ -1128,16 +1153,7 @@ var GameConfig = function() {
 					skidsteerBasicBg: 'images/screens/equipment_edit/skid_steer_basic.png',
 					skidsteerMediumBg: 'images/screens/equipment_edit/skid_steer_medium.png',
 					skidsteerHeavyBg: 'images/screens/equipment_edit/skid_steer_heavy.png',
-					blockWhite: 'images/block_white.png',
-					blockClear: 'images/block_clear.png',
-					blockBlue: 'images/block_blue.gif',
-					blockGreen: 'images/block_green.gif',
-					blockRed: 'images/block_red.gif',
-					greyTiles: 'images/grey_tiles2.gif',
-					iconFactory: 'images/screens/us_detail/icon_factory.png',
-					iconTractor: 'images/icon_tractor.gif',
-					iconSkidsteer: 'images/icon_skidsteer.gif',
-					buttonEquipmentSave: 'images/button_red_check.gif',
+					optionalPartsPlus: 'images/screens/equipment_edit/optional_parts_plus.png',
 					// temp parts icons
 					// deluxe
 					bucketDeluxe: 'images/parts_icons/temp/deluxe/bucket.png',

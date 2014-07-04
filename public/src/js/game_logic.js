@@ -288,6 +288,9 @@ var gameLogic = {
 				PWG.ViewManager.addView(partsMenuConfig);
 				// trace('\tcreated partsMenu from: ', partsMenuConfig, '\tcollection now = ', collection);
 			},
+			populateOptionalPartsMenu: function(collection) {
+				
+			},
 			endYear: function() {
 				var levelGoals = gameData.levels[TurnManager.playerData.level].goals;
 				var currentData = TurnManager.currentData;
@@ -477,6 +480,11 @@ var gameLogic = {
 				inputDown: function() {
 					trace('show part menu, partValue = ', this.controller.config.partValue);
 					PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: this.controller.config.partValue });
+				}
+			},
+			openOptionalPartsMenu: {
+				inputDown: function() {
+					PWG.EventCenter.trigger({ type: Events.OPEN_OPTIONAL_PARTS_MENU });
 				}
 			},
 			tireIcon: {
@@ -1096,10 +1104,8 @@ var gameLogic = {
 				event: Events.OPEN_PARTS_MENU,
 				handler: function(event) {
 					// trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + this.partsMenuOpen + ', partsMenuType = ' + this.partsMenuType);
-					if(!this.partsMenuOpen) 
-					{
-						if(this.partsMenuType !== event.value) 
-						{
+					if(!this.partsMenuOpen && !this.optionalPartsMenuOpen) {
+						if(this.partsMenuType !== event.value) {
 							PhaserGame.populatePartsMenu.call(this, event.value, this.views);
 						}
 						PWG.ViewManager.showView('partsMenu');
@@ -1117,6 +1123,29 @@ var gameLogic = {
 						// trace('\toverlay-menu = ', (this.views['overlay-menu']));
 						PWG.ViewManager.hideView('partsMenu');
 						this.partsMenuOpen = false;
+					}
+				}
+			},
+			// open optional parts menu
+			{
+				event: Events.OPEN_OPTIONAL_PARTS_MENU,
+				handler: function(event) {
+					if(!this.partsMenuOpen && !this.optionalPartsMenuOpen) {
+						if(!this.optionalPartsMenuPopulated) {
+							PhaserGame.populateOptionalPartsMenu.call(this, this.views);
+							this.optionalPartsMenuPopulated = true;
+						}
+						PWG.ViewManager.showView('optionalPartsMenu');
+					}
+				}
+			},
+			// close optional parts menu
+			{
+				event: Events.CLOSE_OPTIONAL_PARTS_MENU,
+				handler: function(event) {
+					if(this.optionalPartsMenuOpen) {
+						PWG.ViewManager.hideView('optionalPartsMenu');
+						this.optionalPartsMenuOpen = false;
 					}
 				}
 			},
