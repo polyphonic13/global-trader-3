@@ -108,10 +108,16 @@ var gameLogic = {
 			}
 		},
 		{
-			event: Events.SHOWROOM_ADD_NOTIFICATION,
+			event: Events.ADD_SHOWROOM_NOTIFICATION,
 			handler: function(event) {
-				trace('showroom add notification handler');
-				
+				trace('showroom add notification handler, event = ', event);
+				PhaserGame.addRetailOpportunityNotification(event);
+			}
+		},
+		{
+			event: Events.ADD_RETAILER,
+			handler: function(event) {
+				PhaserGame.addRetailer();
 			}
 		}
 		],
@@ -255,9 +261,47 @@ var gameLogic = {
 					PWG.ViewManager.setFrame('usDetail:usDetailGrid:'+tile.name, frame);
 				}
 			},
-			cancelAddBuilding: function() {
-				PWG.EventCenter.trigger({ type: Events.CLOSE_BUILDINGS_MENU });
-				PhaserGame.activeTile = null;
+			// cancelAddBuilding: function() {
+			// 	PWG.EventCenter.trigger({ type: Events.CLOSE_BUILDINGS_MENU });
+			// 	PhaserGame.activeTile = null;
+			// },
+			addRetailOpportunityNotification: function(event) {
+				var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
+				var retailNotification = PWG.Utils.clone(PhaserGame.config.dynamicViews.retailNotification);
+				var config;
+				
+				switch(event.type) {
+					case Events.ADD_SHOWROOM_NOTIFICATION:
+					config = notificationText['showroom'];
+					break;
+					
+					case Events.ADD_TRADEROUTE_NOTIFICATION:
+					config = notificationText['traderoute'];
+					break;
+					
+					default:
+					trace('warning: unknown type ' + event.type);
+					break;
+				}
+				
+				var statementText = PWG.Utils.parseMarkup(config.statement, {
+					factory: event.factory.name,
+					quantity: event.retailer.quantityPerYear,
+					model: event.retailer.model.name,
+					resell: event.retailer.resell
+				})
+				retailNotification.views.title.text = config.title;
+				retailNotification.views.statement.text = statementText;
+				trace('retailNotification = ', retailNotification);
+				PhaserGame.currentRetailOpportunity = event.retailer;
+				PWG.ViewManager.addView(retailNotification, notifications, true);
+				
+			},
+			closeRetailOpportunityNotification: function(event) {
+				PWG.ViewManager.removeView();
+			},
+			addRetailer: function(event) {
+				
 			},
 			getCurrentMachinePiecePath: function() {
 				return 'equipmentEdit:machineEdit:machinePieceMenu:' + PhaserGame.machinePieces[PhaserGame.currentMachinePiece];
@@ -660,6 +704,12 @@ var gameLogic = {
 			buildingAddCancel: function() {
 				PWG.EventCenter.trigger({ type: Events.CLOSE_BUILDINGS_MENU });
 			},
+			retailerAddConfirm: function() {
+				PWG.EventCenter.trigger({ type: Events.ADD_RETAILER });
+			},
+			retailerAddCancel: function() {
+				PWG.EventCenter.trigger({ type: Events.CLOSE_RETAILER_NOTIFICATION });
+			},
 			// equipment list
 			equipmentListStart: function() {
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentList' });
@@ -740,6 +790,24 @@ var gameLogic = {
 					break;
 				}
 			},
+			cancelButton: function() {
+				// switch(PWG.ScreenManager.currentId) {
+				// 	case 'brief':
+				// 	PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
+				// 	break;
+				// 	
+				// 	case 'equipmentEdit':
+				// 	PWG.EventCenter.trigger({ type: Events.SAVE_MACHINE });
+				// 	break;
+				// 	
+				// 	case 'turnEnd':
+				// 	PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'brief' });
+				// 	break;
+				// 	
+				// 	default:
+				// 	break;
+				// }
+			},
 			backButton: function() {
 				switch(PWG.ScreenManager.currentId) {
 					case 'brief': 
@@ -794,6 +862,7 @@ var gameLogic = {
 				PWG.ViewManager.showView('global:homeGroup');
 				PWG.ViewManager.hideView('global:turnGroup');
 				PWG.ViewManager.hideView('global:confirmButton');
+				PWG.ViewManager.hideView('global:cancelButton');
 				PWG.ViewManager.hideView('global:backButton');
 			},
 			shutdown: function() {

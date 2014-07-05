@@ -9,6 +9,16 @@ var goalsText = {
 	}
 };
 
+var notificationText = {
+	showroom: {
+		title: 'Retailer',
+		statement: 'We would like to sell ~{quantity}~ per year\nof your ~{factory}~\n~{model}~ inventory\nat $~{resell}~ each.'
+	},
+	traderoute: {
+		title: 'Trade Route',
+		statement: 'We would like to import ~{quantity}~ per year\nof your\n~{factory}~\n~{model}~ inventory\nat $~{resell}~ each.'
+	}
+}
 var turnScreens = [
 	'world',
 	'usDetail',
@@ -691,6 +701,76 @@ var GameConfig = function() {
 					}
 				}
 			},
+			retailNotification: {
+				type: 'group',
+				name: 'missionBrief',
+				views: {
+					bg: {
+						type: 'sprite',
+						name: 'bg',
+						img: 'retailerGirl',
+						x: 0,
+						y: 0,
+						attrs: {
+							width: gameW,
+							height: gameH
+						}
+					},
+					title: {
+						type: 'text',
+						name: 'title',
+						text: '',
+						x: gameUnit * 0,
+						y: gameUnit * 2,
+						style: {
+						    font: (fontSizes.md + 'px Arial'),
+					        fill: palette.white
+						},
+						position: {
+							centerX: true
+						}
+					},
+					statement: {
+						type: 'text',
+						name: 'statement',
+						text: '',
+						x: gameUnit * 1.5,
+						y: gameUnit * 3,
+						style: {
+						    font: (fontSizes.sm + 'px Arial'),
+					        fill: palette.white
+						}
+					},
+					confirmButton: {
+						type: 'button',
+						name: 'confirmButton',
+						img: 'buttonConfirm',
+						x: controlButtons.right.x,
+						y: controlButtons.bottom.y,
+						attrs: {
+							width: controlButtons.width,
+							height: controlButtons.height
+						},
+						callback: gameLogic.global.buttonCallbacks.retailerAddConfirm,
+						context: this,
+						frames: [0, 1, 1, 0]
+					},
+					cancelButton: {
+						type: 'button',
+						name: 'cancelButton',
+						img: 'buttonCancel',
+						x: controlButtons.left.x,
+						y: controlButtons.bottom.y,
+						attrs: {
+							width: controlButtons.width,
+							height: controlButtons.height
+						},
+						callback: gameLogic.global.buttonCallbacks.retailerAddCancel,
+						context: this,
+						frames: [0, 1, 1, 0]
+					}
+				}
+			},
 			machineList: {
 				type: 'group',
 				name: 'machineList',
@@ -1229,7 +1309,7 @@ var GameConfig = function() {
 					cabRed: 'images/parts/cab_red.gif',
 					
 					// NOTIFICATIONS
-					retailerGirl: 'images/notifications/retailer.png',
+					retailerGirl: 'images/notifications/retailer_girl.png',
 					// TURN END
 					turnEnd01: 'images/screens/turn_end/turn_end01.png',
 					turnEnd02: 'images/screens/turn_end/turn_end02.png'
@@ -1986,6 +2066,11 @@ var GameConfig = function() {
 						visible: true
 					},
 					views: {
+						notifications: {
+							name: 'notifications',
+							type: 'group',
+							views: {}
+						},
 						dashboardBottom: {
 							name: 'dashboardBottom',
 							type: 'sprite',
@@ -2191,6 +2276,20 @@ var GameConfig = function() {
 								height: controlButtons.height
 							},
 							callback: gameLogic.global.buttonCallbacks.confirmButton,
+							context: this,
+							frames: [0, 1, 1, 0]
+						},
+						cancelButton: {
+							type: 'button',
+							name: 'cancelButton',
+							img: 'buttonCancel',
+							x: controlButtons.left.x,
+							y: controlButtons.bottom.y,
+							attrs: {
+								width: controlButtons.width,
+								height: controlButtons.height
+							},
+							callback: gameLogic.global.buttonCallbacks.cancelButton,
 							context: this,
 							frames: [0, 1, 1, 0]
 						},

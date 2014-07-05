@@ -12,7 +12,6 @@ var BuildingManager = function() {
 	function Building(config) {
 		// trace('Building/constructor, config = ', config);
 		this.config = config;
-		this.config.type = config.type;
 		this.config.state = config.state || BuildingStates.CONSTRUCTION;
 		this.config.age = config.age || 0;
 	};
@@ -36,6 +35,7 @@ var BuildingManager = function() {
 	
 	// FACTORY
 	function Factory(config) {
+		config.type = BuildingTypes.FACTORY;
 		Building.call(this, config);
 		this.config.equipment = config.equipment || {};
 		this.config.inventory = config.inventory || [];
@@ -67,8 +67,37 @@ var BuildingManager = function() {
 									
 									if(this.config.showrooms.length === 0 && this.config.inventory.length > module.FACTORY_MIN_SELL_INVENTORY) {
 										if(!this.notifiedOfShowroomAdd) {
-											// alert(this.config.id + ' needs a showroom to sell inventory');
-											PWG.EventCenter.trigger({ type: Events.SHOWROOM_ADD_NOTIFICATION, factory: this.config });
+											trace(this.config.id + ' needs a showroom to sell inventory');
+											var model;
+											var count = PWG.Utils.objLength(this.config.equipment);
+											var index = 0;
+											var randomModelIdx = Math.floor(Math.random() * (count - 0) + 0);
+											var resell; 
+											
+											trace('randomModelIdx = ' + randomModelIdx + ', count = ' + count);
+											PWG.Utils.each(
+												this.config.equipment,
+												function(machine) {
+													trace('\tindex = ' + index + ', machine = ', machine);
+													if(index === randomModelIdx) {
+														trace('\t\tsetting model');
+														model = machine;
+													}
+													index++;
+												},
+												this
+											);
+
+											trace('model now = ', model);
+											resell = showroom.resellMultiplier * model.cost;
+
+											var showroom = new Showroom({
+												model: model,
+												factoryId: this.id,
+												resell: resell
+											});
+
+											PWG.EventCenter.trigger({ type: Events.ADD_SHOWROOM_NOTIFICATION, factory: this.config, retailer: showroom });
 											this.notifiedOfShowroomAdd = true;
 										}
 									}
@@ -102,6 +131,7 @@ var BuildingManager = function() {
 
 	// SHOWROOM
 	function Showroom(config) {
+		config.type = BuildingTypes.SHOWROOM;
 		Building.call(this, config);
 		this.config.inventory = [];
 	}
@@ -109,6 +139,8 @@ var BuildingManager = function() {
 
 	Showroom.prototype.buildTime = 0;
 	Showroom.prototype.capacity = 50;
+	Showroom.prototype.resellMultiplier = 3;
+	Showroom.prototype.quantityPerYear = 50;
 	Showroom.prototype.update = function() {
 		Showroom._super.update.apply(this, arguments);
 		if(this.config.state === BuildingStates.ACTIVE) {

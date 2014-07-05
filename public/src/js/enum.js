@@ -1,6 +1,7 @@
 var BuildingTypes = {
 	FACTORY: 'factory',
-	SHOWROOM: 'showroom'
+	SHOWROOM: 'showroom',
+	TRADEROUTE: 'traderoute'
 };
 
 var BuildingStates = {
