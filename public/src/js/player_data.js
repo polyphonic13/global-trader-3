@@ -16,7 +16,7 @@ var playerData = {
 	],
 	buildingCount: {
 		factory: 0,
-		showroom: 0
+		retailer: 0
 	},
 	machineCount: {
 		tractor: 0,

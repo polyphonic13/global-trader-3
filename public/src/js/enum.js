@@ -1,6 +1,6 @@
 var BuildingTypes = {
 	FACTORY: 'factory',
-	SHOWROOM: 'showroom',
+	RETAILER: 'retailer',
 	TRADEROUTE: 'traderoute'
 };
 
@@ -15,8 +15,8 @@ var TileCellFrames = {
 	EMPTY: 0,
 	FACTORY_CONSTRUCTION: 1,
 	FACTORY_ACTIVE: 2,
-	SHOWROOM_ACTIVE: 3,
-	SHOWROOM_PAUSED: 4
+	RETAILER_ACTIVE: 3,
+	RETAILER_PAUSED: 4
 };
 
 var EquipmentActions = {

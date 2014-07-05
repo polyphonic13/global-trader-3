@@ -6,9 +6,9 @@ var gameData = {
 			description: 'Build your machines',
 			cost: 100000
 		},
-		showroom: {
-			id: 'showroom',
-			img: 'iconShowroom',
+		retailer: {
+			id: 'retailer',
+			img: 'iconRetailer',
 			description: 'Sell your machines',
 			cost: 50000
 		}

@@ -10,7 +10,7 @@ var goalsText = {
 };
 
 var notificationText = {
-	showroom: {
+	retailer: {
 		title: 'Retailer',
 		statement: 'We would like to sell ~{quantity}~ per year\nof your ~{factory}~\n~{model}~ inventory\nat $~{resell}~ each.'
 	},

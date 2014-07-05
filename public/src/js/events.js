@@ -18,7 +18,7 @@ var Events = {
 	ADD_BUILDING: 'addBuilding',
 	BUILDING_AGE_UPDATED: 'buildingAgeUpdated',
 	BUILDING_STATE_UPDATED: 'buildingStateUpdated',
-	ADD_SHOWROOM_NOTIFICATION: 'addShowroomNotification',
+	ADD_RETAILER_NOTIFICATION: 'addRetailerNotification',
 	ADD_TRADEROUTE_NOTIFICATION: 'addTraderouteNotification',
 	CLOSE_RETAILER_NOTIFICATION: 'closeRetailerNotification',
 	ADD_RETAILER: 'addRetailer',

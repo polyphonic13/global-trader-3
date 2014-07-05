@@ -108,9 +108,9 @@ var gameLogic = {
 			}
 		},
 		{
-			event: Events.ADD_SHOWROOM_NOTIFICATION,
+			event: Events.ADD_RETAILER_NOTIFICATION,
 			handler: function(event) {
-				trace('showroom add notification handler, event = ', event);
+				trace('retailer add notification handler, event = ', event);
 				PhaserGame.addRetailOpportunityNotification(event);
 			}
 		},
@@ -225,12 +225,12 @@ var gameLogic = {
 						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'buildingEdit' });
 						break;
 
-						// case TileCellFrames.SHOWROOM_CONSTRUCTION: 
-						// trace('showroom construction'); 
+						// case TileCellFrames.RETAILER_CONSTRUCTION: 
+						// trace('retailer construction'); 
 						// break;
 						// 
-						// case TileCellFrames.SHOWROOM_ACTIVE: 
-						// trace('showroom active'); 
+						// case TileCellFrames.RETAILER_ACTIVE: 
+						// trace('retailer active'); 
 						// break;
 
 						default:
@@ -255,7 +255,7 @@ var gameLogic = {
 					if(buildingType === BuildingTypes.FACTORY) {
 						frame = TileCellFrames.FACTORY_CONSTRUCTION;
 					} else {
-						frame = TileCellFrames.SHOWROOM_ACTIVE;
+						frame = TileCellFrames.RETAILER_ACTIVE;
 					}
 					tile.attrs.frame = frame;
 					PWG.ViewManager.setFrame('usDetail:usDetailGrid:'+tile.name, frame);
@@ -271,8 +271,8 @@ var gameLogic = {
 				var config;
 				
 				switch(event.type) {
-					case Events.ADD_SHOWROOM_NOTIFICATION:
-					config = notificationText['showroom'];
+					case Events.ADD_RETAILER_NOTIFICATION:
+					config = notificationText['retailer'];
 					break;
 					
 					case Events.ADD_TRADEROUTE_NOTIFICATION:
@@ -537,9 +537,9 @@ var gameLogic = {
 					// trace('view x/y is now: ' + view.x + '/' + view.y);
 				}
 			},
-			newShowroom: {
+			newRetailer: {
 				inputDown: function() {
-					// trace('showroomIcon/inputDown, this = ', this);
+					// trace('retailerIcon/inputDown, this = ', this);
 					if(this.selected) {
 						PhaserGame.selectedIcon = '';
 						this.selected = false;

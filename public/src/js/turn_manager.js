@@ -3,7 +3,7 @@ var TurnManager = function() {
 		bankAdjustments: 0,
 		profit: 0,
 		newFactories: 0,
-		newShowrooms: 0,
+		newRetailers: 0,
 		newTractorModels: 0,
 		newSkidsteerModels: 0,
 		newTractors: 0,
@@ -58,7 +58,7 @@ var TurnManager = function() {
 		if(building.type === BuildingTypes.FACTORY) {
 			module.currentData.newFactories++;
 		} else if(building.type === BuildingTypes.SHOW_ROOM) {
-			module.currentData.newShowrooms++;
+			module.currentData.newRetailers++;
 		}
 	};
 	

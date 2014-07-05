@@ -36,7 +36,7 @@ var BuildingManager = function() {
 		Building.call(this, config);
 		this.config.equipment = config.equipment || {};
 		this.config.inventory = config.inventory || [];
-		this.config.showrooms = config.showrooms || [];
+		this.config.retailers = config.retailers || [];
 	}
 
 	PWG.Utils.inherit(Factory, Building);
@@ -62,9 +62,9 @@ var BuildingManager = function() {
 									TurnManager.addInventory(machine);
 									TurnManager.updateBuilding(this.config);
 									
-									if(this.config.showrooms.length === 0 && this.config.inventory.length > module.FACTORY_MIN_SELL_INVENTORY) {
-										if(!this.notifiedOfShowroomAdd) {
-											trace(this.config.id + ' needs a showroom to sell inventory');
+									if(this.config.retailers.length === 0 && this.config.inventory.length > module.FACTORY_MIN_SELL_INVENTORY) {
+										if(!this.notifiedOfRetailerAdd) {
+											trace(this.config.id + ' needs a retailer to sell inventory');
 											var model;
 											var count = PWG.Utils.objLength(this.config.equipment);
 											var index = 0;
@@ -86,18 +86,18 @@ var BuildingManager = function() {
 											);
 
 											trace('model now = ', model);
-											var showroom = new Showroom({
+											var retailer = new Retailer({
 												model: model,
 												factoryId: this.id
 											});
 
-											PWG.EventCenter.trigger({ type: Events.ADD_SHOWROOM_NOTIFICATION, factory: this.config, retailer: showroom });
-											this.notifiedOfShowroomAdd = true;
+											PWG.EventCenter.trigger({ type: Events.ADD_RETAILER_NOTIFICATION, factory: this.config, retailer: retailer });
+											this.notifiedOfRetailerAdd = true;
 										}
 									} else {
 										PWG.Utils.each(
-											this.config.showrooms,
-											function(showroom) {
+											this.config.retailers,
+											function(retailer) {
 												
 											},
 											this
@@ -131,23 +131,23 @@ var BuildingManager = function() {
 		}
 	};
 
-	// SHOWROOM
-	function Showroom(config) {
-		config.type = BuildingTypes.SHOWROOM;
+	// RETAILER
+	function Retailer(config) {
+		config.type = BuildingTypes.RETAILER;
 		Building.call(this, config);
 		if(this.config.model) {
 			this.config.resell = this.resellMultiplier * this.config.model.cost;
 		}
 		this.config.inventory = [];
 	}
-	PWG.Utils.inherit(Showroom, Building);
+	PWG.Utils.inherit(Retailer, Building);
 
-	Showroom.prototype.buildTime = 0;
-	Showroom.prototype.capacity = 50;
-	Showroom.prototype.resellMultiplier = 3;
-	Showroom.prototype.quantityPerYear = 50;
-	Showroom.prototype.update = function() {
-		Showroom._super.update.apply(this, arguments);
+	Retailer.prototype.buildTime = 0;
+	Retailer.prototype.capacity = 50;
+	Retailer.prototype.resellMultiplier = 3;
+	Retailer.prototype.quantityPerYear = 50;
+	Retailer.prototype.update = function() {
+		Retailer._super.update.apply(this, arguments);
 		if(this.config.state === BuildingStates.ACTIVE) {
 			if(this.config.inventory.length > 0) {
 
@@ -267,15 +267,15 @@ var BuildingManager = function() {
 		return inventoryCount;
 	};
 	
-	module.addInventoryToShowroom = function(factoryId, showroomIdx) {
+	module.addInventoryToRetailer = function(factoryId, retailerIdx) {
 		var equipment = module.sectors.factories[factoryId].equipment;
-		var showroom = module.sectors.showrooms[showroomIdx];
+		var retailer = module.sectors.retailers[retailerIdx];
 
 		if(equipment.length > 0) {
 			PWG.Utils.each(
 				equipment,
 				function(machine) {
-					showroom.inventory.push(machine);
+					retailer.inventory.push(machine);
 				},
 				this
 			);
@@ -299,9 +299,9 @@ var BuildingManager = function() {
 	};
 	
 	module.removeBuilding = function(sector, factoryId) {
-		trace('BuildingManager/removeBuilding, sector = ' + sector + ', factoryId = ' + factoryId + ', buildings = ', this.buildings);
-		if(this.buildings[sector].hasOwnProperty(factoryId)) {
-			delete this.buildings[sector][factoryId];
+		trace('BuildingManager/removeBuilding, sector = ' + sector + ', factoryId = ' + factoryId + ', buildings = ', module.sectors);
+		if(module.sectors[sector].hasOwnProperty(factoryId)) {
+			delete module.sectors[sector][factoryId];
 		}
 	};
 	
