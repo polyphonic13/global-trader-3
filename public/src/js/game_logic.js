@@ -106,6 +106,13 @@ var gameLogic = {
 				// trace('BUILDING_STATE_UPDATED, config = ', config);
 				GridManager.updateBuildingState(config.sector, config.cell, config.type, config.state);
 			}
+		},
+		{
+			event: Events.SHOWROOM_ADD_NOTIFICATION,
+			handler: function(event) {
+				trace('showroom add notification handler');
+				
+			}
 		}
 		],
 		methods: {
@@ -233,13 +240,19 @@ var gameLogic = {
 				PWG.ViewManager.addView(buildingMenuConfig);
 				this.buildingMenuOpen = true;
 			},
-			addBuilding: function() {
+			addBuilding: function(buildingType) {
 				PWG.EventCenter.trigger({ type: Events.CLOSE_BUILDINGS_MENU });
 				var tile = PhaserGame.activeTile;
-				var added = BuildingManager.create('factory', { sector: PhaserGame.activeSector, cell: tile.cell });
+				var added = BuildingManager.create(buildingType, { sector: PhaserGame.activeSector, cell: tile.cell });
 				if(added) {
-					tile.attrs.frame = 1;
-					PWG.ViewManager.setFrame('usDetail:usDetailGrid:'+tile.name, TileCellFrames.FACTORY_CONSTRUCTION);
+					var frame;
+					if(buildingType === BuildingTypes.FACTORY) {
+						frame = TileCellFrames.FACTORY_CONSTRUCTION;
+					} else {
+						frame = TileCellFrames.SHOWROOM_ACTIVE;
+					}
+					tile.attrs.frame = frame;
+					PWG.ViewManager.setFrame('usDetail:usDetailGrid:'+tile.name, frame);
 				}
 			},
 			cancelAddBuilding: function() {
@@ -861,6 +874,13 @@ var gameLogic = {
 					}
 				}
 			},
+			// add building
+			{
+				event: Events.ADD_BUILDING,
+				handler: function(event) {
+					PhaserGame.addBuilding(BuildingTypes.FACTORY);
+				}
+			},
 			// building state updated
 			{
 				event: Events.BUILDING_STATE_UPDATED,
@@ -876,13 +896,6 @@ var gameLogic = {
 						PWG.ViewManager.setFrame(viewPath, frame);
 						view.config.attrs.frame = frame;
 					}
-				}
-			},
-			// add building
-			{
-				event: Events.ADD_BUILDING,
-				handler: function(event) {
-					PhaserGame.addBuilding();
 				}
 			},
 			// close building menu

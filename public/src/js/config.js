@@ -746,7 +746,7 @@ var GameConfig = function() {
 						type: 'text',
 						name: 'available',
 						text: '',
-						x: gameUnit * 3.7,
+						x: gameUnit * 3.75,
 						y: (gameUnit * 0.4),
 						style: {
 						    font: (fontSizes.sm + 'px Arial'),
