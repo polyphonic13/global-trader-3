@@ -1,6 +1,6 @@
 var goalsText = {
-	passed: 'All goals met. Congratulations.',
-	failed: 'Goals not met. Please try again.',
+	passed: 'All goals met.\nCongratulations.',
+	failed: 'Goals not met.\nPlease try again.',
 	types: {
 		profit: 'Profits: ',
 		newBuildings: 'Factories Built: ',
@@ -54,7 +54,7 @@ var GameConfig = function() {
 		};
 		var fontSizes = {
 			xxs: (gameUnit * 0.25),
-			xs: (gameUnit * 0.30),
+			xs: (gameUnit * 0.3),
 			sm: (gameUnit * 0.45),
 			md: (gameUnit * 0.66),
 			lg: (gameUnit * 1.0),
@@ -735,21 +735,21 @@ var GameConfig = function() {
 						x: gameUnit * 0,
 						y: gameUnit * 0.85,
 						style: {
-						    font: (fontSizes.xs + 'px Arial'),
+						    font: (fontSizes.xxs + 'px Arial'),
 					        fill: palette.black
 						},
 						attrs: {
 							angle: -45
 						}
 					},
-					size: {
+					available: {
 						type: 'text',
-						name: 'size',
+						name: 'available',
 						text: '',
-						x: gameUnit * 3.4,
-						y: (gameUnit * 0.25),
+						x: gameUnit * 3.7,
+						y: (gameUnit * 0.4),
 						style: {
-						    font: (fontSizes.xxs + 'px Arial'),
+						    font: (fontSizes.sm + 'px Arial'),
 					        fill: palette.white
 						},
 						attrs: {
@@ -856,7 +856,7 @@ var GameConfig = function() {
 								attrs: {
 									width: gameUnit * 0.5,
 									height: gameUnit * 0.5,
-									alpha: 0.3
+									alpha: 0
 								},
 								input: gameLogic.global.input.machinePieceForwardIcon
 							},
@@ -869,7 +869,7 @@ var GameConfig = function() {
 								attrs: {
 									width: gameUnit * 0.5,
 									height: gameUnit * 0.5,
-									alpha: 0.3
+									alpha: 0
 								},
 								input: gameLogic.global.input.machinePieceBackwardIcon
 							}
@@ -910,7 +910,7 @@ var GameConfig = function() {
 						attrs: {
 							width: gameUnit * 6,
 							height: gameUnit * 1,
-							alpha: 0.3
+							alpha: 0
 						},
 						input: gameLogic.global.input.openPartsMenu
 					}
@@ -958,7 +958,7 @@ var GameConfig = function() {
 			},
 			partsMenu: {
 				type: 'group',
-				name: 'partsMenu',
+				name: '',
 				attrs: {
 					visible: false
 				},
@@ -976,6 +976,20 @@ var GameConfig = function() {
 							fixedToCamera: true
 						}
 					},
+					title: {
+						type: 'text',
+						name: 'title',
+						text: '',
+						x: gameUnit * 4,
+						y: gameUnit * 1,
+						style: {
+						    font: (fontSizes.md + 'px Arial'),
+					        fill: palette.black
+						},
+						position: {
+							centerX: true
+						}
+					},
 					closeButton: {
 						type: 'button',
 						name: 'closeButton',
@@ -986,7 +1000,6 @@ var GameConfig = function() {
 							width: gameUnit * 1,
 							height: gameUnit * 1
 						},
-						callback: gameLogic.global.buttonCallbacks.partsMenuClose,
 						context: this,
 						frames: [0, 1, 1, 0]
 					},
@@ -1013,8 +1026,7 @@ var GameConfig = function() {
 							width: gameW - gameUnit,
 							height: (gameUnit * 3),
 							alpha: 0.33
-						},
-						input: gameLogic.global.input.partIcon
+						}
 					},
 					icon: {
 						type: 'sprite',
@@ -1059,8 +1071,7 @@ var GameConfig = function() {
 						attrs: {
 							width: gameW - gameUnit,
 							height: (gameUnit * 3)
-						},
-						input: gameLogic.global.input.partIcon
+						}
 					}
 					
 				}

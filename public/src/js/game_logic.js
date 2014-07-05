@@ -83,6 +83,7 @@ var gameLogic = {
 			handler: function(event) {
 				// alert('turn ended');
 				PWG.EventCenter.trigger({ type: Events.CLOSE_PARTS_MENU });
+				PWG.EventCenter.trigger({ type: Events.CLOSE_OPTIONAL_PARTS_MENU });
 				PhaserGame.turnActive = false;
 				TurnManager.completeTurn();
 				PWG.PhaserTime.removeTimer('turnTime');
@@ -177,6 +178,7 @@ var gameLogic = {
 			},
 			stopTurn: function() {
 				PWG.EventCenter.trigger({ type: Events.CLOSE_PARTS_MENU });
+				PWG.EventCenter.trigger({ type: Events.CLOSE_OPTIONAL_PARTS_MENU });
 				PWG.PhaserTime.removeTimer('turnTime');
 				PhaserGame.turnActive = false;
 			},
@@ -250,7 +252,7 @@ var gameLogic = {
 			populatePartsMenu: function(type, collection) {
 				PhaserGame.activePartType = type;
 				var partsData = gameData.parts[type];
-				// trace('populatePartsMenu, type = ' + type + '\tparts data = ', partsData);
+				trace('populatePartsMenu, type = ' + type + '\tparts data = ', partsData);
 				var partsMenuConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.partsMenu);
 				var itemConfig = PhaserGame.config.dynamicViews.partIcon;
 				var offset = itemConfig.offset;
@@ -269,7 +271,8 @@ var gameLogic = {
 						item.views.description.text = part.description.toUpperCase();
 						item.views.cost.text = '$' + part[size].cost;
 						item.views.invisButton.partIdx = idx;
-
+						item.views.invisButton.input = gameLogic.global.input.partIcon;
+						
 						itemY = (iconH * count) + offset;
 						PWG.Utils.each(
 							item.views,
@@ -285,11 +288,55 @@ var gameLogic = {
 					this
 				);
 				// trace('partsMenuConfig = ', partsMenuConfig);
+				partsMenuConfig.views.title.text = PartDescriptions[type];
+				partsMenuConfig.views.closeButton.callback = gameLogic.global.buttonCallbacks.partsMenuClose;
+				partsMenuConfig.name = 'partsMenu';
+
 				PWG.ViewManager.addView(partsMenuConfig);
 				// trace('\tcreated partsMenu from: ', partsMenuConfig, '\tcollection now = ', collection);
 			},
 			populateOptionalPartsMenu: function(collection) {
-				
+				var optionalParts = gameData.machines[PhaserGame.activeMachineType][PhaserGame.activeMachineSize].optionalParts;
+				var partsMenuConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.partsMenu);
+				var itemConfig = PhaserGame.config.dynamicViews.partIcon;
+				var offset = itemConfig.offset;
+				var iconH = itemConfig.iconH;
+				var size = PhaserGame.activeMachineSize;
+				var count = 0;
+				var itemY = 0;
+
+				PWG.Utils.each(
+					optionalParts,
+					function(optionalPart, idx) {
+						var part = gameData.parts[optionalPart][0];
+						trace('\tadding optional part[' + idx + '] info to views: ', part);
+						var item = PWG.Utils.clone(itemConfig);
+						item.name = part.id + idx;
+						item.views.icon.img = part[size].img;
+						item.views.description.text = part.description.toUpperCase();
+						item.views.cost.text = '$' + part[size].cost;
+						item.views.invisButton.part = optionalPart;
+						item.views.invisButton.input = gameLogic.global.input.optionalPartIcon;
+
+						itemY = (iconH * count) + offset;
+						PWG.Utils.each(
+							item.views,
+							function(view) {
+								view.y += itemY;
+							},
+							this
+						);
+
+						partsMenuConfig.views['items'].views[idx] = item;
+						count++;
+					},
+					this
+				);
+				partsMenuConfig.views.title.text = 'OPTIONAL PARTS';
+				partsMenuConfig.views.closeButton.callback = gameLogic.global.buttonCallbacks.optionalPartsMenuClose;
+				partsMenuConfig.name = 'optionalPartsMenu';
+
+				PWG.ViewManager.addView(partsMenuConfig);
 			},
 			endYear: function() {
 				var levelGoals = gameData.levels[TurnManager.playerData.level].goals;
@@ -535,6 +582,12 @@ var gameLogic = {
 					PWG.EventCenter.trigger({ type: Events.ADD_PART, value: this.controller.config.partIdx });
 				}
 			},
+			optionalPartIcon: {
+				inputDown: function(event) {
+					trace('optionalPartIcon inputDown, this = ', this);
+					PWG.EventCenter.trigger({ type: Events.ADD_OPTIONAL_PART, value: this.controller.config.part });
+				}
+			},
 			closedEnvelope: {
 				inputDown: function(event) {
 					PWG.ViewManager.hideView('turnEnd:closedEnvelope');
@@ -627,6 +680,10 @@ var gameLogic = {
 			// equipment edit
 			partsMenuClose: function() {
 				PWG.EventCenter.trigger({ type: Events.CLOSE_PARTS_MENU });
+			},
+			optionalPartsMenuClose: function() {
+				trace('optional parts menu close');
+				PWG.EventCenter.trigger({ type: Events.CLOSE_OPTIONAL_PARTS_MENU });
 			},
 			equipmentCreateClose: function() {
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentList' });
@@ -961,11 +1018,14 @@ var gameLogic = {
 					function(machine, idx) {
 						// trace('\tadding machine['+idx+']: ', machine);
 						var item = PWG.Utils.clone(machineIcon);
+						var inventory = BuildingManager.getMachineModelInventory(machine.factoryId, machine.id);
 						// trace('\titem = ', item);
 						item.name = 'machine' + idx;
 						item.views.name.text = machine.name;
 						item.views.cost.text = '$' + machine.cost;
-						item.views.size.text = machine.size;
+						// item.views.size.text = machine.size;
+
+						item.views.available.text = inventory;
 						item.views.invisButton.machineIdx = machine.id;
 						// increment y to next row:
 						if(count % MACHINE_LIST_COLUMNS === 0) {
@@ -1081,12 +1141,24 @@ var gameLogic = {
 				event: Events.ADD_PART,
 				handler: function(event) {
 					PhaserGame.activeMachine.setPart(PhaserGame.activePartType, event.value);
-					// trace('show part, type = ' + event.value + ', part type = ' + this.partsMenuType + ', view collection = ', this.views);
-					var frame = gameData.parts[this.partsMenuType][event.value].frame;
+					// trace('add part, type = ' + event.value + ', part type = ' + this.partsMenuType + ', view collection = ', this.views);
+					// var frame = gameData.parts[this.partsMenuType][event.value].frame;
 					// trace('frame = ' + frame + ', type = ' + this.partsMenuType + ', collection = ', this.views);
-					var partView = this.partsMenuType + 'Part';
+					// var partView = this.partsMenuType + 'Part';
 					// PWG.ViewManager.setFrame('equipmentEdit:machineEdit:editorParts:'+partView, frame);
 					PWG.EventCenter.trigger({ type: Events.CLOSE_PARTS_MENU });
+				}
+			},
+			{
+				event: Events.ADD_OPTIONAL_PART,
+				handler: function(event) {
+					trace('add option part, type = ' + event.value);
+					PhaserGame.activeMachine.setPart(event.value, 0);
+					// var frame = gameData.parts[this.partsMenuType][event.value].frame;
+					// trace('frame = ' + frame + ', type = ' + this.partsMenuType + ', collection = ', this.views);
+					// var partView = this.partsMenuType + 'Part';
+					// PWG.ViewManager.setFrame('equipmentEdit:machineEdit:editorParts:'+partView, frame);
+					PWG.EventCenter.trigger({ type: Events.CLOSE_OPTIONAL_PARTS_MENU });
 				}
 			},
 			// show build group
@@ -1104,13 +1176,13 @@ var gameLogic = {
 				event: Events.OPEN_PARTS_MENU,
 				handler: function(event) {
 					// trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + this.partsMenuOpen + ', partsMenuType = ' + this.partsMenuType);
-					if(!this.partsMenuOpen && !this.optionalPartsMenuOpen) {
+					if(!PhaserGame.partsMenuOpen && !PhaserGame.optionalPartsMenuOpen) {
 						if(this.partsMenuType !== event.value) {
 							PhaserGame.populatePartsMenu.call(this, event.value, this.views);
 						}
 						PWG.ViewManager.showView('partsMenu');
 						this.partsMenuType = event.value;
-						this.partsMenuOpen = true;
+						PhaserGame.partsMenuOpen = true;
 					}
 				}
 			},
@@ -1119,10 +1191,10 @@ var gameLogic = {
 				event: Events.CLOSE_PARTS_MENU,
 				handler: function(event) {
 					// trace('close overlay handler, overlay open = ' + this.partsMenuOpen);
-					if(this.partsMenuOpen) {
+					if(PhaserGame.partsMenuOpen) {
 						// trace('\toverlay-menu = ', (this.views['overlay-menu']));
 						PWG.ViewManager.hideView('partsMenu');
-						this.partsMenuOpen = false;
+						PhaserGame.partsMenuOpen = false;
 					}
 				}
 			},
@@ -1130,12 +1202,13 @@ var gameLogic = {
 			{
 				event: Events.OPEN_OPTIONAL_PARTS_MENU,
 				handler: function(event) {
-					if(!this.partsMenuOpen && !this.optionalPartsMenuOpen) {
-						if(!this.optionalPartsMenuPopulated) {
+					if(!PhaserGame.partsMenuOpen && !PhaserGame.optionalPartsMenuOpen) {
+						if(!PhaserGame.optionalPartsMenuPopulated) {
 							PhaserGame.populateOptionalPartsMenu.call(this, this.views);
-							this.optionalPartsMenuPopulated = true;
+							PhaserGame.optionalPartsMenuPopulated = true;
 						}
 						PWG.ViewManager.showView('optionalPartsMenu');
+						PhaserGame.optionalPartsMenuOpen = true;
 					}
 				}
 			},
@@ -1143,9 +1216,10 @@ var gameLogic = {
 			{
 				event: Events.CLOSE_OPTIONAL_PARTS_MENU,
 				handler: function(event) {
-					if(this.optionalPartsMenuOpen) {
+					trace('close optional parts menu, optionalPartsMenuOpen: ' + PhaserGame.optionalPartsMenuOpen);
+					if(PhaserGame.optionalPartsMenuOpen) {
 						PWG.ViewManager.hideView('optionalPartsMenu');
-						this.optionalPartsMenuOpen = false;
+						PhaserGame.optionalPartsMenuOpen = false;
 					}
 				}
 			},

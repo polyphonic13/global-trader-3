@@ -53,6 +53,25 @@ var PartTypes = {
 	DECAL: 'decal'
 };
 
+var PartDescriptions = {
+	tires: 'Tires',
+	engine: 'Engine',
+	transmission: 'Transmission',
+	cab: 'Cab',
+	headlights: 'Headlights',
+	bucket: 'Bucket Attachment',
+	track: 'Track',
+	threePointHitch: 'Three Point Hitch',
+	quickCoupler: 'Quick Coupler',
+	powerTakeoff: 'Power Takeoff',
+	heater: 'Heater and A/C',
+	flameDecal: 'Flame Decal',
+	autoPilot: 'Auto Pilot',
+	gps: 'GPS',
+	stainlessExhaust: 'Stainless Steel Exhaust'
+	
+};
+
 var usSectors = {
 	NORTH_EAST: 0,
 	SOUTH_EAST: 1,

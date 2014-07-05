@@ -50,11 +50,9 @@ var gameData = {
 					'threePointHitch'
 				],
 				optionalParts: [
-					'flameDecal',
 					'autoPilot',
 					'gps',
-					'heater',
-					'track'
+					'heater'
 				]
 			}
 		},
@@ -98,11 +96,9 @@ var gameData = {
 					'quickCoupler'
 				],
 				optionalParts: [
-					'flameDecal',
 					'autoPilot',
 					'gps',
-					'heater',
-					'track'
+					'heater'
 				]
 			}
 		}
@@ -112,7 +108,7 @@ var gameData = {
 		{
 			id: 'w3',
 			frame: 1,
-			description: 'discount tires',
+			description: 'discount',
 			basic: {
 				img: 'tiresDiscount',
 				cost: 350,
@@ -135,7 +131,7 @@ var gameData = {
 		{
 			id: 'w1',
 			frame: 2,
-			description: 'standard tires',
+			description: 'standard',
 			basic: {
 				img: 'tiresStandard',
 				cost: 500,
@@ -159,7 +155,7 @@ var gameData = {
 			id: 'w4',
 			img: 'tires3',
 			frame: 3,
-			description: 'deluxe tires',
+			description: 'deluxe',
 			basic: {
 				img: 'tiresDeluxe',
 				cost: 1000,
@@ -222,7 +218,7 @@ var gameData = {
 		{
 			id: 'e1',
 			frame: 1,
-			description: 'discount engine',
+			description: 'discount',
 			basic: {
 				img: 'engineBasicDiscount',
 				cost: 2000,
@@ -245,7 +241,7 @@ var gameData = {
 		{
 			id: 'e2',
 			frame: 2,
-			description: 'standard engine',
+			description: 'standard',
 			basic: {
 				img: 'engineBasicStandard',
 				cost: 3000,
@@ -268,7 +264,7 @@ var gameData = {
 		{
 			id: 'e3',
 			frame: 3,
-			description: 'deluxe engine',
+			description: 'deluxe',
 			basic: {
 				img: 'engineBasicDeluxe',
 				cost: 5000,
@@ -293,7 +289,7 @@ var gameData = {
 		{
 			id: 'c1',
 			frame: 1,
-			description: 'discount transmission',
+			description: 'discount',
 			basic: {
 				img: 'transmissionBasicDiscount',
 				cost: 300,
@@ -316,7 +312,7 @@ var gameData = {
 		{
 			id: 'c2',
 			frame: 2,
-			description: 'standard transmission',
+			description: 'standard',
 			basic: {
 				img: 'transmissionBasicStandard',
 				cost: 400,
@@ -339,7 +335,7 @@ var gameData = {
 		{
 			id: 'c3',
 			frame: 3,
-			description: 'deluxe transmission',
+			description: 'deluxe',
 			basic: {
 				img: 'transmissionBasicDeluxe',
 				cost: 1000,
@@ -364,7 +360,7 @@ var gameData = {
 		{
 			id: 'c1',
 			frame: 1,
-			description: 'discount headlights',
+			description: 'discount',
 			basic: {
 				img: 'headlightsDiscount',
 				cost: 300,
@@ -387,7 +383,7 @@ var gameData = {
 		{
 			id: 'c2',
 			frame: 2,
-			description: 'standard headlights',
+			description: 'standard',
 			basic: {
 				img: 'headlightsStandard',
 				cost: 400,
@@ -410,7 +406,7 @@ var gameData = {
 		{
 			id: 'c3',
 			frame: 3,
-			description: 'deluxe headlights',
+			description: 'deluxe',
 			basic: {
 				img: 'headlightsDeluxe',
 				cost: 1000,
@@ -435,7 +431,7 @@ var gameData = {
 		{
 			id: 'c1',
 			frame: 1,
-			description: 'discount quick coupler',
+			description: 'discount',
 			heavy: {
 				img: 'quickCouplerDiscount',
 				cost: 900,
@@ -446,7 +442,7 @@ var gameData = {
 		{
 			id: 'c2',
 			frame: 2,
-			description: 'standard quick coupler',
+			description: 'standard',
 			heavy: {
 				img: 'quickCouplerStandard',
 				cost: 1200,
@@ -457,7 +453,7 @@ var gameData = {
 		{
 			id: 'c3',
 			frame: 3,
-			description: 'deluxe quick coupler',
+			description: 'deluxe',
 			heavy: {
 				img: 'quickCouplerDeluxe',
 				cost: 3000,
@@ -471,7 +467,7 @@ var gameData = {
 			id: 'c1',
 			img: 'transmission1',
 			frame: 1,
-			description: 'discount three point hitch',
+			description: 'discount',
 			heavy: {
 				img: 'threePointHitchDiscount',
 				cost: 900,
@@ -483,7 +479,7 @@ var gameData = {
 			id: 'c2',
 			img: 'transmission2',
 			frame: 2,
-			description: 'standard three point hitch',
+			description: 'standard',
 			heavy: {
 				img: 'threePointHitchStandard',
 				cost: 1200,
@@ -494,7 +490,7 @@ var gameData = {
 		{
 			id: 'c3',
 			frame: 3,
-			description: 'deluxe three point hitch',
+			description: 'deluxe',
 			heavy: {
 				img: 'threePointHitchDeluxe',
 				cost: 3000,
@@ -507,7 +503,7 @@ var gameData = {
 		{
 			id: 'c1',
 			frame: 1,
-			description: 'discount power takeoff',
+			description: 'discount',
 			heavy: {
 				img: 'powerTakeoffDiscount',
 				cost: 900,
@@ -518,7 +514,7 @@ var gameData = {
 		{
 			id: 'c2',
 			frame: 2,
-			description: 'standard power takeoff',
+			description: 'standard',
 			heavy: {
 				img: 'powerTakeoffStandard',
 				cost: 1200,
@@ -529,7 +525,7 @@ var gameData = {
 		{
 			id: 'c3',
 			frame: 3,
-			description: 'deluxe power takeoff',
+			description: 'deluxe',
 			heavy: {
 				img: 'powerTakeoffDeluxe',
 				cost: 3000,
@@ -578,7 +574,7 @@ var gameData = {
 			id: 'c1',
 			img: 'transmission1',
 			frame: 1,
-			description: 'discount bucket',
+			description: 'discount',
 			basic: {
 				img: 'bucketDiscount',
 				cost: 300,
@@ -602,7 +598,7 @@ var gameData = {
 			id: 'c2',
 			img: 'transmission2',
 			frame: 2,
-			description: 'standard bucket',
+			description: 'standard',
 			basic: {
 				img: 'bucketDiscount',
 				cost: 400,
@@ -626,7 +622,7 @@ var gameData = {
 			id: 'c3',
 			img: 'transmission3',
 			frame: 3,
-			description: 'deluxe bucket',
+			description: 'deluxe',
 			basic: {
 				img: 'bucketDiscount',
 				cost: 1000,
@@ -654,19 +650,19 @@ var gameData = {
 			description: 'flame decal',
 			basic: {
 				img: 'flameDecal',
-				cost: 300,
+				cost: 30,
 				build: 50,
 				sell: 1000
 			},
 			medium: {
 				img: 'flameDecal',
-				cost: 300,
+				cost: 30,
 				build: 50,
 				sell: 1000
 			},
 			heavy: {
 				img: 'flameDecal',
-				cost: 300,
+				cost: 30,
 				build: 50,
 				sell: 1000
 			}
@@ -679,19 +675,19 @@ var gameData = {
 			description: 'GPS',
 			basic: {
 				img: 'gps',
-				cost: 300,
+				cost: 50,
 				build: 50,
 				sell: 1000
 			},
 			medium: {
 				img: 'gps',
-				cost: 300,
+				cost: 50,
 				build: 50,
 				sell: 1000
 			},
 			heavy: {
 				img: 'gps',
-				cost: 300,
+				cost: 50,
 				build: 50,
 				sell: 1000
 			}
@@ -704,19 +700,19 @@ var gameData = {
 			description: 'stainless exhaust',
 			basic: {
 				img: 'stainlessExhause',
-				cost: 300,
+				cost: 100,
 				build: 50,
 				sell: 1000
 			},
 			medium: {
 				img: 'stainlessExhause',
-				cost: 300,
+				cost: 100,
 				build: 50,
 				sell: 1000
 			},
 			heavy: {
 				img: 'stainlessExhause',
-				cost: 300,
+				cost: 100,
 				build: 50,
 				sell: 1000
 			}

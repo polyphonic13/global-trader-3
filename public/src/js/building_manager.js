@@ -195,12 +195,44 @@ var BuildingManager = function() {
 		return config;
 	};
 	
-	module.addMachineTypeToFactory = function(machineType, factoryIdx) {
-		module.buildings.factories[factoryIdx].equipment[machineType.id] = machineType;
+	module.addMachineModelToFactory = function(machineType, factoryId) {
+		module.buildings.factories[factoryId].equipment[machineType.id] = machineType;
 	};
 	
-	module.addInventoryToShowroom = function(factoryIdx, showroomIdx) {
-		var equipment = module.buildings.factories[factoryIdx].equipment;
+	module.findBuilding = function(factoryId) {
+		var building = null;
+		
+		PWG.Utils.each(
+			module.buildings,
+			function(sector) {
+				if(sector.hasOwnProperty(factoryId)) {
+					building = sector[factoryId];
+				}
+			},
+			this
+		);
+		return building;
+	};
+	
+	module.getMachineModelInventory = function(factoryId, machineId) {
+		var factory = module.findBuilding(factoryId);
+		var inventoryCount = 0;
+		
+		PWG.Utils.each(
+			factory.config.inventory,
+			function(machine) {
+				if(machine === machineId) {
+					inventoryCount++;
+				}
+			},
+			this
+		);
+		
+		return inventoryCount;
+	};
+	
+	module.addInventoryToShowroom = function(factoryId, showroomIdx) {
+		var equipment = module.buildings.factories[factoryId].equipment;
 		var showroom = module.buildings.showrooms[showroomIdx];
 
 		if(equipment.length > 0) {
@@ -230,10 +262,10 @@ var BuildingManager = function() {
 		return Factory.modelCapacity;
 	};
 	
-	module.removeBuilding = function(sector, factoryIdx) {
-		trace('BuildingManager/removeBuilding, sector = ' + sector + ', factoryIdx = ' + factoryIdx + ', buildings = ', this.buildings);
-		if(this.buildings[sector].hasOwnProperty(factoryIdx)) {
-			delete this.buildings[sector][factoryIdx];
+	module.removeBuilding = function(sector, factoryId) {
+		trace('BuildingManager/removeBuilding, sector = ' + sector + ', factoryId = ' + factoryId + ', buildings = ', this.buildings);
+		if(this.buildings[sector].hasOwnProperty(factoryId)) {
+			delete this.buildings[sector][factoryId];
 		}
 	};
 	

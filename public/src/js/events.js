@@ -29,6 +29,7 @@ var Events = {
 	OPEN_PARTS_MENU: 'openPartsMenu',
 	CLOSE_PARTS_MENU: 'closePartsMenu',
 	ADD_PART: 'addPart',
+	ADD_OPTIONAL_PART: 'addOptionalPart',
 	SAVE_MACHINE: 'saveMachine',
 	EDIT_MACHINE: 'editMachine'
 };
