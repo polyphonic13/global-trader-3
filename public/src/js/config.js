@@ -703,7 +703,7 @@ var GameConfig = function() {
 			},
 			retailNotification: {
 				type: 'group',
-				name: 'missionBrief',
+				name: 'retailNotification',
 				views: {
 					bg: {
 						type: 'sprite',
@@ -740,34 +740,6 @@ var GameConfig = function() {
 						    font: (fontSizes.sm + 'px Arial'),
 					        fill: palette.white
 						}
-					},
-					confirmButton: {
-						type: 'button',
-						name: 'confirmButton',
-						img: 'buttonConfirm',
-						x: controlButtons.right.x,
-						y: controlButtons.bottom.y,
-						attrs: {
-							width: controlButtons.width,
-							height: controlButtons.height
-						},
-						callback: gameLogic.global.buttonCallbacks.retailerAddConfirm,
-						context: this,
-						frames: [0, 1, 1, 0]
-					},
-					cancelButton: {
-						type: 'button',
-						name: 'cancelButton',
-						img: 'buttonCancel',
-						x: controlButtons.left.x,
-						y: controlButtons.bottom.y,
-						attrs: {
-							width: controlButtons.width,
-							height: controlButtons.height
-						},
-						callback: gameLogic.global.buttonCallbacks.retailerAddCancel,
-						context: this,
-						frames: [0, 1, 1, 0]
 					}
 				}
 			},

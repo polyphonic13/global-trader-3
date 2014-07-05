@@ -8,7 +8,9 @@ var Machine = function() {
 		size: '',
 		cost: 0,
 		sell: 0,
-		factoryId: -1,
+		factoryId: '',
+		showroomId: '',
+		traderouteId: '',
 		parts: {}
 	};
 	

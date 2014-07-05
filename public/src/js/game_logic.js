@@ -249,7 +249,7 @@ var gameLogic = {
 			addBuilding: function(buildingType) {
 				PWG.EventCenter.trigger({ type: Events.CLOSE_BUILDINGS_MENU });
 				var tile = PhaserGame.activeTile;
-				var added = BuildingManager.create(buildingType, { sector: PhaserGame.activeSector, cell: tile.cell });
+				var added = BuildingManager.createFactory(buildingType, { sector: PhaserGame.activeSector, cell: tile.cell });
 				if(added) {
 					var frame;
 					if(buildingType === BuildingTypes.FACTORY) {
@@ -284,24 +284,30 @@ var gameLogic = {
 					break;
 				}
 				
+				PhaserGame.cancelAction = PhaserGame.closeRetailOpportunityNotification;
+				PhaserGame.confirmAction = PhaserGame.addRetailer;
+				
 				var statementText = PWG.Utils.parseMarkup(config.statement, {
 					factory: event.factory.name,
 					quantity: event.retailer.quantityPerYear,
-					model: event.retailer.model.name,
-					resell: event.retailer.resell
+					model: event.retailer.config.model.name,
+					resell: event.retailer.config.resell
 				})
 				retailNotification.views.title.text = config.title;
 				retailNotification.views.statement.text = statementText;
 				trace('retailNotification = ', retailNotification);
+				
 				PhaserGame.currentRetailOpportunity = event.retailer;
+				PWG.ViewManager.hideView('global:backButton');
 				PWG.ViewManager.addView(retailNotification, notifications, true);
 				
 			},
-			closeRetailOpportunityNotification: function(event) {
-				PWG.ViewManager.removeView();
+			closeRetailOpportunityNotification: function() {
+				PWG.ViewManager.removeView('retailNotification', 'global:notifications');
+				PhaserGame.cancelAction = null;
 			},
 			addRetailer: function(event) {
-				
+				PhaserGame.closeRetailOpportunityNotification();
 			},
 			getCurrentMachinePiecePath: function() {
 				return 'equipmentEdit:machineEdit:machinePieceMenu:' + PhaserGame.machinePieces[PhaserGame.currentMachinePiece];
@@ -773,85 +779,97 @@ var gameLogic = {
 				}
 			},
 			confirmButton: function() {
-				switch(PWG.ScreenManager.currentId) {
-					case 'brief':
-					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
-					break;
-					
-					case 'equipmentEdit':
-					PWG.EventCenter.trigger({ type: Events.SAVE_MACHINE });
-					break;
-					
-					case 'turnEnd':
-					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'brief' });
-					break;
-					
-					default:
-					break;
+				if(PhaserGame.confirmAction) {
+					PhaserGame.confirmAction.call(this);
+				} else {
+					switch(PWG.ScreenManager.currentId) {
+						case 'brief':
+						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
+						break;
+
+						case 'equipmentEdit':
+						PWG.EventCenter.trigger({ type: Events.SAVE_MACHINE });
+						break;
+
+						case 'turnEnd':
+						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'brief' });
+						break;
+
+						default:
+						break;
+					}
 				}
 			},
 			cancelButton: function() {
-				// switch(PWG.ScreenManager.currentId) {
-				// 	case 'brief':
-				// 	PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
-				// 	break;
-				// 	
-				// 	case 'equipmentEdit':
-				// 	PWG.EventCenter.trigger({ type: Events.SAVE_MACHINE });
-				// 	break;
-				// 	
-				// 	case 'turnEnd':
-				// 	PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'brief' });
-				// 	break;
-				// 	
-				// 	default:
-				// 	break;
-				// }
+				if(PhaserGame.cancelButton) {
+					PhaserGame.cancelButton.call(this);
+				} else {
+					// switch(PWG.ScreenManager.currentId) {
+					// 	case 'brief':
+					// 	PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
+					// 	break;
+					// 	
+					// 	case 'equipmentEdit':
+					// 	PWG.EventCenter.trigger({ type: Events.SAVE_MACHINE });
+					// 	break;
+					// 	
+					// 	case 'turnEnd':
+					// 	PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'brief' });
+					// 	break;
+					// 	
+					// 	default:
+					// 	break;
+					// }
+				}
 			},
 			backButton: function() {
-				switch(PWG.ScreenManager.currentId) {
-					case 'brief': 
-					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'home' });
-					break;
-					
-					case 'world':
-					var endTurn = confirm('Are you sure you want to end the turn?');
-					if(endTurn) {
-						PWG.EventCenter.trigger({ type: Events.TURN_COMPLETED });
-						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'brief' });
+				if(PhaserGame.backAction) {
+					PhaserGame.backAction.call(this);
+				} else {
+					switch(PWG.ScreenManager.currentId) {
+						case 'brief': 
+						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'home' });
+						break;
+
+						case 'world':
+						var endTurn = confirm('Are you sure you want to end the turn?');
+						if(endTurn) {
+							PWG.EventCenter.trigger({ type: Events.TURN_COMPLETED });
+							PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'brief' });
+						}
+						break; 
+
+						case 'manual':
+						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'home' });
+						break;
+
+						case 'usDetail':
+						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
+						break;
+
+						case 'buildingEdit':
+						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'usDetail' });
+						break;
+
+						case 'equipmentList':
+						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'buildingEdit' });
+						break;
+
+						case 'equipmentCreate':
+						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentList' });
+						break;
+
+						case 'equipmentEdit':
+						if(PhaserGame.machineDirty) {
+							// notify of unsaved changes
+						}
+						PWG.ViewManager.hideView('global:equipmentEditGroup');
+						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentList' });
+						break;
+
+						default:
+						break;
 					}
-					break; 
-					
-					case 'manual':
-					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'home' });
-					break;
-					
-					case 'usDetail':
-					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
-					break;
-					
-					case 'buildingEdit':
-					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'usDetail' });
-					break;
-					
-					case 'equipmentList':
-					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'buildingEdit' });
-					break;
-					
-					case 'equipmentCreate':
-					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentList' });
-					break;
-					
-					case 'equipmentEdit':
-					if(PhaserGame.machineDirty) {
-						// notify of unsaved changes
-					}
-					PWG.ViewManager.hideView('global:equipmentEditGroup');
-					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentList' });
-					break;
-					
-					default:
-					break;
 				}
 			}
 		}

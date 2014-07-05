@@ -29,10 +29,7 @@ var BuildingManager = function() {
 		this.config.age++;
 		module.updateBuildingData.call(this, this.config);
 	};
-	Building.prototype.move = function(position) {
-		this.location = position;
-	};
-	
+
 	// FACTORY
 	function Factory(config) {
 		config.type = BuildingTypes.FACTORY;
@@ -47,8 +44,8 @@ var BuildingManager = function() {
 	Factory.prototype.buildTime = 0;
 	Factory.prototype.modelCapacity = 6;
  	Factory.prototype.update = function() {
-		Factory._super.update.apply(this, arguments);
 		if(this.config.state === BuildingStates.ACTIVE) {
+			Factory._super.update.apply(this, arguments);
 			if(PWG.Utils.objLength(this.config.equipment) > 0) { 
 				if(this.buildTime >= module.TIME_TO_BUILD) {
 					PWG.Utils.each(
@@ -89,17 +86,22 @@ var BuildingManager = function() {
 											);
 
 											trace('model now = ', model);
-											resell = showroom.resellMultiplier * model.cost;
-
 											var showroom = new Showroom({
 												model: model,
-												factoryId: this.id,
-												resell: resell
+												factoryId: this.id
 											});
 
 											PWG.EventCenter.trigger({ type: Events.ADD_SHOWROOM_NOTIFICATION, factory: this.config, retailer: showroom });
 											this.notifiedOfShowroomAdd = true;
 										}
+									} else {
+										PWG.Utils.each(
+											this.config.showrooms,
+											function(showroom) {
+												
+											},
+											this
+										);
 									}
 								} else {
 									// notify output capacity reached
@@ -133,6 +135,9 @@ var BuildingManager = function() {
 	function Showroom(config) {
 		config.type = BuildingTypes.SHOWROOM;
 		Building.call(this, config);
+		if(this.config.model) {
+			this.config.resell = this.resellMultiplier * this.config.model.cost;
+		}
 		this.config.inventory = [];
 	}
 	PWG.Utils.inherit(Showroom, Building);
@@ -150,7 +155,7 @@ var BuildingManager = function() {
 		}
 	};
 
-	module.buildings = [ {}, {}, {}, {}, {} ];
+	module.sectors = [ {}, {}, {}, {}, {} ];
 	
 	module.init = function() {
 		trace('initializing building data with: ', TurnManager.playerData.buildings);
@@ -162,21 +167,20 @@ var BuildingManager = function() {
 					sector,
 					function(building, id) {
 						trace('\t\tbuildings['+id+'] = ', building);
-						module.buildings[s][building.id] = new Factory(building);
+						module.sectors[s][building.id] = new Factory(building);
 					},
 					this
 				);
 			},
 			this
 		);
-		// trace('BuildingManager.buildings now = ', module.buildings);
+		// trace('BuildingManager.sectors now = ', module.sectors);
 	};
 	
-	module.create = function(type, config) {
+	module.createFactory = function(type, config) {
 		// trace('BuildingManager/create, type = ' + type + ', cost = ' + gameData.buildings[type].cost + ', bank = ' + TurnManager.playerData.bank);
 		var count = TurnManager.playerData.buildingCount[type];
-		trace('======== count = ' + count);
-		config.type = type;
+		// trace('\tcount = ' + count);
 		config.id = type + count;
 		config.name = type.toUpperCase() + ' ' + (count + 1);
 		
@@ -185,7 +189,7 @@ var BuildingManager = function() {
 			// trace('\tbuilding made');
 			PWG.EventCenter.trigger({ type: Events.UPDATE_BANK, value: (-gameData.buildings[type].cost) });
 			// trace('\tabout to save building data, building  = ', building);
-			module.buildings[config.sector][building.config.id] = building;
+			module.sectors[config.sector][building.config.id] = building;
 			module.addNewBuilding(building.config);
 			return true;
 		} else {
@@ -196,7 +200,7 @@ var BuildingManager = function() {
 	
 	module.update = function() {
 		PWG.Utils.each(
-			module.buildings,
+			module.sectors,
 			function(sector) {
 				PWG.Utils.each(
 					sector,
@@ -215,7 +219,7 @@ var BuildingManager = function() {
 		// trace('BuildingManager/getBuilding, sector = ' + sector + ', cell = ' + cell);
 		
 		PWG.Utils.each(
-			module.buildings[sector],
+			module.sectors[sector],
 			function(building) {
 				if(building.config.cell === cell) {
 					// trace('\tfound it: ', building);
@@ -228,14 +232,14 @@ var BuildingManager = function() {
 	};
 	
 	module.addMachineModelToFactory = function(machineType, factoryId) {
-		module.buildings.factories[factoryId].equipment[machineType.id] = machineType;
+		module.sectors.factories[factoryId].equipment[machineType.id] = machineType;
 	};
 	
 	module.findBuilding = function(factoryId) {
 		var building = null;
 		
 		PWG.Utils.each(
-			module.buildings,
+			module.sectors,
 			function(sector) {
 				if(sector.hasOwnProperty(factoryId)) {
 					building = sector[factoryId];
@@ -264,8 +268,8 @@ var BuildingManager = function() {
 	};
 	
 	module.addInventoryToShowroom = function(factoryId, showroomIdx) {
-		var equipment = module.buildings.factories[factoryId].equipment;
-		var showroom = module.buildings.showrooms[showroomIdx];
+		var equipment = module.sectors.factories[factoryId].equipment;
+		var showroom = module.sectors.showrooms[showroomIdx];
 
 		if(equipment.length > 0) {
 			PWG.Utils.each(
