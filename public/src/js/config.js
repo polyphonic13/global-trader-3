@@ -304,50 +304,42 @@ var GameConfig = function() {
 			notification: {
 				type: 'group',
 				name: 'notification',
-				attrs: {
-					visible: false,
-				},
 				views: {
-					notificationBg: {
+					bg: {
 						type: 'sprite',
-						name: 'notificationBg',
-						img: 'blockWhite',
-						x: (gameUnit/2),
-						y: (gameUnit/2),
+						name: 'bg',
+						img: 'retailerGirl',
+						x: 0,
+						y: 0,
 						attrs: {
-							width: (gameW - gameUnit),
-							height: (gameH - gameUnit),
-							alpha: 0.75,
-							fixedToCamera: true
+							width: gameW,
+							height: gameH
 						}
 					},
-					notificationText: {
+					title: {
 						type: 'text',
-						name: 'notificationText',
+						name: 'title',
 						text: '',
+						x: gameUnit * 0,
+						y: gameUnit * 2,
 						style: {
 						    font: (fontSizes.md + 'px Arial'),
-					        fill: palette.black
+					        fill: palette.white
 						},
-						x: 0,
-						y: (gameUnit * 2),
 						position: {
 							centerX: true
 						}
 					},
-					closeButton: {
-						type: 'button',
-						name: 'closeButton',
-						img: 'buttonClose',
-						x: (gameW - gameUnit * 1.25),
-						y: (gameUnit * 0.25),
-						attrs: {
-							width: gameUnit * 1,
-							height: gameUnit * 1
-						},
-						callback: gameLogic.global.buttonCallbacks.notificationClose,
-						context: this,
-						frames: [0, 1, 1, 0]
+					content: {
+						type: 'text',
+						name: 'content',
+						text: '',
+						x: gameUnit * 1.5,
+						y: gameUnit * 3,
+						style: {
+						    font: (fontSizes.sm + 'px Arial'),
+					        fill: palette.white
+						}
 					}
 				}
 			},
@@ -395,37 +387,6 @@ var GameConfig = function() {
 						    font: (fontSizes.md + 'px Arial'),
 					        fill: palette.white,
 							'text-align': 'center'
-						},
-						position: {
-							centerX: true
-						}
-					}
-				}
-			},
-			retailerNotification: {
-				type: 'group',
-				name: 'retailerNotification',
-				views: {
-					bg: {
-						type: 'sprite',
-						name: 'notificationBg',
-						img: 'retailerGirl',
-						x: 0,
-						y: 0,
-						attrs: {
-							width: gameW,
-							height: gameH
-						}
-					},
-					text: {
-						type: 'text',
-						name: 'notificationText',
-						text: '',
-						x: 0,
-						y: gameUnit * 3,
-						style: {
-						    font: (fontSizes.xs + 'px Arial'),
-					        fill: palette.black
 						},
 						position: {
 							centerX: true
@@ -697,48 +658,6 @@ var GameConfig = function() {
 						},
 						position: {
 							centerX: true
-						}
-					}
-				}
-			},
-			retailNotification: {
-				type: 'group',
-				name: 'retailNotification',
-				views: {
-					bg: {
-						type: 'sprite',
-						name: 'bg',
-						img: 'retailerGirl',
-						x: 0,
-						y: 0,
-						attrs: {
-							width: gameW,
-							height: gameH
-						}
-					},
-					title: {
-						type: 'text',
-						name: 'title',
-						text: '',
-						x: gameUnit * 0,
-						y: gameUnit * 2,
-						style: {
-						    font: (fontSizes.md + 'px Arial'),
-					        fill: palette.white
-						},
-						position: {
-							centerX: true
-						}
-					},
-					statement: {
-						type: 'text',
-						name: 'statement',
-						text: '',
-						x: gameUnit * 1.5,
-						y: gameUnit * 3,
-						style: {
-						    font: (fontSizes.sm + 'px Arial'),
-					        fill: palette.white
 						}
 					}
 				}
@@ -1186,6 +1105,7 @@ var GameConfig = function() {
 					gameBg: 'images/screens/metal_background.gif',
 					dashboardBottom: 'images/dashboard_bottom.gif',
 					dashboardTop: 'images/dashboard_top.gif',
+					smallEnvelope: 'images/icons/small_envelope.png',
 					// home
 					homeBg: 'images/screens/start/start.png',
 					// manual
@@ -2059,34 +1979,34 @@ var GameConfig = function() {
 							type: 'group',
 							name: 'homeGroup',
 							views: {
-								buttonSettings: {
-									type: 'button',
-									name: 'buttonSettings',
-									img: 'buttonSettings',
-									x: controlButtons.left.x,
-									y: controlButtons.bottom.y,
-									attrs: {
-										width: controlButtons.width,
-										height: controlButtons.height
-									},
-									callback: gameLogic.global.buttonCallbacks.settings,
-									context: this,
-									frames: [0, 1, 1, 0]
-								},
-								buttonShare: {
-									type: 'button',
-									name: 'buttonShare',
-									img: 'buttonShare',
-									x: controlButtons.right.x,
-									y: controlButtons.bottom.y,
-									attrs: {
-										width: controlButtons.width,
-										height: controlButtons.height
-									},
-									callback: gameLogic.global.buttonCallbacks.share,
-									context: this,
-									frames: [0, 1, 1, 0]
-								}
+								// buttonSettings: {
+								// 	type: 'button',
+								// 	name: 'buttonSettings',
+								// 	img: 'buttonSettings',
+								// 	x: controlButtons.left.x,
+								// 	y: controlButtons.bottom.y,
+								// 	attrs: {
+								// 		width: controlButtons.width,
+								// 		height: controlButtons.height
+								// 	},
+								// 	callback: gameLogic.global.buttonCallbacks.settings,
+								// 	context: this,
+								// 	frames: [0, 1, 1, 0]
+								// },
+								// buttonShare: {
+								// 	type: 'button',
+								// 	name: 'buttonShare',
+								// 	img: 'buttonShare',
+								// 	x: controlButtons.right.x,
+								// 	y: controlButtons.bottom.y,
+								// 	attrs: {
+								// 		width: controlButtons.width,
+								// 		height: controlButtons.height
+								// 	},
+								// 	callback: gameLogic.global.buttonCallbacks.share,
+								// 	context: this,
+								// 	frames: [0, 1, 1, 0]
+								// }
 							}
 						},
 						turnGroup: {
@@ -2236,6 +2156,18 @@ var GameConfig = function() {
 								visible: false
 							},
 							views: {}
+						},
+						notificationEnvelope: {
+							type: 'sprite',
+							name: 'notificationEnvelope',
+							img: 'smallEnvelope',
+							x: gameUnit * 0.1,
+							y: gameUnit * 1.6,
+							attrs: {
+								width: gameUnit * 1.5,
+								height: (gameUnit * 1.5) * 0.6
+							},
+							input: gameLogic.global.input.notificationEnvelope
 						},
 						confirmButton: {
 							type: 'button',

@@ -22,6 +22,7 @@ var playerData = {
 		tractor: 0,
 		skidsteer: 0
 	},
+	retailers: [],
 	tradeRoutes: [
 	{
 		name: 'asia',

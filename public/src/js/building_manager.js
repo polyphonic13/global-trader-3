@@ -18,12 +18,12 @@ var BuildingManager = function() {
 	
 	Building.prototype.capacity = 0;
 	Building.prototype.equipment = {};
-	Building.prototype.inventory = [];
+	Building.prototype.inventory = {};
 	Building.prototype.update = function() {
 		// trace('Building/update');
 		if(this.config.state === BuildingStates.CONSTRUCTION && this.config.age >= this.buildTime) {
 			this.config.state = BuildingStates.ACTIVE;
-			// trace('building construction completed');
+			trace('building construction completed');
 			PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
 		}
 		this.config.age++;
@@ -35,8 +35,20 @@ var BuildingManager = function() {
 		config.type = BuildingTypes.FACTORY;
 		Building.call(this, config);
 		this.config.equipment = config.equipment || {};
-		this.config.inventory = config.inventory || [];
-		this.config.retailers = config.retailers || [];
+		this.config.inventory = config.inventory || {};
+		this.config.retailers = config.retailers || {};
+
+		if(PWG.Utils.objLength(this.config.inventory)) {
+			PWG.Utils.each(
+				this.config.inventory,
+				function(machineTypeInventory) {
+					this.config.totalInventory += machineTypeInventory.length;
+				},
+				this
+			);
+		} else {
+			this.config.totalInventory = 0;
+		}
 	}
 
 	PWG.Utils.inherit(Factory, Building);
@@ -44,7 +56,7 @@ var BuildingManager = function() {
 	Factory.prototype.buildTime = 0;
 	Factory.prototype.modelCapacity = 6;
  	Factory.prototype.update = function() {
-		if(this.config.state === BuildingStates.ACTIVE) {
+		if(this.config.state !== BuildingStates.PAUSED) {
 			Factory._super.update.apply(this, arguments);
 			if(PWG.Utils.objLength(this.config.equipment) > 0) { 
 				if(this.buildTime >= module.TIME_TO_BUILD) {
@@ -53,46 +65,46 @@ var BuildingManager = function() {
 						function(machine) {
 							// trace('machine = ', machine);
 							if(TurnManager.playerData.bank > machine.cost) {
-								if(this.config.inventory.length < module.FACTORY_MAX_INVENTORY) {
-									// trace('build machine: machine = ', machine);
+								if(this.config.totalInventory < module.FACTORY_MAX_INVENTORY) {
+									trace('build machine: machine = ', machine);
 									PWG.EventCenter.trigger({ type: Events.UPDATE_BANK, value: (-machine.cost) });
 									PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
-									this.config.inventory.push(machine.id);
-
+									this.config.inventory[machine.id].push(machine);
+									this.config.totalInventory++;
+									
 									TurnManager.addInventory(machine);
 									TurnManager.updateBuilding(this.config);
 									
-									if(this.config.retailers.length === 0 && this.config.inventory.length > module.FACTORY_MIN_SELL_INVENTORY) {
-										if(!this.notifiedOfRetailerAdd) {
-											trace(this.config.id + ' needs a retailer to sell inventory');
-											var model;
-											var count = PWG.Utils.objLength(this.config.equipment);
-											var index = 0;
-											var randomModelIdx = Math.floor(Math.random() * (count - 0) + 0);
-											var resell; 
-											
-											trace('randomModelIdx = ' + randomModelIdx + ', count = ' + count);
-											PWG.Utils.each(
-												this.config.equipment,
-												function(machine) {
-													trace('\tindex = ' + index + ', machine = ', machine);
-													if(index === randomModelIdx) {
-														trace('\t\tsetting model');
-														model = machine;
-													}
-													index++;
-												},
-												this
-											);
+									// if there is enough inventory of this machine to sell and it doesn't already have a retailer...
+									if(this.config.inventory[machine.id].length > module.FACTORY_MIN_SELL_INVENTORY && !this.config.retailers.hasOwnProperty(machine.id)) {
+										var model;
+										var count = PWG.Utils.objLength(this.config.equipment);
+										var index = 0;
+										var randomModelIdx = Math.floor(Math.random() * (count - 0) + 0);
+										var resell; 
+										
+										trace('randomModelIdx = ' + randomModelIdx + ', count = ' + count);
+										PWG.Utils.each(
+											this.config.equipment,
+											function(machine) {
+												trace('\tindex = ' + index + ', machine = ', machine);
+												if(index === randomModelIdx) {
+													trace('\t\tsetting model');
+													model = machine;
+												}
+												index++;
+											},
+											this
+										);
 
-											trace('model now = ', model);
+										trace('model now = ', model);
+										if(!this.config.retailers.hasOwnProperty(model.id)) {
 											var retailer = new Retailer({
 												model: model,
-												factoryId: this.id
+												factoryId: this.config.id
 											});
 
 											PWG.EventCenter.trigger({ type: Events.ADD_RETAILER_NOTIFICATION, factory: this.config, retailer: retailer });
-											this.notifiedOfRetailerAdd = true;
 										}
 									} else {
 										PWG.Utils.each(
@@ -131,6 +143,33 @@ var BuildingManager = function() {
 		}
 	};
 
+	Factory.prototype.addMachineModel = function(machine) {
+		this.config.equipment[machine.id] = machine; 
+		this.config.inventory[machine.id] = [];
+	};
+
+	Factory.prototype.getMachineModelInventory = function(machineId) {
+		var inventory = [];
+		
+		PWG.Utils.each(
+			this.config.inventory,
+			function(machine) {
+				if(machine.id === machineId) {
+					inventory.push(machine);
+				}
+			},
+			this
+		);
+
+		return inventory;
+	};
+	
+	Factory.prototype.addRetailer = function(retailer) {
+		this.config.retailers[retailer.config.model.id] = retailer;
+		trace('Factory/addRetailer, retailers now = ', this.config.retailers);
+		TurnManager.updateBuilding(this.config);
+	};
+	
 	// RETAILER
 	function Retailer(config) {
 		config.type = BuildingTypes.RETAILER;
@@ -147,8 +186,8 @@ var BuildingManager = function() {
 	Retailer.prototype.resellMultiplier = 3;
 	Retailer.prototype.quantityPerYear = 50;
 	Retailer.prototype.update = function() {
-		Retailer._super.update.apply(this, arguments);
 		if(this.config.state === BuildingStates.ACTIVE) {
+			// Retailer._super.update.apply(this, arguments);
 			if(this.config.inventory.length > 0) {
 
 			}
@@ -156,6 +195,7 @@ var BuildingManager = function() {
 	};
 
 	module.sectors = [ {}, {}, {}, {}, {} ];
+	module.retailers = [];
 	
 	module.init = function() {
 		trace('initializing building data with: ', TurnManager.playerData.buildings);
@@ -171,6 +211,13 @@ var BuildingManager = function() {
 					},
 					this
 				);
+			},
+			this
+		);
+		PWG.Utils.each(
+			TurnManager.playerData.retailers,
+			function(retailer) {
+				module.retailers.push(new Retailer(retailer));
 			},
 			this
 		);
@@ -198,19 +245,38 @@ var BuildingManager = function() {
 		}
 	};
 	
+	module.addMachineModelToFactory = function(sector, factoryId, machine) {
+		module.sectors[sector][factoryId].addMachineModel(machine);
+	};
+	
+	module.addRetailer = function(retailer) {
+		var factory = module.findFactory(retailer.config.factoryId);
+		factory.addRetailer(retailer);
+		module.retailers.push(retailer);
+	};
+	
 	module.update = function() {
+		// update factories
 		PWG.Utils.each(
 			module.sectors,
 			function(sector) {
 				PWG.Utils.each(
 					sector,
-					function(building) {
-						building.update();
+					function(factory) {
+						factory.update();
 					},
 					this
 				)
 			},
 			module
+		);
+		// update retailers
+		PWG.Utils.each(
+			module.retailers,
+			function(retailer) {
+				retailer.update();
+			},
+			this
 		);
 	};
 
@@ -231,11 +297,7 @@ var BuildingManager = function() {
 		return config;
 	};
 	
-	module.addMachineModelToFactory = function(machineType, factoryId) {
-		module.sectors.factories[factoryId].equipment[machineType.id] = machineType;
-	};
-	
-	module.findBuilding = function(factoryId) {
+	module.findFactory = function(factoryId) {
 		var building = null;
 		
 		PWG.Utils.each(
@@ -251,20 +313,10 @@ var BuildingManager = function() {
 	};
 	
 	module.getMachineModelInventory = function(factoryId, machineId) {
-		var factory = module.findBuilding(factoryId);
-		var inventoryCount = 0;
+		var factory = module.findFactory(factoryId);
+		var inventory = factory.getMachineModelInventory();
 		
-		PWG.Utils.each(
-			factory.config.inventory,
-			function(machine) {
-				if(machine === machineId) {
-					inventoryCount++;
-				}
-			},
-			this
-		);
-		
-		return inventoryCount;
+		return inventory;
 	};
 	
 	module.addInventoryToRetailer = function(factoryId, retailerIdx) {

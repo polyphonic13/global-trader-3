@@ -69,7 +69,8 @@ var TurnManager = function() {
 	
 	module.addMachineModel = function(machine) {
 		trace('--- TurnManager/addMachineModel, machine = ', machine);
-		module.playerData.buildings[PhaserGame.activeSector][PhaserGame.activeBuilding.id].equipment[PhaserGame.activeMachine.config.id] = machine;
+		// module.playerData.buildings[PhaserGame.activeSector][PhaserGame.activeBuilding.id].equipment[PhaserGame.activeMachine.config.id] = machine;
+		BuildingManager.addMachineModelToFactory(PhaserGame.activeSector, PhaserGame.activeBuilding.id, machine)
 		module.playerData.machineCount[PhaserGame.activeMachineType]++;
 		module.currentData.newMachineModels.push(machine);
 		if(machine.type === EquipmentTypes.TRACTOR) {
