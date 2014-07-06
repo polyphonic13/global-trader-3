@@ -795,7 +795,7 @@ var gameData = {
 		{
 			type: 'newFactories',
 			value: 2,
-			calculation: 'length'
+			calculation: 'number'
 		}
 		]
 	},
@@ -818,7 +818,7 @@ var gameData = {
 		{
 			type: 'newFactories',
 			value: 1,
-			calculation: 'length'
+			calculation: 'number'
 		},
 		{
 			type: 'newMachineModels',
@@ -851,7 +851,7 @@ var gameData = {
 		{
 			type: 'newFactories',
 			value: 1,
-			calculation: 'length'
+			calculation: 'number'
 		},
 		{
 			type: 'newMachineModels',
@@ -884,7 +884,7 @@ var gameData = {
 		{
 			type: 'newFactories',
 			value: 1,
-			calculation: 'length'
+			calculation: 'number'
 		},
 		{
 			type: 'newMachineModels',
@@ -917,7 +917,7 @@ var gameData = {
 		{
 			type: 'newFactories',
 			value: 1,
-			calculation: 'length'
+			calculation: 'number'
 		},
 		{
 			type: 'newMachineModels',
@@ -950,7 +950,7 @@ var gameData = {
 		{
 			type: 'newFactories',
 			value: 1,
-			calculation: 'length'
+			calculation: 'number'
 		},
 		{
 			type: 'newMachineModels',
@@ -983,7 +983,7 @@ var gameData = {
 		{
 			type: 'newFactories',
 			value: 1,
-			calculation: 'length'
+			calculation: 'number'
 		},
 		{
 			type: 'newMachineModels',
@@ -1016,7 +1016,7 @@ var gameData = {
 		{
 			type: 'newFactories',
 			value: 1,
-			calculation: 'length'
+			calculation: 'number'
 		},
 		{
 			type: 'newMachineModels',
@@ -1049,7 +1049,7 @@ var gameData = {
 		{
 			type: 'newFactories',
 			value: 1,
-			calculation: 'length'
+			calculation: 'number'
 		},
 		{
 			type: 'newMachineModels',

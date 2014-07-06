@@ -268,13 +268,13 @@ var gameLogic = {
 						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'buildingEdit' });
 						break;
 
-						// case TileCellFrames.RETAILER_CONSTRUCTION: 
-						// trace('retailer construction'); 
-						// break;
-						// 
-						// case TileCellFrames.RETAILER_ACTIVE: 
-						// trace('retailer active'); 
-						// break;
+						case TileCellFrames.RETAILER_CONSTRUCTION: 
+						trace('retailer construction'); 
+						break;
+						
+						case TileCellFrames.RETAILER_ACTIVE: 
+						trace('retailer active'); 
+						break;
 
 						default:
 						break;
@@ -471,12 +471,12 @@ var gameLogic = {
 					function(goal, idx) {
 						var textValue;
 						var goalPassed = true;
-						// trace('\tgoal['+idx+'] = ', goal);
+						trace('\tgoal['+idx+'] = ', goal);
 						switch(goal.calculation) {
 							case 'number':
 							textValue = currentData[goal.type] + ' / ' + goal.value;
 							if(currentData[goal.type] < goal.value) {
-								// trace('\tcurrentData['+goal.type+']: ' + currentData[goal.type] + ' is less than goal: ' + goal.value);
+								trace('\tcurrentData['+goal.type+']: ' + currentData[goal.type] + ' is less than goal: ' + goal.value);
 								PhaserGame.levelPassed = false;
 								goalPassed = false;
 							}
