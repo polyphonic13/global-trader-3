@@ -1,7 +1,7 @@
 var BuildingManager = function() {
 	var module = {};
 	
-	module.TIME_TO_BUILD_MACHINE = 5;
+	module.TIME_TO_BUILD_MACHINE = 4;
 	module.FACTORY_MAX_MODELS = 6;
 	module.FACTORY_MIN_SELL_INVENTORY = 3;
 	module.FACTORY_MAX_INVENTORY = 100;
@@ -64,7 +64,7 @@ var BuildingManager = function() {
 
 	PWG.Utils.inherit(Factory, Building);
 	
-	Factory.prototype.buildTime = 3;
+	Factory.prototype.buildTime = 0;
 	Factory.prototype.modelCapacity = 6;
  	Factory.prototype.update = function() {
 		if(this.config.state !== BuildingStates.PAUSED) {
@@ -152,8 +152,9 @@ var BuildingManager = function() {
 	};
 	
 	Factory.prototype.addRetailer = function(retailer) {
-		this.config.retailers[retailer.config.modelId] = retailer.id;
-		// trace('Factory/addRetailer, retailers now = ', this.config.retailers);
+		trace('Factory/addRetailer, retailer = ', retailer);
+		this.config.retailers[retailer.config.modelId] = retailer.config.id;
+		trace('\tretailers now = ', this.config.retailers);
 		TurnManager.updateBuilding(this.config);
 	};
 	
