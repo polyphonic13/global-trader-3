@@ -57,7 +57,7 @@ var TurnManager = function() {
 		module.playerData.buildingCount[building.type]++;
 		if(building.type === BuildingTypes.FACTORY) {
 			module.currentData.newFactories++;
-		} else if(building.type === BuildingTypes.SHOW_ROOM) {
+		} else if(building.type === BuildingTypes.RETAILER) {
 			module.currentData.newRetailers++;
 		}
 	};

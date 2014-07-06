@@ -66,7 +66,7 @@ var BuildingManager = function() {
 							// trace('machine = ', machine);
 							if(TurnManager.playerData.bank > machine.cost) {
 								if(this.config.totalInventory < module.FACTORY_MAX_INVENTORY) {
-									trace('build machine: machine = ', machine);
+									// trace('build machine: machine = ', machine);
 									PWG.EventCenter.trigger({ type: Events.UPDATE_BANK, value: (-machine.cost) });
 									PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
 									this.config.inventory[machine.id].push(machine);
@@ -186,12 +186,13 @@ var BuildingManager = function() {
 	Retailer.prototype.resellMultiplier = 3;
 	Retailer.prototype.quantityPerYear = 50;
 	Retailer.prototype.update = function() {
-		if(this.config.state === BuildingStates.ACTIVE) {
+		trace('retailer id: ' + retailer.id);
+		// if(this.config.state === BuildingStates.ACTIVE) {
 			// Retailer._super.update.apply(this, arguments);
 			if(this.config.inventory.length > 0) {
 
 			}
-		}
+		// }
 	};
 
 	module.sectors = [ {}, {}, {}, {}, {} ];
@@ -271,6 +272,7 @@ var BuildingManager = function() {
 			module
 		);
 		// update retailers
+		trace('module retailer = ', module.retailers);
 		PWG.Utils.each(
 			module.retailers,
 			function(retailer) {
