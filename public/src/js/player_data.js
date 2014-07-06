@@ -18,7 +18,7 @@ var playerData = {
 		factory: 0,
 		retailer: 0
 	},
-	machineCount: {
+	modelCount: {
 		tractor: 0,
 		skidsteer: 0
 	},

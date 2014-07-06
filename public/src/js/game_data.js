@@ -747,6 +747,7 @@ var gameData = {
 	levels: [
 	// level 1
 	{
+		startingBank: 1000000,
 		brief: {
 			background: 'briefBg01',
 			text: [
@@ -756,11 +757,6 @@ var gameData = {
 			]
 		},
 		goals: [
-		{
-			type: 'profit',
-			value: 0,
-			calculation: 'number'
-		},
 		{
 			type: 'newFactories',
 			value: 1,
@@ -780,49 +776,53 @@ var gameData = {
 	},
 	// level 2
 	{
+		startingBank: 1000000,
 		brief: {
-			background: 'briefBg02',
+			background: 'briefBg03',
 			text: [
-				'Build 2 Factories'
+				'Make $100,000 in profits',
+				'Sell 10 machines',
+				'Manufacture 5 machines'
 			]
 		},
 		goals: [
 		{
 			type: 'profit',
-			value: 0,
-			calculation: 'number'
+			value: 100000,
+			calculation: 'money'
 		},
 		{
-			type: 'newFactories',
-			value: 2,
-			calculation: 'number'
+			type: 'machinesSold',
+			value: 10,
+			calculation: 'length'
+		},
+		{
+			type: 'newMachines',
+			value: 5,
+			calculation: 'length'
 		}
 		]
 	},
 	// level 3
 	{
+		startingBank: 1000000,
 		brief: {
 			background: 'briefBg03',
 			text: [
-				'Build 2 Factories',
-				'Create 1 Machine Models',
-				'Produce 10 Machines'
+				'Make $100,000 in profits',
+				'Sell 10 machines',
+				'Manufacture 5 machines'
 			]
 		},
 		goals: [
 		{
 			type: 'profit',
-			value: 0,
-			calculation: 'number'
+			value: 100000,
+			calculation: 'money'
 		},
 		{
-			type: 'newFactories',
-			value: 1,
-			calculation: 'number'
-		},
-		{
-			type: 'newMachineModels',
-			value: 2,
+			type: 'machinesSold',
+			value: 10,
 			calculation: 'length'
 		},
 		{
@@ -834,6 +834,7 @@ var gameData = {
 	},
 	// level 4
 	{
+		startingBank: 1000000,
 		brief: {
 			background: 'briefBg04',
 			text: [
@@ -867,6 +868,7 @@ var gameData = {
 	},
 	// level 5
 	{
+		startingBank: 1000000,
 		brief: {
 			background: 'briefBg05',
 			text: [
@@ -900,6 +902,7 @@ var gameData = {
 	},
 	// level 6
 	{
+		startingBank: 1000000,
 		brief: {
 			background: 'briefBg01',
 			text: [
@@ -933,6 +936,7 @@ var gameData = {
 	},
 	// level 7
 	{
+		startingBank: 1000000,
 		brief: {
 			background: 'briefBg02',
 			text: [
@@ -966,6 +970,7 @@ var gameData = {
 	},
 	// level 8
 	{
+		startingBank: 1000000,
 		brief: {
 			background: 'briefBg03',
 			text: [
@@ -999,6 +1004,7 @@ var gameData = {
 	},
 	// level 9
 	{
+		startingBank: 1000000,
 		brief: {
 			background: 'briefBg04',
 			text: [
@@ -1032,6 +1038,7 @@ var gameData = {
 	},
 	// level 10
 	{
+		startingBank: 1000000,
 		brief: {
 			background: 'briefBg05',
 			text: [

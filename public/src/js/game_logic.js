@@ -1,7 +1,7 @@
 var ASPECT_RATIO = [9, 16];
 var GAME_NAME = 'global_trader_3_0';
 var TIME_PER_TURN = 52;
-var TURN_TIME_INTERVAL = 1000;
+var TURN_TIME_INTERVAL = 2000;
 var US_DETAIL_GRID_CELLS = 6;
 var TIME_TO_MANUFACTOR = 5;
 var MACHINE_LIST_COLUMNS = 2; 
@@ -68,11 +68,17 @@ var gameLogic = {
 				PWG.ViewManager.callMethod('global:turnGroup:timerText', 'setText', [text], this);
 			}
 		},
-		// bank updated
+		// update bank
 		{
 			event: Events.UPDATE_BANK,
 			handler: function(event) {
-				TurnManager.updateBank(event);
+				TurnManager.updateBank(event.value);
+			}
+		},
+		// bank updated
+		{
+			event: Events.BANK_UPDATED,
+			handler: function(event) {
 				var text = '$' + PWG.Utils.formatMoney(TurnManager.get('bank'), 0);
 				PWG.ViewManager.callMethod('global:turnGroup:bankText', 'setText', [text], this);
 			}
@@ -473,6 +479,15 @@ var gameLogic = {
 						var goalPassed = true;
 						trace('\tgoal['+idx+'] = ', goal);
 						switch(goal.calculation) {
+							case 'money':
+							textValue = '$' + PWG.Utils.formatMoney(currentData[goal.type], 0) + ' / ' + '$' + PWG.Utils.formatMoney(goal.value, 0);
+							if(currentData[goal.type] < goal.value) {
+								trace('\tcurrentData['+goal.type+']: ' + currentData[goal.type] + ' is less than goal: ' + goal.value);
+								PhaserGame.levelPassed = false;
+								goalPassed = false;
+							}
+							break;
+							
 							case 'number':
 							textValue = currentData[goal.type] + ' / ' + goal.value;
 							if(currentData[goal.type] < goal.value) {
@@ -1252,7 +1267,7 @@ var gameLogic = {
 					// activate size category buttons
 					// trace('machine type selection, event = ', event);
 					PhaserGame.activeMachineType = event.value;
-					var letter = alphabet.UPPER[TurnManager.playerData.machineCount[event.value]];
+					var letter = alphabet.UPPER[TurnManager.playerData.modelCount[event.value]];
 					var id = event.value + letter;
 					var name = event.value.toUpperCase() + ' ' + letter;
 					PhaserGame.activeMachineSize = event.size;

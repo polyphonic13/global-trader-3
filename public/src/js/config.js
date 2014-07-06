@@ -7,7 +7,8 @@ var goalsText = {
 		newRetailers: 'Retailers established: ',
 		newTraderoutes: 'Trade routes established: ',
 		newMachineModels: 'Machine models created: ',
-		newMachines: 'Machines manufactured: '
+		newMachines: 'Machines manufactured: ',
+		machinesSold: 'Machines sold: '
 	}
 };
 

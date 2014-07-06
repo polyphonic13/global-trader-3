@@ -23,7 +23,7 @@ var BuildingManager = function() {
 		// trace('Building/update');
 		if(this.config.state === BuildingStates.CONSTRUCTION && this.config.age >= this.buildTime) {
 			this.config.state = BuildingStates.ACTIVE;
-			// trace('building construction completed');
+			trace('building['+this.config.id+'] construction completed');
 			PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
 		}
 		this.config.age++;
@@ -83,25 +83,32 @@ var BuildingManager = function() {
 									this.config.inventory[machine.id].push(machine);
 									this.config.totalInventory++;
 									
-									TurnManager.addInventory(machine);
+									TurnManager.addFactoryInventory(machine);
 									TurnManager.updateBuilding(this.config);
 									
 									// if there is enough inventory of this machine to sell and it doesn't already have a retailer...
-									if(this.config.inventory[machine.id].length > module.FACTORY_MIN_SELL_INVENTORY && !this.config.retailers.hasOwnProperty(machine.id)) {
-										if(!this.retailerNotifications[machine.id]) {
-											this.retailerNotifications[machine.id] = true;
-											
-											module.createRetailer(this);
+									if(this.config.inventory[machine.id].length > module.FACTORY_MIN_SELL_INVENTORY) {
+										if(!this.config.retailers.hasOwnProperty(machine.id)) {
+											if(!this.retailerNotifications[machine.id]) {
+												this.retailerNotifications[machine.id] = true;
+
+												module.createRetailer(this);
+											}
+										} else {
+											var retailerId = this.config.retailers[machine.id];
+											var retailer = module.findBuilding(retailerId);
+											if(retailer.config.state === BuildingStates.ACTIVE) {
+												var inventory = this.config.inventory[machine.id];
+												// trace('retailer = ', retailer, 'inventory = ', inventory);
+												if(retailer.config.inventory.length < retailer.capacity) {
+													while(inventory.length > 0 && retailer.config.inventory.length < retailer.capacity) {
+														trace('\ttransferring inventory to retailer');
+														retailer.config.inventory.push(inventory.pop());
+													}
+												}
+											}
 										}
-									} else {
-										PWG.Utils.each(
-											this.config.retailers,
-											function(retailer) {
-												
-											},
-											this
-										);
-									}
+									} 
 								} else {
 									// notify output capacity reached
 									// alert(this.config.id + ' created max inventory');
@@ -134,7 +141,6 @@ var BuildingManager = function() {
 		this.config.equipment[machine.id] = machine; 
 		this.config.inventory[machine.id] = [];
 	};
-
 	Factory.prototype.getMachineModelInventory = function(machineId) {
 		var inventory = [];
 		
@@ -150,7 +156,6 @@ var BuildingManager = function() {
 
 		return inventory;
 	};
-	
 	Factory.prototype.addRetailer = function(retailer) {
 		trace('Factory/addRetailer, retailer = ', retailer);
 		this.config.retailers[retailer.config.modelId] = retailer.config.id;
@@ -161,7 +166,7 @@ var BuildingManager = function() {
 	// RETAILER
 	function Retailer(config) {
 		config.type = BuildingTypes.RETAILER;
-		var factory = module.findFactory(config.factoryId);
+		var factory = module.findBuilding(config.factoryId);
 		var model = factory.config.equipment[config.modelId];
 		Building.call(this, config);
 		this.config.resell = this.resellMultiplier * model.cost;
@@ -169,18 +174,24 @@ var BuildingManager = function() {
 	}
 	PWG.Utils.inherit(Retailer, Building);
 
-	Retailer.prototype.buildTime = 4;
+	Retailer.prototype.buildTime = 0;
 	Retailer.prototype.capacity = 50;
 	Retailer.prototype.resellMultiplier = 3;
-	Retailer.prototype.quantityPerYear = 50;
+	Retailer.prototype.quantityPerYear = 52;
 	Retailer.prototype.update = function() {
 		// trace('retailer/update: ', this);
-		// if(this.config.state === BuildingStates.ACTIVE) {
-			Retailer._super.update.apply(this, arguments);
+		Retailer._super.update.apply(this, arguments);
+		if(this.config.state === BuildingStates.ACTIVE) {
 			if(this.config.inventory.length > 0) {
-
+				PWG.Utils.each(
+					this.config.inventory,
+					function(machine) {
+						TurnManager.sellMachine(this.config.inventory.pop(), this.config.resell);
+					},
+					this
+				);
 			}
-		// }
+		}
 	};
 
 	module.sectors = [ {}, {}, {}, {}, {} ];
@@ -283,7 +294,7 @@ var BuildingManager = function() {
 	};
 	
 	module.addRetailer = function(retailer) {
-		var factory = module.findFactory(retailer.config.factoryId);
+		var factory = module.findBuilding(retailer.config.factoryId);
 		factory.addRetailer(retailer);
 		module.retailers.push(retailer);
 		module.updateBuildings(retailer);
@@ -336,14 +347,14 @@ var BuildingManager = function() {
 		return config;
 	};
 	
-	module.findFactory = function(factoryId) {
+	module.findBuilding = function(buildingId) {
 		var building = null;
 		
 		PWG.Utils.each(
 			module.sectors,
 			function(sector) {
-				if(sector.hasOwnProperty(factoryId)) {
-					building = sector[factoryId];
+				if(sector.hasOwnProperty(buildingId)) {
+					building = sector[buildingId];
 				}
 			},
 			this
@@ -352,7 +363,7 @@ var BuildingManager = function() {
 	};
 	
 	module.getMachineModelInventory = function(factoryId, machineId) {
-		var factory = module.findFactory(factoryId);
+		var factory = module.findBuilding(factoryId);
 		var inventory = factory.getMachineModelInventory();
 		
 		return inventory;

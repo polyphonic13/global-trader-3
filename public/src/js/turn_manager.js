@@ -10,7 +10,8 @@ var TurnManager = function() {
 		newSkidsteers: 0,
 		newBuildings: [],
 		newMachineModels: [],
-		newMachines: []
+		newMachines: [],
+		machinesSold: []
 	};
 	
 	var module = {};
@@ -22,6 +23,7 @@ var TurnManager = function() {
 	module.init = function() {
 		// trace('--- TurnManager/init');
 		module.playerData = PWG.Utils.clone(PhaserGame.playerData);
+		module.playerData.bank += gameData.levels[module.playerData.level].startingBank;
 	};
 	
 	module.startTurn = function() {
@@ -29,13 +31,14 @@ var TurnManager = function() {
 		module.currentData = PWG.Utils.clone(turnData);
 	};
 	
-	module.updateBank = function(event) {
+	module.updateBank = function(value) {
 		// trace('--- TurnManager/updateBank, event =', event);
-		module.playerData.bank += event.value;
-		module.currentData.bankAdjustments += event.value;
-		if(event.value > 0) {
-			module.currentData.profit += event.value;
+		module.playerData.bank += value;
+		module.currentData.bankAdjustments += value;
+		if(value > 0) {
+			module.currentData.profit += value;
 		}
+		PWG.EventCenter.trigger({ type: Events.BANK_UPDATED });
 	};
 
 	module.addBuilding = function(building) {
@@ -69,27 +72,33 @@ var TurnManager = function() {
 		module.playerData.sectors[building.sector][building.id] = building;
 	};
 	
-	module.addMachineModel = function(machine) {
-		trace('--- TurnManager/addMachineModel, machine = ', machine);
-		// module.playerData.sectors[PhaserGame.activeSector][PhaserGame.activeBuilding.id].equipment[PhaserGame.activeMachine.config.id] = machine;
-		BuildingManager.addMachineModelToFactory(PhaserGame.activeSector, PhaserGame.activeBuilding.id, machine)
-		module.playerData.machineCount[PhaserGame.activeMachineType]++;
-		module.currentData.newMachineModels.push(machine);
-		if(machine.type === EquipmentTypes.TRACTOR) {
+	module.addMachineModel = function(model) {
+		trace('--- TurnManager/addMachineModel, model = ', model);
+		// module.playerData.sectors[PhaserGame.activeSector][PhaserGame.activeBuilding.id].equipment[PhaserGame.activeMachine.config.id] = model;
+		BuildingManager.addMachineModelToFactory(PhaserGame.activeSector, PhaserGame.activeBuilding.id, model)
+		module.playerData.modelCount[PhaserGame.activeMachineType]++;
+		module.currentData.newMachineModels.push(model);
+		if(model.type === EquipmentTypes.TRACTOR) {
 			module.currentData.newTractorModels++;
-		} else if(machine.type === EquipmentTypes.SKID_STEER) {
+		} else if(model.type === EquipmentTypes.SKID_STEER) {
 			module.currentData.newSkidsteerModels++;
 		}
 	};
 
-	module.addInventory = function(machine) {
-		// trace('--- TurnManager/addInventory, machine = ', machine);
+	module.addFactoryInventory = function(machine) {
+		// trace('--- TurnManager/addFactoryInventory, machine = ', machine);
 		module.currentData.newMachines.push(machine);
 		if(machine.type === EquipmentTypes.TRACTOR) {
 			module.currentData.newTractors++;
 		} else if(machine.type === EquipmentTypes.SKID_STEER) {
 			module.currentData.newSkidsteers++;
 		}
+	};
+	
+	module.sellMachine = function(machine, amount) {
+		trace('TurnManager/sellMachine, amount = ' + amount + ', machine = ', machine);
+		module.currentData.machinesSold.push(machine);
+		module.updateBank(amount);
 	};
 	
 	module.get = function(prop) {

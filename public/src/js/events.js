@@ -11,6 +11,7 @@ var Events = {
 	RESUME_GAME: 'resumeGame',
 	INCREMENT_LEVEL: 'incrementLevel',
 	UPDATE_BANK: 'updateBank',
+	BANK_UPDATED: 'bankUpdated',
 	OPEN_NOTIFICATION: 'openNotification',
 	CLOSE_NOTIFICATION: 'closeNotification',
 	OPEN_BUILDINGS_MENU: 'openBuildingsMenu',
