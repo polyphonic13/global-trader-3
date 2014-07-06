@@ -179,7 +179,7 @@ var BuildingManager = function() {
 	Retailer.prototype.sellTime = 0;
 	Retailer.prototype.capacity = 50;
 	Retailer.prototype.resellMultiplier = 3;
-	Retailer.prototype.quantityPerYear = 52;
+	Retailer.prototype.quantityPerYear = 25;
 	Retailer.prototype.update = function() {
 		// trace('retailer/update: ', this);
 		Retailer._super.update.apply(this, arguments);
@@ -194,6 +194,7 @@ var BuildingManager = function() {
 					while(numToSell > 0) {
 						TurnManager.sellMachine(this.config.inventory.pop(), this.config.resell);
 						this.config.totalSales += this.config.resell;
+						
 						numToSell--;
 					}
 					// PWG.Utils.each(
@@ -292,9 +293,9 @@ var BuildingManager = function() {
 		var randomModelIdx = Math.floor(Math.random() * (count - 0) + 0);
 
 		// var buildingCount = TurnManager.playerData.buildingCount[BuildingTypes.RETAILER];
-		var retailerId = BuildingTypes.RETAILER + PhaserGame.tempRetailerCount;
+		var retailerId = BuildingTypes.RETAILER + TurnManager.tempRetailerCount;
 		
-		PhaserGame.tempRetailerCount++;
+		TurnManager.tempRetailerCount++;
 		
 		// trace('randomModelIdx = ' + randomModelIdx + ', count = ' + count);
 		PWG.Utils.each(

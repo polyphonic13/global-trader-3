@@ -29,6 +29,7 @@ var TurnManager = function() {
 	module.startTurn = function() {
 		trace('--- TurnManager/startTurn');
 		module.currentData = PWG.Utils.clone(turnData);
+		TurnManager.tempRetailerCount = (module.playerData.buildingCount.retailer);
 	};
 	
 	module.updateBank = function(value) {

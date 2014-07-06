@@ -172,7 +172,6 @@ var gameLogic = {
 				TurnManager.startTurn();
 				BuildingManager.init();
 				PhaserGame.notifications = [[], [], [], [], []];
-				PhaserGame.tempRetailerCount = 0;
 				
 				GridManager.init(usSectors, US_DETAIL_GRID_CELLS, US_DETAIL_GRID_CELLS, PWG.Stage.gameW/6);
 
