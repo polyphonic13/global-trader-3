@@ -23,7 +23,7 @@ var BuildingManager = function() {
 		// trace('Building/update');
 		if(this.config.state === BuildingStates.CONSTRUCTION && this.config.age >= this.buildTime) {
 			this.config.state = BuildingStates.ACTIVE;
-			trace('building construction completed');
+			// trace('building construction completed');
 			PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
 		}
 		this.config.age++;
@@ -153,7 +153,7 @@ var BuildingManager = function() {
 	
 	Factory.prototype.addRetailer = function(retailer) {
 		this.config.retailers[retailer.config.modelId] = retailer.id;
-		trace('Factory/addRetailer, retailers now = ', this.config.retailers);
+		// trace('Factory/addRetailer, retailers now = ', this.config.retailers);
 		TurnManager.updateBuilding(this.config);
 	};
 	
@@ -186,16 +186,20 @@ var BuildingManager = function() {
 	module.retailers = [];
 	
 	module.init = function() {
-		trace('initializing building data with: ', TurnManager.playerData.buildings);
+		// trace('initializing building data with: ', TurnManager.playerData.sectors);
 		PWG.Utils.each(
-			TurnManager.playerData.buildings,
+			TurnManager.playerData.sectors,
 			function(sector, s) {
 				// trace('\tsectors['+s+'] = ', sector)
 				PWG.Utils.each(
 					sector,
 					function(building, id) {
-						trace('\t\tbuildings['+id+'] = ', building);
-						module.sectors[s][building.id] = new Factory(building);
+						// trace('\t\tbuildings['+id+'] = ', building);
+						if(building.type === BuildingTypes.FACTORY) {
+							module.sectors[s][building.id] = new Factory(building);
+						} else if(building.type === BuildingTypes.RETAILER) {
+							module.sectors[s][building.id] = new Retailer(building);
+						}
 					},
 					this
 				);
@@ -249,13 +253,13 @@ var BuildingManager = function() {
 		
 		PhaserGame.tempRetailerCount++;
 		
-		trace('randomModelIdx = ' + randomModelIdx + ', count = ' + count);
+		// trace('randomModelIdx = ' + randomModelIdx + ', count = ' + count);
 		PWG.Utils.each(
 			factory.config.equipment,
 			function(machine) {
-				trace('\tindex = ' + index + ', machine = ', machine);
+				// trace('\tindex = ' + index + ', machine = ', machine);
 				if(index === randomModelIdx) {
-					trace('\t\tsetting model');
+					// trace('\t\tsetting model');
 					model = machine;
 				}
 				index++;
@@ -263,7 +267,7 @@ var BuildingManager = function() {
 			this
 		);
 
-		trace('model now = ', model);
+		// trace('model now = ', model);
 		if(!factory.config.retailers.hasOwnProperty(model.id)) {
 			var retailer = new Retailer({
 				modelId: model.id,
@@ -385,7 +389,7 @@ var BuildingManager = function() {
 	};
 	
 	module.removeBuilding = function(sector, factoryId) {
-		trace('BuildingManager/removeBuilding, sector = ' + sector + ', factoryId = ' + factoryId + ', buildings = ', module.sectors);
+		// trace('BuildingManager/removeBuilding, sector = ' + sector + ', factoryId = ' + factoryId + ', buildings = ', module.sectors);
 		if(module.sectors[sector].hasOwnProperty(factoryId)) {
 			delete module.sectors[sector][factoryId];
 		}

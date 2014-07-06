@@ -1,13 +1,13 @@
 var gameData = {
 	buildings: {
 		factory: {
-			id: 'factory',
+			id: BuildingTypes.FACTORY,
 			img: 'iconFactory',
 			description: 'Build your machines',
 			cost: 100000
 		},
 		retailer: {
-			id: 'retailer',
+			id: BuildingTypes.RETAILER,
 			img: 'iconRetailer',
 			description: 'Sell your machines',
 			cost: 50000
@@ -751,8 +751,8 @@ var gameData = {
 			background: 'briefBg01',
 			text: [
 				'Build 1 Factory',
-				'Create 2 Machine Models',
-				'Produce 10 Machines'
+				'Create 1 Machine Model',
+				'Manufacture 5 Machines'
 			]
 		},
 		goals: [
@@ -768,7 +768,7 @@ var gameData = {
 		},
 		{
 			type: 'newMachineModels',
-			value: 2,
+			value: 1,
 			calculation: 'length'
 		},
 		{
@@ -793,7 +793,7 @@ var gameData = {
 			calculation: 'number'
 		},
 		{
-			type: 'newBuildings',
+			type: 'newFactories',
 			value: 2,
 			calculation: 'length'
 		}
@@ -816,7 +816,7 @@ var gameData = {
 			calculation: 'number'
 		},
 		{
-			type: 'newBuildings',
+			type: 'newFactories',
 			value: 1,
 			calculation: 'length'
 		},
@@ -849,7 +849,7 @@ var gameData = {
 			calculation: 'number'
 		},
 		{
-			type: 'newBuildings',
+			type: 'newFactories',
 			value: 1,
 			calculation: 'length'
 		},
@@ -882,7 +882,7 @@ var gameData = {
 			calculation: 'number'
 		},
 		{
-			type: 'newBuildings',
+			type: 'newFactories',
 			value: 1,
 			calculation: 'length'
 		},
@@ -915,7 +915,7 @@ var gameData = {
 			calculation: 'number'
 		},
 		{
-			type: 'newBuildings',
+			type: 'newFactories',
 			value: 1,
 			calculation: 'length'
 		},
@@ -948,7 +948,7 @@ var gameData = {
 			calculation: 'number'
 		},
 		{
-			type: 'newBuildings',
+			type: 'newFactories',
 			value: 1,
 			calculation: 'length'
 		},
@@ -981,7 +981,7 @@ var gameData = {
 			calculation: 'number'
 		},
 		{
-			type: 'newBuildings',
+			type: 'newFactories',
 			value: 1,
 			calculation: 'length'
 		},
@@ -1014,7 +1014,7 @@ var gameData = {
 			calculation: 'number'
 		},
 		{
-			type: 'newBuildings',
+			type: 'newFactories',
 			value: 1,
 			calculation: 'length'
 		},
@@ -1047,7 +1047,7 @@ var gameData = {
 			calculation: 'number'
 		},
 		{
-			type: 'newBuildings',
+			type: 'newFactories',
 			value: 1,
 			calculation: 'length'
 		},

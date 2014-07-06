@@ -2,7 +2,7 @@ var playerData = {
 	bank: 1000000,
 	profit: 0,
 	level: 0,
-	buildings: [
+	sectors: [
 		// ne
 		{},
 		// se

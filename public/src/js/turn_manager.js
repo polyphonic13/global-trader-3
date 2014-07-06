@@ -29,18 +29,6 @@ var TurnManager = function() {
 		module.currentData = PWG.Utils.clone(turnData);
 	};
 	
-	module.completeTurn = function() {
-		// trace('--- TurnManager/completeTurn');
-		// PhaserGame.playerData = module.playerData;
-		// PhaserGame.setSavedData();
-	};
-	
-	module.stopTurn = function() {
-		// trace('--- TurnManager/stopTurn');
-		// reset turn data, all info lost
-		module.currentData = PWG.Utils.clone(turnData);
-	};
-	
 	module.updateBank = function(event) {
 		// trace('--- TurnManager/updateBank, event =', event);
 		module.playerData.bank += event.value;
@@ -52,24 +40,38 @@ var TurnManager = function() {
 
 	module.addBuilding = function(building) {
 		trace('--- TurnManager/addBuilding, building = ', building);
-		module.playerData.buildings[building.sector][building.id] = building;
+		module.playerData.sectors[building.sector][building.id] = building;
 		module.currentData.newBuildings.push(building);
 		module.playerData.buildingCount[building.type]++;
-		if(building.type === BuildingTypes.FACTORY) {
+		
+		switch(building.type) {
+			case BuildingTypes.FACTORY: 
 			module.currentData.newFactories++;
-		} else if(building.type === BuildingTypes.RETAILER) {
+			break;
+			
+			case BuildingTypes.RETAILER: 
 			module.currentData.newRetailers++;
+			break;
+			
+			case BuildingTypes.TRADE_ROUTE:
+			modeul.currentData.newTraderoutes++;
+			break;
+			
+			default: 
+			trace('ERROR unknown building type: ' + building.type);
+			break;
+			
 		}
 	};
 	
 	module.updateBuilding = function(building) {
 		// trace('--- TurnManager/updateBuilding, building = ', building);
-		module.playerData.buildings[building.sector][building.id] = building;
+		module.playerData.sectors[building.sector][building.id] = building;
 	};
 	
 	module.addMachineModel = function(machine) {
 		trace('--- TurnManager/addMachineModel, machine = ', machine);
-		// module.playerData.buildings[PhaserGame.activeSector][PhaserGame.activeBuilding.id].equipment[PhaserGame.activeMachine.config.id] = machine;
+		// module.playerData.sectors[PhaserGame.activeSector][PhaserGame.activeBuilding.id].equipment[PhaserGame.activeMachine.config.id] = machine;
 		BuildingManager.addMachineModelToFactory(PhaserGame.activeSector, PhaserGame.activeBuilding.id, machine)
 		module.playerData.machineCount[PhaserGame.activeMachineType]++;
 		module.currentData.newMachineModels.push(machine);

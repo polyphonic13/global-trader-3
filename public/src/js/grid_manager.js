@@ -7,7 +7,7 @@ var GridManager = function() {
 	
 	module.init = function(sectors, xCells, yCells, gridSize) {
 		module.initGrid(sectors, xCells, yCells, gridSize);
-		module.initBuildings(TurnManager.playerData.buildings);
+		module.initBuildings(TurnManager.playerData.sectors);
 	}
 	
 	module.initGrid = function(sectors, xCells, yCells, gridSize) {
@@ -34,14 +34,14 @@ var GridManager = function() {
 		// trace('---- grid manager init complete, grids = ', module.grids);
 	};
 	
-	module.initBuildings = function(buildings) {
-		// trace('BuildingManager/initBuildings, buildings = ' + buildings);
+	module.initBuildings = function(sectors) {
+		// trace('GridManager/initBuildings, buildings = ' + sectors);
 		PWG.Utils.each(
-			buildings,
-			function(sectorBuildings, s) {
-				// trace('\tsectorBuildings['+s+'] = ', sectorBuildings);
+			sectors,
+			function(sector, s) {
+//				// trace('\tsector['+s+'] = ', sector);
 				PWG.Utils.each(
-					sectorBuildings,
+					sector,
 					function(building, b) {
 						// trace('\t\tbuilding['+b+'] = ', building);
 						module.addBuilding(building, s);
@@ -57,7 +57,7 @@ var GridManager = function() {
 		trace('GridManager/addBuilding, sector = ' + sector + ', building = ', building, module.grids);
 		var frameKey = building.type.toUpperCase() + '_' + building.state.toUpperCase();
 		module.grids[sector][building.cell].frame = TileCellFrames[frameKey];
-		// trace('\tsetting grid['+config.sector+']['+config.cell+'].frame to ' + TileCellFrames[frameKey]);
+		// trace('\tsetting grid['+building.sector+']['+building.cell+'].frame to frameKey: ' + frameKey + ', frame = ' + TileCellFrames[frameKey]);
 	};
 
 	module.getRandomEmptyCellIndex = function(sector) {
@@ -76,7 +76,7 @@ var GridManager = function() {
 			this
 		);
 		randomCellIdx = Math.floor(Math.random() * (emptyCells.length - 1) + 1);
-		trace('------- returning emptyCells['+randomCellIdx+'] = ' + emptyCells[randomCellIdx] + ', emptyCells = ', emptyCells);
+		// trace('------- returning emptyCells['+randomCellIdx+'] = ' + emptyCells[randomCellIdx] + ', emptyCells = ', emptyCells);
 		return emptyCells[randomCellIdx];
 	};
 	

@@ -1,7 +1,7 @@
 var ASPECT_RATIO = [9, 16];
 var GAME_NAME = 'global_trader_3_0';
 var TIME_PER_TURN = 52;
-var TURN_TIME_INTERVAL = 2000;
+var TURN_TIME_INTERVAL = 1000;
 var US_DETAIL_GRID_CELLS = 6;
 var TIME_TO_MANUFACTOR = 5;
 var MACHINE_LIST_COLUMNS = 2; 
@@ -83,7 +83,6 @@ var gameLogic = {
 			handler: function(event) {
 				// alert('turn ended');
 				PhaserGame.stopTurn();
-				TurnManager.completeTurn();
 				// trace('turn ended');
 				PWG.ViewManager.callMethod('global:turnGroup:timerText', 'setText', [''], this);
 
@@ -107,7 +106,7 @@ var gameLogic = {
 		{
 			event: Events.ADD_RETAILER_NOTIFICATION,
 			handler: function(event) {
-				trace('retailer add notification handler, event = ', event);
+				// trace('retailer add notification handler, event = ', event);
 				PhaserGame.addRetailOpportunityNotification(event);
 			}
 		},
@@ -150,7 +149,7 @@ var gameLogic = {
 				PWG.Storage.set(params);
 			},
 			ignitionAnimationCompleted: function() {
-				trace('PhaserGame/ignitionAnimationCompleted');
+				// trace('PhaserGame/ignitionAnimationCompleted');
 				var ignitionKey = PWG.ViewManager.getControllerFromPath('home:ignitionKey');
 				ignitionKey.view.events.onAnimationComplete.remove(PhaserGame.ignitionAnimationCompleted, this);
 				// if(PhaserGame.isFirstPlay) {
@@ -206,7 +205,7 @@ var gameLogic = {
 			},
 			showNotification: function() {
 				var sector = PhaserGame.activeSector;
-				trace('showNotification, notifications = ', PhaserGame.notifications[sector]);
+				// trace('showNotification, notifications = ', PhaserGame.notifications[sector]);
 				if(PhaserGame.notifications[sector].length > 0) {
 					var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
 					var notification = PhaserGame.notifications[sector].pop();
@@ -226,7 +225,7 @@ var gameLogic = {
 				}
 			},
 			removeNotification: function() {
-				trace('removeNotification');
+				// trace('removeNotification');
 				PWG.ViewManager.showView('global:backButton');
 				PWG.ViewManager.hideView('global:cancelButton');
 				PWG.ViewManager.hideView('global:confirmButton');
@@ -305,10 +304,6 @@ var gameLogic = {
 					PWG.ViewManager.setFrame('usDetail:usDetailGrid:'+tile.name, frame);
 				}
 			},
-			// cancelAddBuilding: function() {
-			// 	PWG.EventCenter.trigger({ type: Events.CLOSE_BUILDINGS_MENU });
-			// 	PhaserGame.activeTile = null;
-			// },
 			addRetailOpportunityNotification: function(event) {
 				var notification = PWG.Utils.clone(PhaserGame.config.dynamicViews.notification);
 				var config;
@@ -323,7 +318,7 @@ var gameLogic = {
 					break;
 					
 					default:
-					trace('warning: unknown type ' + event.type);
+					// trace('warning: unknown type ' + event.type);
 					break;
 				}
 				var modelName = event.factory.equipment[event.retailer.config.modelId].name;
@@ -337,7 +332,7 @@ var gameLogic = {
 				notification.views.person.img = 'retailerGirl';
 				notification.views.title.text = config.title;
 				notification.views.content.text = statementText;
-				trace('notification = ', notification);
+				// trace('notification = ', notification);
 				
 				notification.confirmAction = {
 					method: PhaserGame.addRetailer,
@@ -363,7 +358,7 @@ var gameLogic = {
 				var view = PWG.ViewManager.getControllerFromPath(viewPath);
 				var frameKey = config.type.toUpperCase() + '_' + config.state.toUpperCase();
 				var frame = TileCellFrames[frameKey];
-				trace('\tviewPath = ' + viewPath + ', view = ', view);
+				// trace('\tviewPath = ' + viewPath + ', view = ', view);
 
 				PWG.ViewManager.setFrame(viewPath, frame);
 				view.config.attrs.frame = frame;
@@ -374,7 +369,7 @@ var gameLogic = {
 			populatePartsMenu: function(type, collection) {
 				PhaserGame.activePartType = type;
 				var partsData = gameData.parts[type];
-				trace('populatePartsMenu, type = ' + type + '\tparts data = ', partsData);
+				// trace('populatePartsMenu, type = ' + type + '\tparts data = ', partsData);
 				var partsMenuConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.partsMenu);
 				var itemConfig = PhaserGame.config.dynamicViews.partIcon;
 				var offset = itemConfig.offset;
@@ -386,7 +381,7 @@ var gameLogic = {
 				PWG.Utils.each(
 					partsData,
 					function(part, idx) {
-						trace('\tadding part[' + idx + '] info to views');
+						// trace('\tadding part[' + idx + '] info to views');
 						var item = PWG.Utils.clone(itemConfig);
 						item.name = part.id;
 						item.views.icon.img = part[size].img;
@@ -431,7 +426,7 @@ var gameLogic = {
 					optionalParts,
 					function(optionalPart, idx) {
 						var part = gameData.parts[optionalPart][0];
-						trace('\tadding optional part[' + idx + '] info to views: ', part);
+						// trace('\tadding optional part[' + idx + '] info to views: ', part);
 						var item = PWG.Utils.clone(itemConfig);
 						item.name = part.id + idx;
 						item.views.icon.img = part[size].img;
@@ -464,7 +459,7 @@ var gameLogic = {
 				var levelGoals = gameData.levels[TurnManager.playerData.level].goals;
 				var currentData = TurnManager.currentData;
 				PhaserGame.levelPassed = true;
-				trace('PhaserGame/endYear, levelGoals = ', levelGoals);
+				// trace('PhaserGame/endYear, levelGoals = ', levelGoals);
 				
 				var yearSummary = PWG.Utils.clone(PhaserGame.config.dynamicViews.yearSummary);
 				var achievedGoalText = PhaserGame.config.dynamicViews.achievedGoalText;
@@ -476,12 +471,12 @@ var gameLogic = {
 					function(goal, idx) {
 						var textValue;
 						var goalPassed = true;
-						trace('\tgoal['+idx+'] = ', goal);
+						// trace('\tgoal['+idx+'] = ', goal);
 						switch(goal.calculation) {
 							case 'number':
 							textValue = currentData[goal.type] + ' / ' + goal.value;
 							if(currentData[goal.type] < goal.value) {
-								trace('\tcurrentData['+goal.type+']: ' + currentData[goal.type] + ' is less than goal: ' + goal.value);
+								// trace('\tcurrentData['+goal.type+']: ' + currentData[goal.type] + ' is less than goal: ' + goal.value);
 								PhaserGame.levelPassed = false;
 								goalPassed = false;
 							}
@@ -490,7 +485,7 @@ var gameLogic = {
 							case 'length':
 							textValue = currentData[goal.type].length + ' / ' + goal.value;
 							if(currentData[goal.type].length < goal.value) {
-								trace('\tcurrentData['+goal.type+'].length: ' + currentData[goal.type].length + ' is less than goal: ' + goal.value);
+								// trace('\tcurrentData['+goal.type+'].length: ' + currentData[goal.type].length + ' is less than goal: ' + goal.value);
 								PhaserGame.levelPassed = false;
 								goalPassed = false;
 							}
@@ -526,7 +521,7 @@ var gameLogic = {
 				yearSummary.views[item.name] = item;
 
 				PhaserGame.yearSummary = yearSummary;
-				trace('\tlevel PhaserGame.levelPassed = ' + PhaserGame.levelPassed + '\n\tyearSummary = ', yearSummary);
+				// trace('\tlevel PhaserGame.levelPassed = ' + PhaserGame.levelPassed + '\n\tyearSummary = ', yearSummary);
 				if(PhaserGame.levelPassed) {
 					// only save the player data if the user passed the level. 
 					PhaserGame.playerData = TurnManager.playerData;
@@ -534,10 +529,10 @@ var gameLogic = {
 					PhaserGame.setSavedData();
 				} else {
 					// if failed, reset turn manager to pre-level playerData
-					trace('\tfailed to pass level, playerData is: ', PhaserGame.playerData);
-					var buildings = TurnManager.playerData.buildings;
+					// trace('\tfailed to pass level, playerData is: ', PhaserGame.playerData);
+					var sectors = TurnManager.playerData.sectors;
 					PWG.Utils.each(
-						buildings,
+						sectors,
 						function(sector, idx) {
 							PWG.Utils.each(
 								sector,
@@ -652,7 +647,7 @@ var gameLogic = {
 			},
 			openPartsMenu: {
 				inputDown: function() {
-					trace('show part menu, partValue = ', this.controller.config.partValue);
+					// trace('show part menu, partValue = ', this.controller.config.partValue);
 					PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: this.controller.config.partValue });
 				}
 			},
@@ -711,7 +706,7 @@ var gameLogic = {
 			},
 			optionalPartIcon: {
 				inputDown: function(event) {
-					trace('optionalPartIcon inputDown, this = ', this);
+					// trace('optionalPartIcon inputDown, this = ', this);
 					PWG.EventCenter.trigger({ type: Events.ADD_OPTIONAL_PART, value: this.controller.config.part });
 				}
 			},
@@ -730,11 +725,11 @@ var gameLogic = {
 		},
 		buttonCallbacks: {
 			settings: function() {
-				trace('settings click');
+				// trace('settings click');
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'manual' });
 			},
 			share: function() {
-				trace('share click');
+				// trace('share click');
 			},
 			manualStart: function() {
 				// PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'manual' });
@@ -809,7 +804,7 @@ var gameLogic = {
 				PWG.EventCenter.trigger({ type: Events.CLOSE_PARTS_MENU });
 			},
 			optionalPartsMenuClose: function() {
-				trace('optional parts menu close');
+				// trace('optional parts menu close');
 				PWG.EventCenter.trigger({ type: Events.CLOSE_OPTIONAL_PARTS_MENU });
 			},
 			equipmentCreateClose: function() {
@@ -837,7 +832,7 @@ var gameLogic = {
 				}
 			},
 			confirmButton: function() {
-				trace('confirmAction = ', PhaserGame.confirmAction);
+				// trace('confirmAction = ', PhaserGame.confirmAction);
 				if(PhaserGame.confirmAction) {
 					PhaserGame.confirmAction.method.call(this, PhaserGame.confirmAction.params);
 					PhaserGame.confirmAction = null;
@@ -965,15 +960,15 @@ var gameLogic = {
 				var missionBrief = PWG.Utils.clone(PhaserGame.config.dynamicViews.missionBrief);
 				var goalText = PhaserGame.config.dynamicViews.goalText;
 				
-				trace('levelBrief = ', levelBrief, '\tgoalText = ', goalText);
+				// trace('levelBrief = ', levelBrief, '\tgoalText = ', goalText);
 				missionBrief.views.briefBg.img = levelBrief.background;
 				
 				PWG.Utils.each(
 					levelBrief.text,
 					function(text, idx) {
-						trace('\ttext['+idx+'] = ' + text);
+						// trace('\ttext['+idx+'] = ' + text);
 						var item = PWG.Utils.clone(goalText);
-						trace('\titem = ', item);
+						// trace('\titem = ', item);
 						item.name += idx;
 						item.views.goal.text = text;
 						item.views.goal.y += (idx * item.offsetY);
@@ -981,7 +976,7 @@ var gameLogic = {
 					},
 					this
 				);
-				trace('missionBrief config now = ', missionBrief, '\tbrief = ', brief);
+				// trace('missionBrief config now = ', missionBrief, '\tbrief = ', brief);
 				PWG.ViewManager.addView(missionBrief, brief, true);
 				PWG.ViewManager.showView('global:confirmButton');
 				PWG.ViewManager.showView('global:backButton');
@@ -1125,7 +1120,7 @@ var gameLogic = {
 			create: function() {
 				var buildingEdit = PWG.ViewManager.getControllerFromPath('buildingEdit');
 				var building = PhaserGame.activeBuilding;
-				trace('building = ', building);
+				// trace('building = ', building);
 				var buildingEditConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditDetails);
 				// trace('buildingEditConfig = ', buildingEditConfig);
 				// trace('screen view = ', screenView, '\tactive factory = ', building);
@@ -1147,7 +1142,7 @@ var gameLogic = {
 			{
 				event: Events.EDIT_MACHINE,
 				handler: function(event) {
-					var config = TurnManager.playerData.buildings[PhaserGame.activeSector][PhaserGame.activeBuilding.id].equipment[event.value];
+					var config = TurnManager.playerData.sectors[PhaserGame.activeSector][PhaserGame.activeBuilding.id].equipment[event.value];
 					// trace('edit machine: event = ', event, 'config = ', config);
 					PhaserGame.activeMachineType = config.type;
 					PhaserGame.activeMachineSize = config.size;
@@ -1161,7 +1156,7 @@ var gameLogic = {
 				// show add equipment button
 				
 				var equipment = PhaserGame.activeBuilding.equipment;
-				trace('build equipment list = ', equipment);
+				// trace('build equipment list = ', equipment);
 				var machineList = PWG.Utils.clone(PhaserGame.config.dynamicViews.machineList);
 				var machineIcon = PhaserGame.config.dynamicViews.machineIcon;
 				var emptyIcon = PhaserGame.config.dynamicViews.emptyIcon; 
@@ -1176,7 +1171,7 @@ var gameLogic = {
 				var count = 0;
 				var itemY = 0;
 				var emptyTotal = MACHINE_LIST_ICONS - PWG.Utils.objLength(equipment); 
-				trace('EMPTY TOTAL = ' + emptyTotal);
+				// trace('EMPTY TOTAL = ' + emptyTotal);
 				
 				PWG.Utils.each(
 					equipment,
@@ -1238,7 +1233,7 @@ var gameLogic = {
 					count++;
 				}
 				
-				trace('machineList = ', machineList);
+				// trace('machineList = ', machineList);
 				var equipmentListView = PWG.ViewManager.getControllerFromPath('equipmentList');
 				PWG.ViewManager.addView(machineList, equipmentListView, true);
 				PWG.ViewManager.showView('global:equipmentListGroup');
@@ -1278,7 +1273,7 @@ var gameLogic = {
 				event: Events.NEXT_MACHINE_PIECE_ICON,
 				handler: function(event) {
 					var path = PhaserGame.getCurrentMachinePiecePath();
-					trace('path = ' + path);
+					// trace('path = ' + path);
 					PWG.ViewManager.hideView(path);
 					if(PhaserGame.currentMachinePiece < PhaserGame.machinePieces.length - 1) {
 						PhaserGame.currentMachinePiece++;
@@ -1314,10 +1309,11 @@ var gameLogic = {
 					PWG.EventCenter.trigger({ type: Events.CLOSE_PARTS_MENU });
 				}
 			},
+			// add optional part
 			{
 				event: Events.ADD_OPTIONAL_PART,
 				handler: function(event) {
-					trace('add option part, type = ' + event.value);
+					// trace('add option part, type = ' + event.value);
 					PhaserGame.activeMachine.setPart(event.value, 0);
 					// var frame = gameData.parts[this.partsMenuType][event.value].frame;
 					// trace('frame = ' + frame + ', type = ' + this.partsMenuType + ', collection = ', this.views);
@@ -1381,7 +1377,7 @@ var gameLogic = {
 			{
 				event: Events.CLOSE_OPTIONAL_PARTS_MENU,
 				handler: function(event) {
-					trace('close optional parts menu, optionalPartsMenuOpen: ' + PhaserGame.optionalPartsMenuOpen);
+					// trace('close optional parts menu, optionalPartsMenuOpen: ' + PhaserGame.optionalPartsMenuOpen);
 					if(PhaserGame.optionalPartsMenuOpen) {
 						PWG.ViewManager.hideView('optionalPartsMenu');
 						PhaserGame.optionalPartsMenuOpen = false;
@@ -1392,7 +1388,7 @@ var gameLogic = {
 			{
 				event: Events.MACHINE_PARTS_COMPLETE,
 				handler: function(event) {
-					trace('machine complete, event = ', event);
+					// trace('machine complete, event = ', event);
 					PWG.ViewManager.showView('global:confirmButton');
 				}
 			},
