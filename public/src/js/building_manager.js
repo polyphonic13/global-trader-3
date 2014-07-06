@@ -1,12 +1,15 @@
 var BuildingManager = function() {
 	var module = {};
 	
-	module.TIME_TO_BUILD_MACHINE = 4;
 	module.FACTORY_MAX_MODELS = 6;
 	module.FACTORY_MIN_SELL_INVENTORY = 3;
 	module.FACTORY_MAX_INVENTORY = 100;
+
 	module.RETAILER_MAX_INVENTORY = 50;
-	module.RETAILER_TIME_TO_SELL = 5;
+	module.RETAILER_MAX_SALE_QUANTITY = 5;
+
+	module.TIME_TO_BUILD_MACHINE = 4;
+	module.TIME_TO_SELL_MACHINES = 2;
 	
 	// BUILDING BASE CLASS
 	function Building(config) {
@@ -21,7 +24,7 @@ var BuildingManager = function() {
 	Building.prototype.inventory = {};
 	Building.prototype.update = function() {
 		// trace('Building/update');
-		if(this.config.state === BuildingStates.CONSTRUCTION && this.config.age >= this.buildTime) {
+		if(this.config.state === BuildingStates.CONSTRUCTION && this.config.age >= this.constructionTime) {
 			this.config.state = BuildingStates.ACTIVE;
 			trace('building['+this.config.id+'] construction completed');
 			PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
@@ -64,6 +67,7 @@ var BuildingManager = function() {
 
 	PWG.Utils.inherit(Factory, Building);
 	
+	Factory.prototype.constructionTime = 3;
 	Factory.prototype.buildTime = 0;
 	Factory.prototype.modelCapacity = 6;
  	Factory.prototype.update = function() {
@@ -174,7 +178,8 @@ var BuildingManager = function() {
 	}
 	PWG.Utils.inherit(Retailer, Building);
 
-	Retailer.prototype.buildTime = 0;
+	Retailer.prototype.constructionTime = 1;
+	Retailer.prototype.sellTime = 0;
 	Retailer.prototype.capacity = 50;
 	Retailer.prototype.resellMultiplier = 3;
 	Retailer.prototype.quantityPerYear = 52;
@@ -183,13 +188,27 @@ var BuildingManager = function() {
 		Retailer._super.update.apply(this, arguments);
 		if(this.config.state === BuildingStates.ACTIVE) {
 			if(this.config.inventory.length > 0) {
-				PWG.Utils.each(
-					this.config.inventory,
-					function(machine) {
+				if(this.sellTime >= module.TIME_TO_SELL_MACHINES) {
+					var numToSell = Math.floor(Math.random() * (module.RETAILER_MAX_SALE_QUANTITY - 1) + 1);
+					if(numToSell > this.config.inventory.length) {
+						numToSell = this.config.inventory.length;
+					}
+					trace('numToSell = ' + numToSell + ', inventory = ' + this.config.inventory.length);
+					while(numToSell > 0) {
 						TurnManager.sellMachine(this.config.inventory.pop(), this.config.resell);
-					},
-					this
-				);
+						numToSell--;
+					}
+					// PWG.Utils.each(
+					// 	this.config.inventory,
+					// 	function(machine) {
+					// 		TurnManager.sellMachine(this.config.inventory.pop(), this.config.resell);
+					// 	},
+					// 	this
+					// );
+					this.sellTime = 0;
+				} else {
+					this.sellTime++;
+				}
 			}
 		}
 	};
