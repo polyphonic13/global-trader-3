@@ -1,7 +1,7 @@
 var ASPECT_RATIO = [9, 16];
 var GAME_NAME = 'global_trader_3_0';
 var TIME_PER_TURN = 52;
-var TURN_TIME_INTERVAL = 1000;
+var TURN_TIME_INTERVAL = 2000;
 var US_DETAIL_GRID_CELLS = 6;
 var TIME_TO_MANUFACTOR = 5;
 var MACHINE_LIST_COLUMNS = 2; 
@@ -164,8 +164,9 @@ var gameLogic = {
 				// trace('START TURN');
 				TurnManager.startTurn();
 				BuildingManager.init();
-				PhaserGame.notifications = [];
-
+				PhaserGame.notifications = [[], [], [], [], []];
+				PhaserGame.tempRetailerCount = 0;
+				
 				GridManager.init(usSectors, US_DETAIL_GRID_CELLS, US_DETAIL_GRID_CELLS, PWG.Stage.gameW/6);
 
 				PhaserGame.turnActive = true;
@@ -204,10 +205,11 @@ var gameLogic = {
 				PhaserGame.turnActive = false;
 			},
 			showNotification: function() {
-				trace('showNotification, notifications = ', PhaserGame.notifications);
-				if(PhaserGame.notifications.length > 0) {
+				var sector = PhaserGame.activeSector;
+				trace('showNotification, notifications = ', PhaserGame.notifications[sector]);
+				if(PhaserGame.notifications[sector].length > 0) {
 					var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
-					var notification = PhaserGame.notifications.pop();
+					var notification = PhaserGame.notifications[sector].pop();
 
 					PhaserGame.cancelAction = PhaserGame.removeNotification;
 					if(notification.confirmAction) {
@@ -218,7 +220,7 @@ var gameLogic = {
 					PWG.ViewManager.showView('global:cancelButton');
 					PWG.ViewManager.addView(notification, notifications, true);
 
-					if(PhaserGame.notifications.length === 0) {
+					if(PhaserGame.notifications[sector].length === 0) {
 						PhaserGame.hideNotificationEnvelope();
 					}
 				}
@@ -291,7 +293,7 @@ var gameLogic = {
 			addBuilding: function(buildingType) {
 				PWG.EventCenter.trigger({ type: Events.CLOSE_BUILDINGS_MENU });
 				var tile = PhaserGame.activeTile;
-				var added = BuildingManager.createFactory(buildingType, { sector: PhaserGame.activeSector, cell: tile.cell });
+				var added = BuildingManager.createFactory({ sector: PhaserGame.activeSector, cell: tile.cell });
 				if(added) {
 					var frame;
 					if(buildingType === BuildingTypes.FACTORY) {
@@ -324,16 +326,15 @@ var gameLogic = {
 					trace('warning: unknown type ' + event.type);
 					break;
 				}
-				
-				PhaserGame.confirmAction = PhaserGame.addRetailer;
+				var modelName = event.factory.equipment[event.retailer.config.modelId].name;
 				
 				var statementText = PWG.Utils.parseMarkup(config.statement, {
 					factory: event.factory.name,
 					quantity: event.retailer.quantityPerYear,
-					model: event.retailer.config.model.name,
+					model: modelName,
 					resell: event.retailer.config.resell
 				})
-				notification.views.bg.img = 'retailerGirl';
+				notification.views.person.img = 'retailerGirl';
 				notification.views.title.text = config.title;
 				notification.views.content.text = statementText;
 				trace('notification = ', notification);
@@ -343,16 +344,29 @@ var gameLogic = {
 					params: event.retailer
 				};
 				
-				PhaserGame.currentRetailOpportunity = event.retailer;
 				// PWG.ViewManager.hideView('global:backButton');
 				// PWG.ViewManager.addView(notification, notifications, true);
-				PhaserGame.notifications.push(notification);
-				PhaserGame.showNotificationEnvelope();
+				PhaserGame.notifications[event.factory.sector].push(notification);
+				if(PWG.ScreenManager.currentId === 'usDetail' && PhaserGame.activeSector === event.factory.sector) {
+					PhaserGame.showNotificationEnvelope();
+				}
 			},
-			addRetailer: function(params) {
-				trace('addRetailer, params = ', params);
+			addRetailer: function(retailer) {
+				trace('addRetailer, retailer = ', retailer);
+				var config = retailer.config;
 				PhaserGame.removeNotification();
-				BuildingManager.addRetailer(params);
+				config.cell = GridManager.getRandomEmptyCellIndex(config.sector);
+				GridManager.addBuilding(config, config.sector);
+				BuildingManager.addRetailer(retailer);
+
+				var viewPath = 'usDetail:usDetailGrid:usDetailGridItem'+config.cell;
+				var view = PWG.ViewManager.getControllerFromPath(viewPath);
+				var frameKey = config.type.toUpperCase() + '_' + config.state.toUpperCase();
+				var frame = TileCellFrames[frameKey];
+				trace('\tviewPath = ' + viewPath + ', view = ', view);
+
+				PWG.ViewManager.setFrame(viewPath, frame);
+				view.config.attrs.frame = frame;
 			},
 			getCurrentMachinePiecePath: function() {
 				return 'equipmentEdit:machineEdit:machinePieceMenu:' + PhaserGame.machinePieces[PhaserGame.currentMachinePiece];
@@ -823,6 +837,7 @@ var gameLogic = {
 				}
 			},
 			confirmButton: function() {
+				trace('confirmAction = ', PhaserGame.confirmAction);
 				if(PhaserGame.confirmAction) {
 					PhaserGame.confirmAction.method.call(this, PhaserGame.confirmAction.params);
 					PhaserGame.confirmAction = null;
@@ -1077,10 +1092,15 @@ var gameLogic = {
 				PWG.ViewManager.addView(usDetailGrid, usDetail, true);
 				// trace('CURRENT US SECTOR = ' + PhaserGame.activeSector);
 				PWG.ViewManager.callMethod('usDetail:sectorTitle', 'setText', [sectorTitles[PhaserGame.activeSector]], this);
+				
+				if(PhaserGame.notifications[PhaserGame.activeSector].length > 0) {
+					PhaserGame.showNotificationEnvelope();
+				}
 			},
 			shutdown: function() {
 				// hide add building button
 				PWG.ViewManager.removeGroupChildren('usDetail:usDetailGrid');
+				PhaserGame.hideNotificationEnvelope();
 			}
 		},
 		buildingEdit: {

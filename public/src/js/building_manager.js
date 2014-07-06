@@ -1,7 +1,7 @@
 var BuildingManager = function() {
 	var module = {};
 	
-	module.TIME_TO_BUILD = 5;
+	module.TIME_TO_BUILD_MACHINE = 5;
 	module.FACTORY_MAX_MODELS = 6;
 	module.FACTORY_MIN_SELL_INVENTORY = 3;
 	module.FACTORY_MAX_INVENTORY = 100;
@@ -38,7 +38,17 @@ var BuildingManager = function() {
 		this.config.inventory = config.inventory || {};
 		this.config.retailers = config.retailers || {};
 
-		if(PWG.Utils.objLength(this.config.inventory)) {
+		this.retailerNotifications = {};
+		if(PWG.Utils.objLength(this.config.equipment) > 0) {
+			PWG.Utils.each(
+				this.config.equipment,
+				function(model) {
+					this.retailerNotifications[model.id] = false;
+				},
+				this
+			);
+		}
+		if(PWG.Utils.objLength(this.config.inventory) > 0) {
 			PWG.Utils.each(
 				this.config.inventory,
 				function(machineTypeInventory) {
@@ -49,17 +59,18 @@ var BuildingManager = function() {
 		} else {
 			this.config.totalInventory = 0;
 		}
+		
 	}
 
 	PWG.Utils.inherit(Factory, Building);
 	
-	Factory.prototype.buildTime = 0;
+	Factory.prototype.buildTime = 3;
 	Factory.prototype.modelCapacity = 6;
  	Factory.prototype.update = function() {
 		if(this.config.state !== BuildingStates.PAUSED) {
 			Factory._super.update.apply(this, arguments);
 			if(PWG.Utils.objLength(this.config.equipment) > 0) { 
-				if(this.buildTime >= module.TIME_TO_BUILD) {
+				if(this.buildTime >= module.TIME_TO_BUILD_MACHINE) {
 					PWG.Utils.each(
 						this.config.equipment,
 						function(machine) {
@@ -77,34 +88,10 @@ var BuildingManager = function() {
 									
 									// if there is enough inventory of this machine to sell and it doesn't already have a retailer...
 									if(this.config.inventory[machine.id].length > module.FACTORY_MIN_SELL_INVENTORY && !this.config.retailers.hasOwnProperty(machine.id)) {
-										var model;
-										var count = PWG.Utils.objLength(this.config.equipment);
-										var index = 0;
-										var randomModelIdx = Math.floor(Math.random() * (count - 0) + 0);
-										var resell; 
-										
-										trace('randomModelIdx = ' + randomModelIdx + ', count = ' + count);
-										PWG.Utils.each(
-											this.config.equipment,
-											function(machine) {
-												trace('\tindex = ' + index + ', machine = ', machine);
-												if(index === randomModelIdx) {
-													trace('\t\tsetting model');
-													model = machine;
-												}
-												index++;
-											},
-											this
-										);
-
-										trace('model now = ', model);
-										if(!this.config.retailers.hasOwnProperty(model.id)) {
-											var retailer = new Retailer({
-												model: model,
-												factoryId: this.config.id
-											});
-
-											PWG.EventCenter.trigger({ type: Events.ADD_RETAILER_NOTIFICATION, factory: this.config, retailer: retailer });
+										if(!this.retailerNotifications[machine.id]) {
+											this.retailerNotifications[machine.id] = true;
+											
+											module.createRetailer(this);
 										}
 									} else {
 										PWG.Utils.each(
@@ -165,7 +152,7 @@ var BuildingManager = function() {
 	};
 	
 	Factory.prototype.addRetailer = function(retailer) {
-		this.config.retailers[retailer.config.model.id] = retailer;
+		this.config.retailers[retailer.config.modelId] = retailer.id;
 		trace('Factory/addRetailer, retailers now = ', this.config.retailers);
 		TurnManager.updateBuilding(this.config);
 	};
@@ -173,22 +160,22 @@ var BuildingManager = function() {
 	// RETAILER
 	function Retailer(config) {
 		config.type = BuildingTypes.RETAILER;
+		var factory = module.findFactory(config.factoryId);
+		var model = factory.config.equipment[config.modelId];
 		Building.call(this, config);
-		if(this.config.model) {
-			this.config.resell = this.resellMultiplier * this.config.model.cost;
-		}
+		this.config.resell = this.resellMultiplier * model.cost;
 		this.config.inventory = [];
 	}
 	PWG.Utils.inherit(Retailer, Building);
 
-	Retailer.prototype.buildTime = 0;
+	Retailer.prototype.buildTime = 4;
 	Retailer.prototype.capacity = 50;
 	Retailer.prototype.resellMultiplier = 3;
 	Retailer.prototype.quantityPerYear = 50;
 	Retailer.prototype.update = function() {
-		trace('retailer id: ' + retailer.id);
+		// trace('retailer/update: ', this);
 		// if(this.config.state === BuildingStates.ACTIVE) {
-			// Retailer._super.update.apply(this, arguments);
+			Retailer._super.update.apply(this, arguments);
 			if(this.config.inventory.length > 0) {
 
 			}
@@ -225,20 +212,20 @@ var BuildingManager = function() {
 		// trace('BuildingManager.sectors now = ', module.sectors);
 	};
 	
-	module.createFactory = function(type, config) {
+	module.createFactory = function(config) {
 		// trace('BuildingManager/create, type = ' + type + ', cost = ' + gameData.buildings[type].cost + ', bank = ' + TurnManager.playerData.bank);
+		var type = BuildingTypes.FACTORY;
 		var count = TurnManager.playerData.buildingCount[type];
 		// trace('\tcount = ' + count);
 		config.id = type + count;
 		config.name = type.toUpperCase() + ' ' + (count + 1);
 		
 		if(TurnManager.playerData.bank >= gameData.buildings[type].cost) {
-			var building = new Factory(config);
+			var factory = new Factory(config);
 			// trace('\tbuilding made');
 			PWG.EventCenter.trigger({ type: Events.UPDATE_BANK, value: (-gameData.buildings[type].cost) });
 			// trace('\tabout to save building data, building  = ', building);
-			module.sectors[config.sector][building.config.id] = building;
-			module.addNewBuilding(building.config);
+			module.updateBuildings(factory);
 			return true;
 		} else {
 			// trace('no more money');
@@ -250,10 +237,56 @@ var BuildingManager = function() {
 		module.sectors[sector][factoryId].addMachineModel(machine);
 	};
 	
+	// create retailer instance to store for later use if user chooses to add
+	module.createRetailer = function(factory) {
+		var model;
+		var count = PWG.Utils.objLength(factory.config.equipment);
+		var index = 0;
+		var randomModelIdx = Math.floor(Math.random() * (count - 0) + 0);
+
+		// var buildingCount = TurnManager.playerData.buildingCount[BuildingTypes.RETAILER];
+		var retailerId = BuildingTypes.RETAILER + PhaserGame.tempRetailerCount;
+		
+		PhaserGame.tempRetailerCount++;
+		
+		trace('randomModelIdx = ' + randomModelIdx + ', count = ' + count);
+		PWG.Utils.each(
+			factory.config.equipment,
+			function(machine) {
+				trace('\tindex = ' + index + ', machine = ', machine);
+				if(index === randomModelIdx) {
+					trace('\t\tsetting model');
+					model = machine;
+				}
+				index++;
+			},
+			this
+		);
+
+		trace('model now = ', model);
+		if(!factory.config.retailers.hasOwnProperty(model.id)) {
+			var retailer = new Retailer({
+				modelId: model.id,
+				factoryId: factory.config.id,
+				id: retailerId,
+				// factory: factory.config,
+				sector: factory.config.sector
+			});
+
+			PWG.EventCenter.trigger({ type: Events.ADD_RETAILER_NOTIFICATION, factory: factory.config, retailer: retailer });
+		}
+	};
+	
 	module.addRetailer = function(retailer) {
 		var factory = module.findFactory(retailer.config.factoryId);
 		factory.addRetailer(retailer);
 		module.retailers.push(retailer);
+		module.updateBuildings(retailer);
+	};
+	
+	module.updateBuildings = function(building) {
+		module.sectors[building.config.sector][building.config.id] = building;
+		module.addBuildingToTurnManager(building.config);
 	};
 	
 	module.update = function() {
@@ -272,7 +305,6 @@ var BuildingManager = function() {
 			module
 		);
 		// update retailers
-		trace('module retailer = ', module.retailers);
 		PWG.Utils.each(
 			module.retailers,
 			function(retailer) {
@@ -338,7 +370,7 @@ var BuildingManager = function() {
 		}
 	};
 	
-	module.addNewBuilding = function(config) {
+	module.addBuildingToTurnManager = function(config) {
 		// trace('save new building, config = ', config);
 		TurnManager.addBuilding(config);
 	};

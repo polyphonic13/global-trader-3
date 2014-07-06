@@ -51,7 +51,7 @@ var TurnManager = function() {
 	};
 
 	module.addBuilding = function(building) {
-		// trace('--- TurnManager/addBuilding, building = ', building);
+		trace('--- TurnManager/addBuilding, building = ', building);
 		module.playerData.buildings[building.sector][building.id] = building;
 		module.currentData.newBuildings.push(building);
 		module.playerData.buildingCount[building.type]++;

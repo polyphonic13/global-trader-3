@@ -59,6 +59,26 @@ var GridManager = function() {
 		module.grids[sector][building.cell].frame = TileCellFrames[frameKey];
 		// trace('\tsetting grid['+config.sector+']['+config.cell+'].frame to ' + TileCellFrames[frameKey]);
 	};
+
+	module.getRandomEmptyCellIndex = function(sector) {
+		var cells = module.grids[sector];
+		var emptyCells = [];
+		var randomCellIdx;
+		var randomCell;
+		
+		PWG.Utils.each(
+			cells,
+			function(cell, idx) {
+				if(cell.frame === 0) {
+					emptyCells.push(idx);
+				}
+			},
+			this
+		);
+		randomCellIdx = Math.floor(Math.random() * (emptyCells.length - 1) + 1);
+		trace('------- returning emptyCells['+randomCellIdx+'] = ' + emptyCells[randomCellIdx] + ', emptyCells = ', emptyCells);
+		return emptyCells[randomCellIdx];
+	};
 	
 	module.updateBuildingState = function(sector, cell, type, state) {
 		// trace('GridManager/updateBuildingState, sector: ' + sector + ', cell = ' + cell + ', type = ' + type + ', state = ' + state);

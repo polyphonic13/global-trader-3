@@ -762,9 +762,9 @@ var gameData = {
 			calculation: 'number'
 		},
 		{
-			type: 'newBuildings',
+			type: 'newFactories',
 			value: 1,
-			calculation: 'length'
+			calculation: 'number'
 		},
 		{
 			type: 'newMachineModels',

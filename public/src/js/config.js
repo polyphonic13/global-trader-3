@@ -3,9 +3,11 @@ var goalsText = {
 	failed: 'Goals not met.\nPlease try again.',
 	types: {
 		profit: 'Profits: ',
-		newBuildings: 'Factories Built: ',
-		newMachineModels: 'Machine Models Created: ',
-		newMachines: 'Machines Manufactured: '
+		newFactories: 'Factories built: ',
+		newRetailers: 'Retailers established: ',
+		newTraderoutes: 'Trade routes established: ',
+		newMachineModels: 'Machine models created: ',
+		newMachines: 'Machines manufactured: '
 	}
 };
 
@@ -308,7 +310,19 @@ var GameConfig = function() {
 					bg: {
 						type: 'sprite',
 						name: 'bg',
-						img: 'retailerGirl',
+						img: 'blockWhite',
+						x: 0,
+						y: 0,
+						attrs: {
+							width: gameW,
+							height: gameH,
+							alpha: 0.3
+						}
+					},
+					person: {
+						type: 'sprite',
+						name: 'person',
+						img: '',
 						x: 0,
 						y: 0,
 						attrs: {
@@ -1958,6 +1972,18 @@ var GameConfig = function() {
 						visible: true
 					},
 					views: {
+						notificationEnvelope: {
+							type: 'sprite',
+							name: 'notificationEnvelope',
+							img: 'smallEnvelope',
+							x: gameUnit * 0.1,
+							y: gameUnit * 1.6,
+							attrs: {
+								width: gameUnit * 1.5,
+								height: (gameUnit * 1.5) * 0.6
+							},
+							input: gameLogic.global.input.notificationEnvelope
+						},
 						notifications: {
 							name: 'notifications',
 							type: 'group',
@@ -2157,17 +2183,19 @@ var GameConfig = function() {
 							},
 							views: {}
 						},
-						notificationEnvelope: {
-							type: 'sprite',
-							name: 'notificationEnvelope',
-							img: 'smallEnvelope',
-							x: gameUnit * 0.1,
-							y: gameUnit * 1.6,
+						backButton: {
+							type: 'button',
+							name: 'backButton',
+							img: 'buttonBack',
+							x: controlButtons.left.x,
+							y: controlButtons.bottom.y,
 							attrs: {
-								width: gameUnit * 1.5,
-								height: (gameUnit * 1.5) * 0.6
+								width: controlButtons.width,
+								height: controlButtons.height
 							},
-							input: gameLogic.global.input.notificationEnvelope
+							callback: gameLogic.global.buttonCallbacks.backButton,
+							context: this,
+							frames: [0, 1, 1, 0]
 						},
 						confirmButton: {
 							type: 'button',
@@ -2194,20 +2222,6 @@ var GameConfig = function() {
 								height: controlButtons.height
 							},
 							callback: gameLogic.global.buttonCallbacks.cancelButton,
-							context: this,
-							frames: [0, 1, 1, 0]
-						},
-						backButton: {
-							type: 'button',
-							name: 'backButton',
-							img: 'buttonBack',
-							x: controlButtons.left.x,
-							y: controlButtons.bottom.y,
-							attrs: {
-								width: controlButtons.width,
-								height: controlButtons.height
-							},
-							callback: gameLogic.global.buttonCallbacks.backButton,
 							context: this,
 							frames: [0, 1, 1, 0]
 						}
