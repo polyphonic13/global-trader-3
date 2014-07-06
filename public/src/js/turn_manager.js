@@ -37,6 +37,7 @@ var TurnManager = function() {
 		module.currentData.bankAdjustments += value;
 		if(value > 0) {
 			module.currentData.profit += value;
+			module.playerData.profit += value;
 		}
 		PWG.EventCenter.trigger({ type: Events.BANK_UPDATED });
 	};
@@ -68,7 +69,7 @@ var TurnManager = function() {
 	};
 	
 	module.updateBuilding = function(building) {
-		// trace('--- TurnManager/updateBuilding, building = ', building);
+		trace('--- TurnManager/updateBuilding, building = ', building);
 		module.playerData.sectors[building.sector][building.id] = building;
 	};
 	
@@ -93,6 +94,10 @@ var TurnManager = function() {
 		} else if(machine.type === EquipmentTypes.SKID_STEER) {
 			module.currentData.newSkidsteers++;
 		}
+	};
+	
+	module.removeFactoryInventory = function(machine) {
+		
 	};
 	
 	module.sellMachine = function(machine, amount) {

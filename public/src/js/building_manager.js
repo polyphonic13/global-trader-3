@@ -8,7 +8,7 @@ var BuildingManager = function() {
 	module.RETAILER_MAX_INVENTORY = 50;
 	module.RETAILER_MAX_SALE_QUANTITY = 5;
 
-	module.TIME_TO_BUILD_MACHINE = 4;
+	module.TIME_TO_BUILD_MACHINE = 3;
 	module.TIME_TO_SELL_MACHINES = 2;
 	
 	// BUILDING BASE CLASS
@@ -51,6 +51,8 @@ var BuildingManager = function() {
 				this
 			);
 		}
+		
+		this.config.totalInventory = 0;
 		if(PWG.Utils.objLength(this.config.inventory) > 0) {
 			PWG.Utils.each(
 				this.config.inventory,
@@ -59,8 +61,6 @@ var BuildingManager = function() {
 				},
 				this
 			);
-		} else {
-			this.config.totalInventory = 0;
 		}
 		
 	}
@@ -88,8 +88,7 @@ var BuildingManager = function() {
 									this.config.totalInventory++;
 									
 									TurnManager.addFactoryInventory(machine);
-									TurnManager.updateBuilding(this.config);
-									
+
 									// if there is enough inventory of this machine to sell and it doesn't already have a retailer...
 									if(this.config.inventory[machine.id].length > module.FACTORY_MIN_SELL_INVENTORY) {
 										if(!this.config.retailers.hasOwnProperty(machine.id)) {
@@ -103,16 +102,13 @@ var BuildingManager = function() {
 											var retailer = module.findBuilding(retailerId);
 											if(retailer.config.state === BuildingStates.ACTIVE) {
 												var inventory = this.config.inventory[machine.id];
-												// trace('retailer = ', retailer, 'inventory = ', inventory);
-												if(retailer.config.inventory.length < retailer.capacity) {
-													while(inventory.length > 0 && retailer.config.inventory.length < retailer.capacity) {
-														trace('\ttransferring inventory to retailer');
-														retailer.config.inventory.push(inventory.pop());
-													}
-												}
+												retailer.addInventory(this.config);
 											}
 										}
 									} 
+
+									TurnManager.updateBuilding(this.config);
+									
 								} else {
 									// notify output capacity reached
 									// alert(this.config.id + ' created max inventory');
@@ -173,8 +169,9 @@ var BuildingManager = function() {
 		var factory = module.findBuilding(config.factoryId);
 		var model = factory.config.equipment[config.modelId];
 		Building.call(this, config);
-		this.config.resell = this.resellMultiplier * model.cost;
-		this.config.inventory = [];
+		this.config.resell = config.resell || (this.resellMultiplier * model.cost);
+		this.config.inventory = config.inventory || [];
+		this.config.totalSales = config.totalSales || 0;
 	}
 	PWG.Utils.inherit(Retailer, Building);
 
@@ -196,6 +193,7 @@ var BuildingManager = function() {
 					trace('numToSell = ' + numToSell + ', inventory = ' + this.config.inventory.length);
 					while(numToSell > 0) {
 						TurnManager.sellMachine(this.config.inventory.pop(), this.config.resell);
+						this.config.totalSales += this.config.resell;
 						numToSell--;
 					}
 					// PWG.Utils.each(
@@ -205,6 +203,7 @@ var BuildingManager = function() {
 					// 	},
 					// 	this
 					// );
+					TurnManager.updateBuilding(this.config);
 					this.sellTime = 0;
 				} else {
 					this.sellTime++;
@@ -213,6 +212,19 @@ var BuildingManager = function() {
 		}
 	};
 
+	Retailer.prototype.addInventory = function(factory) {
+		trace('Retailer/addInventory, retailer = ', this.config, '\tfactory = ', factory);
+		if(this.config.inventory.length < this.capacity) {
+			var modelId = this.config.modelId;
+			while(factory.inventory[modelId].length > 0 && this.config.inventory.length < this.capacity) {
+				trace('\ttransferring inventory to retailer');
+				this.config.inventory.push(factory.inventory[modelId].pop());
+				factory.totalInventory--;
+			}
+			TurnManager.updateBuilding(this.config);
+		}
+	};
+	
 	module.sectors = [ {}, {}, {}, {}, {} ];
 	module.retailers = [];
 	

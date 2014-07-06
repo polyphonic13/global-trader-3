@@ -109,6 +109,7 @@ var gameLogic = {
 				GridManager.updateBuildingState(config.sector, config.cell, config.type, config.state);
 			}
 		},
+		// add retailer notification
 		{
 			event: Events.ADD_RETAILER_NOTIFICATION,
 			handler: function(event) {
@@ -116,6 +117,7 @@ var gameLogic = {
 				PhaserGame.addRetailOpportunityNotification(event);
 			}
 		},
+		// add retailer
 		{
 			event: Events.ADD_RETAILER,
 			handler: function(event) {
@@ -1115,7 +1117,7 @@ var gameLogic = {
 		},
 		buildingEdit: {
 			listeners: [
-			// open building menu
+			// building state updated
 			{
 				event: Events.BUILDING_STATE_UPDATED,
 				handler: function(event) {
