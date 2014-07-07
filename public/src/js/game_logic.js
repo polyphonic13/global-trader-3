@@ -139,6 +139,28 @@ var gameLogic = {
 				PWG.ViewManager.hideView('global:notificationEnvelope');
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: PhaserGame.config.defaultScreen });
 			},
+			initWorldZoom: function(view) {
+				PhaserGame.worldZoom = {
+					max: {
+						width: view.width,
+						height: view.height
+					},
+					min: {
+						width: PWG.Stage.gameW,
+						height: PWG.Stage.gameH
+					},
+					zoomIncrements: {
+						width: (view.width - PWG.Stage.gameW) * 0.25,
+						height: (view.height - PWG.Stage.gameH) * 0.25
+					},
+					positionIncrements: {
+						x: (-view.x) * 0.25,
+						y: (-view.y) * 0.25
+					}
+				};
+				trace('world zoom initialized as: ', PhaserGame.worldZoom);
+				PhaserGame.worldZoomInitialized = true;
+			},
 			render: function() {
 				PWG.ScreenManager.render();
 			},
@@ -755,6 +777,48 @@ var gameLogic = {
 				ignitionKey.view.events.onAnimationComplete.add(PhaserGame.ignitionAnimationCompleted, this);
 				PWG.PhaserAnimation.play(ignitionKey.name, 'turnOn');
 			},
+			plusButton: function() {
+				if(PWG.ScreenManager.currentId === 'world') {
+					// trace('plusButton callback: PhaserGame.worldView.width = ' + PhaserGame.worldView.width);
+					if(PhaserGame.worldView.width < PhaserGame.worldZoom.max.width) {
+						var newWidth = PhaserGame.worldView.width + PhaserGame.worldZoom.zoomIncrements.width;
+						var newHeight = PhaserGame.worldView.height + PhaserGame.worldZoom.zoomIncrements.height;
+						var x = PhaserGame.worldView.x;
+						var y = PhaserGame.worldView.y;
+						var newX = x -= PhaserGame.worldZoom.positionIncrements.x;
+						var newY = y -= PhaserGame.worldZoom.positionIncrements.y;
+						// trace('set w/h: ' + newWidth + '/' + newHeight + ', x/y: ' + newX + '/' + newY);
+						PhaserGame.worldView.width = newWidth;
+						PhaserGame.worldView.height = newHeight;
+						PhaserGame.worldView.x = newX;
+						PhaserGame.worldView.y = newY;
+						
+						if(PhaserGame.worldView.width >= PhaserGame.worldZoom.max.width) {
+							PWG.ViewManager.showView('world:usMap');
+						}
+					}
+				}
+			},
+			minusButton: function() {
+				if(PWG.ScreenManager.currentId === 'world') {
+					// trace('minusButton callback: PhaserGame.worldView.width = ' + PhaserGame.worldView.width + ', min = ' + PhaserGame.worldZoom.min.width);
+					if(Math.floor(PhaserGame.worldView.width) > PhaserGame.worldZoom.min.width) {
+						var newWidth = PhaserGame.worldView.width - PhaserGame.worldZoom.zoomIncrements.width;
+						var newHeight = PhaserGame.worldView.height - PhaserGame.worldZoom.zoomIncrements.height;
+						var x = PhaserGame.worldView.x;
+						var y = PhaserGame.worldView.y;
+						var newX = x += PhaserGame.worldZoom.positionIncrements.x;
+						var newY = y += PhaserGame.worldZoom.positionIncrements.y;
+						// trace('set w/h: ' + newWidth + '/' + newHeight + ', x/y: ' + newX + '/' + newY);
+						PhaserGame.worldView.width = newWidth;
+						PhaserGame.worldView.height = newHeight;
+						PhaserGame.worldView.x = newX;
+						PhaserGame.worldView.y = newY;
+
+						PWG.ViewManager.hideView('world:usMap');
+					}
+				}
+			},
 			// us detail
 			usDetailStart: function(param) {
 				// trace('usDetailStart callback, this = ', this, '\tparam = ', param);
@@ -825,27 +889,6 @@ var gameLogic = {
 			},
 			equipmentCreateClose: function() {
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentList' });
-			},
-			plusButton: function() {
-				switch(PWG.ScreenManager.currentId) {
-					case 'world':
-					break;
-					
-					case 'equipmentList':
-					break;
-					
-					default:
-					break;
-				}
-			},
-			minusButton: function() {
-				switch(PWG.ScreenManager.currentId) {
-					case 'world':
-					break;
-
-					default:
-					break;
-				}
 			},
 			confirmButton: function() {
 				// trace('confirmAction = ', PhaserGame.confirmAction);
@@ -986,8 +1029,10 @@ var gameLogic = {
 						var item = PWG.Utils.clone(goalText);
 						// trace('\titem = ', item);
 						item.name += idx;
-						item.views.goal.text = text;
-						item.views.goal.y += (idx * item.offsetY);
+						// item.views.goal.text = text;
+						// item.views.goal.y += (idx * item.offsetY);
+						item.text = text;
+						item.y += (idx * item.offsetY);
 						missionBrief.views['goal'+idx] = item;
 					},
 					this
@@ -997,6 +1042,21 @@ var gameLogic = {
 				PWG.ViewManager.showView('global:confirmButton');
 				PWG.ViewManager.showView('global:backButton');
 				PWG.ViewManager.hideView('global:turnGroup');
+
+				// goal text shadows
+				// PWG.Utils.each(
+				// 	missionBrief.views,
+				// 	function(view, key) {
+				// 		if(view.type === 'text') {
+				// 			var path = 'brief:missionBrief:'+key;
+				// 			 // text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
+				// 			trace('path = ' + path);
+				// 			var args = [3, 3, 'rgba(0, 0, 0, 0.5)', 5];
+				// 			PWG.ViewManager.callMethod(path, 'setShadow', args, this);
+				// 		}
+				// 	},
+				// 	this
+				// );
 			},
 			shutdown: function() {
 				PWG.ViewManager.hideView('global:confirmButton');
@@ -1005,18 +1065,25 @@ var gameLogic = {
 		},
 		world: {
 			create: function() {
+				PhaserGame.worldZoom = 1;
 				PWG.ViewManager.showView('global:turnGroup');
 				PWG.ViewManager.showView('global:plusMinusGroup');
 				var gameUnit = PWG.Stage.unit;
 				var worldMap = PWG.ViewManager.getControllerFromPath('world:worldMap');
-				// worldMap.view.scale.setTo(PhaserGame.config.maxWorldZoom, PhaserGame.config.maxWorldZoom);
+				trace('worldMap view = ', worldMap.view);
+				// worldMap.view.scale.setTo(PhaserGame.config.maxWorldZoom.width, PhaserGame.config.maxWorldZoom.height);
 				// worldMap.view.y = -(gameUnit * 31.2);
 				// worldMap.view.x = -(gameUnit * 8.2);
+				PhaserGame.worldView = worldMap.view;
 				
+				if(!PhaserGame.worldZoomInitialized) {
+					PhaserGame.initWorldZoom(worldMap.view);
+				}
 				PhaserGame.activeSector = -1;
 			},
 			shutdown: function() {
 				PWG.ViewManager.hideView('global:plusMinusGroup');
+				PhaserGame.worldView = null;
 			}
 		},
 		usDetail: {

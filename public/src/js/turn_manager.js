@@ -27,7 +27,7 @@ var TurnManager = function() {
 	};
 	
 	module.startTurn = function() {
-		trace('--- TurnManager/startTurn');
+		// trace('--- TurnManager/startTurn');
 		module.currentData = PWG.Utils.clone(turnData);
 		TurnManager.tempRetailerCount = (module.playerData.buildingCount.retailer);
 	};
@@ -44,7 +44,7 @@ var TurnManager = function() {
 	};
 
 	module.addBuilding = function(building) {
-		trace('--- TurnManager/addBuilding, building = ', building);
+		// trace('--- TurnManager/addBuilding, building = ', building);
 		module.playerData.sectors[building.sector][building.id] = building;
 		module.currentData.newBuildings.push(building);
 		module.playerData.buildingCount[building.type]++;
@@ -63,19 +63,19 @@ var TurnManager = function() {
 			break;
 			
 			default: 
-			trace('ERROR unknown building type: ' + building.type);
+			// trace('ERROR unknown building type: ' + building.type);
 			break;
 			
 		}
 	};
 	
 	module.updateBuilding = function(building) {
-		trace('--- TurnManager/updateBuilding, building = ', building);
+		// trace('--- TurnManager/updateBuilding, building = ', building);
 		module.playerData.sectors[building.sector][building.id] = building;
 	};
 	
 	module.addMachineModel = function(model) {
-		trace('--- TurnManager/addMachineModel, model = ', model);
+		// trace('--- TurnManager/addMachineModel, model = ', model);
 		// module.playerData.sectors[PhaserGame.activeSector][PhaserGame.activeBuilding.id].equipment[PhaserGame.activeMachine.config.id] = model;
 		BuildingManager.addMachineModelToFactory(PhaserGame.activeSector, PhaserGame.activeBuilding.id, model)
 		module.playerData.modelCount[PhaserGame.activeMachineType]++;
@@ -102,7 +102,7 @@ var TurnManager = function() {
 	};
 	
 	module.sellMachine = function(machine, amount) {
-		trace('TurnManager/sellMachine, amount = ' + amount + ', machine = ', machine);
+		// trace('TurnManager/sellMachine, amount = ' + amount + ', machine = ', machine);
 		module.currentData.machinesSold.push(machine);
 		module.updateBank(amount);
 	};

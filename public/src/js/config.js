@@ -387,26 +387,20 @@ var GameConfig = function() {
 				}
 			},
 			goalText: {
-				type: 'group',
-				name: 'goalText',
+				type: 'text',
+				name: 'goal',
+				text: '',
 				offsetX: 0,
 				offsetY: (gameUnit * 1.5),
-				views: {
-					goal: {
-						type: 'text',
-						name: 'name',
-						text: '',
-						x: (gameUnit * 0.5),
-						y: gameUnit * 5,
-						style: {
-						    font: (fontSizes.md + 'px Arial'),
-					        fill: palette.white,
-							'text-align': 'center'
-						},
-						position: {
-							centerX: true
-						}
-					}
+				x: (gameUnit * 0.5),
+				y: gameUnit * 5,
+				style: {
+				    font: (fontSizes.md + 'px Arial'),
+			        fill: palette.white,
+					'text-align': 'center'
+				},
+				position: {
+					centerX: true
 				}
 			},
 			usDetailGrid: {
@@ -1412,7 +1406,14 @@ var GameConfig = function() {
 				bank: 1000000
 			},
 			defaultScreen: 'home',
-			maxWorldZoom: 3.2,
+			maxWorldZoom: {
+				x: gameW * 5.9,
+				y: gameH * 5.85
+			},
+			minWorldZoom: {
+				x: gameW * 2.95,
+				y: gameH * 2.925
+			},
 			minWorldZoom: 1,
 			dynamicViews: dynamicViews,
 			machineEditBackgrounds: machineEditBackgrounds,
@@ -1576,6 +1577,12 @@ var GameConfig = function() {
 							type: 'sprite',
 							name: 'worldMap',
 							img: 'mapWorld',
+							// x: 0,
+							// y: 0,
+							// attrs: {
+							// 	width: gameW,
+							// 	height: gameH
+							// }
 							x: -(gameW * 0.816),
 							y: -(gameH * 1.947),
 							attrs: {

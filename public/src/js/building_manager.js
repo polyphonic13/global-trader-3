@@ -26,7 +26,7 @@ var BuildingManager = function() {
 		// trace('Building/update');
 		if(this.config.state === BuildingStates.CONSTRUCTION && this.config.age >= this.constructionTime) {
 			this.config.state = BuildingStates.ACTIVE;
-			trace('building['+this.config.id+'] construction completed');
+			// trace('building['+this.config.id+'] construction completed');
 			PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
 		}
 		this.config.age++;
@@ -157,9 +157,9 @@ var BuildingManager = function() {
 		return inventory;
 	};
 	Factory.prototype.addRetailer = function(retailer) {
-		trace('Factory/addRetailer, retailer = ', retailer);
+		// trace('Factory/addRetailer, retailer = ', retailer);
 		this.config.retailers[retailer.config.modelId] = retailer.config.id;
-		trace('\tretailers now = ', this.config.retailers);
+		// trace('\tretailers now = ', this.config.retailers);
 		TurnManager.updateBuilding(this.config);
 	};
 	
@@ -190,7 +190,7 @@ var BuildingManager = function() {
 					if(numToSell > this.config.inventory.length) {
 						numToSell = this.config.inventory.length;
 					}
-					trace('numToSell = ' + numToSell + ', inventory = ' + this.config.inventory.length);
+					// trace('numToSell = ' + numToSell + ', inventory = ' + this.config.inventory.length);
 					while(numToSell > 0) {
 						TurnManager.sellMachine(this.config.inventory.pop(), this.config.resell);
 						this.config.totalSales += this.config.resell;
@@ -214,11 +214,11 @@ var BuildingManager = function() {
 	};
 
 	Retailer.prototype.addInventory = function(factory) {
-		trace('Retailer/addInventory, retailer = ', this.config, '\tfactory = ', factory);
+		// trace('Retailer/addInventory, retailer = ', this.config, '\tfactory = ', factory);
 		if(this.config.inventory.length < this.capacity) {
 			var modelId = this.config.modelId;
 			while(factory.inventory[modelId].length > 0 && this.config.inventory.length < this.capacity) {
-				trace('\ttransferring inventory to retailer');
+				// trace('\ttransferring inventory to retailer');
 				this.config.inventory.push(factory.inventory[modelId].pop());
 				factory.totalInventory--;
 			}
