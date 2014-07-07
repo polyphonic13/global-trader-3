@@ -155,9 +155,11 @@ var BuildingManager = function() {
 	function Retailer(config) {
 		config.type = BuildingTypes.RETAILER;
 		var factory = module.findBuilding(config.factoryId);
-		var model = factory.config.equipment[config.modelId];
+		var model = factory.config.equipment[config.modelId]
+		var resellMultiplier = Math.floor(Math.random() * (this.resellMaxMultiplier - 1) + 2);
+		trace('resellMultilplier = ' + resellMultiplier);
 		Building.call(this, config);
-		this.config.resell = config.resell || (this.resellMultiplier * model.cost);
+		this.config.resell = config.resell || (resellMultiplier * model.cost);
 		this.config.inventory = config.inventory || [];
 		this.config.totalSales = config.totalSales || 0;
 	}
@@ -166,7 +168,7 @@ var BuildingManager = function() {
 	Retailer.prototype.constructionTime = 1;
 	Retailer.prototype.sellTime = 0;
 	Retailer.prototype.capacity = 50;
-	Retailer.prototype.resellMultiplier = 3;
+	Retailer.prototype.resellMaxMultiplier = 5;
 	Retailer.prototype.quantityPerYear = 25;
 	Retailer.prototype.update = function() {
 		// trace('retailer/update: ', this);

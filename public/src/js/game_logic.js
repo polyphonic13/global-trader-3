@@ -251,10 +251,14 @@ var gameLogic = {
 					var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
 					var notification = PhaserGame.notifications[sector].pop();
 
-					PhaserGame.cancelAction = PhaserGame.removeNotification;
 					if(notification.confirmAction) {
 						PhaserGame.confirmAction = notification.confirmAction;
 						PWG.ViewManager.showView('global:confirmButton');
+					}
+					if(notification.cancelAction) {
+						PhaserGame.cancelAction = notification.cancelAction;
+					} else {
+						PhaserGame.cancelAction = PhaserGame.removeNotification;
 					}
 					PWG.ViewManager.hideView('global:backButton');
 					PWG.ViewManager.showView('global:cancelButton');
@@ -380,6 +384,10 @@ var gameLogic = {
 					params: event.retailer
 				};
 				
+				notification.cancelAction = {
+					method: PhaserGame.resetRetailer,
+					params: event.retailer
+				};
 				// PWG.ViewManager.hideView('global:backButton');
 				// PWG.ViewManager.addView(notification, notifications, true);
 				PhaserGame.notifications[event.factory.sector].push(notification);
@@ -403,6 +411,12 @@ var gameLogic = {
 
 				PWG.ViewManager.setFrame(viewPath, frame);
 				view.config.attrs.frame = frame;
+			},
+			resetRetailer: function(retailer) {
+				PhaserGame.removeNotification();
+				trace('resetRetailer, retailer = ', retailer);
+				var factory = BuildingManager.findBuilding(retailer.config.factoryId);
+				factory.retailerNotifications[retailer.config.modelId] = false;
 			},
 			inventoryAdded: function(factory, parentPath) {
 				// trace('PhaserGame/inventoryAdded, factory = ', factory);
@@ -957,7 +971,8 @@ var gameLogic = {
 			},
 			cancelButton: function() {
 				if(PhaserGame.cancelAction) {
-					PhaserGame.cancelAction.call(this);
+					PhaserGame.cancelAction.method.call(this, PhaserGame.cancelAction.params);
+					PhaserGame.cancelAction = null;
 				} else {
 					// switch(PWG.ScreenManager.currentId) {
 					// 	case 'brief':
