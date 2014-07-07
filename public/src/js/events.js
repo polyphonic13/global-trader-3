@@ -23,6 +23,8 @@ var Events = {
 	ADD_TRADEROUTE_NOTIFICATION: 'addTraderouteNotification',
 	CLOSE_RETAILER_NOTIFICATION: 'closeRetailerNotification',
 	ADD_RETAILER: 'addRetailer',
+	INVENTORY_ADDED: 'inventoryAdded',
+	MACHINE_SOLD: 'machineSold',
 	SHOW_BUILD_GROUP: 'showBuildGroup',
 	NEXT_MACHINE_PIECE_ICON: 'nextMachinePieceIcon',
 	PREV_MACHINE_PIECE_ICON: 'prevMachinePieceIcon',

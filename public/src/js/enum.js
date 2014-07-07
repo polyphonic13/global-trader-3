@@ -75,7 +75,7 @@ var PartDescriptions = {
 	
 };
 
-var usSectors = {
+var USSectors = {
 	NORTH_EAST: 0,
 	SOUTH_EAST: 1,
 	MID_WEST: 2,
@@ -83,7 +83,7 @@ var usSectors = {
 	SOUTH_WEST: 4
 };
 
-var sectorTitles = [
+var SectorTitles = [
 	'Northeast',
 	'Southeast',
 	'Midwest',
@@ -91,3 +91,7 @@ var sectorTitles = [
 	'Southwest'
 ];
 
+var IconAnimations = {
+	DOLLAR_SIGN: 'dollarSign',
+	PLUS_SIGN: 'plusSign'
+}

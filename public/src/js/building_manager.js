@@ -84,6 +84,8 @@ var BuildingManager = function() {
 									// trace('build machine: machine = ', machine);
 									PWG.EventCenter.trigger({ type: Events.UPDATE_BANK, value: (-machine.cost) });
 									PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
+									PWG.EventCenter.trigger({ type: Events.INVENTORY_ADDED, factory: this.config });
+									
 									this.config.inventory[machine.id].push(machine);
 									this.config.totalInventory++;
 									
@@ -193,6 +195,8 @@ var BuildingManager = function() {
 					// trace('numToSell = ' + numToSell + ', inventory = ' + this.config.inventory.length);
 					while(numToSell > 0) {
 						TurnManager.sellMachine(this.config.inventory.pop(), this.config.resell);
+						// trace('------- Retailer about to sell a machine:', this);
+						PWG.EventCenter.trigger({ type: Events.MACHINE_SOLD, retailer: this.config });
 						this.config.totalSales += this.config.resell;
 						
 						numToSell--;

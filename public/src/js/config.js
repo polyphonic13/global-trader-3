@@ -55,7 +55,6 @@ var GameConfig = function() {
 			width: gameW,
 			height: gameH
 		};
-
 		var controlButtons = {
 			left: {
 				x: 0,
@@ -424,6 +423,36 @@ var GameConfig = function() {
 					// width: gameUnit,
 					// height: gameUnit,
 					frame: 0
+				}
+			},
+			plusSign: {
+				type: 'sprite',
+				name: 'plusSign',
+				img: 'animatedPlusIcon',
+				x: gameUnit * 0.75,
+				y: 0,
+				attrs: {
+					width: gameUnit * 0.65,
+					height: gameUnit
+				},
+				animation: {
+					defaultAnimation: 'idle',
+					animations: Animations.plusIcon
+				}
+			},
+			dollarSign: {
+				type: 'sprite',
+				name: 'dollarSign',
+				img: 'animatedDollarIcon',
+				x: gameUnit * 0.75,
+				y: 0,
+				attrs: {
+					width: gameUnit * 0.65,
+					height: gameUnit
+				},
+				animation: {
+					defaultAnimation: 'idle',
+					animations: Animations.dollarIcon
 				}
 			},
 			buildingMenu: {
@@ -1329,6 +1358,18 @@ var GameConfig = function() {
 						height: 110,
 						frames: 5
 					},
+					animatedDollarIcon: {
+						url: 'images/screens/us_detail/animated_dollar_sign_white.png',
+						width: 65,
+						height: 100,
+						frames: 6
+					},
+					animatedPlusIcon: {
+						url: 'images/screens/us_detail/animated_plus_sign.png',
+						width: 65,
+						height: 100,
+						frames: 6
+					},
 					newTractorBasic: {
 						url: 'images/screens/equipment_add/tractor_basic.png',
 						width: 310,
@@ -1461,18 +1502,7 @@ var GameConfig = function() {
 							},
 							animation: {
 								defaultAnimation: 'idle',
-								animations: {
-									idle: {
-										frameRate: 10,
-										looped: false,
-										keyFrames: [0]
-									},
-									turnOn: {
-										frameRate: 10,
-										looped: false,
-										keyFrames: [0, 0, 0, 1, 1, 1, 2, 2, 2]
-									}
-								}
+								animations: Animations.ignitionKey
 							}
 						},
 						// game start button
@@ -1657,7 +1687,7 @@ var GameConfig = function() {
 										height: (gameUnit * 2.5),
 										alpha: 0
 									},
-									sector: usSectors.NORTH_EAST,
+									sector: USSectors.NORTH_EAST,
 									callback: gameLogic.global.buttonCallbacks.northeastDetail,
 									context: this,
 									frames: [0, 0, 0, 0]
