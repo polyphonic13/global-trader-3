@@ -846,12 +846,12 @@ var gameData = {
 		goals: [
 		{
 			type: 'profit',
-			value: 0,
-			calculation: 'number'
+			value: 1000000,
+			calculation: 'money'
 		},
 		{
 			type: 'newFactories',
-			value: 1,
+			value: 2,
 			calculation: 'number'
 		},
 		{
@@ -861,7 +861,7 @@ var gameData = {
 		},
 		{
 			type: 'newMachines',
-			value: 5,
+			value: 50,
 			calculation: 'length'
 		}
 		]
@@ -870,7 +870,7 @@ var gameData = {
 	{
 		startingBank: 1000000,
 		brief: {
-			background: 'briefBg05',
+			background: 'briefBg04',
 			text: [
 				'Build 1 Factory',
 				'Create 2 Machine Models',
@@ -880,12 +880,12 @@ var gameData = {
 		goals: [
 		{
 			type: 'profit',
-			value: 0,
-			calculation: 'number'
+			value: 1000000,
+			calculation: 'money'
 		},
 		{
 			type: 'newFactories',
-			value: 1,
+			value: 2,
 			calculation: 'number'
 		},
 		{
@@ -895,7 +895,7 @@ var gameData = {
 		},
 		{
 			type: 'newMachines',
-			value: 5,
+			value: 50,
 			calculation: 'length'
 		}
 		]
@@ -904,7 +904,7 @@ var gameData = {
 	{
 		startingBank: 1000000,
 		brief: {
-			background: 'briefBg01',
+			background: 'briefBg04',
 			text: [
 				'Build 1 Factory',
 				'Create 2 Machine Models',
@@ -914,12 +914,12 @@ var gameData = {
 		goals: [
 		{
 			type: 'profit',
-			value: 0,
-			calculation: 'number'
+			value: 1000000,
+			calculation: 'money'
 		},
 		{
 			type: 'newFactories',
-			value: 1,
+			value: 2,
 			calculation: 'number'
 		},
 		{
@@ -929,7 +929,7 @@ var gameData = {
 		},
 		{
 			type: 'newMachines',
-			value: 5,
+			value: 50,
 			calculation: 'length'
 		}
 		]
@@ -938,7 +938,7 @@ var gameData = {
 	{
 		startingBank: 1000000,
 		brief: {
-			background: 'briefBg02',
+			background: 'briefBg04',
 			text: [
 				'Build 1 Factory',
 				'Create 2 Machine Models',
@@ -948,12 +948,12 @@ var gameData = {
 		goals: [
 		{
 			type: 'profit',
-			value: 0,
-			calculation: 'number'
+			value: 1000000,
+			calculation: 'money'
 		},
 		{
 			type: 'newFactories',
-			value: 1,
+			value: 2,
 			calculation: 'number'
 		},
 		{
@@ -963,7 +963,7 @@ var gameData = {
 		},
 		{
 			type: 'newMachines',
-			value: 5,
+			value: 50,
 			calculation: 'length'
 		}
 		]
@@ -972,7 +972,7 @@ var gameData = {
 	{
 		startingBank: 1000000,
 		brief: {
-			background: 'briefBg03',
+			background: 'briefBg04',
 			text: [
 				'Build 1 Factory',
 				'Create 2 Machine Models',
@@ -982,12 +982,12 @@ var gameData = {
 		goals: [
 		{
 			type: 'profit',
-			value: 0,
-			calculation: 'number'
+			value: 1000000,
+			calculation: 'money'
 		},
 		{
 			type: 'newFactories',
-			value: 1,
+			value: 2,
 			calculation: 'number'
 		},
 		{
@@ -997,7 +997,7 @@ var gameData = {
 		},
 		{
 			type: 'newMachines',
-			value: 5,
+			value: 50,
 			calculation: 'length'
 		}
 		]
@@ -1016,12 +1016,12 @@ var gameData = {
 		goals: [
 		{
 			type: 'profit',
-			value: 0,
-			calculation: 'number'
+			value: 1000000,
+			calculation: 'money'
 		},
 		{
 			type: 'newFactories',
-			value: 1,
+			value: 2,
 			calculation: 'number'
 		},
 		{
@@ -1031,7 +1031,7 @@ var gameData = {
 		},
 		{
 			type: 'newMachines',
-			value: 5,
+			value: 50,
 			calculation: 'length'
 		}
 		]
@@ -1040,7 +1040,7 @@ var gameData = {
 	{
 		startingBank: 1000000,
 		brief: {
-			background: 'briefBg05',
+			background: 'briefBg04',
 			text: [
 				'Build 1 Factory',
 				'Create 2 Machine Models',
@@ -1050,12 +1050,12 @@ var gameData = {
 		goals: [
 		{
 			type: 'profit',
-			value: 0,
-			calculation: 'number'
+			value: 1000000,
+			calculation: 'money'
 		},
 		{
 			type: 'newFactories',
-			value: 1,
+			value: 2,
 			calculation: 'number'
 		},
 		{
@@ -1065,11 +1065,11 @@ var gameData = {
 		},
 		{
 			type: 'newMachines',
-			value: 5,
+			value: 50,
 			calculation: 'length'
 		}
 		]
-	}
+	},
 	],
 	bonuses: {
 		buildings: {
