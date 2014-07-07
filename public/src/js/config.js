@@ -2070,7 +2070,7 @@ var GameConfig = function() {
 									    font: (fontSizes.sm + 'px Arial'),
 								        fill: palette.orange1
 									},
-									x: (gameUnit * 0.5),
+									x: (gameUnit * 0.75),
 									y: (gameUnit * 0.5)
 								},
 								turnIndicator: {

@@ -213,7 +213,7 @@ var gameLogic = {
 					this
 				);
 				PhaserGame.turnTimer.start();
-				var text = '$' + PWG.Utils.formatMoney(TurnManager.get('bank'), 0);
+				var text = PWG.Utils.formatMoney(TurnManager.get('bank'), 0);
 				PWG.ViewManager.callMethod('global:turnGroup:bankText', 'setText', [text], this);
 				PWG.ViewManager.setFrame('global:turnGroup:turnIndicator', TurnManager.playerData.level);
 			},
