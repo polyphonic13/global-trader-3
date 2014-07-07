@@ -28,7 +28,21 @@ var notificationText = {
 		title: 'Trade Route',
 		statement: 'We would like to import ~{quantity}~ per year\nof your\n~{factory}~\n~{model}~ inventory\nat $~{resell}~ each.'
 	}
-}
+};
+
+var machineIcons = {
+	tractor: {
+		basic: 'tractorBasicIcon',
+		medium: 'tractorMediumIcon',
+		heavy: 'tractorHeavyIcon'
+	},
+	skidsteer: {
+		basic: 'skidsteerBasicIcon',
+		medium: 'skidsteerMediumIcon',
+		heavy: 'skidsteerHeavyIcon'
+	}
+};
+
 var turnScreens = [
 	'world',
 	'usDetail',
@@ -476,14 +490,26 @@ var GameConfig = function() {
 					menuBg: {
 						type: 'sprite',
 						name: 'menuBg',
-						img: 'blockWhite',
-						x: (gameUnit/2),
-						y: (gameUnit * 2),
+						img: 'addNewFactoryPrompt',
+						x: (gameW/2) - (gameUnit * 3),
+						y: (gameUnit * 12.5),
 						attrs: {
-							width: (gameW - gameUnit),
-							height: (gameH - (gameUnit * 6)),
-							alpha: 0.75,
-							fixedToCamera: true
+							width: (gameUnit * 6),
+							height: (gameUnit * 6) * 0.34
+						}
+					},
+					cost: {
+						type: 'text',
+						name: 'menuItemCost',
+						text: '',
+						x: 0,
+						y: gameUnit * 13.5,
+						style: {
+						    font: (fontSizes.md + 'px Arial'),
+					        fill: palette.orange3
+						},
+						position: {
+							centerX: true
 						}
 					},
 					confirmButton: {
@@ -513,146 +539,6 @@ var GameConfig = function() {
 						callback: gameLogic.global.buttonCallbacks.buildingAddCancel,
 						context: this,
 						frames: [0, 1, 1, 0]
-					},
-					icon: {
-						type: 'group',
-						name: 'itemsGroup',
-						views: {
-							bg: {
-								type: 'sprite',
-								name: 'menuItemBg',
-								img: 'blockWhite',
-								x: 0,
-								y: 0,
-								attrs: {
-									width: gameW,
-									height: (gameUnit * 3),
-									alpha: 0.33
-								}
-							},
-							icon: {
-								type: 'sprite',
-								name: 'menuItemIcon',
-								img: 'iconFactory',
-								x: gameUnit * 2,
-								y: gameUnit * 4,
-								attrs: {
-									width: gameUnit * 6,
-									height: gameUnit * 6
-								}
-							},
-							title: {
-								type: 'text',
-								name: 'factoryTitle',
-								text: 'Add New Factory?',
-								x: 0,
-								y: gameUnit * 3,
-								style: {
-									font: (fontSizes.md + 'px Arial'),
-									fill: palette.black
-								},
-								position: {
-									centerX: true
-								}
-							},
-							cost: {
-								type: 'text',
-								name: 'menuItemCost',
-								text: 'Cost: $' + gameData.buildings.factory.cost,
-								x: 0,
-								y: gameUnit * 10,
-								style: {
-								    font: (fontSizes.md + 'px Arial'),
-							        fill: palette.black
-								},
-								position: {
-									centerX: true
-								}
-							},
-							invisButton: {
-								type: 'sprite',
-								name: 'menuItemInvisBtn',
-								img: 'blockClear',
-								partId: -1,
-								x: 0,
-								y: 0,
-								attrs: {
-									width: gameW,
-									height: (gameUnit * 3),
-									alpha: 0.33
-								},
-								input: gameLogic.global.input.buildingSelectionIcon
-							}
-						}
-					}
-				}
-			},
-			buildingSelectionIcon: {
-				type: 'sprite',
-				name: '',
-				x: 0,
-				y: 0,
-				offset: (gameUnit * 3),
-				iconH: (gameUnit * 3),
-				views: {
-					bg: {
-						type: 'sprite',
-						name: 'menuItemBg',
-						img: 'blockWhite',
-						x: 0,
-						y: 0,
-						attrs: {
-							width: gameW,
-							height: (gameUnit * 3),
-							alpha: 0.33
-						}
-					},
-					icon: {
-						type: 'sprite',
-						name: 'menuItemIcon',
-						img: '',
-						x: gameUnit,
-						y: gameUnit * 0.5,
-						attrs: {
-							width: gameUnit * 4,
-							height: gameUnit * 2
-						}
-					},
-					description: {
-						type: 'text',
-						name: 'menuItemDescription',
-						text: '',
-						x: gameUnit * 3,
-						y: gameUnit * 0.25,
-						style: {
-						    font: (fontSizes.sm + 'px Arial'),
-					        fill: palette.black
-						}
-					},
-					cost: {
-						type: 'text',
-						name: 'menuItemCost',
-						text: '',
-						x: gameUnit * 3,
-						y: gameUnit * 1,
-						style: {
-						    font: (fontSizes.sm + 'px Arial'),
-					        fill: palette.black
-						}
-					},
-					invisButton: {
-						type: 'sprite',
-						name: 'menuItemInvisBtn',
-						img: 'blockClear',
-						partId: -1,
-						x: 0,
-						y: 0,
-						attrs: {
-							width: gameW,
-							height: (gameUnit * 3),
-							alpha: 0.33
-						},
-						input: gameLogic.global.input.buildingSelectionIcon
 					}
 				}
 			},
@@ -735,7 +621,7 @@ var GameConfig = function() {
 					bg: {
 						type: 'sprite',
 						name: 'machineIconBg',
-						img: 'machineListIcon',
+						img: '',
 						x: 0,
 						y: (gameUnit * 0.25),
 						attrs: {
@@ -759,7 +645,7 @@ var GameConfig = function() {
 						type: 'text',
 						name: 'machineCost',
 						text: '',
-						x: gameUnit * 0.1,
+						x: gameUnit * 0,
 						y: gameUnit * 0.85,
 						style: {
 						    font: (fontSizes.xxs + 'px Arial'),
@@ -773,8 +659,8 @@ var GameConfig = function() {
 						type: 'text',
 						name: 'available',
 						text: '',
-						x: gameUnit * 3.6,
-						y: (gameUnit * 0.3),
+						x: gameUnit * 3.5,
+						y: (gameUnit * 0.2),
 						style: {
 						    font: (fontSizes.sm + 'px Arial'),
 					        fill: palette.white
@@ -1177,11 +1063,17 @@ var GameConfig = function() {
 					sectorTitleNW: 'images/screens/us_detail/sector_title_nw.png',
 					sectorTitleSW: 'images/screens/us_detail/sector_title_sw.png',
 					iconFactory: 'images/screens/us_detail/icon_factory.png',
+					addNewFactoryPrompt: 'images/screens/us_detail/add_new_factory_prompt.png',
 					// factory detail
 					factoryDetailBg: 'images/screens/factory_detail/factory_detail.png',
 					// equipment list
-					equipmentListBg: 'images/screens/equipment_list/equipment_list.png',
 					machineListIcon: 'images/screens/equipment_list/machine_list_icon.png',
+					skidsteerBasicIcon: 'images/screens/equipment_list/skidsteer_basic_icon.png',
+					skidsteerMediumIcon: 'images/screens/equipment_list/skidsteer_medium_icon.png',
+					skidsteerHeavyIcon: 'images/screens/equipment_list/skidsteer_heavy_icon.png',
+					tractorBasicIcon: 'images/screens/equipment_list/tractor_basic_icon.png',
+					tractorMediumIcon: 'images/screens/equipment_list/tractor_medium_icon.png',
+					tractorHeavyIcon: 'images/screens/equipment_list/tractor_heavy_icon.png',
 					emptyIcon: 'images/screens/equipment_list/empty_icon.png',
 					// equipment create
 					equipmentCreateBg: 'images/screens/equipment_add/equipment_add_bg.png',
@@ -1322,24 +1214,6 @@ var GameConfig = function() {
 						width: 320,
 						height: 573,
 						frames: 3
-					},
-					buttonGameStart: {
-						url: 'images/button_game_start.gif',
-						width: 800,
-						height: 160,
-						frames: 2
-					},
-					buttonPause: {
-						url: 'images/button_pause.png',
-						width: 50,
-						height: 50,
-						frames: 2
-					},
-					buttonPlay: {
-						url: 'images/button_play.png',
-						width: 50,
-						height: 50,
-						frames: 2
 					},
 					buttonClose: {
 						url: 'images/button_close.png',

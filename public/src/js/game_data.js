@@ -4,13 +4,13 @@ var gameData = {
 			id: BuildingTypes.FACTORY,
 			img: 'iconFactory',
 			description: 'Build your machines',
-			cost: 100000
+			cost: 500000
 		},
 		retailer: {
 			id: BuildingTypes.RETAILER,
 			img: 'iconRetailer',
 			description: 'Sell your machines',
-			cost: 50000
+			cost: 500000
 		}
 	},
 	machines: {

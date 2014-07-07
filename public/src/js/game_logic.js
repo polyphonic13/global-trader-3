@@ -330,6 +330,8 @@ var gameLogic = {
 				// PhaserGame.addBuildingItemsOverlay.call(this, event.value, this.views);
 				var buildingMenuConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingMenu);
 				// trace('addBuildingMenu, buildingMenuConfig = ', buildingMenuConfig);
+				trace('factory = ' + gameData.buildings.factory.cost);
+				buildingMenuConfig.views.cost.text = '$' + PWG.Utils.formatMoney(gameData.buildings.factory.cost, 0);
 				PWG.ViewManager.hideView('global:backButton');
 				PWG.ViewManager.addView(buildingMenuConfig);
 				this.buildingMenuOpen = true;
@@ -1350,6 +1352,8 @@ var gameLogic = {
 						var available = BuildingManager.getMachineModelInventory(machine.factoryId, machine.id);
 						// trace('\titem = ', item);
 						item.name = 'machine' + idx;
+						trace('machine icon = ' + (machineIcons[machine.type][machine.size]));
+						item.views.bg.img = machineIcons[machine.type][machine.size];
 						item.views.name.text = machine.name;
 						item.views.cost.text = '$' + machine.cost;
 						// item.views.size.text = machine.size;
