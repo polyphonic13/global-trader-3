@@ -1070,6 +1070,17 @@ var gameData = {
 		}
 		]
 	}
-	]
+	],
+	bonuses: {
+		newFactory: 500,
+		newRetailer: 1000,
+		newTraderoutes: 10000,
+		machine100: 100,
+		machine500: 500,
+		machine1000: 1000,
+		machine5000: 5000,
+		machine10000: 10000,
+		machine50000: 50000
+	}
 };
 

@@ -1,8 +1,16 @@
 var playerData = {
+	level: 0,
 	bank: 0,
 	profit: 0,
-	bonues: 0,
-	level: 0,
+	bonusPoints: 0,
+	bonusesAchieved: {
+		machine100: false,
+		machine500: false,
+		machine1000: false,
+		machine5000: false,
+		machine10000: false,
+		machine50000: false
+	},
 	sectors: [
 		// ne
 		{},
@@ -20,6 +28,10 @@ var playerData = {
 		retailer: 0
 	},
 	modelCount: {
+		tractor: 0,
+		skidsteer: 0
+	},
+	machinesBuilt: {
 		tractor: 0,
 		skidsteer: 0
 	}

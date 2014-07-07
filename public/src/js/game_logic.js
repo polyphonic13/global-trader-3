@@ -215,6 +215,7 @@ var gameLogic = {
 				PhaserGame.turnTimer.start();
 				var text = PWG.Utils.formatMoney(TurnManager.get('bank'), 0);
 				PWG.ViewManager.callMethod('global:turnGroup:bankText', 'setText', [text], this);
+				PWG.ViewManager.callMethod('global:turnGroup:bonusText', 'setText', [0], this);
 				PWG.ViewManager.setFrame('global:turnGroup:turnIndicator', TurnManager.playerData.level);
 			},
 			stopTurn: function() {
@@ -1186,6 +1187,7 @@ var gameLogic = {
 			create: function() {
 				// trace('BUILD DETAIL GRID, this = ', this);
 				var usDetail = PWG.ViewManager.getControllerFromPath('usDetail');
+				var sectorTitle = PWG.Utils.clone(PhaserGame.config.dynamicViews.sectorTitle);
 				var gridCoordinates = GridManager.grids[PhaserGame.activeSector];
 				var usDetailGrid = PWG.Utils.clone(PhaserGame.config.dynamicViews.usDetailGrid);
 				var gridItem = PhaserGame.config.dynamicViews.usDetailGridItem;
@@ -1213,9 +1215,12 @@ var gameLogic = {
 					this
 				);
 
+				sectorTitle.img = SectorTitles[PhaserGame.activeSector];
+				PWG.ViewManager.addView(sectorTitle, usDetail, true);
+				
 				PWG.ViewManager.addView(usDetailGrid, usDetail, true);
 				// trace('CURRENT US SECTOR = ' + PhaserGame.activeSector);
-				PWG.ViewManager.callMethod('usDetail:sectorTitle', 'setText', [SectorTitles[PhaserGame.activeSector]], this);
+				// PWG.ViewManager.callMethod('usDetail:sectorTitle', 'setText', [SectorTitles[PhaserGame.activeSector]], this);
 				
 				if(PhaserGame.notifications[PhaserGame.activeSector].length > 0) {
 					PhaserGame.showNotificationEnvelope();

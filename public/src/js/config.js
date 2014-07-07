@@ -5,15 +5,18 @@ var goalsText = {
 		profit: 'Profits: ',
 		newFactories: 'Factories built: ',
 		newRetailers: 'Retailers established: ',
-		newTraderoutes: 'Trade routes established: ',
+		newTraderoutes: 'Trade Routes established: ',
 		newMachineModels: 'Machine models created: ',
 		newMachines: 'Machines manufactured: ',
 		machinesSold: 'Machines sold: '
 	}
 };
 
-var bonuses = {
-	
+var bonusesText = {
+	newFactory: 'New Factory built created 1000 jobs',
+	newRetailer: 'New Retailer established',
+	newTraderoutes: 'New Trade Route established',
+	machingManufacturing: '100 Machines manufactured'
 };
 
 var notificationText = {
@@ -404,6 +407,17 @@ var GameConfig = function() {
 				},
 				position: {
 					centerX: true
+				}
+			},
+			sectorTitle: {
+				type: 'sprite',
+				name: 'sectorTitle',
+				img: '',
+				x: (gameW/2) - (gameUnit * 1.75),
+				y: gameUnit * 2,
+				attrs: {
+					width: (gameUnit * 4),
+					height: (gameUnit * 4) * 0.37
 				}
 			},
 			usDetailGrid: {
@@ -1157,6 +1171,11 @@ var GameConfig = function() {
 					mapWorld: 'images/screens/world/map_world.png',
 					mapUS: 'images/screens/world/map_us.png',
 					// us detail
+					sectorTitleNE: 'images/screens/us_detail/sector_title_ne.png',
+					sectorTitleSE: 'images/screens/us_detail/sector_title_se.png',
+					sectorTitleMW: 'images/screens/us_detail/sector_title_mw.png',
+					sectorTitleNW: 'images/screens/us_detail/sector_title_nw.png',
+					sectorTitleSW: 'images/screens/us_detail/sector_title_sw.png',
 					iconFactory: 'images/screens/us_detail/icon_factory.png',
 					// factory detail
 					factoryDetailBg: 'images/screens/factory_detail/factory_detail.png',
@@ -1640,7 +1659,7 @@ var GameConfig = function() {
 									attrs: {
 										width: (gameUnit * 3.5),
 										height: (gameUnit * 2),
-										alpha: 0
+										alpha: 0.3
 									},
 									callback: gameLogic.global.buttonCallbacks.northwestDetail,
 									context: this,
@@ -1655,7 +1674,7 @@ var GameConfig = function() {
 									attrs: {
 										width: (gameUnit * 3.5),
 										height: (gameUnit * 2),
-										alpha: 0
+										alpha: 0.3
 									},
 									callback: gameLogic.global.buttonCallbacks.southwestDetail,
 									context: this,
@@ -1668,9 +1687,9 @@ var GameConfig = function() {
 									x: gameUnit * 3.7,
 									y: (gameUnit * 6),
 									attrs: {
-										width: (gameUnit * 2.25),
+										width: (gameUnit * 2),
 										height: (gameUnit * 4.5),
-										alpha: 0
+										alpha: 0.3
 									},
 									callback: gameLogic.global.buttonCallbacks.midwestDetail,
 									context: this,
@@ -1680,12 +1699,12 @@ var GameConfig = function() {
 									type: 'button',
 									name: 'northeastDetail',
 									img: 'blockWhite',
-									x: gameUnit * 5.95,
+									x: gameUnit * 5.7,
 									y: (gameUnit * 6),
 									attrs: {
 										width: (gameUnit * 4),
 										height: (gameUnit * 2.5),
-										alpha: 0
+										alpha: 0.3
 									},
 									sector: USSectors.NORTH_EAST,
 									callback: gameLogic.global.buttonCallbacks.northeastDetail,
@@ -1696,12 +1715,12 @@ var GameConfig = function() {
 									type: 'button',
 									name: 'southeastDetail',
 									img: 'blockWhite',
-									x: gameUnit * 5.95,
-									y: (gameUnit * 9),
+									x: gameUnit * 5.7,
+									y: (gameUnit * 8.5),
 									attrs: {
-										width: (gameUnit * 4),
+										width: (gameUnit * 2.5),
 										height: (gameUnit * 2.5),
-										alpha: 0
+										alpha: 0.3
 									},
 									callback: gameLogic.global.buttonCallbacks.southeastDetail,
 									context: this,
@@ -1719,21 +1738,21 @@ var GameConfig = function() {
 						visible: false
 					},
 					views: {
-						// bg
-						sectorTitle: {
-							type: 'text',
-							name: 'sectorTitle',
-							text: '',
-							x: 0,
-							y: gameUnit * 2,
-							style: {
-							    font: (fontSizes.lg + 'px Arial'),
-						        fill: palette.white
-							},
-							position: {
-								centerX: true
-							}
-						}
+						// title
+						// sectorTitle: {
+						// 	type: 'text',
+						// 	name: 'sectorTitle',
+						// 	text: '',
+						// 	x: 0,
+						// 	y: gameUnit * 2,
+						// 	style: {
+						// 	    font: (fontSizes.lg + 'px Arial'),
+						//         fill: palette.white
+						// 	},
+						// 	position: {
+						// 		centerX: true
+						// 	}
+						// }
 					}
 				},
 				// building edit 
@@ -2104,7 +2123,7 @@ var GameConfig = function() {
 									    font: (fontSizes.sm + 'px Arial'),
 								        fill: palette.orange1
 									},
-									x: (gameUnit * 0.75),
+									x: (gameUnit * 0.8),
 									y: (gameUnit * 0.5)
 								},
 								bonusText: {
@@ -2112,11 +2131,11 @@ var GameConfig = function() {
 									name: 'bonusText',
 									text: '',
 									style: {
-									    font: (fontSizes.sm + 'px Arial'),
+									    font: (fontSizes.md + 'px Arial'),
 								        fill: palette.orange1
 									},
-									x: (gameUnit * 5),
-									y: (gameUnit * 0.5)
+									x: (gameUnit * 6.67),
+									y: (gameUnit * 0.4)
 								},
 								turnIndicator: {
 									type: 'sprite',
