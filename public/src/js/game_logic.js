@@ -83,6 +83,14 @@ var gameLogic = {
 				PWG.ViewManager.callMethod('global:turnGroup:bankText', 'setText', [text], this);
 			}
 		},
+		// bonuses updated
+		{
+			event: Events.BONUSES_UPDATED,
+			handler: function(event) {
+				trace('bonuses updated handler, bonuses now = ' + TurnManager.get('bonusPoints'));
+				PWG.ViewManager.callMethod('global:turnGroup:bonusText', 'setText', [TurnManager.get('bonusPoints')], this);
+			}
+		},
 		// turn completed
 		{
 			event: Events.TURN_COMPLETED,
@@ -215,7 +223,7 @@ var gameLogic = {
 				PhaserGame.turnTimer.start();
 				var text = PWG.Utils.formatMoney(TurnManager.get('bank'), 0);
 				PWG.ViewManager.callMethod('global:turnGroup:bankText', 'setText', [text], this);
-				PWG.ViewManager.callMethod('global:turnGroup:bonusText', 'setText', [0], this);
+				PWG.ViewManager.callMethod('global:turnGroup:bonusText', 'setText', [TurnManager.get('bonusPoints')], this);
 				PWG.ViewManager.setFrame('global:turnGroup:turnIndicator', TurnManager.playerData.level);
 			},
 			stopTurn: function() {

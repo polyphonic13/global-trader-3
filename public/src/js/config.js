@@ -16,7 +16,7 @@ var bonusesText = {
 	newFactory: 'New Factory built created 1000 jobs',
 	newRetailer: 'New Retailer established',
 	newTraderoutes: 'New Trade Route established',
-	machingManufacturing: '100 Machines manufactured'
+	machingManufacturing: '~{machines}~ Machines manufactured'
 };
 
 var notificationText = {

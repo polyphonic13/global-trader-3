@@ -66,8 +66,10 @@ var TurnManager = function() {
 			default: 
 			// trace('ERROR unknown building type: ' + building.type);
 			break;
-			
 		}
+		trace('adding bonus points for new ' + building.type + ': ' + gameData.bonuses.buildings[building.type]);
+		module.playerData.bonusPoints += gameData.bonuses.buildings[building.type];
+		PWG.EventCenter.trigger({ type: Events.BONUSES_UPDATED });
 	};
 	
 	module.updateBuilding = function(building) {
@@ -96,6 +98,26 @@ var TurnManager = function() {
 		} else if(machine.type === EquipmentTypes.SKID_STEER) {
 			module.currentData.newSkidsteers++;
 		}
+
+		module.playerData.machinesBuilt[machine.type]++;
+		module.playerData.machinesBuilt.total++;
+
+		// test bonus points
+		var total = module.playerData.machinesBuilt.total;
+
+		PWG.Utils.each(
+			gameData.bonuses.manufacturing,
+			function(machineBonus, key) {
+				// trace('total = ' + total + ', machineBonus = ' + machineBonus + ', key = ' + key);
+				if(total >= machineBonus && !module.playerData.bonusesAchieved[key]) {
+					trace('adding bonus points for ' + machineBonus + ' machines built: ' + gameData.bonuses.manufacturing[key]);
+					module.playerData.bonusesAchieved[key] = true;
+					module.playerData.bonusPoints += gameData.bonuses.manufacturing[key];
+					PWG.EventCenter.trigger({ type: Events.BONUSES_UPDATED });
+				}
+			},
+			this
+		);
 	};
 	
 	module.removeFactoryInventory = function(machine) {

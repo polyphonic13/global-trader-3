@@ -4,6 +4,8 @@ var playerData = {
 	profit: 0,
 	bonusPoints: 0,
 	bonusesAchieved: {
+		machine10: false,
+		machine50: false,
 		machine100: false,
 		machine500: false,
 		machine1000: false,
@@ -25,15 +27,18 @@ var playerData = {
 	],
 	buildingCount: {
 		factory: 0,
-		retailer: 0
+		retailer: 0,
+		total: 0
 	},
 	modelCount: {
 		tractor: 0,
-		skidsteer: 0
+		skidsteer: 0,
+		total: 0
 	},
 	machinesBuilt: {
 		tractor: 0,
-		skidsteer: 0
+		skidsteer: 0,
+		total: 0
 	}
 	// TESTING LEVEL 1:
 	// level: 1,

@@ -81,7 +81,7 @@ var BuildingManager = function() {
 							// trace('machine = ', machine);
 							if(TurnManager.playerData.bank > machine.cost) {
 								if(this.config.totalInventory < module.FACTORY_MAX_INVENTORY) {
-									// trace('build machine: machine = ', machine);
+									trace('manufactored machine: ' +  machine.id + ', retailers: ', this.config.retailers);
 									PWG.EventCenter.trigger({ type: Events.UPDATE_BANK, value: (-machine.cost) });
 									PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
 									PWG.EventCenter.trigger({ type: Events.INVENTORY_ADDED, factory: this.config });
@@ -94,6 +94,7 @@ var BuildingManager = function() {
 									// if there is enough inventory of this machine to sell and it doesn't already have a retailer...
 									if(this.config.inventory[machine.id].length > module.FACTORY_MIN_SELL_INVENTORY) {
 										if(!this.config.retailers.hasOwnProperty(machine.id)) {
+											trace('\tretailerNotifications['+machine.id+'] = ' + this.retailerNotifications[machine.id]);
 											if(!this.retailerNotifications[machine.id]) {
 												this.retailerNotifications[machine.id] = true;
 
