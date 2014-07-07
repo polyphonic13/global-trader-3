@@ -759,7 +759,7 @@ var GameConfig = function() {
 						type: 'text',
 						name: 'machineCost',
 						text: '',
-						x: gameUnit * 0,
+						x: gameUnit * 0.1,
 						y: gameUnit * 0.85,
 						style: {
 						    font: (fontSizes.xxs + 'px Arial'),
@@ -773,8 +773,8 @@ var GameConfig = function() {
 						type: 'text',
 						name: 'available',
 						text: '',
-						x: gameUnit * 3.75,
-						y: (gameUnit * 0.4),
+						x: gameUnit * 3.6,
+						y: (gameUnit * 0.3),
 						style: {
 						    font: (fontSizes.sm + 'px Arial'),
 					        fill: palette.white
@@ -1659,7 +1659,7 @@ var GameConfig = function() {
 									attrs: {
 										width: (gameUnit * 3.5),
 										height: (gameUnit * 2),
-										alpha: 0.3
+										alpha: 0
 									},
 									callback: gameLogic.global.buttonCallbacks.northwestDetail,
 									context: this,
@@ -1674,7 +1674,7 @@ var GameConfig = function() {
 									attrs: {
 										width: (gameUnit * 3.5),
 										height: (gameUnit * 2),
-										alpha: 0.3
+										alpha: 0
 									},
 									callback: gameLogic.global.buttonCallbacks.southwestDetail,
 									context: this,
@@ -1689,7 +1689,7 @@ var GameConfig = function() {
 									attrs: {
 										width: (gameUnit * 2),
 										height: (gameUnit * 4.5),
-										alpha: 0.3
+										alpha: 0
 									},
 									callback: gameLogic.global.buttonCallbacks.midwestDetail,
 									context: this,
@@ -1704,7 +1704,7 @@ var GameConfig = function() {
 									attrs: {
 										width: (gameUnit * 4),
 										height: (gameUnit * 2.5),
-										alpha: 0.3
+										alpha: 0
 									},
 									sector: USSectors.NORTH_EAST,
 									callback: gameLogic.global.buttonCallbacks.northeastDetail,
@@ -1720,7 +1720,7 @@ var GameConfig = function() {
 									attrs: {
 										width: (gameUnit * 2.5),
 										height: (gameUnit * 2.5),
-										alpha: 0.3
+										alpha: 0
 									},
 									callback: gameLogic.global.buttonCallbacks.southeastDetail,
 									context: this,

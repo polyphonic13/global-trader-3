@@ -81,10 +81,10 @@ var BuildingManager = function() {
 							// trace('machine = ', machine);
 							if(TurnManager.playerData.bank > machine.cost) {
 								if(this.config.totalInventory < module.FACTORY_MAX_INVENTORY) {
-									trace('manufactored machine: ' +  machine.id + ', retailers: ', this.config.retailers);
+									// trace('manufactored machine: ' +  machine.id + ', retailers: ', this.config.retailers);
 									PWG.EventCenter.trigger({ type: Events.UPDATE_BANK, value: (-machine.cost) });
 									PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
-									PWG.EventCenter.trigger({ type: Events.INVENTORY_ADDED, factory: this.config });
+									PWG.EventCenter.trigger({ type: Events.INVENTORY_ADDED, factory: this.config, machine: machine.id });
 									
 									this.config.inventory[machine.id].push(machine);
 									this.config.totalInventory++;
@@ -94,7 +94,7 @@ var BuildingManager = function() {
 									// if there is enough inventory of this machine to sell and it doesn't already have a retailer...
 									if(this.config.inventory[machine.id].length > module.FACTORY_MIN_SELL_INVENTORY) {
 										if(!this.config.retailers.hasOwnProperty(machine.id)) {
-											trace('\tretailerNotifications['+machine.id+'] = ' + this.retailerNotifications[machine.id]);
+											trace('\tfactory['+this.config.id+'].retailerNotifications['+machine.id+'] = ' + this.retailerNotifications[machine.id]);
 											if(!this.retailerNotifications[machine.id]) {
 												this.retailerNotifications[machine.id] = true;
 
@@ -139,25 +139,10 @@ var BuildingManager = function() {
 		
 		}
 	};
-
 	Factory.prototype.addMachineModel = function(machine) {
 		this.config.equipment[machine.id] = machine; 
 		this.config.inventory[machine.id] = [];
-	};
-	Factory.prototype.getMachineModelInventory = function(machineId) {
-		var inventory = [];
-		
-		PWG.Utils.each(
-			this.config.inventory,
-			function(machine) {
-				if(machine.id === machineId) {
-					inventory.push(machine);
-				}
-			},
-			this
-		);
-
-		return inventory;
+		this.retailerNotifications[machine.id] = false;
 	};
 	Factory.prototype.addRetailer = function(retailer) {
 		// trace('Factory/addRetailer, retailer = ', retailer);
@@ -400,10 +385,13 @@ var BuildingManager = function() {
 	};
 	
 	module.getMachineModelInventory = function(factoryId, machineId) {
+		var count = 0;
 		var factory = module.findBuilding(factoryId);
-		var inventory = factory.getMachineModelInventory();
-		
-		return inventory;
+		trace('BuildingManager/getMachineModelInventory, machineId = ' + machineId + ', factory.inventory = ', factory.config.inventory);
+		if(factory.config.inventory[machineId]) {
+			count = factory.config.inventory[machineId].length;
+		}
+		return count;
 	};
 	
 	module.addInventoryToRetailer = function(factoryId, retailerIdx) {

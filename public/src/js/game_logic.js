@@ -1292,6 +1292,18 @@ var gameLogic = {
 					PhaserGame.newMachine = false;
 					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentEdit' });
 				}
+			},
+			// building state updated
+			{
+				event: Events.INVENTORY_ADDED,
+				handler: function(event) {
+					// trace('BUILDING_STATE_UPDATED event = ', event);
+					var config = event.factory;
+					if(config.id === PhaserGame.activeBuilding.id) {
+						var available = 'x' + BuildingManager.getMachineModelInventory(config.id, event.machine);;
+						PWG.ViewManager.callMethod('equipmentList:machineList:machine'+event.machine+':available', 'setText', [available], this);
+					}
+				}
 			}
 			],
 			create: function() {
@@ -1320,14 +1332,14 @@ var gameLogic = {
 					function(machine, idx) {
 						// trace('\tadding machine['+idx+']: ', machine);
 						var item = PWG.Utils.clone(machineIcon);
-						var inventory = BuildingManager.getMachineModelInventory(machine.factoryId, machine.id);
+						var available = BuildingManager.getMachineModelInventory(machine.factoryId, machine.id);
 						// trace('\titem = ', item);
 						item.name = 'machine' + idx;
 						item.views.name.text = machine.name;
 						item.views.cost.text = '$' + machine.cost;
 						// item.views.size.text = machine.size;
 
-						item.views.available.text = inventory.length;
+						item.views.available.text = 'x' + available;
 						item.views.invisButton.machineIdx = machine.id;
 						// increment y to next row:
 						if(count % MACHINE_LIST_COLUMNS === 0) {
