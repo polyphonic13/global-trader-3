@@ -12,6 +12,10 @@ var goalsText = {
 	}
 };
 
+var bonuses = {
+	
+};
+
 var notificationText = {
 	retailer: {
 		title: 'Retailer',
@@ -2071,6 +2075,17 @@ var GameConfig = function() {
 								        fill: palette.orange1
 									},
 									x: (gameUnit * 0.75),
+									y: (gameUnit * 0.5)
+								},
+								bonusText: {
+									type: 'text',
+									name: 'bonusText',
+									text: '',
+									style: {
+									    font: (fontSizes.sm + 'px Arial'),
+								        fill: palette.orange1
+									},
+									x: (gameUnit * 5),
 									y: (gameUnit * 0.5)
 								},
 								turnIndicator: {

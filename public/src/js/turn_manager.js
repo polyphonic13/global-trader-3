@@ -2,6 +2,7 @@ var TurnManager = function() {
 	var turnData = {
 		bankAdjustments: 0,
 		profit: 0,
+		bonuses: 0,
 		newFactories: 0,
 		newRetailers: 0,
 		newTractorModels: 0,

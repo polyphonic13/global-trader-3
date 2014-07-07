@@ -1,6 +1,7 @@
 var playerData = {
 	bank: 0,
 	profit: 0,
+	bonues: 0,
 	level: 0,
 	sectors: [
 		// ne
