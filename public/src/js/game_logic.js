@@ -79,7 +79,7 @@ var gameLogic = {
 		{
 			event: Events.BANK_UPDATED,
 			handler: function(event) {
-				var text = '$' + PWG.Utils.formatMoney(TurnManager.get('bank'), 0);
+				var text = PWG.Utils.formatMoney(TurnManager.get('bank'), 0);
 				PWG.ViewManager.callMethod('global:turnGroup:bankText', 'setText', [text], this);
 			}
 		},

@@ -100,7 +100,7 @@ var GameConfig = function() {
 			tractor: {
 				basic: {
 					engine: {
-						img: 'blockRed',
+						img: 'blockWhite',
 						x: 0,
 						y: (gameUnit * 8),
 						attrs: {
@@ -119,7 +119,7 @@ var GameConfig = function() {
 						}
 					},
 					cab: {
-						img: 'blockBlue',
+						img: 'blockWhite',
 						x: (gameUnit * 4),
 						y: (gameUnit * 6),
 						attrs: {
@@ -130,7 +130,7 @@ var GameConfig = function() {
 				},
 				medium: {
 					engine: {
-						img: 'blockRed',
+						img: 'blockWhite',
 						x: 0,
 						y: (gameUnit * 7),
 						attrs: {
@@ -149,7 +149,7 @@ var GameConfig = function() {
 						}
 					},
 					cab: {
-						img: 'blockBlue',
+						img: 'blockWhite',
 						x: (gameUnit * 4),
 						y: (gameUnit * 4),
 						attrs: {
@@ -160,7 +160,7 @@ var GameConfig = function() {
 				},
 				heavy: {
 					engine: {
-						img: 'blockRed',
+						img: 'blockWhite',
 						x: 0,
 						y: (gameUnit * 7),
 						attrs: {
@@ -179,7 +179,7 @@ var GameConfig = function() {
 						}
 					},
 					cab: {
-						img: 'blockBlue',
+						img: 'blockWhite',
 						x: (gameUnit * 4),
 						y: (gameUnit * 4),
 						attrs: {
@@ -192,7 +192,7 @@ var GameConfig = function() {
 			skidsteer: {
 				basic: {
 					engine: {
-						img: 'blockRed',
+						img: 'blockWhite',
 						x: 0,
 						y: (gameUnit * 8),
 						attrs: {
@@ -211,7 +211,7 @@ var GameConfig = function() {
 						}
 					},
 					cab: {
-						img: 'blockBlue',
+						img: 'blockWhite',
 						x: (gameUnit * 4),
 						y: (gameUnit * 6),
 						attrs: {
@@ -222,7 +222,7 @@ var GameConfig = function() {
 				},
 				medium: {
 					engine: {
-						img: 'blockRed',
+						img: 'blockWhite',
 						x: (gameUnit * 4),
 						y: (gameUnit * 10),
 						attrs: {
@@ -242,7 +242,7 @@ var GameConfig = function() {
 						}
 					},
 					cab: {
-						img: 'blockBlue',
+						img: 'blockWhite',
 						x: (gameUnit * 2),
 						y: (gameUnit * 6.5),
 						attrs: {
@@ -251,7 +251,7 @@ var GameConfig = function() {
 						}
 					},
 					bucket: {
-						img: 'blockGreen',
+						img: 'blockWhite',
 						x: gameUnit * 4,
 						y: gameUnit * 2,
 						attrs: {
@@ -262,7 +262,7 @@ var GameConfig = function() {
 				},
 				heavy: {
 					engine: {
-						img: 'blockRed',
+						img: 'blockWhite',
 						x: (gameUnit * 4),
 						y: (gameUnit * 10),
 						attrs: {
@@ -282,7 +282,7 @@ var GameConfig = function() {
 						}
 					},
 					cab: {
-						img: 'blockBlue',
+						img: 'blockWhite',
 						x: (gameUnit * 2),
 						y: (gameUnit * 6.5),
 						attrs: {
@@ -291,7 +291,7 @@ var GameConfig = function() {
 						}
 					},
 					bucket: {
-						img: 'blockGreen',
+						img: 'blockWhite',
 						x: gameUnit * 4,
 						y: gameUnit * 2,
 						attrs: {
@@ -474,7 +474,7 @@ var GameConfig = function() {
 							bg: {
 								type: 'sprite',
 								name: 'menuItemBg',
-								img: 'blockBlue',
+								img: 'blockWhite',
 								x: 0,
 								y: 0,
 								attrs: {
@@ -551,7 +551,7 @@ var GameConfig = function() {
 					bg: {
 						type: 'sprite',
 						name: 'menuItemBg',
-						img: 'blockBlue',
+						img: 'blockWhite',
 						x: 0,
 						y: 0,
 						attrs: {
@@ -999,7 +999,7 @@ var GameConfig = function() {
 					bg: {
 						type: 'sprite',
 						name: 'menuItemBg',
-						img: 'blockBlue',
+						img: 'blockWhite',
 						x: gameUnit * 0.5,
 						y: 0,
 						attrs: {
@@ -1103,17 +1103,10 @@ var GameConfig = function() {
 					// generic
 					blockWhite: 'images/block_white.png',
 					blockClear: 'images/block_clear.png',
-					blockBlue: 'images/block_blue.gif',
-					blockGreen: 'images/block_green.gif',
-					blockRed: 'images/block_red.gif',
-					greyTiles: 'images/grey_tiles2.gif',
-					iconFactory: 'images/screens/us_detail/icon_factory.png',
-					iconTractor: 'images/icon_tractor.gif',
-					iconSkidsteer: 'images/icon_skidsteer.gif',
 					// global
 					gameBg: 'images/screens/metal_background.gif',
-					dashboardBottom: 'images/dashboard_bottom.gif',
-					dashboardTop: 'images/dashboard_top.gif',
+					dashboardBottom: 'images/dashboard_bottom.png',
+					dashboardTop: 'images/dashboard_top.png',
 					smallEnvelope: 'images/icons/small_envelope.png',
 					// home
 					homeBg: 'images/screens/start/start.png',
@@ -1130,6 +1123,8 @@ var GameConfig = function() {
 					mapOcean: 'images/screens/world/map_ocean.png',
 					mapWorld: 'images/screens/world/map_world.png',
 					mapUS: 'images/screens/world/map_us.png',
+					// us detail
+					iconFactory: 'images/screens/us_detail/icon_factory.png',
 					// factory detail
 					factoryDetailBg: 'images/screens/factory_detail/factory_detail.png',
 					// equipment list
@@ -1406,15 +1401,6 @@ var GameConfig = function() {
 				bank: 1000000
 			},
 			defaultScreen: 'home',
-			maxWorldZoom: {
-				x: gameW * 5.9,
-				y: gameH * 5.85
-			},
-			minWorldZoom: {
-				x: gameW * 2.95,
-				y: gameH * 2.925
-			},
-			minWorldZoom: 1,
 			dynamicViews: dynamicViews,
 			machineEditBackgrounds: machineEditBackgrounds,
 			machinePartIconConfig: machinePartIconConfig,
@@ -1614,7 +1600,7 @@ var GameConfig = function() {
 								northwestDetail: {
 									type: 'button',
 									name: 'northwestDetail',
-									img: 'blockBlue',
+									img: 'blockWhite',
 									x: gameUnit * 0.2,
 									y: (gameUnit * 6),
 									attrs: {
@@ -1629,7 +1615,7 @@ var GameConfig = function() {
 								southwestDetail: {
 									type: 'button',
 									name: 'southwestDetail',
-									img: 'blockGreen',
+									img: 'blockWhite',
 									x: gameUnit * 0.2,
 									y: (gameUnit * 8),
 									attrs: {
@@ -1644,7 +1630,7 @@ var GameConfig = function() {
 								midwestDetail: {
 									type: 'button',
 									name: 'midwestDetail',
-									img: 'blockRed',
+									img: 'blockWhite',
 									x: gameUnit * 3.7,
 									y: (gameUnit * 6),
 									attrs: {
@@ -1675,7 +1661,7 @@ var GameConfig = function() {
 								southeastDetail: {
 									type: 'button',
 									name: 'southeastDetail',
-									img: 'blockBlue',
+									img: 'blockWhite',
 									x: gameUnit * 5.95,
 									y: (gameUnit * 9),
 									attrs: {
