@@ -1131,7 +1131,8 @@ var gameLogic = {
 				var levelBrief = gameData.levels[PhaserGame.playerData.level].brief;
 				var missionBrief = PWG.Utils.clone(PhaserGame.config.dynamicViews.missionBrief);
 				var goalText = PhaserGame.config.dynamicViews.goalText;
-				
+				var wiper = PWG.Utils.clone(PhaserGame.config.dynamicViews.wiper)
+				trace('wiper = ', wiper);
 				// trace('levelBrief = ', levelBrief, '\tgoalText = ', goalText);
 				missionBrief.views.briefBg.img = levelBrief.background;
 				
@@ -1152,24 +1153,20 @@ var gameLogic = {
 				);
 				// trace('missionBrief config now = ', missionBrief, '\tbrief = ', brief);
 				PWG.ViewManager.addView(missionBrief, brief, true);
+				PWG.ViewManager.addView(wiper, brief, true);
+				
 				PWG.ViewManager.showView('global:confirmButton');
 				PWG.ViewManager.showView('global:backButton');
 				PWG.ViewManager.hideView('global:turnGroup');
 
-				// goal text shadows
-				// PWG.Utils.each(
-				// 	missionBrief.views,
-				// 	function(view, key) {
-				// 		if(view.type === 'text') {
-				// 			var path = 'brief:missionBrief:'+key;
-				// 			 // text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 5);
-				// 			trace('path = ' + path);
-				// 			var args = [3, 3, 'rgba(0, 0, 0, 0.5)', 5];
-				// 			PWG.ViewManager.callMethod(path, 'setShadow', args, this);
-				// 		}
-				// 	},
-				// 	this
-				// );
+				// wiper
+				var wiper = PWG.ViewManager.getControllerFromPath('brief:wiper:windshieldWiper');
+				// var wiperMask = PWG.ViewManager.getControllerFromPath('brief:wiper:windshieldWiperMask');
+				wiper.view.anchor.setTo(0.5, 0.04);
+				// wiperMask.view.anchor.setTo(0.5, 0.04);
+				PhaserGame.phaser.add.tween(wiper.view).to({angle: -65}, 1000, Phaser.Easing.Linear.None, true, Math.random() * 500);
+				// PhaserGame.phaser.add.tween(wiperMask.view).to({angle: -75}, 1000, Phaser.Easing.Linear.None, true, Math.random() * 500);
+		        
 			},
 			shutdown: function() {
 				PWG.ViewManager.hideView('global:confirmButton');

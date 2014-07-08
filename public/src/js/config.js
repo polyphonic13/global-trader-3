@@ -406,6 +406,47 @@ var GameConfig = function() {
 					}
 				}
 			},
+			wiper: {
+				type: 'group',
+				name: 'wiper',
+				views: {
+					// windshieldWiperMask: {
+					// 	type: 'sprite',
+					// 	name: 'windshieldWiperMask',
+					// 	img: 'windshieldWiperMask',
+					// 	x: (gameW/2),
+					// 	y: gameUnit * 0.4,
+					// 	attrs: {
+					// 		width: gameW,
+					// 		height: (gameUnit * 1.15) * 11,
+					// 		angle: 75
+					// 	}
+					// },
+					windshieldWiper: {
+						type: 'sprite',
+						name: 'windshieldWiper',
+						img: 'windshieldWiper',
+						x: (gameW/2),
+						y: gameUnit * 0.4,
+						attrs: {
+							width: gameUnit * 1.15,
+							height: (gameUnit * 1.15) * 11,
+							angle: 65
+						}
+					},
+					windowFrame: {
+						type: 'sprite',
+						name: 'windowFrame',
+						img: 'windowFrame',
+						x: 0,
+						y: 0,
+						attrs: {
+							width: gameW,
+							height: gameH
+						}
+					}
+				}
+			},
 			goalText: {
 				type: 'text',
 				name: 'goal',
@@ -1069,6 +1110,9 @@ var GameConfig = function() {
 					briefBg04: 'images/screens/brief/mission_brief04.png',
 					briefBg05: 'images/screens/brief/mission_brief05.png',
 					goalsText: 'images/screens/brief/goals_text_img.png',
+					windshieldWiper: 'images/screens/brief/windshield_wiper.png',
+					windshieldWiperMask: 'images/screens/brief/windshield_wiper_mask.png',
+					windowFrame: 'images/screens/brief/window_frame.png',
 					// world
 					mapOcean: 'images/screens/world/map_ocean.png',
 					mapWorld: 'images/screens/world/map_world.png',
