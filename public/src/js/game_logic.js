@@ -151,11 +151,15 @@ var gameLogic = {
 				PhaserGame.worldZoom = {
 					max: {
 						width: view.width,
-						height: view.height
+						height: view.height,
+						x: view.position.x,
+						y: view.position.y
 					},
 					min: {
 						width: PWG.Stage.gameW,
-						height: PWG.Stage.gameH
+						height: PWG.Stage.gameH,
+						x: 0,
+						y: 0
 					},
 					zoomIncrements: {
 						width: (view.width - PWG.Stage.gameW) * 0.25,
@@ -168,6 +172,16 @@ var gameLogic = {
 				};
 				trace('world zoom initialized as: ', PhaserGame.worldZoom);
 				PhaserGame.worldZoomInitialized = true;
+			},
+			worldZoomOutFull: function() {
+				if(PWG.ScreenManager.currentId === 'world') {
+					// trace('set w/h: ' + newWidth + '/' + newHeight + ', x/y: ' + newX + '/' + newY);
+					var max = PhaserGame.worldZoom.max;
+					PhaserGame.worldView.width = max.width;
+					PhaserGame.worldView.height = max.height;
+					PhaserGame.worldView.x = max.x;
+					PhaserGame.worldView.y = max.y;
+				}
 			},
 			render: function() {
 				PWG.ScreenManager.render();
@@ -225,6 +239,36 @@ var gameLogic = {
 				PWG.ViewManager.callMethod('global:turnGroup:bankText', 'setText', [text], this);
 				PWG.ViewManager.callMethod('global:turnGroup:bonusText', 'setText', [TurnManager.get('bonusPoints')], this);
 				PWG.ViewManager.setFrame('global:turnGroup:turnIndicator', TurnManager.playerData.level);
+			},
+			showEndTurnPrompt: function() {
+				var endTurnPrompt = PhaserGame.config.dynamicViews.endTurnPrompt;
+				var worldCollection = PWG.ViewManager.getControllerFromPath('world');
+				PWG.ViewManager.addView(endTurnPrompt, worldCollection, true);
+
+				PhaserGame.confirmAction = {
+					method: function() {
+						PWG.EventCenter.trigger({ type: Events.TURN_COMPLETED });
+						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'brief' });
+
+						PWG.ViewManager.removeView('endTurnPrompt', 'world');
+					},
+					params: null
+				};
+				PhaserGame.cancelAction = {
+					method: function() {
+						PWG.ViewManager.showView('global:backButton');
+						PWG.ViewManager.hideView('global:confirmButton');
+						PWG.ViewManager.hideView('global:cancelButton');
+
+						PWG.ViewManager.removeView('endTurnPrompt', 'world');
+					},
+					params: null
+				};
+				
+				PWG.ViewManager.hideView('global:backButton');
+				PWG.ViewManager.showView('global:confirmButton');
+				PWG.ViewManager.showView('global:cancelButton');
+				
 			},
 			stopTurn: function() {
 				PWG.PhaserTime.removeTimer('turnTime');
@@ -853,12 +897,13 @@ var gameLogic = {
 						if(PhaserGame.worldView.width >= PhaserGame.worldZoom.max.width) {
 							PWG.ViewManager.showView('world:usMap');
 						}
+						PhaserGame.currentZoom++;
 					}
 				}
 			},
 			minusButton: function() {
 				if(PWG.ScreenManager.currentId === 'world') {
-					// trace('minusButton callback: PhaserGame.worldView.width = ' + PhaserGame.worldView.width + ', min = ' + PhaserGame.worldZoom.min.width);
+					trace('minusButton callback: PhaserGame.worldView.width = ' + PhaserGame.worldView.width + ', min = ' + PhaserGame.worldZoom.min.width);
 					if(Math.floor(PhaserGame.worldView.width) > PhaserGame.worldZoom.min.width) {
 						var newWidth = PhaserGame.worldView.width - PhaserGame.worldZoom.zoomIncrements.width;
 						var newHeight = PhaserGame.worldView.height - PhaserGame.worldZoom.zoomIncrements.height;
@@ -873,6 +918,7 @@ var gameLogic = {
 						PhaserGame.worldView.y = newY;
 
 						PWG.ViewManager.hideView('world:usMap');
+						PhaserGame.currentZoom--;
 					}
 				}
 			},
@@ -881,24 +927,34 @@ var gameLogic = {
 				// trace('usDetailStart callback, this = ', this, '\tparam = ', param);
 			}, 
 			northeastDetail: function() {
-				PhaserGame.activeSector = USSectors.NORTH_EAST;
-				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'usDetail' });
+				if(PhaserGame.currentZoom === 4) {
+					PhaserGame.activeSector = USSectors.NORTH_EAST;
+					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'usDetail' });
+				}
 			},
 			southeastDetail: function() {
-				PhaserGame.activeSector = USSectors.SOUTH_EAST;
-				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'usDetail' });
+				if(PhaserGame.currentZoom === 4) {
+					PhaserGame.activeSector = USSectors.SOUTH_EAST;
+					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'usDetail' });
+				}
 			},
 			midwestDetail: function() {
-				PhaserGame.activeSector = USSectors.MID_WEST;
-				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'usDetail' });
+				if(PhaserGame.currentZoom === 4) {
+					PhaserGame.activeSector = USSectors.MID_WEST;
+					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'usDetail' });
+				}
 			},
 			northwestDetail: function() {
-				PhaserGame.activeSector = USSectors.NORTH_WEST;
-				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'usDetail' });
+				if(PhaserGame.currentZoom === 4) {
+					PhaserGame.activeSector = USSectors.NORTH_WEST;
+					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'usDetail' });
+				}
 			},
 			southwestDetail: function() {
-				PhaserGame.activeSector = USSectors.SOUTH_WEST;
-				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'usDetail' });
+				if(PhaserGame.currentZoom === 4) {
+					PhaserGame.activeSector = USSectors.SOUTH_WEST;
+					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'usDetail' });
+				}
 			},
 			buildingAddConfirm: function() {
 				PWG.EventCenter.trigger({ type: Events.ADD_BUILDING });
@@ -1004,11 +1060,10 @@ var gameLogic = {
 						break;
 
 						case 'world':
-						var endTurn = confirm('Are you sure you want to end the turn?');
-						if(endTurn) {
-							PWG.EventCenter.trigger({ type: Events.TURN_COMPLETED });
-							PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'brief' });
-						}
+						// var endTurn = confirm('Are you sure you want to end the turn?');
+						// if(endTurn) {
+							PhaserGame.showEndTurnPrompt();
+						// }
 						break; 
 
 						case 'manual':
@@ -1123,7 +1178,6 @@ var gameLogic = {
 		},
 		world: {
 			create: function() {
-				PhaserGame.worldZoom = 1;
 				PWG.ViewManager.showView('global:turnGroup');
 				PWG.ViewManager.showView('global:plusMinusGroup');
 				var gameUnit = PWG.Stage.unit;
@@ -1137,6 +1191,8 @@ var gameLogic = {
 				if(!PhaserGame.worldZoomInitialized) {
 					PhaserGame.initWorldZoom(worldMap.view);
 				}
+				PhaserGame.worldZoomOutFull();
+				PhaserGame.currentZoom = 4;
 				PhaserGame.activeSector = -1;
 			},
 			shutdown: function() {

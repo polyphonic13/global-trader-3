@@ -389,7 +389,7 @@ var BuildingManager = function() {
 	module.getMachineModelInventory = function(factoryId, machineId) {
 		var count = 0;
 		var factory = module.findBuilding(factoryId);
-		trace('BuildingManager/getMachineModelInventory, machineId = ' + machineId + ', factory.inventory = ', factory.config.inventory);
+		// trace('BuildingManager/getMachineModelInventory, machineId = ' + machineId + ', factory.inventory = ', factory.config.inventory);
 		if(factory.config.inventory[machineId]) {
 			count = factory.config.inventory[machineId].length;
 		}

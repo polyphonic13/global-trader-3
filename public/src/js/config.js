@@ -423,6 +423,23 @@ var GameConfig = function() {
 					centerX: true
 				}
 			},
+			endTurnPrompt: {
+				type: 'group',
+				name: 'endTurnPrompt',
+				views: {
+					bg: {
+						type: 'sprite',
+						name: 'bg',
+						img: 'endTurnPrompt',
+						x: (gameW/2) - (gameUnit * 3),
+						y: (gameUnit * 12.5),
+						attrs: {
+							width: (gameUnit * 6),
+							height: (gameUnit * 6) * 0.34
+						}
+					}
+				}
+			},
 			sectorTitle: {
 				type: 'sprite',
 				name: 'sectorTitle',
@@ -1056,6 +1073,7 @@ var GameConfig = function() {
 					mapOcean: 'images/screens/world/map_ocean.png',
 					mapWorld: 'images/screens/world/map_world.png',
 					mapUS: 'images/screens/world/map_us.png',
+					endTurnPrompt: 'images/screens/world/end_turn_prompt.png',
 					// us detail
 					sectorTitleNE: 'images/screens/us_detail/sector_title_ne.png',
 					sectorTitleSE: 'images/screens/us_detail/sector_title_se.png',
