@@ -22,7 +22,7 @@ var gameLogic = {
 				PWG.ViewManager.switchGroup(event.value);
 				PWG.ScreenManager.changeScreen(event.value);
 
-				if(turnScreens.indexOf(event.value) > -1) {
+				if(PhaserGame.config.turnScreens.indexOf(event.value) > -1) {
 					// trace('this is a turn group!');
 					if(!PhaserGame.turnActive) {
 						PhaserGame.startTurn();
@@ -401,11 +401,11 @@ var gameLogic = {
 				
 				switch(event.type) {
 					case Events.ADD_RETAILER_NOTIFICATION:
-					config = notificationText['retailer'];
+					config = PhaserGame.config.notificationText['retailer'];
 					break;
 					
 					case Events.ADD_TRADEROUTE_NOTIFICATION:
-					config = notificationText['traderoute'];
+					config = PhaserGame.config.notificationText['traderoute'];
 					break;
 					
 					default:
@@ -594,8 +594,9 @@ var gameLogic = {
 				var yearSummary = PWG.Utils.clone(PhaserGame.config.dynamicViews.yearSummary);
 				var achievedGoalText = PhaserGame.config.dynamicViews.achievedGoalText;
 				var failedGoalText = PhaserGame.config.dynamicViews.failedGoalText;
+				var goalsText = PhaserGame.config.goalsText;
 				var item;
-				
+
 				PWG.Utils.each(
 					levelGoals,
 					function(goal, idx) {
@@ -1405,8 +1406,8 @@ var gameLogic = {
 						var available = BuildingManager.getMachineModelInventory(machine.factoryId, machine.id);
 						// trace('\titem = ', item);
 						item.name = 'machine' + idx;
-						trace('machine icon = ' + (machineIcons[machine.type][machine.size]));
-						item.views.bg.img = machineIcons[machine.type][machine.size];
+						// trace('machine icon = ' + (PhaserGame.config.machineIcons[machine.type][machine.size]));
+						item.views.bg.img = PhaserGame.config.machineIcons[machine.type][machine.size];
 						item.views.name.text = machine.name;
 						item.views.cost.text = '$' + machine.cost;
 						// item.views.size.text = machine.size;

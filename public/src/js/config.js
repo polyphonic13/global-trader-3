@@ -1,57 +1,3 @@
-var goalsText = {
-	passed: 'All goals met.\nCongratulations.',
-	failed: 'Goals not met.\nPlease try again.',
-	types: {
-		profit: 'Profits: ',
-		newFactories: 'Factories built: ',
-		newRetailers: 'Retailers established: ',
-		newTraderoutes: 'Trade Routes established: ',
-		newMachineModels: 'Machine models created: ',
-		newMachines: 'Machines manufactured: ',
-		machinesSold: 'Machines sold: '
-	}
-};
-
-var bonusesText = {
-	newFactory: 'New Factory built created 1000 jobs',
-	newRetailer: 'New Retailer established',
-	newTraderoutes: 'New Trade Route established',
-	machingManufacturing: '~{machines}~ Machines manufactured'
-};
-
-var notificationText = {
-	retailer: {
-		title: 'Retailer',
-		statement: 'We would like to sell ~{quantity}~ per year\nof your ~{factory}~\n~{model}~ inventory\nat $~{resell}~ each.'
-	},
-	traderoute: {
-		title: 'Trade Route',
-		statement: 'We would like to import ~{quantity}~ per year\nof your\n~{factory}~\n~{model}~ inventory\nat $~{resell}~ each.'
-	}
-};
-
-var machineIcons = {
-	tractor: {
-		basic: 'tractorBasicIcon',
-		medium: 'tractorMediumIcon',
-		heavy: 'tractorHeavyIcon'
-	},
-	skidsteer: {
-		basic: 'skidsteerBasicIcon',
-		medium: 'skidsteerMediumIcon',
-		heavy: 'skidsteerHeavyIcon'
-	}
-};
-
-var turnScreens = [
-	'world',
-	'usDetail',
-	'buildingEdit',
-	'equipmentList',
-	'equipmentCreate',
-	'equipmentEdit'
-];
-
 var GameConfig = function() {
 	
 	var module = {};
@@ -103,7 +49,7 @@ var GameConfig = function() {
 			black: '#000000',
 			white: '#ffffff'
 		};
-		
+
 		var machineEditBackgrounds = {
 			tractor: {
 				basic: 'tractorBasicBg',
@@ -1401,6 +1347,47 @@ var GameConfig = function() {
 				bank: 1000000
 			},
 			defaultScreen: 'home',
+			notificationText: {
+				retailer: {
+					title: 'Retailer',
+					statement: 'We would like to sell ~{quantity}~ per year\nof your ~{factory}~\n~{model}~ inventory\nat $~{resell}~ each.'
+				},
+				traderoute: {
+					title: 'Trade Route',
+					statement: 'We would like to import ~{quantity}~ per year\nof your\n~{factory}~\n~{model}~ inventory\nat $~{resell}~ each.'
+				}
+			},
+			goalsText: {
+				passed: 'All goals met.\nCongratulations.',
+				failed: 'Goals not met.\nPlease try again.',
+				types: {
+					profit: 'Profits: ',
+					newFactories: 'Factories built: ',
+					newRetailers: 'Retailers established: ',
+					newTraderoutes: 'Trade Routes established: ',
+					newMachineModels: 'Machine models created: ',
+					newMachines: 'Machines manufactured: ',
+					machinesSold: 'Machines sold: '
+				}
+			},
+			bonusesText: {
+				newFactory: 'New Factory built created 1000 jobs',
+				newRetailer: 'New Retailer established',
+				newTraderoutes: 'New Trade Route established',
+				machingManufacturing: '~{machines}~ Machines manufactured'
+			},
+			machineIcons: {
+				tractor: {
+					basic: 'tractorBasicIcon',
+					medium: 'tractorMediumIcon',
+					heavy: 'tractorHeavyIcon'
+				},
+				skidsteer: {
+					basic: 'skidsteerBasicIcon',
+					medium: 'skidsteerMediumIcon',
+					heavy: 'skidsteerHeavyIcon'
+				}
+			},
 			dynamicViews: dynamicViews,
 			machineEditBackgrounds: machineEditBackgrounds,
 			machinePartIconConfig: machinePartIconConfig,
@@ -2221,7 +2208,15 @@ var GameConfig = function() {
 						}
 					}
 				}
-			}
+			},
+			turnScreens: [
+				'world',
+				'usDetail',
+				'buildingEdit',
+				'equipmentList',
+				'equipmentCreate',
+				'equipmentEdit'
+			]
 		};
 		callback.call(context, config);
 	};
