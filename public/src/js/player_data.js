@@ -26,8 +26,8 @@ var playerData = {
 		{}
 	],
 	buildingCount: {
-		factory: 0,
-		retailer: 0,
+		plant: 0,
+		dealership: 0,
 		total: 0
 	},
 	modelCount: {
@@ -45,8 +45,8 @@ var playerData = {
 	// bank: 879350,
 	// profit: 0,
 	// buildingCount: {
-	// 	factory: 1,
-	// 	retailer: 0
+	// 	plant: 1,
+	// 	dealership: 0
 	// },
 	// modelCount: {
 	// 	skidsteer: 0,
@@ -55,13 +55,13 @@ var playerData = {
 	// sectors: [
 	// {},
 	// {
-	// 	factory0: {
+	// 	plant0: {
 	// 		age: 50,
 	// 		cell: 35,
 	// 		equipment: {
 	// 			tractorA: {
 	// 				cost: 2950,
-	// 				factoryId: "factory0",
+	// 				plantId: "plant0",
 	// 				id: "tractorA",
 	// 				name: "TRACTOR A",
 	// 				parts: {
@@ -70,22 +70,22 @@ var playerData = {
 	// 					tires: 0,
 	// 					transmission: 0
 	// 				},
-	// 				retailerId: "",
+	// 				dealershipId: "",
 	// 				sell: 13000,
 	// 				size: "basic",
 	// 				traderouteId: "",
 	// 				type: "tractor"
 	// 			}
 	// 		},
-	// 		id: "factory0",
+	// 		id: "plant0",
 	// 		inventory: {
 	// 			tractorA: []
 	// 		},
-	// 		name: "FACTORY 1",
+	// 		name: "PLANT 1",
 	// 		sector: 1,
 	// 		state: "active",
 	// 		totalInventory: 0,
-	// 		type: "factory"	
+	// 		type: "plant"	
 	// 	}
 	// },
 	// {},

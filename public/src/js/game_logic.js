@@ -117,19 +117,19 @@ var gameLogic = {
 				GridManager.updateBuildingState(config.sector, config.cell, config.type, config.state);
 			}
 		},
-		// add retailer notification
+		// add dealership notification
 		{
-			event: Events.ADD_RETAILER_NOTIFICATION,
+			event: Events.ADD_DEALERSHIP_NOTIFICATION,
 			handler: function(event) {
-				// trace('retailer add notification handler, event = ', event);
+				// trace('dealership add notification handler, event = ', event);
 				PhaserGame.addRetailOpportunityNotification(event);
 			}
 		},
-		// add retailer
+		// add dealership
 		{
-			event: Events.ADD_RETAILER,
+			event: Events.ADD_DEALERSHIP,
 			handler: function(event) {
-				PhaserGame.addRetailer();
+				PhaserGame.addDealership();
 			}
 		}
 		],
@@ -345,24 +345,24 @@ var gameLogic = {
 						PhaserGame.activeTile = null;
 						break; 
 
-						case TileCellFrames.FACTORY_CONSTRUCTION:
-						// trace('factory construction'); 
+						case TileCellFrames.PLANT_CONSTRUCTION:
+						// trace('plant construction'); 
 						break;
 
-						case TileCellFrames.FACTORY_ACTIVE:
-						// trace('factory active'); 
-						// show factory detail
+						case TileCellFrames.PLANT_ACTIVE:
+						// trace('plant active'); 
+						// show plant detail
 						PhaserGame.activeBuilding = BuildingManager.getBuilding(PhaserGame.activeSector, PhaserGame.activeTile.cell);
-						// trace('active factory = ', PhaserGame.activeBuilding);
+						// trace('active plant = ', PhaserGame.activeBuilding);
 						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'buildingEdit' });
 						break;
 
-						case TileCellFrames.RETAILER_CONSTRUCTION: 
-						trace('retailer construction'); 
+						case TileCellFrames.DEALERSHIP_CONSTRUCTION: 
+						trace('dealership construction'); 
 						break;
 						
-						case TileCellFrames.RETAILER_ACTIVE: 
-						trace('retailer active'); 
+						case TileCellFrames.DEALERSHIP_ACTIVE: 
+						trace('dealership active'); 
 						break;
 
 						default:
@@ -374,8 +374,8 @@ var gameLogic = {
 				// PhaserGame.addBuildingItemsOverlay.call(this, event.value, this.views);
 				var buildingMenuConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingMenu);
 				// trace('addBuildingMenu, buildingMenuConfig = ', buildingMenuConfig);
-				trace('factory = ' + gameData.buildings.factory.cost);
-				buildingMenuConfig.views.cost.text = '$' + PWG.Utils.formatMoney(gameData.buildings.factory.cost, 0);
+				trace('plant = ' + gameData.buildings.plant.cost);
+				buildingMenuConfig.views.cost.text = '$' + PWG.Utils.formatMoney(gameData.buildings.plant.cost, 0);
 				PWG.ViewManager.hideView('global:backButton');
 				PWG.ViewManager.addView(buildingMenuConfig);
 				this.buildingMenuOpen = true;
@@ -383,13 +383,13 @@ var gameLogic = {
 			addBuilding: function(buildingType) {
 				PWG.EventCenter.trigger({ type: Events.CLOSE_BUILDINGS_MENU });
 				var tile = PhaserGame.activeTile;
-				var added = BuildingManager.createFactory({ sector: PhaserGame.activeSector, cell: tile.cell });
+				var added = BuildingManager.createPlant({ sector: PhaserGame.activeSector, cell: tile.cell });
 				if(added) {
 					var frame;
-					if(buildingType === BuildingTypes.FACTORY) {
-						frame = TileCellFrames.FACTORY_CONSTRUCTION;
+					if(buildingType === BuildingTypes.PLANT) {
+						frame = TileCellFrames.PLANT_CONSTRUCTION;
 					} else {
-						frame = TileCellFrames.RETAILER_ACTIVE;
+						frame = TileCellFrames.DEALERSHIP_ACTIVE;
 					}
 					tile.attrs.frame = frame;
 					PWG.ViewManager.setFrame('usDetail:usDetailGrid:'+tile.name, frame);
@@ -400,8 +400,8 @@ var gameLogic = {
 				var config;
 				
 				switch(event.type) {
-					case Events.ADD_RETAILER_NOTIFICATION:
-					config = PhaserGame.config.notificationText['retailer'];
+					case Events.ADD_DEALERSHIP_NOTIFICATION:
+					config = PhaserGame.config.notificationText['dealership'];
 					break;
 					
 					case Events.ADD_TRADEROUTE_NOTIFICATION:
@@ -412,42 +412,42 @@ var gameLogic = {
 					// trace('warning: unknown type ' + event.type);
 					break;
 				}
-				var modelName = event.factory.equipment[event.retailer.config.modelId].name;
+				var modelName = event.plant.equipment[event.dealership.config.modelId].name;
 				
 				var statementText = PWG.Utils.parseMarkup(config.statement, {
-					factory: event.factory.name,
-					quantity: event.retailer.quantityPerYear,
+					plant: event.plant.name,
+					quantity: event.dealership.quantityPerYear,
 					model: modelName,
-					resell: event.retailer.config.resell
+					resell: event.dealership.config.resell
 				})
-				notification.views.person.img = 'retailerGirl';
+				notification.views.person.img = 'dealershipGirl';
 				notification.views.title.text = config.title;
 				notification.views.content.text = statementText;
 				// trace('notification = ', notification);
 				
 				notification.confirmAction = {
-					method: PhaserGame.addRetailer,
-					params: event.retailer
+					method: PhaserGame.addDealership,
+					params: event.dealership
 				};
 				
 				notification.cancelAction = {
-					method: PhaserGame.resetRetailer,
-					params: event.retailer
+					method: PhaserGame.resetDealership,
+					params: event.dealership
 				};
 				// PWG.ViewManager.hideView('global:backButton');
 				// PWG.ViewManager.addView(notification, notifications, true);
-				PhaserGame.notifications[event.factory.sector].push(notification);
-				if(PWG.ScreenManager.currentId === 'usDetail' && PhaserGame.activeSector === event.factory.sector) {
+				PhaserGame.notifications[event.plant.sector].push(notification);
+				if(PWG.ScreenManager.currentId === 'usDetail' && PhaserGame.activeSector === event.plant.sector) {
 					PhaserGame.showNotificationEnvelope();
 				}
 			},
-			addRetailer: function(retailer) {
-				trace('addRetailer, retailer = ', retailer);
-				var config = retailer.config;
+			addDealership: function(dealership) {
+				trace('addDealership, dealership = ', dealership);
+				var config = dealership.config;
 				PhaserGame.removeNotification();
 				config.cell = GridManager.getRandomEmptyCellIndex(config.sector);
 				GridManager.addBuilding(config, config.sector);
-				BuildingManager.addRetailer(retailer);
+				BuildingManager.addDealership(dealership);
 
 				var viewPath = 'usDetail:usDetailGrid:usDetailGridItem'+config.cell;
 				var view = PWG.ViewManager.getControllerFromPath(viewPath);
@@ -458,22 +458,22 @@ var gameLogic = {
 				PWG.ViewManager.setFrame(viewPath, frame);
 				view.config.attrs.frame = frame;
 			},
-			resetRetailer: function(retailer) {
+			resetDealership: function(dealership) {
 				PhaserGame.removeNotification();
-				trace('resetRetailer, retailer = ', retailer);
-				var factory = BuildingManager.findBuilding(retailer.config.factoryId);
-				factory.retailerNotifications[retailer.config.modelId] = false;
+				trace('resetDealership, dealership = ', dealership);
+				var plant = BuildingManager.findBuilding(dealership.config.plantId);
+				plant.dealershipNotifications[dealership.config.modelId] = false;
 			},
-			inventoryAdded: function(factory, parentPath) {
-				// trace('PhaserGame/inventoryAdded, factory = ', factory);
-				if(factory.sector === PhaserGame.activeSector) {
-					PhaserGame.addIconAnimation(IconAnimations.PLUS_SIGN, factory, parentPath);
+			inventoryAdded: function(plant, parentPath) {
+				// trace('PhaserGame/inventoryAdded, plant = ', plant);
+				if(plant.sector === PhaserGame.activeSector) {
+					PhaserGame.addIconAnimation(IconAnimations.PLUS_SIGN, plant, parentPath);
 				}
 			},
-			machineSold: function(retailer, parentPath) {
-				// trace('PhaserGame/machineSold, retailer = ', retailer);
-				if(retailer.sector === PhaserGame.activeSector) {
-					PhaserGame.addIconAnimation(IconAnimations.DOLLAR_SIGN, retailer, parentPath);
+			machineSold: function(dealership, parentPath) {
+				// trace('PhaserGame/machineSold, dealership = ', dealership);
+				if(dealership.sector === PhaserGame.activeSector) {
+					PhaserGame.addIconAnimation(IconAnimations.DOLLAR_SIGN, dealership, parentPath);
 				}
 			},
 			addIconAnimation: function(icon, building, parentPath) {
@@ -702,9 +702,9 @@ var gameLogic = {
 					PhaserGame.showNotification();
 				}
 			},
-			newFactory: {
+			newPlant: {
 				inputDown: function() {
-					// trace('factoryIcon/inputDown, this = ', this);
+					// trace('plantIcon/inputDown, this = ', this);
 					if(this.selected) {
 						PhaserGame.selectedIcon = '';
 						this.selected = false;
@@ -736,9 +736,9 @@ var gameLogic = {
 					// trace('view x/y is now: ' + view.x + '/' + view.y);
 				}
 			},
-			newRetailer: {
+			newDealership: {
 				inputDown: function() {
-					// trace('retailerIcon/inputDown, this = ', this);
+					// trace('dealershipIcon/inputDown, this = ', this);
 					if(this.selected) {
 						PhaserGame.selectedIcon = '';
 						this.selected = false;
@@ -1215,7 +1215,7 @@ var gameLogic = {
 			{
 				event: Events.ADD_BUILDING,
 				handler: function(event) {
-					PhaserGame.addBuilding(BuildingTypes.FACTORY);
+					PhaserGame.addBuilding(BuildingTypes.PLANT);
 				}
 			},
 			// building state updated
@@ -1239,14 +1239,14 @@ var gameLogic = {
 			{
 				event: Events.INVENTORY_ADDED,
 				handler: function(event) {
-					PhaserGame.inventoryAdded(event.factory, 'usDetail:usDetailGrid');
+					PhaserGame.inventoryAdded(event.plant, 'usDetail:usDetailGrid');
 				}
 			},
 			// machine sold
 			{
 				event: Events.MACHINE_SOLD,
 				handler: function(event) {
-					PhaserGame.machineSold(event.retailer, 'usDetail:usDetailGrid');
+					PhaserGame.machineSold(event.dealership, 'usDetail:usDetailGrid');
 				}
 			},
 			// close building menu
@@ -1321,8 +1321,8 @@ var gameLogic = {
 					var config = event.building.config;
 					if(config.id === PhaserGame.activeBuilding.id) {
 	 					var buildingEditConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditDetails);
-						var equipmentUpdate = buildingEditConfig.views.equipment.text + PWG.Utils.objLength(config.equipment) + ' / ' + BuildingManager.FACTORY_MAX_MODELS;
-						var inventoryUpdate = buildingEditConfig.views.inventory.text + config.totalInventory + ' / ' + BuildingManager.FACTORY_MAX_INVENTORY;
+						var equipmentUpdate = buildingEditConfig.views.equipment.text + PWG.Utils.objLength(config.equipment) + ' / ' + BuildingManager.PLANT_MAX_MODELS;
+						var inventoryUpdate = buildingEditConfig.views.inventory.text + config.totalInventory + ' / ' + BuildingManager.PLANT_MAX_INVENTORY;
 
 						PWG.ViewManager.callMethod('buildingEdit:editDetails:equipment', 'setText', [equipmentUpdate], this);
 						PWG.ViewManager.callMethod('buildingEdit:editDetails:inventory', 'setText', [inventoryUpdate], this);
@@ -1334,20 +1334,21 @@ var gameLogic = {
 				var buildingEdit = PWG.ViewManager.getControllerFromPath('buildingEdit');
 				var building = PhaserGame.activeBuilding;
 				// trace('building = ', building);
-				var buildingEditConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditDetails);
+				var buildingEditDetails = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditDetails);
 				// trace('buildingEditConfig = ', buildingEditConfig);
-				// trace('screen view = ', screenView, '\tactive factory = ', building);
-				buildingEditConfig.views.name.text += building.name;
-				buildingEditConfig.views.status.text += building.state.toUpperCase();
-				buildingEditConfig.views.equipment.text += PWG.Utils.objLength(building.equipment) + ' / ' + BuildingManager.FACTORY_MAX_MODELS;
-				buildingEditConfig.views.inventory.text += building.totalInventory + ' / ' + BuildingManager.FACTORY_MAX_INVENTORY;
-
-				PWG.ViewManager.addView(buildingEditConfig, buildingEdit, true);
-				PWG.ViewManager.showView('global:factoryDetailGroup');
+				// trace('screen view = ', screenView, '\tactive plant = ', building);
+				buildingEditDetails.views.name.text += building.name;
+				buildingEditDetails.views.status.text += building.state.toUpperCase();
+				buildingEditDetails.views.equipment.text += PWG.Utils.objLength(building.equipment) + ' / ' + BuildingManager.PLANT_MAX_MODELS;
+				buildingEditDetails.views.inventory.text += building.totalInventory + ' / ' + BuildingManager.PLANT_MAX_INVENTORY;
+				buildingEditDetails.views.dealerships.text += PWG.Utils.objLength(building.dealerships) + ' / ' + BuildingManager.PLANT_MAX_DEALERSHIPS;
+				
+				PWG.ViewManager.addView(buildingEditDetails, buildingEdit, true);
+				PWG.ViewManager.showView('global:plantDetailGroup');
 			},
 			shutdown: function() {
 				PWG.ViewManager.removeView('editDetails', 'buildingEdit');
-				PWG.ViewManager.hideView('global:factoryDetailGroup');
+				PWG.ViewManager.hideView('global:plantDetailGroup');
 			}
 		},
 		equipmentList: {
@@ -1369,7 +1370,7 @@ var gameLogic = {
 				event: Events.INVENTORY_ADDED,
 				handler: function(event) {
 					// trace('BUILDING_STATE_UPDATED event = ', event);
-					var config = event.factory;
+					var config = event.plant;
 					if(config.id === PhaserGame.activeBuilding.id) {
 						var available = 'x' + BuildingManager.getMachineModelInventory(config.id, event.machine);;
 						PWG.ViewManager.callMethod('equipmentList:machineList:machine'+event.machine+':available', 'setText', [available], this);
@@ -1403,7 +1404,7 @@ var gameLogic = {
 					function(machine, idx) {
 						// trace('\tadding machine['+idx+']: ', machine);
 						var item = PWG.Utils.clone(machineIcon);
-						var available = BuildingManager.getMachineModelInventory(machine.factoryId, machine.id);
+						var available = BuildingManager.getMachineModelInventory(machine.plantId, machine.id);
 						// trace('\titem = ', item);
 						item.name = 'machine' + idx;
 						// trace('machine icon = ' + (PhaserGame.config.machineIcons[machine.type][machine.size]));
@@ -1483,7 +1484,7 @@ var gameLogic = {
 					var id = event.value + letter;
 					var name = event.value.toUpperCase() + ' ' + letter;
 					PhaserGame.activeMachineSize = event.size;
-					PhaserGame.activeMachine = new Machine({ id: id, type: PhaserGame.activeMachineType, size: event.size, name: name, factoryId: PhaserGame.activeBuilding.id });
+					PhaserGame.activeMachine = new Machine({ id: id, type: PhaserGame.activeMachineType, size: event.size, name: name, plantId: PhaserGame.activeBuilding.id });
 					PhaserGame.newMachine = true;
 					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentEdit' });
 				}
@@ -1626,7 +1627,7 @@ var gameLogic = {
 					// trace('time to save activeMachine: ', PhaserGame.activeMachine);
 					PhaserGame.activeMachine.save();
 					if(PhaserGame.newMachine) {
-						// trace('active factory = ', PhaserGame.activeBuilding);
+						// trace('active plant = ', PhaserGame.activeBuilding);
 						TurnManager.addMachineModel(PhaserGame.activeMachine.config);
 						PhaserGame.newMachine = false;
 					}

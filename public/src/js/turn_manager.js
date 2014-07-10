@@ -4,7 +4,7 @@ var TurnManager = function() {
 		profit: 0,
 		bonuses: 0,
 		newFactories: 0,
-		newRetailers: 0,
+		newDealerships: 0,
 		newTractorModels: 0,
 		newSkidsteerModels: 0,
 		newTractors: 0,
@@ -30,7 +30,7 @@ var TurnManager = function() {
 	module.startTurn = function() {
 		// trace('--- TurnManager/startTurn');
 		module.currentData = PWG.Utils.clone(turnData);
-		TurnManager.tempRetailerCount = (module.playerData.buildingCount.retailer);
+		TurnManager.tempDealershipCount = (module.playerData.buildingCount.dealership);
 	};
 	
 	module.updateBank = function(value) {
@@ -51,12 +51,12 @@ var TurnManager = function() {
 		module.playerData.buildingCount[building.type]++;
 		
 		switch(building.type) {
-			case BuildingTypes.FACTORY: 
+			case BuildingTypes.PLANT: 
 			module.currentData.newFactories++;
 			break;
 			
-			case BuildingTypes.RETAILER: 
-			module.currentData.newRetailers++;
+			case BuildingTypes.DEALERSHIP: 
+			module.currentData.newDealerships++;
 			break;
 			
 			case BuildingTypes.TRADE_ROUTE:
@@ -80,7 +80,7 @@ var TurnManager = function() {
 	module.addMachineModel = function(model) {
 		// trace('--- TurnManager/addMachineModel, model = ', model);
 		// module.playerData.sectors[PhaserGame.activeSector][PhaserGame.activeBuilding.id].equipment[PhaserGame.activeMachine.config.id] = model;
-		BuildingManager.addMachineModelToFactory(PhaserGame.activeSector, PhaserGame.activeBuilding.id, model)
+		BuildingManager.addMachineModelToPlant(PhaserGame.activeSector, PhaserGame.activeBuilding.id, model)
 		module.playerData.modelCount[PhaserGame.activeMachineType]++;
 		module.currentData.newMachineModels.push(model);
 		if(model.type === EquipmentTypes.TRACTOR) {
@@ -90,8 +90,8 @@ var TurnManager = function() {
 		}
 	};
 
-	module.addFactoryInventory = function(machine) {
-		// trace('--- TurnManager/addFactoryInventory, machine = ', machine);
+	module.addPlantInventory = function(machine) {
+		// trace('--- TurnManager/addPlantInventory, machine = ', machine);
 		module.currentData.newMachines.push(machine);
 		if(machine.type === EquipmentTypes.TRACTOR) {
 			module.currentData.newTractors++;
@@ -120,7 +120,7 @@ var TurnManager = function() {
 		);
 	};
 	
-	module.removeFactoryInventory = function(machine) {
+	module.removePlantInventory = function(machine) {
 		
 	};
 	

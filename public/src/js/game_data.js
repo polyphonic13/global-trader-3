@@ -1,14 +1,14 @@
 var gameData = {
 	buildings: {
-		factory: {
-			id: BuildingTypes.FACTORY,
-			img: 'iconFactory',
+		plant: {
+			id: BuildingTypes.PLANT,
+			img: 'iconPlant',
 			description: 'Build your machines',
 			cost: 500000
 		},
-		retailer: {
-			id: BuildingTypes.RETAILER,
-			img: 'iconRetailer',
+		dealership: {
+			id: BuildingTypes.DEALERSHIP,
+			img: 'iconDealership',
 			description: 'Sell your machines',
 			cost: 500000
 		}
@@ -751,7 +751,7 @@ var gameData = {
 		brief: {
 			background: 'briefBg01',
 			text: [
-				'Build 1 Factory',
+				'Build 1 Plant',
 				'Create 1 Machine Model',
 				'Manufacture 5 Machines'
 			]
@@ -838,7 +838,7 @@ var gameData = {
 		brief: {
 			background: 'briefBg04',
 			text: [
-				'Build 1 Factory',
+				'Build 1 Plant',
 				'Create 2 Machine Models',
 				'Produce 10 Machines'
 			]
@@ -872,7 +872,7 @@ var gameData = {
 		brief: {
 			background: 'briefBg04',
 			text: [
-				'Build 1 Factory',
+				'Build 1 Plant',
 				'Create 2 Machine Models',
 				'Produce 10 Machines'
 			]
@@ -906,7 +906,7 @@ var gameData = {
 		brief: {
 			background: 'briefBg04',
 			text: [
-				'Build 1 Factory',
+				'Build 1 Plant',
 				'Create 2 Machine Models',
 				'Produce 10 Machines'
 			]
@@ -940,7 +940,7 @@ var gameData = {
 		brief: {
 			background: 'briefBg04',
 			text: [
-				'Build 1 Factory',
+				'Build 1 Plant',
 				'Create 2 Machine Models',
 				'Produce 10 Machines'
 			]
@@ -974,7 +974,7 @@ var gameData = {
 		brief: {
 			background: 'briefBg04',
 			text: [
-				'Build 1 Factory',
+				'Build 1 Plant',
 				'Create 2 Machine Models',
 				'Produce 10 Machines'
 			]
@@ -1008,7 +1008,7 @@ var gameData = {
 		brief: {
 			background: 'briefBg04',
 			text: [
-				'Build 1 Factory',
+				'Build 1 Plant',
 				'Create 2 Machine Models',
 				'Produce 10 Machines'
 			]
@@ -1042,7 +1042,7 @@ var gameData = {
 		brief: {
 			background: 'briefBg04',
 			text: [
-				'Build 1 Factory',
+				'Build 1 Plant',
 				'Create 2 Machine Models',
 				'Produce 10 Machines'
 			]
@@ -1073,8 +1073,8 @@ var gameData = {
 	],
 	bonuses: {
 		buildings: {
-			factory: 500,
-			retailer: 1000,
+			plant: 500,
+			dealership: 1000,
 			traderoute: 10000
 		},
 		manufacturing: {

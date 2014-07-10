@@ -304,7 +304,7 @@ var GameConfig = function() {
 						x: gameUnit * 0,
 						y: gameUnit * 2,
 						style: {
-						    font: (fontSizes.md + 'px Arial'),
+						    font: (fontSizes.md + 'px Trebuchet MS'),
 					        fill: palette.white
 						},
 						position: {
@@ -318,7 +318,7 @@ var GameConfig = function() {
 						x: gameUnit * 1.5,
 						y: gameUnit * 3,
 						style: {
-						    font: (fontSizes.sm + 'px Arial'),
+						    font: (fontSizes.sm + 'px Trebuchet MS'),
 					        fill: palette.white
 						}
 					}
@@ -402,7 +402,7 @@ var GameConfig = function() {
 				x: (gameUnit * 0.5),
 				y: gameUnit * 5,
 				style: {
-				    font: (fontSizes.md + 'px Arial'),
+				    font: (fontSizes.md + 'px Trebuchet MS'),
 			        fill: palette.white,
 					'text-align': 'center'
 				},
@@ -494,7 +494,7 @@ var GameConfig = function() {
 					menuBg: {
 						type: 'sprite',
 						name: 'menuBg',
-						img: 'addNewFactoryPrompt',
+						img: 'addNewPlantPrompt',
 						x: (gameW/2) - (gameUnit * 3),
 						y: (gameUnit * 12.5),
 						attrs: {
@@ -509,7 +509,7 @@ var GameConfig = function() {
 						x: 0,
 						y: gameUnit * 13.5,
 						style: {
-						    font: (fontSizes.md + 'px Arial'),
+						    font: (fontSizes.md + 'px Trebuchet MS'),
 					        fill: palette.orange3
 						},
 						position: {
@@ -552,12 +552,12 @@ var GameConfig = function() {
 				views: {
 					name: {
 						type: 'text',
-						name: 'factoryName',
+						name: 'plantName',
 						text: '',
 						x: gameUnit * 1.5,
 						y: gameUnit * 3.5,
 						style: {
-							font: (fontSizes.lg + 'px Arial'),
+							font: (fontSizes.lg + 'px Trebuchet MS'),
 								fill: palette.white
 							},
 							position: {
@@ -566,12 +566,12 @@ var GameConfig = function() {
 					},
 					status: {
 						type: 'text',
-						name: 'factorySatus',
+						name: 'plantSatus',
 						text: '',
 						x: gameUnit * 1.5,
-						y: gameUnit * 6,
+						y: gameUnit * 5.75,
 						style: {
-							font: (fontSizes.md + 'px Arial'),
+							font: (fontSizes.md + 'px Trebuchet MS'),
 								fill: palette.white
 							},
 							position: {
@@ -583,9 +583,9 @@ var GameConfig = function() {
 						name: 'equipment',
 						text: '',
 						x: gameUnit * 1.5,
-						y: gameUnit * 8.5,
+						y: gameUnit * 7.5,
 						style: {
-							font: (fontSizes.xl + 'px Arial'),
+							font: (fontSizes.lg + 'px Trebuchet MS'),
 								fill: palette.white
 							},
 							position: {
@@ -597,9 +597,23 @@ var GameConfig = function() {
 						name: 'inventory',
 						text: '',
 						x: gameUnit * 1.5,
-						y: gameUnit * 11,
+						y: gameUnit * 9.5,
 						style: {
-							font: (fontSizes.xl + 'px Arial'),
+							font: (fontSizes.lg + 'px Trebuchet MS'),
+							fill: palette.white
+						},
+						position: {
+							centerX: true
+						}
+					},
+					dealerships: {
+						type: 'text',
+						name: 'dealerships',
+						text: '',
+						x: gameUnit * 1.5,
+						y: gameUnit * 11.5,
+						style: {
+							font: (fontSizes.lg + 'px Trebuchet MS'),
 							fill: palette.white
 						},
 						position: {
@@ -640,7 +654,7 @@ var GameConfig = function() {
 						x: (gameUnit * 0.5),
 						y: gameUnit * 3.25,
 						style: {
-						    font: (fontSizes.sm + 'px Arial'),
+						    font: (fontSizes.sm + 'px Trebuchet MS'),
 					        fill: palette.lightRed,
 							'text-align': 'center'
 						}
@@ -652,7 +666,7 @@ var GameConfig = function() {
 						x: gameUnit * 0,
 						y: gameUnit * 0.85,
 						style: {
-						    font: (fontSizes.xxs + 'px Arial'),
+						    font: (fontSizes.xxs + 'px Trebuchet MS'),
 					        fill: palette.black
 						},
 						attrs: {
@@ -666,7 +680,7 @@ var GameConfig = function() {
 						x: gameUnit * 3.5,
 						y: (gameUnit * 0.2),
 						style: {
-						    font: (fontSizes.sm + 'px Arial'),
+						    font: (fontSizes.sm + 'px Trebuchet MS'),
 					        fill: palette.white
 						},
 						attrs: {
@@ -757,7 +771,7 @@ var GameConfig = function() {
 								x: gameUnit * 3,
 								y: gameUnit * 1.75,
 								style: {
-								    font: (fontSizes.sm + 'px Arial'),
+								    font: (fontSizes.sm + 'px Trebuchet MS'),
 							        fill: palette.orange3
 								},
 								position: {
@@ -811,7 +825,7 @@ var GameConfig = function() {
 						x: gameUnit * 3,
 						y: gameUnit * 2.75,
 						style: {
-						    font: (fontSizes.md + 'px Arial'),
+						    font: (fontSizes.md + 'px Trebuchet MS'),
 					        fill: palette.orange3
 						},
 						position: {
@@ -900,7 +914,7 @@ var GameConfig = function() {
 						x: gameUnit * 4,
 						y: gameUnit * 1,
 						style: {
-						    font: (fontSizes.md + 'px Arial'),
+						    font: (fontSizes.md + 'px Trebuchet MS'),
 					        fill: palette.black
 						},
 						position: {
@@ -963,7 +977,7 @@ var GameConfig = function() {
 						x: gameUnit * 4,
 						y: gameUnit * 1,
 						style: {
-						    font: (fontSizes.sm + 'px Arial'),
+						    font: (fontSizes.sm + 'px Trebuchet MS'),
 					        fill: palette.black
 						}
 					},
@@ -974,7 +988,7 @@ var GameConfig = function() {
 						x: gameUnit * 4,
 						y: gameUnit * 1.5,
 						style: {
-						    font: (fontSizes.md + 'px Arial'),
+						    font: (fontSizes.md + 'px Trebuchet MS'),
 					        fill: palette.black
 						}
 					},
@@ -1012,7 +1026,7 @@ var GameConfig = function() {
 				x: gameUnit * 1.5,
 				y: gameUnit * 6,
 				style: {
-				    font: (fontSizes.sm + 'px Arial'),
+				    font: (fontSizes.sm + 'px Trebuchet MS'),
 			        fill: palette.black
 				}
 			},
@@ -1025,7 +1039,7 @@ var GameConfig = function() {
 				x: gameUnit * 1.5,
 				y: gameUnit * 6,
 				style: {
-				    font: (fontSizes.sm + 'px Arial'),
+				    font: (fontSizes.sm + 'px Trebuchet MS'),
 			        fill: palette.lightRed
 				}
 			}
@@ -1048,7 +1062,7 @@ var GameConfig = function() {
 					// home
 					homeBg: 'images/screens/start/start.png',
 					// manual
-					manualBg: 'images/screens/screen_mocks_manual.gif',
+					// manualBg: '',
 					// mission brief
 					briefBg01: 'images/screens/brief/mission_brief01.png',
 					briefBg02: 'images/screens/brief/mission_brief02.png',
@@ -1070,10 +1084,9 @@ var GameConfig = function() {
 					sectorTitleMW: 'images/screens/us_detail/sector_title_mw.png',
 					sectorTitleNW: 'images/screens/us_detail/sector_title_nw.png',
 					sectorTitleSW: 'images/screens/us_detail/sector_title_sw.png',
-					iconFactory: 'images/screens/us_detail/icon_factory.png',
-					addNewFactoryPrompt: 'images/screens/us_detail/add_new_factory_prompt.png',
-					// factory detail
-					factoryDetailBg: 'images/screens/factory_detail/factory_detail.png',
+					addNewPlantPrompt: 'images/screens/us_detail/add_new_plant_prompt.png',
+					// plant detail
+					plantDetailBg: 'images/screens/plant_detail/plant_detail2.png',
 					// equipment list
 					machineListIcon: 'images/screens/equipment_list/machine_list_icon.png',
 					skidsteerBasicIcon: 'images/screens/equipment_list/skidsteer_basic_icon.png',
@@ -1157,7 +1170,7 @@ var GameConfig = function() {
 					cabRed: 'images/parts/cab_red.gif',
 					
 					// NOTIFICATIONS
-					retailerGirl: 'images/notifications/retailer_girl.png',
+					dealershipGirl: 'images/notifications/dealership_girl.png',
 					// TURN END
 					turnEnd01: 'images/screens/turn_end/turn_end01.png',
 					turnEnd02: 'images/screens/turn_end/turn_end02.png'
@@ -1348,13 +1361,13 @@ var GameConfig = function() {
 			},
 			defaultScreen: 'home',
 			notificationText: {
-				retailer: {
-					title: 'Retailer',
-					statement: 'We would like to sell ~{quantity}~ per year\nof your ~{factory}~\n~{model}~ inventory\nat $~{resell}~ each.'
+				dealership: {
+					title: 'Dealership',
+					statement: 'We would like to sell ~{quantity}~ per year\nof your ~{plant}~\n~{model}~ inventory\nat $~{resell}~ each.'
 				},
 				traderoute: {
 					title: 'Trade Route',
-					statement: 'We would like to import ~{quantity}~ per year\nof your\n~{factory}~\n~{model}~ inventory\nat $~{resell}~ each.'
+					statement: 'We would like to import ~{quantity}~ per year\nof your\n~{plant}~\n~{model}~ inventory\nat $~{resell}~ each.'
 				}
 			},
 			goalsText: {
@@ -1363,7 +1376,7 @@ var GameConfig = function() {
 				types: {
 					profit: 'Profits: ',
 					newFactories: 'Factories built: ',
-					newRetailers: 'Retailers established: ',
+					newDealerships: 'Dealerships established: ',
 					newTraderoutes: 'Trade Routes established: ',
 					newMachineModels: 'Machine models created: ',
 					newMachines: 'Machines manufactured: ',
@@ -1371,8 +1384,8 @@ var GameConfig = function() {
 				}
 			},
 			bonusesText: {
-				newFactory: 'New Factory built created 1000 jobs',
-				newRetailer: 'New Retailer established',
+				newPlant: 'New Plant built created 1000 jobs',
+				newDealership: 'New Dealership established',
 				newTraderoutes: 'New Trade Route established',
 				machingManufacturing: '~{machines}~ Machines manufactured'
 			},
@@ -1669,7 +1682,7 @@ var GameConfig = function() {
 						// 	x: 0,
 						// 	y: gameUnit * 2,
 						// 	style: {
-						// 	    font: (fontSizes.lg + 'px Arial'),
+						// 	    font: (fontSizes.lg + 'px Trebuchet MS'),
 						//         fill: palette.white
 						// 	},
 						// 	position: {
@@ -1690,7 +1703,7 @@ var GameConfig = function() {
 						bg: {
 							type: 'sprite',
 							name: 'background',
-							img: 'factoryDetailBg',
+							img: 'plantDetailBg',
 							x: 0,
 							y: 0,
 							attrs: {
@@ -2029,7 +2042,7 @@ var GameConfig = function() {
 									name: 'timerText',
 									text: TIME_PER_TURN,
 									style: {
-									    font: (fontSizes.lg + 'px Arial'),
+									    font: (fontSizes.lg + 'px Trebuchet MS'),
 								        fill: palette.orange1
 									},
 									x: 0,
@@ -2043,7 +2056,7 @@ var GameConfig = function() {
 									name: 'bankText',
 									text: '',
 									style: {
-									    font: (fontSizes.sm + 'px Arial'),
+									    font: (fontSizes.sm + 'px Trebuchet MS'),
 								        fill: palette.orange1
 									},
 									x: (gameUnit * 0.8),
@@ -2054,7 +2067,7 @@ var GameConfig = function() {
 									name: 'bonusText',
 									text: '',
 									style: {
-									    font: (fontSizes.md + 'px Arial'),
+									    font: (fontSizes.md + 'px Trebuchet MS'),
 								        fill: palette.orange1
 									},
 									x: (gameUnit * 6.67),
@@ -2110,9 +2123,9 @@ var GameConfig = function() {
 								}
 							}
 						},
-						factoryDetailGroup: {
+						plantDetailGroup: {
 							type: 'group',
-							name: 'factoryDetailGroup',
+							name: 'plantDetailGroup',
 							attrs: {
 								visible: false
 							},
