@@ -895,6 +895,11 @@ var gameLogic = {
 						PhaserGame.worldView.x = newX;
 						PhaserGame.worldView.y = newY;
 						
+						PhaserGame.buildingPins.width = newWidth;
+						PhaserGame.buildingPins.height = newHeight;
+						PhaserGame.buildingPins.x = newX;
+						PhaserGame.buildingPins.y = newY;
+
 						if(PhaserGame.worldView.width >= PhaserGame.worldZoom.max.width) {
 							PWG.ViewManager.showView('world:usMap');
 						}
@@ -917,6 +922,11 @@ var gameLogic = {
 						PhaserGame.worldView.height = newHeight;
 						PhaserGame.worldView.x = newX;
 						PhaserGame.worldView.y = newY;
+
+						PhaserGame.buildingPins.width = newWidth;
+						PhaserGame.buildingPins.height = newHeight;
+						PhaserGame.buildingPins.x = newX;
+						PhaserGame.buildingPins.y = newY;
 
 						PWG.ViewManager.hideView('world:usMap');
 						PhaserGame.currentZoom--;
@@ -1176,9 +1186,7 @@ var gameLogic = {
 		},
 		world: {
 			create: function() {
-				PWG.ViewManager.showView('global:turnGroup');
-				PWG.ViewManager.showView('global:plusMinusGroup');
-				var gameUnit = PWG.Stage.unit;
+
 				var worldMap = PWG.ViewManager.getControllerFromPath('world:worldMap');
 				trace('worldMap view = ', worldMap.view);
 				// worldMap.view.scale.setTo(PhaserGame.config.maxWorldZoom.width, PhaserGame.config.maxWorldZoom.height);
@@ -1192,8 +1200,54 @@ var gameLogic = {
 				PhaserGame.worldZoomOutFull();
 				PhaserGame.currentZoom = 4;
 				PhaserGame.activeSector = -1;
+				
+				var world = PWG.ViewManager.getControllerFromPath('world');
+				var buildingPins = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingPins);
+				var buildingPin = PhaserGame.config.dynamicViews.buildingPin;
+				var worldPositions = PhaserGame.config.worldPositions;
+				
+				PWG.Utils.each(
+					TurnManager.playerData.sectors,
+					function(sector, idx) {
+						var startX = worldPositions.usSectors[idx].x;
+						var endX = worldPositions.usSectors[idx].width + startX;
+						var hUnit = (endX - startX) / US_DETAIL_GRID_CELLS;
+						var startY = worldPositions.usSectors[idx].y;
+						var endY = worldPositions.usSectors[idx].height + startY;
+						var vUnit = (endY - startY) / US_DETAIL_GRID_CELLS;
+
+						trace('sector['+idx+'] us positions:\n\tstart x/y = ' + startX + '/' + startY + '\n\tend x/y = ' + endX + '/' + endY + '\n\tunits h/v = ' + hUnit + '/' + vUnit, sector);
+
+						PWG.Utils.each(
+							sector,
+							function(building, key) {
+								var pin = PWG.Utils.clone(buildingPin);
+								var pinX = (((Math.floor(building.cell / US_DETAIL_GRID_CELLS)) * hUnit) + startX) - (pin.attrs.width/2);
+								var pinY = (((Math.floor(building.cell % US_DETAIL_GRID_CELLS)) * vUnit) + startY) - (pin.attrs.height/2);
+								
+								pin.img = PhaserGame.config.pinImages[building.type];
+								trace('\t\tadding pin for building['+building.id+'] at: ' + building.cell + ', ' + pinX + '/' + pinY);
+								pin.x = pinX;
+								pin.y = pinY;
+								pin.name += building.id;
+								
+								buildingPins.views[building.id] = pin;
+							},
+							this
+						);
+					},
+					this
+				);
+
+				PWG.ViewManager.addView(buildingPins, world, true);
+
+				PhaserGame.buildingPins = PWG.ViewManager.getControllerFromPath('world:buildingPins');
+				
+				PWG.ViewManager.showView('global:turnGroup');
+				PWG.ViewManager.showView('global:plusMinusGroup');
 			},
 			shutdown: function() {
+				PWG.ViewManager.removeView('world:buildingPins', 'world');
 				PWG.ViewManager.hideView('global:plusMinusGroup');
 				PhaserGame.worldView = null;
 			}

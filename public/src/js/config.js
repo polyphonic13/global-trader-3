@@ -50,6 +50,50 @@ var GameConfig = function() {
 			white: '#ffffff'
 		};
 
+		var worldPositions = {
+			usSectors: [
+			// northeast
+			{
+				x: gameUnit * 5.7,
+				y: (gameUnit * 6),
+				width: (gameUnit * 4),
+				height: (gameUnit * 2.5)
+			},
+			// southeast
+			{
+				x: gameUnit * 5.7,
+				y: (gameUnit * 8.5),
+				width: (gameUnit * 1.25),
+				height: (gameUnit * 1.25)
+			},
+			// midwest
+			{
+				x: gameUnit * 3.7,
+				y: (gameUnit * 6),
+				width: (gameUnit * 2),
+				height: (gameUnit * 4.5)
+			},
+			// northwest
+			{
+				x: gameUnit * 0.2,
+				y: (gameUnit * 6),
+				width: (gameUnit * 3.5),
+				height: (gameUnit * 2)
+			},
+			// southeast
+			{
+				x: gameUnit * 0.2,
+				y: (gameUnit * 8),
+				width: (gameUnit * 3.5),
+				height: (gameUnit * 2)
+			}
+			]		
+		};
+		var pinImages = {
+			plant: 'pinPlant',
+			dealership: 'pinDealership',
+			traderoute: 'pinTraderoute'
+		};
 		var machineEditBackgrounds = {
 			tractor: {
 				basic: 'tractorBasicBg',
@@ -425,6 +469,22 @@ var GameConfig = function() {
 							height: (gameUnit * 6) * 0.34
 						}
 					}
+				}
+			},
+			buildingPins: {
+				type: 'group',
+				name: 'buildingPins',
+				views: {}
+			},
+			buildingPin: {
+				type: 'sprite',
+				name: 'buildingPin',
+				img: '',
+				x: 0,
+				y: 0,
+				attrs: {
+					width: gameUnit * 0.5,
+					height: (gameUnit * 0.5) * 0.68
 				}
 			},
 			sectorTitle: {
@@ -1053,6 +1113,9 @@ var GameConfig = function() {
 				images: {
 					// generic
 					blockWhite: 'images/block_white.png',
+					blockRed: 'images/block_red.gif',
+					blockBlue: 'images/block_blue.gif',
+					blockGreen: 'images/block_green.gif',
 					blockClear: 'images/block_clear.png',
 					// global
 					gameBg: 'images/screens/metal_background.gif',
@@ -1078,6 +1141,9 @@ var GameConfig = function() {
 					mapWorld: 'images/screens/world/map_world.png',
 					mapUS: 'images/screens/world/map_us.png',
 					endTurnPrompt: 'images/screens/world/end_turn_prompt.png',
+					pinPlant: 'images/screens/world/pin_plant.png',
+					pinDealership: 'images/screens/world/pin_dealership.png',
+					pinTraderoute: '',
 					// us detail
 					sectorTitleNE: 'images/screens/us_detail/sector_title_ne.png',
 					sectorTitleSE: 'images/screens/us_detail/sector_title_se.png',
@@ -1402,6 +1468,8 @@ var GameConfig = function() {
 				}
 			},
 			dynamicViews: dynamicViews,
+			worldPositions: worldPositions,
+			pinImages: pinImages,
 			machineEditBackgrounds: machineEditBackgrounds,
 			machinePartIconConfig: machinePartIconConfig,
 			views: {
@@ -1552,12 +1620,6 @@ var GameConfig = function() {
 							type: 'sprite',
 							name: 'worldMap',
 							img: 'mapWorld',
-							// x: 0,
-							// y: 0,
-							// attrs: {
-							// 	width: gameW,
-							// 	height: gameH
-							// }
 							x: -(gameW * 0.816),
 							y: -(gameH * 1.947),
 							attrs: {
@@ -1595,7 +1657,7 @@ var GameConfig = function() {
 									attrs: {
 										width: (gameUnit * 3.5),
 										height: (gameUnit * 2),
-										alpha: 0
+										alpha: 0.4
 									},
 									callback: gameLogic.global.buttonCallbacks.northwestDetail,
 									context: this,
@@ -1610,7 +1672,7 @@ var GameConfig = function() {
 									attrs: {
 										width: (gameUnit * 3.5),
 										height: (gameUnit * 2),
-										alpha: 0
+										alpha: 0.4
 									},
 									callback: gameLogic.global.buttonCallbacks.southwestDetail,
 									context: this,
@@ -1625,7 +1687,7 @@ var GameConfig = function() {
 									attrs: {
 										width: (gameUnit * 2),
 										height: (gameUnit * 4.5),
-										alpha: 0
+										alpha: 0.4
 									},
 									callback: gameLogic.global.buttonCallbacks.midwestDetail,
 									context: this,
@@ -1640,7 +1702,7 @@ var GameConfig = function() {
 									attrs: {
 										width: (gameUnit * 4),
 										height: (gameUnit * 2.5),
-										alpha: 0
+										alpha: 0.4
 									},
 									sector: USSectors.NORTH_EAST,
 									callback: gameLogic.global.buttonCallbacks.northeastDetail,
@@ -1656,7 +1718,7 @@ var GameConfig = function() {
 									attrs: {
 										width: (gameUnit * 2.5),
 										height: (gameUnit * 2.5),
-										alpha: 0
+										alpha: 0.4
 									},
 									callback: gameLogic.global.buttonCallbacks.southeastDetail,
 									context: this,
