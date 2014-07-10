@@ -147,13 +147,13 @@ var gameLogic = {
 				PWG.ViewManager.hideView('global:notificationEnvelope');
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: PhaserGame.config.defaultScreen });
 			},
-			initWorldZoom: function(view) {
+			initWorldZoom: function(worldMap, buildingPins) {
 				PhaserGame.worldZoom = {
 					max: {
-						width: view.width,
-						height: view.height,
-						x: view.position.x,
-						y: view.position.y
+						width: worldMap.width,
+						height: worldMap.height,
+						x: worldMap.position.x,
+						y: worldMap.position.y
 					},
 					min: {
 						width: PWG.Stage.gameW,
@@ -162,15 +162,37 @@ var gameLogic = {
 						y: 0
 					},
 					zoomIncrements: {
-						width: (view.width - PWG.Stage.gameW) * 0.25,
-						height: (view.height - PWG.Stage.gameH) * 0.25
+						width: (worldMap.width - PWG.Stage.gameW) * 0.25,
+						height: (worldMap.height - PWG.Stage.gameH) * 0.25
 					},
 					positionIncrements: {
-						x: (-view.x) * 0.25,
-						y: (-view.y) * 0.25
+						x: (-worldMap.x) * 0.25,
+						y: (-worldMap.y) * 0.25
 					}
 				};
-				trace('world zoom initialized as: ', PhaserGame.worldZoom);
+				/*
+					1 = scale 1.5/1.5, position = 50/220
+					2 = scale 0.33/0.33, position = 40/170
+					3 = scale 0.5/0.5, position = 20/130
+					4 = scale 0.75/0.75 position = 10/65
+					5 = scale 0.95/0.95 position = 0/10
+					
+				*/
+				PhaserGame.pinZoom = {
+					scaleIncrements: {
+						x: [],
+						y: []
+					},
+					zoomIncrements: {
+						width: (buildingPins.width - PWG.Stage.gameW) * 0.25,
+						height: (buildingPins.height - PWG.Stage.gameH) * 0.25
+					},
+					positionIncrements: {
+						x: (-buildingPins.x) * 0.25,
+						y: (-buildingPins.y) * 0.25
+					}
+				}
+				trace('world zoom initialized as: ', PhaserGame.worldZoom, '\npin zooom: ', PhaserGame.pinZoom);
 				PhaserGame.worldZoomInitialized = true;
 			},
 			worldZoomOutFull: function() {
@@ -882,7 +904,8 @@ var gameLogic = {
 			plusButton: function() {
 				if(PWG.ScreenManager.currentId === 'world') {
 					// trace('plusButton callback: PhaserGame.worldView.width = ' + PhaserGame.worldView.width);
-					if(PhaserGame.worldView.width < PhaserGame.worldZoom.max.width) {
+					// if(PhaserGame.worldView.width < PhaserGame.worldZoom.max.width) {
+					if(PhaserGame.currentZoom < 4) {
 						var newWidth = PhaserGame.worldView.width + PhaserGame.worldZoom.zoomIncrements.width;
 						var newHeight = PhaserGame.worldView.height + PhaserGame.worldZoom.zoomIncrements.height;
 						var x = PhaserGame.worldView.x;
@@ -894,23 +917,25 @@ var gameLogic = {
 						PhaserGame.worldView.height = newHeight;
 						PhaserGame.worldView.x = newX;
 						PhaserGame.worldView.y = newY;
-						
-						PhaserGame.buildingPins.width = newWidth;
-						PhaserGame.buildingPins.height = newHeight;
-						PhaserGame.buildingPins.x = newX;
-						PhaserGame.buildingPins.y = newY;
 
-						if(PhaserGame.worldView.width >= PhaserGame.worldZoom.max.width) {
+						PhaserGame.buildingPins.width += PhaserGame.pinZoom.zoomIncrements.width;
+						PhaserGame.buildingPins.height += PhaserGame.pinZoom.zoomIncrements.height;
+						PhaserGame.buildingPins.x -= PhaserGame.pinZoom.positionIncrements.x;
+						PhaserGame.buildingPins.y -= PhaserGame.pinZoom.positionIncrements.y;
+
+						PhaserGame.currentZoom++;
+						// if(PhaserGame.worldView.width >= PhaserGame.worldZoom.max.width) {
+						if(PhaserGame.currentZoom === 4) {
 							PWG.ViewManager.showView('world:usMap');
 						}
-						PhaserGame.currentZoom++;
 					}
 				}
 			},
 			minusButton: function() {
 				if(PWG.ScreenManager.currentId === 'world') {
 					trace('minusButton callback: PhaserGame.worldView.width = ' + PhaserGame.worldView.width + ', min = ' + PhaserGame.worldZoom.min.width);
-					if(Math.floor(PhaserGame.worldView.width) > PhaserGame.worldZoom.min.width) {
+					// if(Math.floor(PhaserGame.worldView.width) > PhaserGame.worldZoom.min.width) {
+					if(PhaserGame.currentZoom > 0) {
 						var newWidth = PhaserGame.worldView.width - PhaserGame.worldZoom.zoomIncrements.width;
 						var newHeight = PhaserGame.worldView.height - PhaserGame.worldZoom.zoomIncrements.height;
 						var x = PhaserGame.worldView.x;
@@ -923,10 +948,10 @@ var gameLogic = {
 						PhaserGame.worldView.x = newX;
 						PhaserGame.worldView.y = newY;
 
-						PhaserGame.buildingPins.width = newWidth;
-						PhaserGame.buildingPins.height = newHeight;
-						PhaserGame.buildingPins.x = newX;
-						PhaserGame.buildingPins.y = newY;
+						PhaserGame.buildingPins.width -= PhaserGame.pinZoom.zoomIncrements.width;
+						PhaserGame.buildingPins.height -= PhaserGame.pinZoom.zoomIncrements.height;
+						PhaserGame.buildingPins.x += PhaserGame.pinZoom.positionIncrements.x;
+						PhaserGame.buildingPins.y += PhaserGame.pinZoom.positionIncrements.y;
 
 						PWG.ViewManager.hideView('world:usMap');
 						PhaserGame.currentZoom--;
@@ -1166,7 +1191,6 @@ var gameLogic = {
 				PWG.ViewManager.addView(missionBrief, brief, true);
 				PWG.ViewManager.addView(wiper, brief, true);
 				
-				PWG.ViewManager.showView('global:confirmButton');
 				PWG.ViewManager.showView('global:backButton');
 				PWG.ViewManager.hideView('global:turnGroup');
 
@@ -1174,10 +1198,17 @@ var gameLogic = {
 				var wiper = PWG.ViewManager.getControllerFromPath('brief:wiper:windshieldWiper');
 				// var wiperMask = PWG.ViewManager.getControllerFromPath('brief:wiper:windshieldWiperMask');
 				wiper.view.anchor.setTo(0.5, 0.04);
-				// wiperMask.view.anchor.setTo(0.5, 0.04);
-				PhaserGame.phaser.add.tween(wiper.view).to({angle: -65}, 1000, Phaser.Easing.Linear.None, true, Math.random() * 500);
+
+				var tween = PhaserGame.phaser.add.tween(wiper.view);
+				tween.onComplete.add(function() {
+					trace('wiper tween complete');
+					wiper.view.events.onTweenComplete = null;
+					PWG.ViewManager.showView('global:confirmButton');
+				})
+				tween.to({angle: -65}, 1000, Phaser.Easing.Linear.None, true, Math.random() * 500);
+				tween.start();
 				// PhaserGame.phaser.add.tween(wiperMask.view).to({angle: -75}, 1000, Phaser.Easing.Linear.None, true, Math.random() * 500);
-		        
+
 			},
 			shutdown: function() {
 				PWG.ViewManager.hideView('global:confirmButton');
@@ -1193,19 +1224,12 @@ var gameLogic = {
 				// worldMap.view.y = -(gameUnit * 31.2);
 				// worldMap.view.x = -(gameUnit * 8.2);
 				PhaserGame.worldView = worldMap.view;
-				
-				if(!PhaserGame.worldZoomInitialized) {
-					PhaserGame.initWorldZoom(worldMap.view);
-				}
-				PhaserGame.worldZoomOutFull();
-				PhaserGame.currentZoom = 4;
-				PhaserGame.activeSector = -1;
-				
+
 				var world = PWG.ViewManager.getControllerFromPath('world');
 				var buildingPins = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingPins);
 				var buildingPin = PhaserGame.config.dynamicViews.buildingPin;
 				var worldPositions = PhaserGame.config.worldPositions;
-				
+
 				PWG.Utils.each(
 					TurnManager.playerData.sectors,
 					function(sector, idx) {
@@ -1239,10 +1263,18 @@ var gameLogic = {
 					this
 				);
 
+				trace('ADDING BUILDING PINS: ', buildingPins);
 				PWG.ViewManager.addView(buildingPins, world, true);
 
-				PhaserGame.buildingPins = PWG.ViewManager.getControllerFromPath('world:buildingPins');
-				
+				PhaserGame.buildingPins = PWG.ViewManager.getControllerFromPath('world:buildingPins').view;
+
+				if(!PhaserGame.worldZoomInitialized) {
+					PhaserGame.initWorldZoom(worldMap.view, PhaserGame.buildingPins);
+				}
+				PhaserGame.worldZoomOutFull();
+				PhaserGame.currentZoom = 4;
+				PhaserGame.activeSector = -1;
+
 				PWG.ViewManager.showView('global:turnGroup');
 				PWG.ViewManager.showView('global:plusMinusGroup');
 			},
@@ -1250,6 +1282,7 @@ var gameLogic = {
 				PWG.ViewManager.removeView('world:buildingPins', 'world');
 				PWG.ViewManager.hideView('global:plusMinusGroup');
 				PhaserGame.worldView = null;
+				PhaserGame.buildingPins = null;
 			}
 		},
 		usDetail: {

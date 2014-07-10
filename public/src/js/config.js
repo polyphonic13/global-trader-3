@@ -51,6 +51,12 @@ var GameConfig = function() {
 		};
 
 		var worldPositions = {
+			us: {
+				x: gameUnit * 0.2,
+				y: (gameUnit * 6),
+				width: (gameUnit * 9.5),
+				height: (gameUnit * 4.5)
+			},
 			usSectors: [
 			// northeast
 			{
@@ -474,7 +480,20 @@ var GameConfig = function() {
 			buildingPins: {
 				type: 'group',
 				name: 'buildingPins',
-				views: {}
+				views: {
+					// bg: {
+					// 	type: 'sprite',
+					// 	name: 'pinBg',
+					// 	img: 'blockBlue',
+					// 	x: worldPositions.us.x,
+					// 	y: worldPositions.us.y,
+					// 	attrs: {
+					// 		width: worldPositions.us.width,
+					// 		height: worldPositions.us.height,
+					// 		alpha: 0.3
+					// 	}
+					// }
+				}
 			},
 			buildingPin: {
 				type: 'sprite',
@@ -1143,7 +1162,7 @@ var GameConfig = function() {
 					endTurnPrompt: 'images/screens/world/end_turn_prompt.png',
 					pinPlant: 'images/screens/world/pin_plant.png',
 					pinDealership: 'images/screens/world/pin_dealership.png',
-					pinTraderoute: '',
+					// pinTraderoute: 'images/screens/world/pin_traderoute.png',
 					// us detail
 					sectorTitleNE: 'images/screens/us_detail/sector_title_ne.png',
 					sectorTitleSE: 'images/screens/us_detail/sector_title_se.png',
