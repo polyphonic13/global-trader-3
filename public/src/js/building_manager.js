@@ -9,8 +9,8 @@ var BuildingManager = function() {
 	module.DEALERSHIP_MAX_INVENTORY = 50;
 	module.DEALERSHIP_MAX_SALE_QUANTITY = 5;
 
-	module.TIME_TO_BUILD_MACHINE = 3;
-	module.TIME_TO_SELL_MACHINES = 2;
+	module.TIME_TO_BUILD_MACHINE = 2;
+	module.TIME_TO_SELL_MACHINES = 3;
 	
 	// BUILDING BASE CLASS
 	function Building(config) {

@@ -1164,7 +1164,7 @@ var GameConfig = function() {
 				text: '',
 				offsetX: 0,
 				offsetY: (gameUnit * 0.75),
-				x: gameUnit * 1.5,
+				x: gameUnit * 1.25,
 				y: gameUnit * 6,
 				style: {
 				    font: (fontSizes.sm + 'px Trebuchet MS'),
@@ -1177,7 +1177,7 @@ var GameConfig = function() {
 				text: '',
 				offsetX: 0,
 				offsetY: (gameUnit * 0.75),
-				x: gameUnit * 1.5,
+				x: gameUnit * 1.25,
 				y: gameUnit * 6,
 				style: {
 				    font: (fontSizes.sm + 'px Trebuchet MS'),
@@ -1527,7 +1527,7 @@ var GameConfig = function() {
 					newDealerships: 'Dealerships established: ',
 					newTraderoutes: 'Trade Routes established: ',
 					newMachineModels: 'Machine models created: ',
-					newMachines: 'Machines manufactured: ',
+					newMachines: 'Machines built: ',
 					machinesSold: 'Machines sold: '
 				}
 			},
@@ -1535,7 +1535,7 @@ var GameConfig = function() {
 				newPlant: 'New Plant built created 1000 jobs',
 				newDealership: 'New Dealership established',
 				newTraderoutes: 'New Trade Route established',
-				machingManufacturing: '~{machines}~ Machines manufactured'
+				machingManufacturing: '~{machines}~ Machines built'
 			},
 			machineIcons: {
 				tractor: {

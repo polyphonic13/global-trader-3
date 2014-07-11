@@ -1,7 +1,7 @@
 var ASPECT_RATIO = [9, 16];
 var GAME_NAME = 'global_trader_3_0';
 var TIME_PER_TURN = 52;
-var TURN_TIME_INTERVAL = 2000;
+var TURN_TIME_INTERVAL = 3000;
 var US_DETAIL_GRID_CELLS = 6;
 var TIME_TO_MANUFACTOR = 5;
 var MACHINE_LIST_COLUMNS = 2; 
@@ -1296,7 +1296,7 @@ var gameLogic = {
 								plantPin.views.pin.y += pinLocations.y + pinOffsets[type].y;
 								plantPin.views.locationCount.x += pinLocations.x + pinOffsets[type].x;
 								plantPin.views.locationCount.y += pinLocations.y + pinOffsets[type].y;
-								plantPin.views.locationCount.text += typeCounts[type];
+								plantPin.views.locationCount.text = 'x' + typeCounts[type];
 								plantPin.views.locationCount.style.fill = (idx === 3) ? palette.black : palette.white
 								buildingPins.views[pinName] = plantPin;
 							}
@@ -1310,7 +1310,7 @@ var gameLogic = {
 								dealershipPin.views.pin.y += pinLocations.y + pinOffsets[type].y;
 								dealershipPin.views.locationCount.x += pinLocations.x + pinOffsets[type].x;
 								dealershipPin.views.locationCount.y += pinLocations.y + pinOffsets[type].y;
-								dealershipPin.views.locationCount.text += typeCounts[type];
+								dealershipPin.views.locationCount.text = 'x' + typeCounts[type];
 								dealershipPin.views.locationCount.style.fill = (idx === 3) ? palette.black : palette.white
 								trace('\tadding dealershipPin: ', dealershipPin);
 								buildingPins.views[pinName] = dealershipPin;
@@ -1336,7 +1336,7 @@ var gameLogic = {
 				PWG.ViewManager.showView('global:plusMinusGroup');
 			},
 			shutdown: function() {
-				PWG.ViewManager.removeView('world:buildingPins', 'world');
+				PWG.ViewManager.removeView('buildingPins', 'world');
 				PWG.ViewManager.hideView('global:plusMinusGroup');
 				PhaserGame.worldView = null;
 				PhaserGame.buildingPins = null;
@@ -1878,6 +1878,7 @@ var gameLogic = {
 				PWG.ViewManager.hideView('global:backButton');
 			},
 			shutdown: function() {
+				PWG.ViewManager.hideView('global:confirmButton');
 				PWG.ViewManager.removeView('yearSummary', 'turnEnd');
 			}
 		}
