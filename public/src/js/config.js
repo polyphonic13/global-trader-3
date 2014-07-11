@@ -386,7 +386,7 @@ var GameConfig = function() {
 						name: 'person',
 						img: '',
 						x: 0,
-						y: 0,
+						y: -(gameUnit * 1),
 						attrs: {
 							width: gameW,
 							height: gameH
@@ -411,12 +411,23 @@ var GameConfig = function() {
 						name: 'content',
 						text: '',
 						x: gameUnit * 1.5,
-						y: gameUnit * 3,
+						y: gameUnit * 2,
 						style: {
 						    font: (fontSizes.sm + 'px Trebuchet MS'),
 					        fill: palette.white
 						}
 					}
+				}
+			},
+			dealershipPrompt: {
+				type: 'sprite',
+				name: 'dealershipPrompt',
+				img: 'dealershipRepresentativePrompt',
+				x: (gameW/2) - (gameUnit * 3),
+				y: (gameUnit * 12.5),
+				attrs: {
+					width: (gameUnit * 6),
+					height: (gameUnit * 6) * 0.34
 				}
 			},
 			missionBrief: {
@@ -1232,6 +1243,7 @@ var GameConfig = function() {
 					sectorTitleNW: 'images/screens/us_detail/sector_title_nw.png',
 					sectorTitleSW: 'images/screens/us_detail/sector_title_sw.png',
 					addNewPlantPrompt: 'images/screens/us_detail/add_new_plant_prompt.png',
+					dealershipRepresentativePrompt: 'images/screens/us_detail/dealership_representative_prompt.png',
 					// plant detail
 					plantDetailBg: 'images/screens/plant_detail/plant_detail2.png',
 					// equipment list

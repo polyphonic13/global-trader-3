@@ -419,6 +419,8 @@ var gameLogic = {
 			},
 			addRetailOpportunityNotification: function(event) {
 				var notification = PWG.Utils.clone(PhaserGame.config.dynamicViews.notification);
+				var dealershipPrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.dealershipPrompt);
+				
 				var config;
 				
 				switch(event.type) {
@@ -441,11 +443,14 @@ var gameLogic = {
 					quantity: event.dealership.quantityPerYear,
 					model: modelName,
 					resell: event.dealership.config.resell
-				})
+				});
+
 				notification.views.person.img = 'dealershipGirl';
-				notification.views.title.text = config.title;
+				// notification.views.title.text = config.title;
 				notification.views.content.text = statementText;
 				// trace('notification = ', notification);
+				
+				notification.views[dealershipPrompt.name] = dealershipPrompt;
 				
 				notification.confirmAction = {
 					method: PhaserGame.addDealership,
