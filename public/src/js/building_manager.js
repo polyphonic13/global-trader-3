@@ -184,6 +184,7 @@ var BuildingManager = function() {
 					while(numToSell > 0) {
 						TurnManager.sellMachine(this.config.inventory.pop(), this.config.resell);
 						// trace('------- Dealership about to sell a machine:', this);
+						PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
 						PWG.EventCenter.trigger({ type: Events.MACHINE_SOLD, dealership: this.config });
 						this.config.totalSales += this.config.resell;
 						
@@ -284,8 +285,9 @@ var BuildingManager = function() {
 		var index = 0;
 
 		// var buildingCount = TurnManager.playerData.buildingCount[BuildingTypes.DEALERSHIP];
-		var dealershipId = BuildingTypes.DEALERSHIP + TurnManager.tempDealershipCount;
-		
+		var type = BuildingTypes.DEALERSHIP;
+		var dealershipId = type + ((TurnManager.tempDealershipCount) + 1);
+		var dealershipName = type.toUpperCase() + ' ' + TurnManager.tempDealershipCount;
 		TurnManager.tempDealershipCount++;
 		
 		trace('\tmodelId = ' + modelId + ', count = ' + count);
@@ -294,9 +296,10 @@ var BuildingManager = function() {
 		// trace('model now = ', model);
 		if(!plant.config.dealerships.hasOwnProperty(model.id)) {
 			var dealership = new Dealership({
+				id: dealershipId,
+				name: dealershipName,
 				modelId: model.id,
 				plantId: plant.config.id,
-				id: dealershipId,
 				// plant: plant.config,
 				sector: plant.config.sector
 			});

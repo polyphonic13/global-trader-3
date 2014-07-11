@@ -698,13 +698,26 @@ var GameConfig = function() {
 					}
 				}
 			},
-			buildingEditDetails: {
+			buildingEditScreen: {
 				type: 'group',
 				name: 'editDetails',
 				views: {
+					// bg
+					bg: {
+						type: 'sprite',
+						name: 'background',
+						img: 'plantDetailBg',
+						x: 0,
+						y: 0,
+						attrs: {
+							width: gameW,
+							height: gameH,
+							fixedToCamera: true
+						}
+					},
 					name: {
 						type: 'text',
-						name: 'plantName',
+						name: 'buildingName',
 						text: '',
 						x: gameUnit * 1.5,
 						y: gameUnit * 3.5,
@@ -718,10 +731,10 @@ var GameConfig = function() {
 					},
 					status: {
 						type: 'text',
-						name: 'plantSatus',
+						name: 'buildingStatus',
 						text: '',
 						x: gameUnit * 1.5,
-						y: gameUnit * 5.75,
+						y: gameUnit * 6,
 						style: {
 							font: (fontSizes.md + 'px Trebuchet MS'),
 								fill: palette.white
@@ -729,13 +742,20 @@ var GameConfig = function() {
 							position: {
 								centerX: true
 							}
+					}
+				}
+			},
+			buildingEditDetails: {
+				plant: {
+					bg: {
+						img: 'plantDetailBg'
 					},
 					equipment: {
 						type: 'text',
 						name: 'equipment',
 						text: '',
 						x: gameUnit * 1.5,
-						y: gameUnit * 7.5,
+						y: gameUnit * 7.75,
 						style: {
 							font: (fontSizes.lg + 'px Trebuchet MS'),
 								fill: palette.white
@@ -749,7 +769,7 @@ var GameConfig = function() {
 						name: 'inventory',
 						text: '',
 						x: gameUnit * 1.5,
-						y: gameUnit * 9.5,
+						y: gameUnit * 9.75,
 						style: {
 							font: (fontSizes.lg + 'px Trebuchet MS'),
 							fill: palette.white
@@ -763,7 +783,54 @@ var GameConfig = function() {
 						name: 'dealerships',
 						text: '',
 						x: gameUnit * 1.5,
-						y: gameUnit * 11.5,
+						y: gameUnit * 11.75,
+						style: {
+							font: (fontSizes.lg + 'px Trebuchet MS'),
+							fill: palette.white
+						},
+						position: {
+							centerX: true
+						}
+					}
+				},
+				dealership: {
+					bg: {
+						img: 'dealershipDetailBg'
+					},
+					plantMachine: {
+						type: 'text',
+						name: 'plantMachine',
+						text: '',
+						x: gameUnit * 1.5,
+						y: gameUnit * 8,
+						style: {
+							font: (fontSizes.md + 'px Trebuchet MS'),
+								fill: palette.white
+							},
+							position: {
+								centerX: true
+							}
+					},
+					resell: {
+						type: 'text',
+						name: 'resell',
+						text: '',
+						x: gameUnit * 1.5,
+						y: gameUnit * 9.75,
+						style: {
+							font: (fontSizes.lg + 'px Trebuchet MS'),
+							fill: palette.white
+						},
+						position: {
+							centerX: true
+						}
+					},
+					sales: {
+						type: 'text',
+						name: 'sales',
+						text: '',
+						x: gameUnit * 1.5,
+						y: gameUnit * 11.75,
 						style: {
 							font: (fontSizes.lg + 'px Trebuchet MS'),
 							fill: palette.white
@@ -1244,8 +1311,9 @@ var GameConfig = function() {
 					sectorTitleSW: 'images/screens/us_detail/sector_title_sw.png',
 					addNewPlantPrompt: 'images/screens/us_detail/add_new_plant_prompt.png',
 					dealershipRepresentativePrompt: 'images/screens/us_detail/dealership_representative_prompt.png',
-					// plant detail
-					plantDetailBg: 'images/screens/plant_detail/plant_detail2.png',
+					// building detail
+					plantDetailBg: 'images/screens/building_edit/plant_detail.png',
+					dealershipDetailBg: 'images/screens/building_edit/dealership_detail.png',
 					// equipment list
 					machineListIcon: 'images/screens/equipment_list/machine_list_icon.png',
 					skidsteerBasicIcon: 'images/screens/equipment_list/skidsteer_basic_icon.png',
@@ -1857,19 +1925,6 @@ var GameConfig = function() {
 						visible: false
 					},
 					views: {
-						// bg
-						bg: {
-							type: 'sprite',
-							name: 'background',
-							img: 'plantDetailBg',
-							x: 0,
-							y: 0,
-							attrs: {
-								width: gameW,
-								height: gameH,
-								fixedToCamera: true
-							}
-						}
 					}
 				},
 				// equipment list

@@ -385,6 +385,9 @@ var gameLogic = {
 						
 						case TileCellFrames.DEALERSHIP_ACTIVE: 
 						trace('dealership active'); 
+						PhaserGame.activeBuilding = BuildingManager.getBuilding(PhaserGame.activeSector, PhaserGame.activeTile.cell);
+						// trace('active plant = ', PhaserGame.activeBuilding);
+						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'buildingEdit' });
 						break;
 
 						default:
@@ -437,12 +440,13 @@ var gameLogic = {
 					break;
 				}
 				var modelName = event.plant.equipment[event.dealership.config.modelId].name;
-				
+				var resell = PWG.Utils.formatMoney(event.dealership.config.resell, 0);
+
 				var statementText = PWG.Utils.parseMarkup(config.statement, {
 					plant: event.plant.name,
 					quantity: event.dealership.quantityPerYear,
 					model: modelName,
-					resell: event.dealership.config.resell
+					resell: resell
 				});
 
 				notification.views.person.img = 'dealershipGirl';
@@ -1469,12 +1473,24 @@ var gameLogic = {
 					// trace('BUILDING_STATE_UPDATED event = ', event);
 					var config = event.building.config;
 					if(config.id === PhaserGame.activeBuilding.id) {
-	 					var buildingEditConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditDetails);
-						var equipmentUpdate = buildingEditConfig.views.equipment.text + PWG.Utils.objLength(config.equipment) + ' / ' + BuildingManager.PLANT_MAX_MODELS;
-						var inventoryUpdate = buildingEditConfig.views.inventory.text + config.totalInventory + ' / ' + BuildingManager.PLANT_MAX_INVENTORY;
+	 					var buildingEditDetails = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditDetails[config.type]);
+						switch(config.type) {
+							case BuildingTypes.PLANT:
+							var equipmentUpdate = buildingEditDetails.equipment.text + PWG.Utils.objLength(config.equipment) + ' / ' + BuildingManager.PLANT_MAX_MODELS;
+							var inventoryUpdate = buildingEditDetails.inventory.text + config.totalInventory + ' / ' + BuildingManager.PLANT_MAX_INVENTORY;
 
-						PWG.ViewManager.callMethod('buildingEdit:editDetails:equipment', 'setText', [equipmentUpdate], this);
-						PWG.ViewManager.callMethod('buildingEdit:editDetails:inventory', 'setText', [inventoryUpdate], this);
+							PWG.ViewManager.callMethod('buildingEdit:editDetails:equipment', 'setText', [equipmentUpdate], this);
+							PWG.ViewManager.callMethod('buildingEdit:editDetails:inventory', 'setText', [inventoryUpdate], this);
+							break;
+
+							case BuildingTypes.DEALERSHIP:
+							var salesUpdate = buildingEditDetails.sales.text = '$' + PWG.Utils.formatMoney(config.totalSales, 0);
+							PWG.ViewManager.callMethod('buildingEdit:editDetails:sales', 'setText', [salesUpdate], this);
+							break;
+
+							default:
+							break;
+						}
 					}
 				}
 			}
@@ -1483,17 +1499,49 @@ var gameLogic = {
 				var buildingEdit = PWG.ViewManager.getControllerFromPath('buildingEdit');
 				var building = PhaserGame.activeBuilding;
 				// trace('building = ', building);
-				var buildingEditDetails = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditDetails);
-				// trace('buildingEditConfig = ', buildingEditConfig);
-				// trace('screen view = ', screenView, '\tactive plant = ', building);
-				buildingEditDetails.views.name.text += building.name;
-				buildingEditDetails.views.status.text += building.state.toUpperCase();
-				buildingEditDetails.views.equipment.text += PWG.Utils.objLength(building.equipment) + ' / ' + BuildingManager.PLANT_MAX_MODELS;
-				buildingEditDetails.views.inventory.text += building.totalInventory + ' / ' + BuildingManager.PLANT_MAX_INVENTORY;
-				buildingEditDetails.views.dealerships.text += PWG.Utils.objLength(building.dealerships) + ' / ' + BuildingManager.PLANT_MAX_DEALERSHIPS;
-				
-				PWG.ViewManager.addView(buildingEditDetails, buildingEdit, true);
-				PWG.ViewManager.showView('global:plantDetailGroup');
+				var buildingEditScreen = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditScreen);
+				var buildingEditDetails = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditDetails[building.type]);
+
+				buildingEditScreen.views.bg.img = buildingEditDetails.bg.img;
+				buildingEditScreen.views.name.text += building.name;
+				buildingEditScreen.views.status.text += building.state.toUpperCase();
+				trace('BuildingEdit/create, making details for ', building);
+				switch(building.type) {
+					case BuildingTypes.PLANT:
+					trace('\tit is a plant');
+					buildingEditDetails.equipment.text += PWG.Utils.objLength(building.equipment) + ' / ' + BuildingManager.PLANT_MAX_MODELS;
+					buildingEditDetails.inventory.text += building.totalInventory + ' / ' + BuildingManager.PLANT_MAX_INVENTORY;
+					buildingEditDetails.dealerships.text += PWG.Utils.objLength(building.dealerships) + ' / ' + BuildingManager.PLANT_MAX_DEALERSHIPS;
+					break;
+
+					case BuildingTypes.DEALERSHIP:
+					var plant = BuildingManager.sectors[PhaserGame.activeSector][building.plantId].config;
+					trace('\tdealership plant = ', plant);
+					buildingEditDetails.plantMachine.text += plant.name + ' / ' + plant.equipment[building.modelId].name;
+					buildingEditDetails.resell.text += '$' + PWG.Utils.formatMoney(building.resell, 0);
+					buildingEditDetails.sales.text += '$' + PWG.Utils.formatMoney(building.totalSales, 0);;
+					break;
+
+					default:
+					break;
+				}
+
+				PWG.Utils.each(
+					buildingEditDetails,
+					function(detail, key) {
+						if(key !== 'bg') {
+							buildingEditScreen.views[detail.name] = detail;
+						}
+					},
+					this
+				);
+				trace('\tbuildingEditScreen now = ', buildingEditScreen);
+
+				PWG.ViewManager.addView(buildingEditScreen, buildingEdit, true);
+
+				if(building.type === BuildingTypes.PLANT) {
+					PWG.ViewManager.showView('global:plantDetailGroup');
+				}
 			},
 			shutdown: function() {
 				PWG.ViewManager.removeView('editDetails', 'buildingEdit');
