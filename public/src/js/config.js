@@ -95,6 +95,51 @@ var GameConfig = function() {
 			}
 			]		
 		};
+		var pinPositions = {
+			us: {
+				x: gameUnit * 0.2,
+				y: (gameUnit * 6),
+				width: (gameUnit * 9.5),
+				height: (gameUnit * 4.5)
+			},
+			usSectors: [
+			// northeast
+			{
+				x: gameUnit * 5.5,
+				y: gameUnit * 7.2
+			},
+			// southeast
+			{
+				x: gameUnit * 5.5,
+				y: gameUnit * 9.6
+			},
+			// midwest
+			{
+				x: gameUnit * 3.4,
+				y: gameUnit * 7
+			},
+			// northwest
+			{
+				x: gameUnit * 1.3,
+				y: gameUnit * 6.4
+			},
+			// southwest
+			{
+				x: gameUnit * 1.3,
+				y: gameUnit * 9
+			}
+			]		
+		};
+		var pinOffsets = {
+			plant: {
+				x: gameUnit * 0,
+				y: gameUnit * 0
+			},
+			dealership: {
+				x: gameUnit * 0.76,
+				y: gameUnit * 0
+			}
+		};
 		var pinImages = {
 			plant: 'pinPlant',
 			dealership: 'pinDealership',
@@ -496,14 +541,31 @@ var GameConfig = function() {
 				}
 			},
 			buildingPin: {
-				type: 'sprite',
+				type: 'group',
 				name: 'buildingPin',
-				img: '',
-				x: 0,
-				y: 0,
-				attrs: {
-					width: gameUnit * 0.5,
-					height: (gameUnit * 0.5) * 0.68
+				views: {
+					pin: {
+						type: 'sprite',
+						name: 'buildingPin',
+						img: '',
+						x: 0,
+						y: 0,
+						attrs: {
+							width: gameUnit * 0.75,
+							height: (gameUnit * 0.75) * 0.75
+						}
+					},
+					locationCount: {
+						type: 'text',
+						name: 'locationCount',
+						text: 'x',
+						x: gameUnit * 0.4,
+						y: -(gameUnit * 0.2),
+						style: {
+						    font: (fontSizes.xs + 'px Trebuchet MS'),
+					        fill: palette.white
+						},
+					}
 				}
 			},
 			sectorTitle: {
@@ -1444,6 +1506,7 @@ var GameConfig = function() {
 				newMachine: false,
 				bank: 1000000
 			},
+			palette: palette,
 			defaultScreen: 'home',
 			notificationText: {
 				dealership: {
@@ -1488,6 +1551,8 @@ var GameConfig = function() {
 			},
 			dynamicViews: dynamicViews,
 			worldPositions: worldPositions,
+			pinPositions: pinPositions,
+			pinOffsets: pinOffsets,
 			pinImages: pinImages,
 			machineEditBackgrounds: machineEditBackgrounds,
 			machinePartIconConfig: machinePartIconConfig,
@@ -1676,7 +1741,7 @@ var GameConfig = function() {
 									attrs: {
 										width: (gameUnit * 3.5),
 										height: (gameUnit * 2),
-										alpha: 0.4
+										alpha: 0
 									},
 									callback: gameLogic.global.buttonCallbacks.northwestDetail,
 									context: this,
@@ -1691,7 +1756,7 @@ var GameConfig = function() {
 									attrs: {
 										width: (gameUnit * 3.5),
 										height: (gameUnit * 2),
-										alpha: 0.4
+										alpha: 0
 									},
 									callback: gameLogic.global.buttonCallbacks.southwestDetail,
 									context: this,
@@ -1706,7 +1771,7 @@ var GameConfig = function() {
 									attrs: {
 										width: (gameUnit * 2),
 										height: (gameUnit * 4.5),
-										alpha: 0.4
+										alpha: 0
 									},
 									callback: gameLogic.global.buttonCallbacks.midwestDetail,
 									context: this,
@@ -1721,7 +1786,7 @@ var GameConfig = function() {
 									attrs: {
 										width: (gameUnit * 4),
 										height: (gameUnit * 2.5),
-										alpha: 0.4
+										alpha: 0
 									},
 									sector: USSectors.NORTH_EAST,
 									callback: gameLogic.global.buttonCallbacks.northeastDetail,
@@ -1737,7 +1802,7 @@ var GameConfig = function() {
 									attrs: {
 										width: (gameUnit * 2.5),
 										height: (gameUnit * 2.5),
-										alpha: 0.4
+										alpha: 0
 									},
 									callback: gameLogic.global.buttonCallbacks.southeastDetail,
 									context: this,

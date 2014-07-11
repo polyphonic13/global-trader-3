@@ -1230,39 +1230,96 @@ var gameLogic = {
 				var buildingPin = PhaserGame.config.dynamicViews.buildingPin;
 				var worldPositions = PhaserGame.config.worldPositions;
 
+				// PWG.Utils.each(
+				// 	TurnManager.playerData.sectors,
+				// 	function(sector, idx) {
+				// 		var startX = worldPositions.usSectors[idx].x;
+				// 		var endX = worldPositions.usSectors[idx].width + startX;
+				// 		var hUnit = (endX - startX) / US_DETAIL_GRID_CELLS;
+				// 		var startY = worldPositions.usSectors[idx].y;
+				// 		var endY = worldPositions.usSectors[idx].height + startY;
+				// 		var vUnit = (endY - startY) / US_DETAIL_GRID_CELLS;
+				// 
+				// 		trace('sector['+idx+'] us positions:\n\tstart x/y = ' + startX + '/' + startY + '\n\tend x/y = ' + endX + '/' + endY + '\n\tunits h/v = ' + hUnit + '/' + vUnit, sector);
+				// 
+				// 		PWG.Utils.each(
+				// 			sector,
+				// 			function(building, key) {
+				// 				var pin = PWG.Utils.clone(buildingPin);
+				// 				var pinX = (((Math.floor(building.cell / US_DETAIL_GRID_CELLS)) * hUnit) + startX) - (pin.attrs.width/2);
+				// 				var pinY = (((Math.floor(building.cell % US_DETAIL_GRID_CELLS)) * vUnit) + startY) - (pin.attrs.height/2);
+				// 				
+				// 				pin.img = PhaserGame.config.pinImages[building.type];
+				// 				trace('\t\tadding pin for building['+building.id+'] at: ' + building.cell + ', ' + pinX + '/' + pinY);
+				// 				pin.x = pinX;
+				// 				pin.y = pinY;
+				// 				pin.name += building.id;
+				// 				
+				// 				buildingPins.views[building.id] = pin;
+				// 			},
+				// 			this
+				// 		);
+				// 	},
+				// 	this
+				// );
+
 				PWG.Utils.each(
 					TurnManager.playerData.sectors,
 					function(sector, idx) {
-						var startX = worldPositions.usSectors[idx].x;
-						var endX = worldPositions.usSectors[idx].width + startX;
-						var hUnit = (endX - startX) / US_DETAIL_GRID_CELLS;
-						var startY = worldPositions.usSectors[idx].y;
-						var endY = worldPositions.usSectors[idx].height + startY;
-						var vUnit = (endY - startY) / US_DETAIL_GRID_CELLS;
-
-						trace('sector['+idx+'] us positions:\n\tstart x/y = ' + startX + '/' + startY + '\n\tend x/y = ' + endX + '/' + endY + '\n\tunits h/v = ' + hUnit + '/' + vUnit, sector);
-
-						PWG.Utils.each(
-							sector,
-							function(building, key) {
-								var pin = PWG.Utils.clone(buildingPin);
-								var pinX = (((Math.floor(building.cell / US_DETAIL_GRID_CELLS)) * hUnit) + startX) - (pin.attrs.width/2);
-								var pinY = (((Math.floor(building.cell % US_DETAIL_GRID_CELLS)) * vUnit) + startY) - (pin.attrs.height/2);
-								
-								pin.img = PhaserGame.config.pinImages[building.type];
-								trace('\t\tadding pin for building['+building.id+'] at: ' + building.cell + ', ' + pinX + '/' + pinY);
-								pin.x = pinX;
-								pin.y = pinY;
-								pin.name += building.id;
-								
-								buildingPins.views[building.id] = pin;
-							},
-							this
-						);
+						var count = PWG.Utils.objLength(sector);
+						trace('\tthere are ' + count + ' buildings in sector['+idx+']');
+						if(count > 0) {
+							var pinLocations = PhaserGame.config.pinPositions.usSectors[idx];
+							var pinOffsets = PhaserGame.config.pinOffsets;
+							var palette = PhaserGame.config.palette;
+							
+							var typeCounts = {
+								plant: 0,
+								dealership: 0
+							};
+							
+							PWG.Utils.each(
+								sector,
+								function(building, key) {
+									typeCounts[building.type]++;
+								},
+								this
+							);
+							trace('\ttypeCounts = ', typeCounts);
+							if(typeCounts.plant > 0) {
+								var type = BuildingTypes.PLANT;
+								var plantPin = PWG.Utils.clone(buildingPin);
+								var pinName = 'sector'+idx+type;
+								plantPin.name = pinName;
+								plantPin.views.pin.img = PhaserGame.config.pinImages[type];
+								plantPin.views.pin.x += pinLocations.x + pinOffsets[type].x;
+								plantPin.views.pin.y += pinLocations.y + pinOffsets[type].y;
+								plantPin.views.locationCount.x += pinLocations.x + pinOffsets[type].x;
+								plantPin.views.locationCount.y += pinLocations.y + pinOffsets[type].y;
+								plantPin.views.locationCount.text += typeCounts[type];
+								plantPin.views.locationCount.style.fill = (idx === 3) ? palette.black : palette.white
+								buildingPins.views[pinName] = plantPin;
+							}
+							if(typeCounts.dealership > 0) {
+								var type = BuildingTypes.DEALERSHIP;
+								var dealershipPin = PWG.Utils.clone(buildingPin);
+								var pinName = 'sector'+idx+type;
+								dealershipPin.name = pinName;
+								dealershipPin.views.pin.img = PhaserGame.config.pinImages[type];
+								dealershipPin.views.pin.x += pinLocations.x + pinOffsets[type].x;
+								dealershipPin.views.pin.y += pinLocations.y + pinOffsets[type].y;
+								dealershipPin.views.locationCount.x += pinLocations.x + pinOffsets[type].x;
+								dealershipPin.views.locationCount.y += pinLocations.y + pinOffsets[type].y;
+								dealershipPin.views.locationCount.text += typeCounts[type];
+								dealershipPin.views.locationCount.style.fill = (idx === 3) ? palette.black : palette.white
+								trace('\tadding dealershipPin: ', dealershipPin);
+								buildingPins.views[pinName] = dealershipPin;
+							}
+						}
 					},
 					this
 				);
-
+				
 				trace('ADDING BUILDING PINS: ', buildingPins);
 				PWG.ViewManager.addView(buildingPins, world, true);
 
