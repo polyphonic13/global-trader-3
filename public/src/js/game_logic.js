@@ -1316,7 +1316,7 @@ var gameLogic = {
 								dealershipPin.views.locationCount.x += pinLocations.x + pinOffsets[type].x;
 								dealershipPin.views.locationCount.y += pinLocations.y + pinOffsets[type].y;
 								dealershipPin.views.locationCount.text = 'x' + typeCounts[type];
-								dealershipPin.views.locationCount.style.fill = (idx === 3) ? palette.black : palette.white
+								dealershipPin.views.locationCount.style.fill = (idx === 3 || idx === 0) ? palette.black : palette.white
 								trace('\tadding dealershipPin: ', dealershipPin);
 								buildingPins.views[pinName] = dealershipPin;
 							}
