@@ -145,6 +145,26 @@ var GameConfig = function() {
 			dealership: 'pinDealership',
 			traderoute: 'pinTraderoute'
 		};
+		var starsPositions = {
+			basic: {
+				x: (gameW/2) - (((gameUnit * 0.5) * 3)/2),
+				y: (gameUnit * 10),
+				width: ((gameUnit * 0.5) * 3),
+				height: ((gameUnit * 0.5) * 3) * 0.2 
+			},
+			medium: {
+				x: (gameW/2) - (((gameUnit * 0.51) * 5)/2),
+				y: (gameUnit * 10),
+				width: ((gameUnit * 0.51) * 5),
+				height: ((gameUnit * 0.51) * 5) * 0.116
+			},
+			heavy: {
+				x: (gameW/2) - (((gameUnit * 0.52) * 5)/2),
+				y: (gameUnit * 10),
+				width: ((gameUnit * 0.52) * 5),
+				height: ((gameUnit * 0.52) * 5) * 0.08
+			}
+		},
 		var machineEditBackgrounds = {
 			tractor: {
 				basic: 'tractorBasicBg',
@@ -1027,6 +1047,17 @@ var GameConfig = function() {
 					}
 				}
 			},
+			stars: {
+				type: 'sprite',
+				name: 'stars',
+				img: '',
+				x: -1,
+				y: -1,
+				attrs: {
+					width: -1
+					height: -1
+				}
+			},
 			machinePieceMenuItem: {
 				type: 'group',
 				name: 'machinePieceMenuItem',
@@ -1510,6 +1541,24 @@ var GameConfig = function() {
 						width: 65,
 						height: 100,
 						frames: 6
+					},
+					starsThree: {
+						url: 'images/screens/equipment_edit/stars/stars_three_spritesheet.png', 
+						width: 126,
+						height: 26,
+						frames: 4
+					},
+					starsFive: {
+						url: 'images/screens/equipment_edit/stars/stars_five_spritesheet.png', 
+						width: 224,
+						height: 26,
+						frames: 6
+					},
+					starsSeven: {
+						url: 'images/screens/equipment_edit/stars/stars_seven_spritesheet.png', 
+						width: 323,
+						height: 26,
+						frames: 8
 					},
 					newTractorBasic: {
 						url: 'images/screens/equipment_add/tractor_basic.png',
