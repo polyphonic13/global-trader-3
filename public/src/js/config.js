@@ -263,12 +263,12 @@ var GameConfig = function() {
 					transmission: {
 						type: 'sprite',
 						name: 'transmission',
-						img: 'editTractorBasicEngine',
-						x: (gameUnit * 0.6),
-						y: (gameUnit * 5.75),
+						img: 'editTractorMediumEngine',
+						x: (gameUnit * 1),
+						y: (gameUnit * 6.5),
 						attrs: {
-							width: gameUnit * 4.8,
-							height: (gameUnit * 4.8) * 1.1,
+							width: gameUnit * 4,
+							height: (gameUnit * 4) * 1.04,
 							frame: 0
 						},
 						input: gameLogic.global.input.transmissionSprite
@@ -276,12 +276,12 @@ var GameConfig = function() {
 					tires: {
 						type: 'sprite',
 						name: 'tires',
-						img: 'editTractorBasicTires',
-						x: (gameUnit * 0.15),
-						y: (gameUnit * 6.35),
+						img: 'editTractorMediumTires',
+						x: (gameUnit * 0.35),
+						y: (gameUnit * 4.9),
 						attrs: {
-							width: gameUnit * 8.7,
-							height: (gameUnit * 8.7) * 0.64,
+							width: gameUnit * 8.1,
+							height: (gameUnit * 8.1) * 0.89,
 							frame: 0
 						},
 						input: gameLogic.global.input.tiresSprite
@@ -289,12 +289,12 @@ var GameConfig = function() {
 					engine: {
 						type: 'sprite',
 						name: 'engine',
-						img: 'editTractorBasicCab',
-						x: (gameUnit * 3.9),
-						y: (gameUnit * 4.85),
+						img: 'editTractorMediumCab',
+						x: (gameUnit * 3.68),
+						y: (gameUnit * 3.4),
 						attrs: {
-							width: gameUnit * 3.05,
-							height: (gameUnit * 3.05) * 1.47,
+							width: gameUnit * 2.33,
+							height: (gameUnit * 2.33) * 2.13,
 							frame: 0
 						},
 						input: gameLogic.global.input.engineSprite
