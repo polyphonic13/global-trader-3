@@ -1867,38 +1867,30 @@ var gameLogic = {
 					},
 					this
 				);
-				// PWG.Utils.each(
-				// 	machinePartIcons.views,
-				// 	function(part, p) {
-				// 		var config = machinePartIconConfig[type][size][p];
-				// 		// trace('\tconfig = ', config);
-				// 		part.img = config.img;
-				// 		part.x = config.x;
-				// 		part.y = config.y;
-				// 		PWG.Utils.each(
-				// 			config.attrs,
-				// 			function(attr, a) {
-				// 				part.attrs[a] = attr;
-				// 			},
-				// 			this
-				// 		);
-				// 
-				// 		machineEdit.views[p] = part;
-				// 	},
-				// 	this
-				// );
+				PWG.Utils.each(
+					machinePartIcons.views,
+					function(part, p) {
+						var config = machinePartIconConfig[type][size][p];
+						// trace('\tconfig = ', config);
+						part.img = config.img;
+						part.x = config.x;
+						part.y = config.y;
+						PWG.Utils.each(
+							config.attrs,
+							function(attr, a) {
+								part.attrs[a] = attr;
+							},
+							this
+						);
+				
+						machineEdit.views[p] = part;
+					},
+					this
+				);
 
 				// trace('machineEdit now = ', machineEdit);
 
 				PWG.ViewManager.addView(machineEdit, equipmentEdit, true);
-				
-				// var starsView = PWG.ViewManager.getControllerFromPath('equipmentEdit:machineEdit:stars').view;
-				// if(PhaserGame.newMachine) {
-				// 	starsView.frame = 0;
-				// } else {
-				// 	trace('STARS FRAMES IS: ' + starsConfig.frames);
-				// 	starsView.frame = starsConfig.frames;
-				// }
 				
 				PWG.ViewManager.showView('global:equipmentEditGroup');
 
