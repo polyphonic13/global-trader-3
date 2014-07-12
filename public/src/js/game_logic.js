@@ -1746,6 +1746,7 @@ var gameLogic = {
 				event: Events.PREV_MACHINE_PIECE_ICON,
 				handler: function(event) {
 					PWG.ViewManager.hideView(PhaserGame.getCurrentMachinePiecePath());
+					
 					PhaserGame.setMachinePieceSpriteFrame(PhaserGame.machinePieces[PhaserGame.currentMachinePiece], 0);
 
 					if(PhaserGame.currentMachinePiece > 1) {
@@ -1765,8 +1766,11 @@ var gameLogic = {
 				event: Events.ADD_PART,
 				handler: function(event) {
 					PhaserGame.activeMachine.setPart(PhaserGame.activePartType, event.value);
-					var stars = PWG.ViewManager.getControllerFromPath('equipmentEdit:machineEdit:stars');
-					stars.view.frame++;
+					
+					if(event.value !== this.partsMenuType) {
+						var stars = PWG.ViewManager.getControllerFromPath('equipmentEdit:machineEdit:stars');
+						stars.view.frame++;
+					}
 					// trace('add part, type = ' + event.value + ', part type = ' + this.partsMenuType + ', view collection = ', this.views);
 					// var frame = gameData.parts[this.partsMenuType][event.value].frame;
 					// trace('frame = ' + frame + ', type = ' + this.partsMenuType + ', collection = ', this.views);
@@ -1966,6 +1970,7 @@ var gameLogic = {
 					// 	this
 					// );
 				}
+				PhaserGame.spriteTranslations = gameData.machines[type][size].spriteTranslations;
 				PhaserGame.machineDirty = true;
 				// PWG.ViewManager.showView('global:confirmButton');
 			},

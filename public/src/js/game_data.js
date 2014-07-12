@@ -18,27 +18,38 @@ var gameData = {
 			basic: {
 				requiredParts: [
 					'tires',
-					'transmission',
-					'engine'
+					'engine',
+					'transmission'
 				],
 				optionalParts: [
 					'flameDecal',
 					'autoPilot',
 					'gps'
-				]
+				],
+				spriteTranslations: {
+					tires: 'tires',
+					engine: 'engine',
+					transmission: 'transmission'
+				}
 			},
 			medium: {
 				requiredParts: [
 					'tires',
-					'transmission',
 					'engine',
+					'transmission',
 					'headlights'
 				],
 				optionalParts: [
 					'flameDecal',
 					'autoPilot',
 					'gps'
-				]
+				],
+				spriteTranslations: {
+					tires: 'tires',
+					engine: 'engine',
+					transmission: 'transmission',
+					headlights: 'transmission'
+				}
 			},
 			heavy: {
 				requiredParts: [
@@ -52,7 +63,14 @@ var gameData = {
 					'autoPilot',
 					'gps',
 					'heater'
-				]
+				],
+				spriteTranslations: {
+					tires: 'tires',
+					engine: 'engine',
+					threepointHitch: 'engine',
+					transmission: 'transmission',
+					headlights: 'transmission'
+				}
 			}
 		},
 		skidsteer: {
@@ -67,20 +85,34 @@ var gameData = {
 					'flameDecal',
 					'autoPilot',
 					'gps'
-				]
+				],
+				spriteTranslations: {
+					tires: 'tires',
+					engine: 'engine',
+					transmission: 'transmission',
+					bucket: 'bucket'
+				}
 			},
 			medium: {
 				requiredParts: [
 					'tires',
 					'transmission',
 					'engine',
+					'quickCoupler',
 					'bucket'
 				],
 				optionalParts: [
 					'flameDecal',
 					'autoPilot',
 					'gps'
-				]
+				],
+				spriteTranslations: {
+					tires: 'tires',
+					engine: 'engine',
+					transmission: 'transmission',
+					quickCoupler: 'transmission',
+					bucket: 'bucket'
+				}
 			},
 			heavy: {
 				requiredParts: [
@@ -95,7 +127,15 @@ var gameData = {
 					'autoPilot',
 					'gps',
 					'heater'
-				]
+				],
+				spriteTranslations: {
+					tires: 'tires',
+					engine: 'engine',
+					powerTakeoff: 'engine',
+					transmission: 'transmission',
+					quickCoupler: 'transmission',
+					bucket: 'bucket'
+				}
 			}
 		}
 	},

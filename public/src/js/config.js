@@ -260,33 +260,44 @@ var GameConfig = function() {
 					}
 				},
 				medium: {
-					engine: {
-						img: 'blockWhite',
-						x: 0,
-						y: (gameUnit * 7),
+					transmission: {
+						type: 'sprite',
+						name: 'transmission',
+						img: 'editTractorBasicEngine',
+						x: (gameUnit * 0.6),
+						y: (gameUnit * 5.75),
 						attrs: {
-							width: gameUnit * 4,
-							height: gameUnit * 4,
-						}
+							width: gameUnit * 4.8,
+							height: (gameUnit * 4.8) * 1.1,
+							frame: 0
+						},
+						input: gameLogic.global.input.transmissionSprite
 					},
 					tires: {
-						img: 'blockWhite',
-						x: (gameUnit * 2.5),
-						y: (gameUnit * 10),
+						type: 'sprite',
+						name: 'tires',
+						img: 'editTractorBasicTires',
+						x: (gameUnit * 0.15),
+						y: (gameUnit * 6.35),
 						attrs: {
-							width: gameUnit * 7,
-							height: gameUnit * 4,
-							angle: -35
-						}
+							width: gameUnit * 8.7,
+							height: (gameUnit * 8.7) * 0.64,
+							frame: 0
+						},
+						input: gameLogic.global.input.tiresSprite
 					},
-					cab: {
-						img: 'blockWhite',
-						x: (gameUnit * 4),
-						y: (gameUnit * 4),
+					engine: {
+						type: 'sprite',
+						name: 'engine',
+						img: 'editTractorBasicCab',
+						x: (gameUnit * 3.9),
+						y: (gameUnit * 4.85),
 						attrs: {
-							width: gameUnit * 2,
-							height: gameUnit * 4
-						}
+							width: gameUnit * 3.05,
+							height: (gameUnit * 3.05) * 1.47,
+							frame: 0
+						},
+						input: gameLogic.global.input.engineSprite
 					}
 				},
 				heavy: {
