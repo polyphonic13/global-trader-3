@@ -1611,22 +1611,136 @@ var GameConfig = function() {
 						height: 26,
 						frames: 8
 					},
+					// tractor basic
 					newTractorBasicCab: {
-						url: 'imagse/screens/equipement_add/machine_parts/tractor/basic/tractor_basic_cab_spritesheet.png',
+						url: 'imagse/screens/equipment_edit/machine_parts/tractor/basic/tractor_basic_cab_spritesheet.png',
 						width: 104.5,
 						height: 154,
 						frames: 2
 					},
 					newTractorBasicEngine: {
-						url: 'imagse/screens/equipement_add/machine_parts/tractor/basic/tractor_basic_engine_spritesheet.png',
+						url: 'imagse/screens/equipment_edit/machine_parts/tractor/basic/tractor_basic_engine_spritesheet.png',
 						width: 166.5,
 						height: 189,
 						frames: 2
 					},
 					newTractorBasicTires: {
-						url: 'imagse/screens/equipement_add/machine_parts/tractor/basic/tractor_basic_tires_spritesheet.png',
+						url: 'imagse/screens/equipment_edit/machine_parts/tractor/basic/tractor_basic_tires_spritesheet.png',
 						width: 308,
 						height: 196,
+						frames: 2
+					},
+					// tractor medium
+					newTractorMediumCab: {
+						url: 'imagse/screens/equipment_edit/machine_parts/tractor/medium/tractor_medium_cab_spritesheet.png',
+						width: 83,
+						height: 177,
+						frames: 2
+					},
+					newTractorMediumEngine: {
+						url: 'imagse/screens/equipment_edit/machine_parts/tractor/medium/tractor_medium_engine_spritesheet.png',
+						width: 143,
+						height: 149,
+						frames: 2
+					},
+					newTractorMediumTransmission: {
+						url: 'imagse/screens/equipment_edit/machine_parts/tractor/medium/tractor_medium_transmission_spritesheet.png',
+						width: 26,
+						height: 83,
+						frames: 2
+					},
+					newTractorMediumTires: {
+						url: 'imagse/screens/equipment_edit/machine_parts/tractor/medium/tractor_medium_tires_spritesheet.png',
+						width: 288,
+						height: 255,
+						frames: 2
+					},
+					// tractor heavy
+					newTractorHeavyCab: {
+						url: 'imagse/screens/equipment_edit/machine_parts/tractor/heavy/tractor_heavy_cab_spritesheet.png',
+						width: 166,
+						height: 222,
+						frames: 2
+					},
+					newTractorHeavyEngine: {
+						url: 'imagse/screens/equipment_edit/machine_parts/tractor/heavy/tractor_heavy_engine_spritesheet.png',
+						width: 115,
+						height: 172,
+						frames: 2
+					},
+					newTractorHeavyTransmission: {
+						url: 'imagse/screens/equipment_edit/machine_parts/tractor/heavy/tractor_heavy_transmission_spritesheet.png',
+						width: 43,
+						height: 155,
+						frames: 2
+					},
+					newTractorHeavyTracks: {
+						url: 'imagse/screens/equipment_edit/machine_parts/tractor/heavy/tractor_heavy_tracks_spritesheet.png',
+						width: 300,
+						height: 170,
+						frames: 2
+					},
+					// skidsteer basic
+					newSkidsteerBasicCab: {
+						url: 'imagse/screens/equipment_edit/machine_parts/skidsteer/basic/skidsteer_basic_cab_spritesheet.png',
+						width: 104.5,
+						height: 154,
+						frames: 2
+					},
+					newSkidsteerBasicBucket: {
+						url: 'imagse/screens/equipment_edit/machine_parts/skidsteer/basic/skidsteer_basic_bucket_spritesheet.png',
+						width: 207,
+						height: 145,
+						frames: 2
+					},
+					newSkidsteerBasicTires: {
+						url: 'imagse/screens/equipment_edit/machine_parts/skidsteer/basic/skidsteer_basic_tires_spritesheet.png',
+						width: 159,
+						height: 101,
+						frames: 2
+					},
+					// skidsteer medium
+					newSkidsteerMediumCab: {
+						url: 'imagse/screens/equipment_edit/machine_parts/skidsteer/medium/skidsteer_medium_cab_spritesheet.png',
+						width: 142,
+						height: 149,
+						frames: 2
+					},
+					newSkidsteerMediumBucket: {
+						url: 'imagse/screens/equipment_edit/machine_parts/skidsteer/medium/skidsteer_medium_bucket_spritesheet.png',
+						width: 179,
+						height: 167,
+						frames: 2
+					},
+					newSkidsteerMediumTires: {
+						url: 'imagse/screens/equipment_edit/machine_parts/skidsteer/medium/skidsteer_medium_tires_spritesheet.png',
+						width: 78,
+						height: 86,
+						frames: 2
+					},
+					// skidsteer heavy
+					newSkidsteerHeavyCab: {
+						url: 'imagse/screens/equipment_edit/machine_parts/skidsteer/heavy/skidsteer_heavy_cab_spritesheet.png',
+						width: 156,
+						height: 108,
+						frames: 2
+					},
+					newSkidsteerHeavyEngine: {
+						url: 'imagse/screens/equipment_edit/machine_parts/skidsteer/heavy/skidsteer_heavy_engine_spritesheet.png',
+						width: 83,
+						height: 57,
+						frames: 2
+					},
+					newSkidsteerHeavyBucket: {
+						url: 'imagse/screens/equipment_edit/machine_parts/skidsteer/heavy/skidsteer_heavy_bucket_spritesheet.png',
+						width: 239,
+						height: 127,
+						frames: 2
+					},
+					newSkidsteerHeavyTracks: {
+						url: 'imagse/screens/equipment_edit/machine_parts/skidsteer/heavy/skidsteer_heavy_tracks_spritesheet.png',
+						width: 239,
+						height: 127,
 						frames: 2
 					},
 /*
