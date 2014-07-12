@@ -145,26 +145,29 @@ var GameConfig = function() {
 			dealership: 'pinDealership',
 			traderoute: 'pinTraderoute'
 		};
-		var starsPositions = {
+		var starsConfig = {
 			basic: {
-				x: (gameW/2) - (((gameUnit * 0.5) * 3)/2),
-				y: (gameUnit * 10),
-				width: ((gameUnit * 0.5) * 3),
-				height: ((gameUnit * 0.5) * 3) * 0.2 
+				img: 'starsThree',
+				x: (gameW/2) - (((gameUnit * 0.55) * 3)/2),
+				y: (gameUnit * 13.25),
+				width: ((gameUnit * 0.55) * 3),
+				height: ((gameUnit * 0.55) * 3) * 0.2 
 			},
 			medium: {
-				x: (gameW/2) - (((gameUnit * 0.51) * 5)/2),
-				y: (gameUnit * 10),
-				width: ((gameUnit * 0.51) * 5),
-				height: ((gameUnit * 0.51) * 5) * 0.116
+				img: 'starsFive',
+				x: (gameW/2) - (((gameUnit * 0.56) * 5)/2),
+				y: (gameUnit * 13.25),
+				width: ((gameUnit * 0.56) * 5),
+				height: ((gameUnit * 0.56) * 5) * 0.116
 			},
 			heavy: {
-				x: (gameW/2) - (((gameUnit * 0.52) * 5)/2),
-				y: (gameUnit * 10),
-				width: ((gameUnit * 0.52) * 5),
-				height: ((gameUnit * 0.52) * 5) * 0.08
+				img: 'starsSeven',
+				x: (gameW/2) - (((gameUnit * 0.57) * 7)/2),
+				y: (gameUnit * 13.25),
+				width: ((gameUnit * 0.57) * 7),
+				height: ((gameUnit * 0.57) * 7) * 0.08
 			}
-		},
+		};
 		var machineEditBackgrounds = {
 			tractor: {
 				basic: 'tractorBasicBg',
@@ -1054,7 +1057,7 @@ var GameConfig = function() {
 				x: -1,
 				y: -1,
 				attrs: {
-					width: -1
+					width: -1,
 					height: -1
 				}
 			},
@@ -1683,6 +1686,7 @@ var GameConfig = function() {
 			pinPositions: pinPositions,
 			pinOffsets: pinOffsets,
 			pinImages: pinImages,
+			starsConfig: starsConfig,
 			machineEditBackgrounds: machineEditBackgrounds,
 			machinePartIconConfig: machinePartIconConfig,
 			views: {

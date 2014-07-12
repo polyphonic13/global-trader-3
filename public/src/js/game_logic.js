@@ -1222,11 +1222,12 @@ var gameLogic = {
 				tween.onComplete.add(function() {
 					// trace('wiper tween complete');
 					wiper.view.events.onTweenComplete = null;
-					PWG.ViewManager.showView('global:confirmButton');
+					// PWG.ViewManager.showView('global:confirmButton');
 				})
 				tween.to({angle: -65}, 1000, Phaser.Easing.Linear.None, true, Math.random() * 500);
 				tween.start();
-				// PhaserGame.phaser.add.tween(wiperMask.view).to({angle: -75}, 1000, Phaser.Easing.Linear.None, true, Math.random() * 500);
+
+				PWG.ViewManager.showView('global:confirmButton');
 
 			},
 			shutdown: function() {
@@ -1822,13 +1823,24 @@ var gameLogic = {
 				var count = 0;
 				
 				var equipmentEdit = PWG.ViewManager.getControllerFromPath('equipmentEdit');
+				var stars = PWG.Utils.clone(PhaserGame.config.dynamicViews.stars);
 				var machineEdit = PWG.Utils.clone(PhaserGame.config.dynamicViews.machineEdit);
 				var machinePieceMenuItem = PhaserGame.config.dynamicViews.machinePieceMenuItem;
 				var machinePartIcons = PWG.Utils.clone(PhaserGame.config.dynamicViews.machinePartIcons);
 				var machinePartIconConfig = PhaserGame.config.machinePartIconConfig;
 
 				machineEdit.views.bg.img = PhaserGame.config.machineEditBackgrounds[type][size];
-
+				
+				var starsConfig = PhaserGame.config.starsConfig[size];
+				stars.img = starsConfig.img;
+				stars.x = starsConfig.x;
+				stars.y = starsConfig.y;
+				stars.attrs.width = starsConfig.width;
+				stars.attrs.height = starsConfig.height;
+				stars.attrs.frame = 0;
+				
+				machineEdit.views['stars'] = stars;
+				
 				PWG.Utils.each(
 					requiredParts,
 					function(part) {
@@ -1872,7 +1884,7 @@ var gameLogic = {
 				// trace('machineEdit now = ', machineEdit);
 
 				PWG.ViewManager.addView(machineEdit, equipmentEdit, true);
-
+				
 				PWG.ViewManager.showView('global:equipmentEditGroup');
 
 				// PWG.ViewManager.setChildFrames('equipmentEdit:machineEdit:editorParts', 0);
