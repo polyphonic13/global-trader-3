@@ -28,6 +28,33 @@ var gameData = {
 				{
 					name: 'transmission',
 					sprite: true
+				}
+				],
+				optionalParts: [
+					'flameDecal',
+					'autoPilot',
+					'gps'
+				],
+				spriteTranslations: {
+					tires: 'tires',
+					engine: 'engine',
+					transmission: 'transmission',
+					headlights: 'transmission'
+				}
+			},
+			medium: {
+				requiredParts: [
+				{
+					name: 'tires',
+					sprite: true
+				},
+				{
+					name: 'engine',
+					sprite: true
+				},
+				{
+					name: 'transmission',
+					sprite: true
 				},
 				{
 					name: 'headlights',
@@ -46,32 +73,28 @@ var gameData = {
 					headlights: 'transmission'
 				}
 			},
-			medium: {
-				requiredParts: [
-					'tires',
-					'engine',
-					'transmission',
-					'headlights'
-				],
-				optionalParts: [
-					'flameDecal',
-					'autoPilot',
-					'gps'
-				],
-				spriteTranslations: {
-					tires: 'tires',
-					engine: 'engine',
-					transmission: 'transmission',
-					headlights: 'transmission'
-				}
-			},
 			heavy: {
 				requiredParts: [
-					'tires',
-					'transmission',
-					'engine',
-					'headlights',
-					'threePointHitch'
+				{
+					name: 'tracks',
+					sprite: true
+				},
+				{
+					name: 'engine',
+					sprite: true
+				},
+				{
+					name: 'transmission',
+					sprite: true
+				},
+				{
+					name: 'headlights',
+					sprite: false
+				},
+				{
+					name: 'threePointHitch',
+					sprite: false
+				}
 				],
 				optionalParts: [
 					'autoPilot',
@@ -79,7 +102,7 @@ var gameData = {
 					'heater'
 				],
 				spriteTranslations: {
-					tires: 'tires',
+					tracks: 'tracks',
 					engine: 'engine',
 					threepointHitch: 'engine',
 					transmission: 'transmission',
@@ -90,10 +113,22 @@ var gameData = {
 		skidsteer: {
 			basic: {
 				requiredParts: [
-					'tires',
-					'transmission',
-					'engine',
-					'bucket'
+				{
+					name: 'tires',
+					sprite: true
+				},
+				{
+					name: 'transmission',
+					sprite: false
+				},
+				{
+					name: 'engine',
+					sprite: true
+				},
+				{
+					name: 'bucket',
+					sprite: true
+				}
 				],
 				optionalParts: [
 					'flameDecal',
@@ -103,17 +138,32 @@ var gameData = {
 				spriteTranslations: {
 					tires: 'tires',
 					engine: 'engine',
-					transmission: 'transmission',
+					transmission: 'engine',
 					bucket: 'bucket'
 				}
 			},
 			medium: {
 				requiredParts: [
-					'tires',
-					'transmission',
-					'engine',
-					'quickCoupler',
-					'bucket'
+				{
+					name: 'tires',
+					sprite: true
+				},
+				{
+					name: 'transmission',
+					sprite: false
+				},
+				{
+					name: 'engine',
+					sprite: true
+				},
+				{
+					name: 'bucket',
+					sprite: true
+				},
+				{
+					name: 'quickCoupler',
+					sprite: false
+				}
 				],
 				optionalParts: [
 					'flameDecal',
@@ -123,19 +173,37 @@ var gameData = {
 				spriteTranslations: {
 					tires: 'tires',
 					engine: 'engine',
-					transmission: 'transmission',
-					quickCoupler: 'transmission',
+					transmission: 'engine',
+					quickCoupler: 'engine',
 					bucket: 'bucket'
 				}
 			},
 			heavy: {
 				requiredParts: [
-					'tires',
-					'transmission',
-					'engine',
-					'bucket',
-					'powerTakeoff',
-					'quickCoupler'
+				{
+					name: 'tracks',
+					sprite: true
+				},
+				{
+					name: 'engine',
+					sprite: true
+				},
+				{
+					name: 'transmission',
+					sprite: true
+				},
+				{
+					name: 'bucket',
+					sprite: true
+				},
+				{
+					name: 'powerTakeoff',
+					sprite: false
+				},
+				{
+					name: 'quickCoupler',
+					sprite: false
+				}
 				],
 				optionalParts: [
 					'autoPilot',
@@ -143,11 +211,11 @@ var gameData = {
 					'heater'
 				],
 				spriteTranslations: {
-					tires: 'tires',
+					tracks: 'tracks',
 					engine: 'engine',
-					powerTakeoff: 'engine',
 					transmission: 'transmission',
 					quickCoupler: 'transmission',
+					powerTakeoff: 'bucket',
 					bucket: 'bucket'
 				}
 			}
@@ -156,6 +224,7 @@ var gameData = {
 	parts: {
 		titles: {
 			tires: 'Tires',
+			tracks: 'Tracks',
 			engine: 'Engine',
 			transmission: 'Transmission',
 			bucket: 'Bucket',
