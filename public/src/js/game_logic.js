@@ -588,6 +588,46 @@ var gameLogic = {
 			getCurrentMachinePiecePath: function() {
 				return 'equipmentEdit:machineEdit:machinePieceName:' + PhaserGame.machinePieces[PhaserGame.currentMachinePiece];
 			},
+			getMachinePieceIndex: function(name) {
+				var idx = -1;
+				PWG.Utils.each(
+					PhaserGame.machinePieces,
+					function(piece, p) {
+						if(piece === name) {
+							idx = p;
+						}
+					},
+					this
+				);
+				return idx;
+			},
+			hideAllMachinePieceSprites: function() {
+				PWG.Utils.each(
+					PhaserGame.machinePieces,
+					function(piece) {
+						PhaserGame.hideMachinePieceSprite(piece);
+					},
+					this
+				);
+			},
+			hideMachinePieceSprite: function(piece) {
+				var path = 'equipmentEdit:machineEdit:machinePieceSprites:'+piece;
+				PWG.ViewManager.hideView(path);
+			},
+			resetAllMachinePieceSpriteFrames: function() {
+				PWG.Utils.each(
+					PhaserGame.machinePieces,
+					function(piece) {
+						PhaserGame.setMachinePieceSpriteFrame(piece, 0);
+					},
+					this
+				);
+			},
+			setMachinePieceSpriteFrame: function(piece, frame) {
+				var path = 'equipmentEdit:machineEdit:machinePieceSprites:'+piece;
+				var controller = PWG.ViewManager.getControllerFromPath(path);
+				controller.view.frame = frame;
+			},
 			populatePartsMenu: function(type, collection) {
 				PhaserGame.activePartType = type;
 				var partsData = gameData.parts[type];
@@ -888,40 +928,52 @@ var gameLogic = {
 					PWG.EventCenter.trigger({ type: Events.OPEN_OPTIONAL_PARTS_MENU });
 				}
 			},
-			tireIcon: {
+			tiresSprite: {
 				inputDown: function() {
 					// trace('tire icon input down');
-					PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PartTypes.WHEELS });
+					PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PartTypes.TIRES });
 				}
 			},
-			engineIcon: {
+			engineSprite: {
 				inputDown: function() {
 					// trace('engine icon input down');
 					PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PartTypes.ENGINE });
 				}
 			},
-			transmissionIcon: {
+			transmissionSprite: {
 				inputDown: function() {
 					// trace('transmission icon input down');
 					PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PartTypes.TRANSMISSION });
 				}
 			},
-			cabIcon: {
-				inputDown: function() {
-					// trace('cab icon input down');
-					PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PartTypes.CAB });
-				}
-			},
-			headlightsIcon: {
+			headlightsSprite: {
 				inputDown: function() {
 					// trace('headlights icon input down');
 					PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PartTypes.HEADLIGHTS });
 				}
 			},
-			bucketIcon: {
+			bucketSprite: {
 				inputDown: function() {
 					// trace('bucket icon input down');
 					PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PartTypes.BUCKET });
+				}
+			},
+			powerTakeoffSprite: {
+				inputDown: function() {
+					// trace('cab icon input down');
+					PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PartTypes.POWER_TAKEOFF });
+				}
+			},
+			quickCouplerSprite: {
+				inputDown: function() {
+					// trace('cab icon input down');
+					PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PartTypes.QUICK_COUPLER });
+				}
+			},
+			threePointHitchSprite: {
+				inputDown: function() {
+					// trace('cab icon input down');
+					PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PartTypes.THREE_POINT_HITCH });
 				}
 			},
 			partsMenu: {
@@ -1675,14 +1727,17 @@ var gameLogic = {
 			{
 				event: Events.NEXT_MACHINE_PIECE_ICON,
 				handler: function(event) {
-					var path = PhaserGame.getCurrentMachinePiecePath();
-					// trace('path = ' + path);
-					PWG.ViewManager.hideView(path);
+					PWG.ViewManager.hideView(PhaserGame.getCurrentMachinePiecePath());
+					PhaserGame.setMachinePieceSpriteFrame(PhaserGame.machinePieces[PhaserGame.currentMachinePiece], 0);
+
 					if(PhaserGame.currentMachinePiece < PhaserGame.machinePieces.length - 1) {
 						PhaserGame.currentMachinePiece++;
 					} else {
 						PhaserGame.currentMachinePiece = 0;
 					}
+					// set piece sprite frame to selected
+					PhaserGame.setMachinePieceSpriteFrame(PhaserGame.machinePieces[PhaserGame.currentMachinePiece], 1);
+					// show piece name text/button
 					PWG.ViewManager.showView(PhaserGame.getCurrentMachinePiecePath());
 				}
 			},
@@ -1691,11 +1746,17 @@ var gameLogic = {
 				event: Events.PREV_MACHINE_PIECE_ICON,
 				handler: function(event) {
 					PWG.ViewManager.hideView(PhaserGame.getCurrentMachinePiecePath());
+					PhaserGame.setMachinePieceSpriteFrame(PhaserGame.machinePieces[PhaserGame.currentMachinePiece], 0);
+
 					if(PhaserGame.currentMachinePiece > 1) {
 						PhaserGame.currentMachinePiece--;
 					} else {
 						PhaserGame.currentMachinePiece = PhaserGame.machinePieces.length - 1;
 					}
+					
+					// set piece sprite frame to selected
+					PhaserGame.setMachinePieceSpriteFrame(PhaserGame.machinePieces[PhaserGame.currentMachinePiece], 1);
+					// show piece name text/button
 					PWG.ViewManager.showView(PhaserGame.getCurrentMachinePiecePath());
 				}
 			},
@@ -1744,6 +1805,16 @@ var gameLogic = {
 					// trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + this.partsMenuOpen + ', partsMenuType = ' + this.partsMenuType);
 					if(!PhaserGame.partsMenuOpen && !PhaserGame.optionalPartsMenuOpen) {
 						if(this.partsMenuType !== event.value) {
+							// update piece navigator
+							PhaserGame.resetAllMachinePieceSpriteFrames();
+
+							PWG.ViewManager.hideView(PhaserGame.getCurrentMachinePiecePath());
+							PhaserGame.currentMachinePiece = PhaserGame.getMachinePieceIndex(event.value);
+
+							PhaserGame.setMachinePieceSpriteFrame(event.value, 1);
+							PWG.ViewManager.showView(PhaserGame.getCurrentMachinePiecePath());
+							
+							// populate menu with new piece type
 							PhaserGame.populatePartsMenu.call(this, event.value, this.views);
 						}
 						PWG.ViewManager.showView('partsMenu');
@@ -1828,8 +1899,8 @@ var gameLogic = {
 				var stars = PWG.Utils.clone(PhaserGame.config.dynamicViews.stars);
 				var machineEdit = PWG.Utils.clone(PhaserGame.config.dynamicViews.machineEdit);
 				var machinePieceMenuItem = PhaserGame.config.dynamicViews.machinePieceMenuItem;
-				var machinePartIcons = PWG.Utils.clone(PhaserGame.config.dynamicViews.machinePartIcons);
-				var machinePartIconConfig = PhaserGame.config.machinePartIconConfig;
+				var machinePieceSprites = PWG.Utils.clone(PhaserGame.config.dynamicViews.machinePieceSprites);
+				var machinePieceSpriteConfig = PhaserGame.config.machinePieceSpriteConfig;
 
 				machineEdit.views.bg.img = PhaserGame.config.machineEditBackgrounds[type][size];
 				
@@ -1850,8 +1921,12 @@ var gameLogic = {
 				
 				PWG.Utils.each(
 					requiredParts,
-					function(part) {
+					function(part, idx) {
 						var item = PWG.Utils.clone(machinePieceMenuItem);
+						var partSprite = PWG.Utils.clone(machinePieceSpriteConfig[type][size][part]);
+						if(idx === 0) {
+							partSprite.attrs.frame = 1;
+						}
 						item.name = part;
 						item.views.name.text = part.toUpperCase();
 						if(count > 0) {
@@ -1864,30 +1939,12 @@ var gameLogic = {
 						PhaserGame.machinePieces.push(item.name);
 						count++;
 						machineEdit.views.machinePieceName.views[part] = item;
-					},
-					this
-				);
-				PWG.Utils.each(
-					machinePartIcons.views,
-					function(part, p) {
-						var config = machinePartIconConfig[type][size][p];
-						// trace('\tconfig = ', config);
-						part.img = config.img;
-						part.x = config.x;
-						part.y = config.y;
-						PWG.Utils.each(
-							config.attrs,
-							function(attr, a) {
-								part.attrs[a] = attr;
-							},
-							this
-						);
-				
-						machineEdit.views[p] = part;
+						machinePieceSprites.views[partSprite.name] = partSprite;
 					},
 					this
 				);
 
+				machineEdit.views[machinePieceSprites.name] = machinePieceSprites;
 				// trace('machineEdit now = ', machineEdit);
 
 				PWG.ViewManager.addView(machineEdit, equipmentEdit, true);

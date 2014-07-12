@@ -216,10 +216,12 @@ var GameConfig = function() {
 				heavy: 'skidsteerHeavyBg'
 			}
 		};
-		var machinePartIconConfig = {
+		var machinePieceSpriteConfig = {
 			tractor: {
 				basic: {
-					engine: {
+					transmission: {
+						type: 'sprite',
+						name: 'transmission',
 						img: 'editTractorBasicEngine',
 						x: (gameUnit * 0.6),
 						y: (gameUnit * 5.75),
@@ -227,19 +229,25 @@ var GameConfig = function() {
 							width: gameUnit * 4.8,
 							height: (gameUnit * 4.8) * 1.1,
 							frame: 0
-						}
+						},
+						input: gameLogic.global.input.transmissionSprite
 					},
 					tires: {
+						type: 'sprite',
+						name: 'tires',
 						img: 'editTractorBasicTires',
 						x: (gameUnit * 0.15),
-						y: (gameUnit * 6.4),
+						y: (gameUnit * 6.35),
 						attrs: {
-							width: gameUnit * 8.65,
-							height: (gameUnit * 8.65) * 0.64,
+							width: gameUnit * 8.7,
+							height: (gameUnit * 8.7) * 0.64,
 							frame: 0
-						}
+						},
+						input: gameLogic.global.input.tiresSprite
 					},
-					cab: {
+					engine: {
+						type: 'sprite',
+						name: 'engine',
 						img: 'editTractorBasicCab',
 						x: (gameUnit * 3.9),
 						y: (gameUnit * 4.85),
@@ -247,7 +255,8 @@ var GameConfig = function() {
 							width: gameUnit * 3.05,
 							height: (gameUnit * 3.05) * 1.47,
 							frame: 0
-						}
+						},
+						input: gameLogic.global.input.engineSprite
 					}
 				},
 				medium: {
@@ -1148,38 +1157,11 @@ var GameConfig = function() {
 					}
 				}
 			},
-			machinePartIcons: {
+			machinePieceSprites: {
 				type: 'group',
-				name: 'editorParts',
+				name: 'machinePieceSprites',
 				views: 
 				{
-					tires: {
-						type: 'sprite',
-						name: 'tiresPart',
-						img: '',
-						attrs: {
-							frame: 0
-						},
-						input: gameLogic.global.input.tireIcon
-					},
-					engine: {
-						type: 'sprite',
-						name: 'enginePart',
-						img: '',
-						attrs: {
-							frame: 0
-						},
-						input: gameLogic.global.input.engineIcon
-					},
-					cab: {
-						type: 'sprite',
-						name: 'cabPart',
-						img: '',
-						attrs: {
-							frame: 0
-						},
-						input: gameLogic.global.input.cabIcon
-					}
 				}
 			},
 			partsMenu: {
@@ -1878,7 +1860,7 @@ var GameConfig = function() {
 			pinImages: pinImages,
 			starsConfig: starsConfig,
 			machineEditBackgrounds: machineEditBackgrounds,
-			machinePartIconConfig: machinePartIconConfig,
+			machinePieceSpriteConfig: machinePieceSpriteConfig,
 			views: {
 				// background
 				background: {
