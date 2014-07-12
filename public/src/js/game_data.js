@@ -19,8 +19,7 @@ var gameData = {
 				requiredParts: [
 					'tires',
 					'transmission',
-					'engine',
-					'headlights'
+					'engine'
 				],
 				optionalParts: [
 					'flameDecal',

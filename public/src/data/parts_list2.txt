@@ -1,0 +1,45 @@
+Basic Tractor
+1. Transmission (Basic version) 
+2. Tires 
+3. Engine (Basic version) 
+
+Medium Tractor
+1. Transmission (Medium version) 
+2. Tires  
+3. Engine (Medium version) 
+4. Headlights
+
+Heavy Duty Tractor
+1. Transmission (Heavy Duty version) 
+2. TRACKS 
+3. Engine (Heavy Duty version) 
+4. Headlights
+5. Three Point Hitch
+
+Basic Skid Steer
+1. Transmission (Basic) 
+2. Tires  
+3. Engine (Basic version) 
+4. Bucket Attachment  
+
+Medium Skid Steer
+1. Transmission (Medium version) 
+2. Tires  
+3. Engine (Medium version) 
+4. Bucket Attachment  
+5. Quick Coupler 
+
+Heavy Duty Skid Steer
+1. Transmission (Heavy Duty version) 
+2. TRACKS 
+3. Engine (Heavy Duty version) 
+4. Bucket Attachment  
+5. Power Take Off  
+6. Quick Coupler 
+
+Extras:
+1. Flame Decal
+2. Stainless Exhaust
+3. Autopilot
+4. GPS
+5. Cab AC/Heater 

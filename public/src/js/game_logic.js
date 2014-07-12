@@ -1831,7 +1831,7 @@ var gameLogic = {
 
 				machineEdit.views.bg.img = PhaserGame.config.machineEditBackgrounds[type][size];
 				
-				var starsConfig = PhaserGame.config.starsConfig[size];
+				var starsConfig = PhaserGame.config.starsConfig[type][size];
 				stars.img = starsConfig.img;
 				stars.x = starsConfig.x;
 				stars.y = starsConfig.y;

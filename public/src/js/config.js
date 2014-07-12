@@ -146,26 +146,56 @@ var GameConfig = function() {
 			traderoute: 'pinTraderoute'
 		};
 		var starsConfig = {
-			basic: {
-				img: 'starsThree',
-				x: (gameW/2) - (((gameUnit * 0.55) * 3)/2),
-				y: (gameUnit * 13.25),
-				width: ((gameUnit * 0.55) * 3),
-				height: ((gameUnit * 0.55) * 3) * 0.2 
+			tractor: {
+				basic: {
+					img: 'starsThree',
+					x: (gameW/2) - (((gameUnit * 0.55) * 3)/2),
+					y: (gameUnit * 13.25),
+					width: ((gameUnit * 0.55) * 3),
+					height: ((gameUnit * 0.55) * 3) * 0.2 
+				},
+				medium: {
+					img: 'starsFour',
+					x: (gameW/2) - (((gameUnit * 0.55) * 4)/2),
+					y: (gameUnit * 13.25),
+					width: ((gameUnit * 0.555) * 4),
+					height: ((gameUnit * 0.555) * 4) * 0.147
+				},
+				heavy: {
+					img: 'starsFive',
+					x: (gameW/2) - (((gameUnit * 0.56) * 5)/2),
+					y: (gameUnit * 13.25),
+					width: ((gameUnit * 0.56) * 5),
+					height: ((gameUnit * 0.56) * 5) * 0.116
+				}
 			},
-			medium: {
-				img: 'starsFive',
-				x: (gameW/2) - (((gameUnit * 0.56) * 5)/2),
-				y: (gameUnit * 13.25),
-				width: ((gameUnit * 0.56) * 5),
-				height: ((gameUnit * 0.56) * 5) * 0.116
-			},
-			heavy: {
-				img: 'starsSeven',
-				x: (gameW/2) - (((gameUnit * 0.57) * 7)/2),
-				y: (gameUnit * 13.25),
-				width: ((gameUnit * 0.57) * 7),
-				height: ((gameUnit * 0.57) * 7) * 0.08
+			skidsteer: {
+				basic: {
+					img: 'starsFour',
+					x: (gameW/2) - (((gameUnit * 0.55) * 4)/2),
+					y: (gameUnit * 13.25),
+					width: ((gameUnit * 0.555) * 4),
+					height: ((gameUnit * 0.555) * 4) * 0.147
+				},
+				medium: {
+					img: 'starsFive',
+					x: (gameW/2) - (((gameUnit * 0.56) * 5)/2),
+					y: (gameUnit * 13.25),
+					width: ((gameUnit * 0.56) * 5),
+					height: ((gameUnit * 0.56) * 5) * 0.116
+				},
+				heavy: {
+					img: 'starsSix',
+					x: (gameW/2) - (((gameUnit * 0.565) * 6)/2),
+					y: (gameUnit * 13.25),
+					width: ((gameUnit * 0.565) * 6),
+					height: ((gameUnit * 0.565) * 6) * 0.094
+					// img: 'starsSeven',
+					// x: (gameW/2) - (((gameUnit * 0.57) * 7)/2),
+					// y: (gameUnit * 13.25),
+					// width: ((gameUnit * 0.57) * 7),
+					// height: ((gameUnit * 0.57) * 7) * 0.08
+				}
 			}
 		};
 		var machineEditBackgrounds = {
@@ -1551,11 +1581,23 @@ var GameConfig = function() {
 						height: 26,
 						frames: 4
 					},
+					starsFour: {
+						url: 'images/screens/equipment_edit/stars/stars_four_spritesheet.png', 
+						width: 176,
+						height: 26,
+						frames: 5
+					},
 					starsFive: {
 						url: 'images/screens/equipment_edit/stars/stars_five_spritesheet.png', 
 						width: 224,
 						height: 26,
 						frames: 6
+					},
+					starsSix: {
+						url: 'images/screens/equipment_edit/stars/stars_six_spritesheet.png', 
+						width: 274,
+						height: 26,
+						frames: 7
 					},
 					starsSeven: {
 						url: 'images/screens/equipment_edit/stars/stars_seven_spritesheet.png', 
