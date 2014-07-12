@@ -17,9 +17,22 @@ var gameData = {
 		tractor: {
 			basic: {
 				requiredParts: [
-					'tires',
-					'engine',
-					'transmission'
+				{
+					name: 'tires',
+					sprite: true
+				},
+				{
+					name: 'engine',
+					sprite: true
+				},
+				{
+					name: 'transmission',
+					sprite: true
+				},
+				{
+					name: 'headlights',
+					sprite: false
+				}
 				],
 				optionalParts: [
 					'flameDecal',
@@ -29,7 +42,8 @@ var gameData = {
 				spriteTranslations: {
 					tires: 'tires',
 					engine: 'engine',
-					transmission: 'transmission'
+					transmission: 'transmission',
+					headlights: 'transmission'
 				}
 			},
 			medium: {
@@ -140,6 +154,16 @@ var gameData = {
 		}
 	},
 	parts: {
+		titles: {
+			tires: 'Tires',
+			engine: 'Engine',
+			transmission: 'Transmission',
+			bucket: 'Bucket',
+			headlights: 'Headlights',
+			quickCoupler: 'Quick Coupler',
+			threePointHitch: 'Three Point Hitch',
+			powerTakeoff: 'Power Takeoff'
+		},
 		tires: [
 		{
 			id: 'w3',

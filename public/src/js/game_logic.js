@@ -614,11 +614,18 @@ var gameLogic = {
 				var path = 'equipmentEdit:machineEdit:machinePieceSprites:'+piece;
 				PWG.ViewManager.hideView(path);
 			},
+			setSelectedMachinePieceSprite: function() {
+				PhaserGame.resetAllMachinePieceSpriteFrames();
+				var piece = PhaserGame.spriteTranslations[PhaserGame.machinePieces[PhaserGame.currentMachinePiece]];
+				PhaserGame.setMachinePieceSpriteFrame(piece, 1);
+			},
 			resetAllMachinePieceSpriteFrames: function() {
+				var machinePieceSprites = PWG.ViewManager.getControllerFromPath('equipmentEdit:machineEdit:machinePieceSprites');
 				PWG.Utils.each(
-					PhaserGame.machinePieces,
-					function(piece) {
-						PhaserGame.setMachinePieceSpriteFrame(piece, 0);
+					machinePieceSprites.children,
+					function(piece, name) {
+						piece.view.frame = 0;
+						// PhaserGame.setMachinePieceSpriteFrame(name, 0);
 					},
 					this
 				);
@@ -1728,15 +1735,15 @@ var gameLogic = {
 				event: Events.NEXT_MACHINE_PIECE_ICON,
 				handler: function(event) {
 					PWG.ViewManager.hideView(PhaserGame.getCurrentMachinePiecePath());
-					PhaserGame.setMachinePieceSpriteFrame(PhaserGame.machinePieces[PhaserGame.currentMachinePiece], 0);
 
 					if(PhaserGame.currentMachinePiece < PhaserGame.machinePieces.length - 1) {
 						PhaserGame.currentMachinePiece++;
 					} else {
 						PhaserGame.currentMachinePiece = 0;
 					}
-					// set piece sprite frame to selected
-					PhaserGame.setMachinePieceSpriteFrame(PhaserGame.machinePieces[PhaserGame.currentMachinePiece], 1);
+
+					PhaserGame.setSelectedMachinePieceSprite();
+
 					// show piece name text/button
 					PWG.ViewManager.showView(PhaserGame.getCurrentMachinePiecePath());
 				}
@@ -1747,16 +1754,14 @@ var gameLogic = {
 				handler: function(event) {
 					PWG.ViewManager.hideView(PhaserGame.getCurrentMachinePiecePath());
 					
-					PhaserGame.setMachinePieceSpriteFrame(PhaserGame.machinePieces[PhaserGame.currentMachinePiece], 0);
-
 					if(PhaserGame.currentMachinePiece > 1) {
 						PhaserGame.currentMachinePiece--;
 					} else {
 						PhaserGame.currentMachinePiece = PhaserGame.machinePieces.length - 1;
 					}
 					
-					// set piece sprite frame to selected
-					PhaserGame.setMachinePieceSpriteFrame(PhaserGame.machinePieces[PhaserGame.currentMachinePiece], 1);
+					PhaserGame.setSelectedMachinePieceSprite();
+
 					// show piece name text/button
 					PWG.ViewManager.showView(PhaserGame.getCurrentMachinePiecePath());
 				}
@@ -1815,7 +1820,8 @@ var gameLogic = {
 							PWG.ViewManager.hideView(PhaserGame.getCurrentMachinePiecePath());
 							PhaserGame.currentMachinePiece = PhaserGame.getMachinePieceIndex(event.value);
 
-							PhaserGame.setMachinePieceSpriteFrame(event.value, 1);
+							// PhaserGame.setMachinePieceSpriteFrame(event.value, 1);
+							PhaserGame.setSelectedMachinePieceSprite();
 							PWG.ViewManager.showView(PhaserGame.getCurrentMachinePiecePath());
 							
 							// populate menu with new piece type
@@ -1927,23 +1933,26 @@ var gameLogic = {
 					requiredParts,
 					function(part, idx) {
 						var item = PWG.Utils.clone(machinePieceMenuItem);
-						var partSprite = PWG.Utils.clone(machinePieceSpriteConfig[type][size][part]);
-						if(idx === 0) {
-							partSprite.attrs.frame = 1;
-						}
-						item.name = part;
-						item.views.name.text = part.toUpperCase();
+						item.name = part.name;
+						item.views.name.text = gameData.parts.titles[part.name];
 						if(count > 0) {
 							item.attrs.visible = false;
 						} else {
 							item.x += 100;
 						}
-						item.views.button.partValue = part;
+						item.views.button.partValue = part.name;
 						
 						PhaserGame.machinePieces.push(item.name);
 						count++;
-						machineEdit.views.machinePieceName.views[part] = item;
-						machinePieceSprites.views[partSprite.name] = partSprite;
+						machineEdit.views.machinePieceName.views[part.name] = item;
+						
+						if(part.sprite) {
+							var partSprite = PWG.Utils.clone(machinePieceSpriteConfig[type][size][part.name]);
+							if(idx === 0) {
+								partSprite.attrs.frame = 1;
+							}
+							machinePieceSprites.views[partSprite.name] = partSprite;
+						}
 					},
 					this
 				);
@@ -1955,24 +1964,8 @@ var gameLogic = {
 				
 				PWG.ViewManager.showView('global:equipmentEditGroup');
 
-				// PWG.ViewManager.setChildFrames('equipmentEdit:machineEdit:editorParts', 0);
-				var activeMachineParts = PhaserGame.activeMachine.config.parts;
-				if(activeMachineParts) {
-					// TODO: show the views/frames of the machine as it currently exists
-					// trace('--------- activeMachineParts = ', activeMachineParts);
-					// PWG.Utils.each(
-					// 	activeMachineParts,
-					// 	function(value, key) {
-					// 		var partView = key + 'Part';
-					// 		var frame = gameData.parts[key][value].frame;
-					// 		// PWG.ViewManager.setFrame('equipmentEdit:machineEdit:editorParts:'+partView, frame);
-					// 	},
-					// 	this
-					// );
-				}
 				PhaserGame.spriteTranslations = gameData.machines[type][size].spriteTranslations;
 				PhaserGame.machineDirty = true;
-				// PWG.ViewManager.showView('global:confirmButton');
 			},
 			shutdown: function() {
 				PhaserGame.machinePieces = null;
