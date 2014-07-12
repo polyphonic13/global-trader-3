@@ -1704,6 +1704,8 @@ var gameLogic = {
 				event: Events.ADD_PART,
 				handler: function(event) {
 					PhaserGame.activeMachine.setPart(PhaserGame.activePartType, event.value);
+					var stars = PWG.ViewManager.getControllerFromPath('equipmentEdit:machineEdit:stars');
+					stars.view.frame++;
 					// trace('add part, type = ' + event.value + ', part type = ' + this.partsMenuType + ', view collection = ', this.views);
 					// var frame = gameData.parts[this.partsMenuType][event.value].frame;
 					// trace('frame = ' + frame + ', type = ' + this.partsMenuType + ', collection = ', this.views);
@@ -1837,8 +1839,13 @@ var gameLogic = {
 				stars.y = starsConfig.y;
 				stars.attrs.width = starsConfig.width;
 				stars.attrs.height = starsConfig.height;
-				stars.attrs.frame = 0;
 				
+				if(PhaserGame.newMachine) {
+					stars.attrs.frame = 0;
+				} else {
+					stars.attrs.frame = starsConfig.frames;
+				}
+
 				machineEdit.views['stars'] = stars;
 				
 				PWG.Utils.each(
@@ -1884,6 +1891,14 @@ var gameLogic = {
 				// trace('machineEdit now = ', machineEdit);
 
 				PWG.ViewManager.addView(machineEdit, equipmentEdit, true);
+				
+				// var starsView = PWG.ViewManager.getControllerFromPath('equipmentEdit:machineEdit:stars').view;
+				// if(PhaserGame.newMachine) {
+				// 	starsView.frame = 0;
+				// } else {
+				// 	trace('STARS FRAMES IS: ' + starsConfig.frames);
+				// 	starsView.frame = starsConfig.frames;
+				// }
 				
 				PWG.ViewManager.showView('global:equipmentEditGroup');
 

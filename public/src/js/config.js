@@ -149,6 +149,7 @@ var GameConfig = function() {
 			tractor: {
 				basic: {
 					img: 'starsThree',
+					frames: 3,
 					x: (gameW/2) - (((gameUnit * 0.55) * 3)/2),
 					y: (gameUnit * 13.25),
 					width: ((gameUnit * 0.55) * 3),
@@ -156,6 +157,7 @@ var GameConfig = function() {
 				},
 				medium: {
 					img: 'starsFour',
+					frames: 4,
 					x: (gameW/2) - (((gameUnit * 0.55) * 4)/2),
 					y: (gameUnit * 13.25),
 					width: ((gameUnit * 0.555) * 4),
@@ -163,6 +165,7 @@ var GameConfig = function() {
 				},
 				heavy: {
 					img: 'starsFive',
+					frames: 5,
 					x: (gameW/2) - (((gameUnit * 0.56) * 5)/2),
 					y: (gameUnit * 13.25),
 					width: ((gameUnit * 0.56) * 5),
@@ -172,6 +175,7 @@ var GameConfig = function() {
 			skidsteer: {
 				basic: {
 					img: 'starsFour',
+					frames: 4,
 					x: (gameW/2) - (((gameUnit * 0.55) * 4)/2),
 					y: (gameUnit * 13.25),
 					width: ((gameUnit * 0.555) * 4),
@@ -179,6 +183,7 @@ var GameConfig = function() {
 				},
 				medium: {
 					img: 'starsFive',
+					frames: 5,
 					x: (gameW/2) - (((gameUnit * 0.56) * 5)/2),
 					y: (gameUnit * 13.25),
 					width: ((gameUnit * 0.56) * 5),
@@ -186,6 +191,7 @@ var GameConfig = function() {
 				},
 				heavy: {
 					img: 'starsSix',
+					frames: 6,
 					x: (gameW/2) - (((gameUnit * 0.565) * 6)/2),
 					y: (gameUnit * 13.25),
 					width: ((gameUnit * 0.565) * 6),

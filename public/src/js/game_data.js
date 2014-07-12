@@ -61,7 +61,6 @@ var gameData = {
 					'tires',
 					'transmission',
 					'engine',
-					'headlights',
 					'bucket'
 				],
 				optionalParts: [
@@ -75,7 +74,6 @@ var gameData = {
 					'tires',
 					'transmission',
 					'engine',
-					'headlights',
 					'bucket'
 				],
 				optionalParts: [
@@ -89,7 +87,6 @@ var gameData = {
 					'tires',
 					'transmission',
 					'engine',
-					'headlights',
 					'bucket',
 					'powerTakeoff',
 					'quickCoupler'
