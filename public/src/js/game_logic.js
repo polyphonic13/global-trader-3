@@ -586,7 +586,7 @@ var gameLogic = {
 				AnimationManager.add(config);
 			},
 			getCurrentMachinePiecePath: function() {
-				return 'equipmentEdit:machineEdit:machinePieceMenu:' + PhaserGame.machinePieces[PhaserGame.currentMachinePiece];
+				return 'equipmentEdit:machineEdit:machinePieceName:' + PhaserGame.machinePieces[PhaserGame.currentMachinePiece];
 			},
 			populatePartsMenu: function(type, collection) {
 				PhaserGame.activePartType = type;
@@ -1863,7 +1863,7 @@ var gameLogic = {
 						
 						PhaserGame.machinePieces.push(item.name);
 						count++;
-						machineEdit.views.machinePieceMenu.views[part] = item;
+						machineEdit.views.machinePieceName.views[part] = item;
 					},
 					this
 				);
