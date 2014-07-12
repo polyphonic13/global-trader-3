@@ -1611,6 +1611,25 @@ var GameConfig = function() {
 						height: 26,
 						frames: 8
 					},
+					newTractorBasicCab: {
+						url: 'imagse/screens/equipement_add/machine_parts/tractor/basic/tractor_basic_cab_spritesheet.png',
+						width: 104.5,
+						height: 154,
+						frames: 2
+					},
+					newTractorBasicEngine: {
+						url: 'imagse/screens/equipement_add/machine_parts/tractor/basic/tractor_basic_engine_spritesheet.png',
+						width: 166.5,
+						height: 189,
+						frames: 2
+					},
+					newTractorBasicTires: {
+						url: 'imagse/screens/equipement_add/machine_parts/tractor/basic/tractor_basic_tires_spritesheet.png',
+						width: 308,
+						height: 196,
+						frames: 2
+					},
+/*
 					newTractorBasic: {
 						url: 'images/screens/equipment_add/tractor_basic.png',
 						width: 310,
@@ -1647,6 +1666,7 @@ var GameConfig = function() {
 						height: 218,
 						frames: 2
 					},
+*/
 					tiresSprites: {
 						url: 'images/parts/tires_spritesheet.gif',
 						width: 125,
