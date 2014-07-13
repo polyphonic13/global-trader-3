@@ -1082,6 +1082,17 @@ var GameConfig = function() {
 							
 						}
 					},
+					stars: {
+						type: 'sprite',
+						name: 'stars',
+						img: '',
+						x: -1,
+						y: -1,
+						attrs: {
+							width: -1,
+							height: -1
+						}
+					},
 					machinePieceMenuNavigator: {
 						type: 'group',
 						name: 'machinePieceMenuNavigator',
@@ -1144,6 +1155,28 @@ var GameConfig = function() {
 						name: 'machinePieceName',
 						views: {
 						}
+					},
+					// parts group
+					partsMenu: {
+						type: 'group',
+						name: 'partsMenu',
+						attrs: {
+							visible: false
+						},
+						views: {
+							menuBg: {
+								type: 'sprite',
+								name: 'menuBg',
+								img: 'partsFrame',
+								x: 0,
+								y: 0,
+								attrs: {
+									width: gameW,
+									height: gameH
+								}
+							}
+						}
+						
 					}
 				}
 			},
@@ -1197,24 +1230,24 @@ var GameConfig = function() {
 					}
 				}
 			},
-			partsMenu: {
+			partIcons: {
 				type: 'group',
 				name: '',
 				attrs: {
 					visible: false
 				},
 				views: {
-					menuBg: {
-						type: 'sprite',
-						name: 'menuBg',
-						img: 'partsFrame',
-						x: 0,
-						y: 0,
-						attrs: {
-							width: gameW,
-							height: gameH
-						}
-					},
+					// menuBg: {
+					// 	type: 'sprite',
+					// 	name: 'menuBg',
+					// 	img: 'partsFrame',
+					// 	x: 0,
+					// 	y: -(gameH),
+					// 	attrs: {
+					// 		width: gameW,
+					// 		height: gameH
+					// 	}
+					// },
 					// closeButton: {
 					// 	type: 'button',
 					// 	name: 'closeButton',
@@ -2375,7 +2408,6 @@ var GameConfig = function() {
 						visible: false
 					},
 					views: {
-						// parts group
 					}
 				},
 				// turn end
