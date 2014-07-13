@@ -1977,6 +1977,7 @@ var gameLogic = {
 						
 						if(part.sprite) {
 							var partSprite = PWG.Utils.clone(machinePieceSpriteConfig[type][size][part.name]);
+							trace('part.name = ' + part.name + ', partSprite = ', partSprite);
 							if(idx === 0) {
 								partSprite.attrs.frame = 1;
 							}

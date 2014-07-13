@@ -118,11 +118,11 @@ var gameData = {
 				},
 				{
 					name: 'transmission',
-					sprite: false
+					sprite: true
 				},
 				{
 					name: 'engine',
-					sprite: true
+					sprite: false
 				},
 				{
 					name: 'bucket',
@@ -136,8 +136,8 @@ var gameData = {
 				],
 				spriteTranslations: {
 					tires: 'tires',
-					engine: 'engine',
-					transmission: 'engine',
+					engine: 'transmission',
+					transmission: 'transmission',
 					bucket: 'bucket'
 				}
 			},
