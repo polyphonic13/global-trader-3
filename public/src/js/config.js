@@ -165,17 +165,17 @@ var GameConfig = function() {
 		var traderouteArrowConfig = {
 			africa: {
 				img: 'tradeRouteAfrica',
-				x: (gameUnit * 2),
-				y: (gameUnit * 6.5),
+				x: (gameUnit * 1.8),
+				y: (gameUnit * 6.45),
 				attrs: {
-					width: (gameUnit * 3),
-					height: (gameUnit * 3) * 0.43
+					width: (gameUnit * 3.5),
+					height: (gameUnit * 3.5) * 0.43
 				}
 			},
 			asia: {
 				img: 'tradeRouteAsia',
-				x: (gameUnit * 2),
-				y: (gameUnit * 5.5),
+				x: (gameUnit * 1.8),
+				y: (gameUnit * 5.75),
 				attrs: {
 					width: (gameUnit * 5.25),
 					height: (gameUnit * 5.25) * 0.19
@@ -183,25 +183,34 @@ var GameConfig = function() {
 			},
 			europe: {
 				img: 'tradeRouteEurope',
-				x: (gameUnit * 2),
-				y: (gameUnit * 6),
+				x: (gameUnit * 1.8),
+				y: (gameUnit * 6.2),
 				attrs: {
-					width: (gameUnit * 3),
-					height: (gameUnit * 3) * 0.2
+					width: (gameUnit * 2.75),
+					height: (gameUnit * 2.75) * 0.2
+				}
+			},
+			middleEast: {
+				img: 'tradeRoutePacificNorth',
+				x: (gameUnit * 1.8),
+				y: (gameUnit * 6.75),
+				attrs: {
+					width: (gameUnit * 4.25),
+					height: (gameUnit * 4.25) * 0.22
 				}
 			},
 			pacificNorth: {
 				img: 'tradeRoutePacificNorth',
-				x: (gameUnit * 2),
+				x: (gameUnit * 1.8),
 				y: (gameUnit * 6.75),
 				attrs: {
-					width: (gameUnit * 6),
-					height: (gameUnit * 6) * 0.22
+					width: (gameUnit * 6.25),
+					height: (gameUnit * 6.25) * 0.22
 				}
 			},
 			pacificSouth: {
 				img: 'tradeRoutePacificSouth',
-				x: (gameUnit * 2),
+				x: (gameUnit * 1.8),
 				y: (gameUnit * 6.75),
 				attrs: {
 					width: (gameUnit * 6),
@@ -210,7 +219,7 @@ var GameConfig = function() {
 			}, 
 			southAmerica: {
 				img: 'tradeRouteSouthAmerica',
-				x: (gameUnit * 2),
+				x: (gameUnit * 1.8),
 				y: (gameUnit * 6.75),
 				attrs: {
 					width: (gameUnit * 1.25),
@@ -1494,7 +1503,7 @@ var GameConfig = function() {
 					windowFrame: 'images/screens/brief/window_frame.png',
 					// world
 					mapOcean: 'images/screens/world/map_ocean.png',
-					mapWorld: 'images/screens/world/map_world3.png',
+					mapWorld: 'images/screens/world/map_world4.png',
 					mapUS: 'images/screens/world/map_us.png',
 					endTurnPrompt: 'images/screens/world/end_turn_prompt.png',
 					pinPlant: 'images/screens/world/pin_plant.png',

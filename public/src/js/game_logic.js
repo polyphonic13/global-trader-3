@@ -234,6 +234,7 @@ var gameLogic = {
 							if(PhaserGame.currentZoom === 4) {
 								PWG.ViewManager.showView('world:usMap');
 								PWG.ViewManager.showView('world:buildingPins');
+								PWG.EventCenter.trigger({ type: Events.WORLD_ZOOMED_OUT });
 							}
 						});
 						tween.to({
@@ -250,7 +251,6 @@ var gameLogic = {
 						tween.start();
 
 						PhaserGame.zoomedIn = false;
-						PWG.EventCenter.trigger({ type: Events.WORLD_ZOOMED_OUT });
 					}
 				}
 			},
@@ -266,6 +266,7 @@ var gameLogic = {
 						var tween = PhaserGame.phaser.add.tween(PhaserGame.worldView);
 						tween.onComplete.add(function() {
 							// trace('zoom tween complete');
+							PWG.EventCenter.trigger({ type: Events.WORLD_ZOOMED_IN });
 						});
 						tween.to({
 								x: min.x,
@@ -281,7 +282,6 @@ var gameLogic = {
 						tween.start();
 
 						PhaserGame.zoomedIn = true;
-						PWG.EventCenter.trigger({ type: Events.WORLD_ZOOMED_IN });
 					}
 				}
 			},

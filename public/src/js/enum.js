@@ -79,6 +79,7 @@ var TradeRoutesLocations = {
 	AFRICA: 'africa',
 	ASIA: 'asia',
 	EUROPE: 'europe',
+	MIDDLE_EAST: 'middleEast',
 	PACIFIC_NORTH: 'pacificNorth',
 	PACIFIC_SOUTH: 'pacificSouth',
 	SOUTH_AMERICA: 'southAmerica'
