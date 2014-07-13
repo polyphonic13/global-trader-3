@@ -942,6 +942,12 @@ var gameLogic = {
 					PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PartTypes.TIRES });
 				}
 			},
+			tracksSprite: {
+				inputDown: function() {
+					// trace('tire icon input down');
+					PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PartTypes.TRACKS });
+				}
+			},
 			engineSprite: {
 				inputDown: function() {
 					// trace('engine icon input down');

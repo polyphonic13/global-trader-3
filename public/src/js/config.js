@@ -230,7 +230,7 @@ var GameConfig = function() {
 							height: (gameUnit * 4.8) * 1.1,
 							frame: 0
 						},
-						input: gameLogic.global.input.transmissionSprite
+						input: gameLogic.global.input.engineSprite
 					},
 					tires: {
 						type: 'sprite',
@@ -256,7 +256,7 @@ var GameConfig = function() {
 							height: (gameUnit * 3.05) * 1.47,
 							frame: 0
 						},
-						input: gameLogic.global.input.engineSprite
+						input: gameLogic.global.input.transmissionSprite
 					}
 				},
 				medium: {
@@ -271,7 +271,7 @@ var GameConfig = function() {
 							height: (gameUnit * 4) * 1.04,
 							frame: 0
 						},
-						input: gameLogic.global.input.transmissionSprite
+						input: gameLogic.global.input.engineSprite
 					},
 					tires: {
 						type: 'sprite',
@@ -297,7 +297,7 @@ var GameConfig = function() {
 							height: (gameUnit * 2.33) * 2.13,
 							frame: 0
 						},
-						input: gameLogic.global.input.engineSprite
+						input: gameLogic.global.input.transmissionSprite
 					}
 				},
 				heavy: {
@@ -312,7 +312,7 @@ var GameConfig = function() {
 							height: (gameUnit * 4.66) * 1.04,
 							frame: 0
 						},
-						input: gameLogic.global.input.transmissionSprite
+						input: gameLogic.global.input.engineSprite
 					},
 					tracks: {
 						type: 'sprite',
@@ -325,7 +325,7 @@ var GameConfig = function() {
 							height: (gameUnit * 8.5) * 0.57,
 							frame: 0
 						},
-						input: gameLogic.global.input.tiresSprite
+						input: gameLogic.global.input.tracksSprite
 					},
 					transmission: {
 						type: 'sprite',
@@ -338,7 +338,7 @@ var GameConfig = function() {
 							height: (gameUnit * 4.75) * 1.31,
 							frame: 0
 						},
-						input: gameLogic.global.input.engineSprite
+						input: gameLogic.global.input.transmissionSprite
 					}
 				}
 			},
@@ -1215,20 +1215,6 @@ var GameConfig = function() {
 							height: gameH
 						}
 					},
-					// title: {
-					// 	type: 'text',
-					// 	name: 'title',
-					// 	text: '',
-					// 	x: gameUnit * 4,
-					// 	y: gameUnit * 1,
-					// 	style: {
-					// 	    font: (fontSizes.md + 'px Trebuchet MS'),
-					//         fill: palette.black
-					// 	},
-					// 	position: {
-					// 		centerX: true
-					// 	}
-					// },
 					// closeButton: {
 					// 	type: 'button',
 					// 	name: 'closeButton',

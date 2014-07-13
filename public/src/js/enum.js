@@ -45,7 +45,7 @@ var PartTypes = {
 	CAB: 'cab',
 	HEADLIGHTS: 'headlights',
 	BUCKET: 'bucket',
-	TRACK: 'track',
+	TRACKS: 'tracks',
 	THREE_POINT_HITCH: 'threePointHitch',
 	POWER_TAKE_OFF: 'powerTakeoff',
 	QUICK_COUPLER: 'quickCoupler',

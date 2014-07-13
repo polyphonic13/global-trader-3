@@ -315,7 +315,7 @@ var gameData = {
 			id: 'w4',
 			img: 'tires3',
 			frame: 3,
-			description: 'Delux',
+			description: 'Deluxe',
 			heavy: {
 				img: 'tracksHeavyDeluxe',
 				cost: 4000,
