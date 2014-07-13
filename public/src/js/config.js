@@ -1420,7 +1420,7 @@ var GameConfig = function() {
 					windowFrame: 'images/screens/brief/window_frame.png',
 					// world
 					mapOcean: 'images/screens/world/map_ocean.png',
-					mapWorld: 'images/screens/world/map_world.png',
+					mapWorld: 'images/screens/world/map_world3.png',
 					mapUS: 'images/screens/world/map_us.png',
 					endTurnPrompt: 'images/screens/world/end_turn_prompt.png',
 					pinPlant: 'images/screens/world/pin_plant.png',
@@ -2093,7 +2093,7 @@ var GameConfig = function() {
 							type: 'sprite',
 							name: 'worldMap',
 							img: 'mapWorld',
-							x: -(gameW * 0.816),
+							x: -(gameW * 0.805),
 							y: -(gameH * 1.947),
 							attrs: {
 								width: gameW * 5.9,
