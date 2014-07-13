@@ -8,7 +8,7 @@ var MACHINE_LIST_COLUMNS = 2;
 var MACHINE_LIST_ICONS = 6;
 
 function startGame() {
-	PhaserGame.init(ASPECT_RATIO);
+	PhaserGame.init(ASPECT_RATIO, document.documentElement.clientHeight);
 }
 
 var gameLogic = {
