@@ -1068,8 +1068,8 @@ var gameLogic = {
 				ignitionKey.view.events.onAnimationComplete.add(PhaserGame.ignitionAnimationCompleted, this);
 				PWG.PhaserAnimation.play(ignitionKey.name, 'turnOn');
 			},
-			homeButton: function() {
-				trace('home button callback');
+			worldReturnButton: function() {
+				trace('worldReturnButton callback');
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
 			},
 			plusButton: function() {

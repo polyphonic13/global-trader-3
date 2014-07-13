@@ -655,18 +655,6 @@ var GameConfig = function() {
 				type: 'group',
 				name: 'buildingPins',
 				views: {
-					// bg: {
-					// 	type: 'sprite',
-					// 	name: 'pinBg',
-					// 	img: 'blockBlue',
-					// 	x: worldPositions.us.x,
-					// 	y: worldPositions.us.y,
-					// 	attrs: {
-					// 		width: worldPositions.us.width,
-					// 		height: worldPositions.us.height,
-					// 		alpha: 0.3
-					// 	}
-					// }
 				}
 			},
 			buildingPin: {
@@ -1425,7 +1413,8 @@ var GameConfig = function() {
 					endTurnPrompt: 'images/screens/world/end_turn_prompt.png',
 					pinPlant: 'images/screens/world/pin_plant.png',
 					pinDealership: 'images/screens/world/pin_dealership.png',
-					// pinTraderoute: 'images/screens/world/pin_traderoute.png',
+					pinTraderoute: 'images/screens/world/pin_traderoute.png',
+					tradeRouteAlertIcon: 'images/screens/world/trade_route_alert.png',
 					// us detail
 					sectorGridNE: 'images/screens/us_detail/sector_grid_ne.png',
 					sectorGridSE: 'images/screens/us_detail/sector_grid_se.png',
@@ -2609,13 +2598,13 @@ var GameConfig = function() {
 									type: 'sprite',
 									name: 'homeButton',
 									img: 'buttonHome',
-									x: (gameW/2) - (gameUnit * 0.75),
+									x: (gameW/2) - (gameUnit * 1),
 									y: gameH - (gameUnit * 1),
 									attrs: {
-											width: gameUnit * 1.5,
-											height: gameUnit * 0.5
+											width: gameUnit * 2,
+											height: (gameUnit * 2) / 3
 										},
-										callback: gameLogic.global.buttonCallbacks.homeButton,
+										callback: gameLogic.global.buttonCallbacks.worldReturnButton,
 										context: this,
 										frames: [0, 1, 1, 0]
 								}
@@ -2632,11 +2621,11 @@ var GameConfig = function() {
 									type: 'button',
 									name: 'plusButton',
 									img: 'buttonPlus',
-									x: (gameW/2) - (gameUnit * 2),
+									x: (gameW/2) - (gameUnit * 2.5),
 									y: gameH - (gameUnit * 1),
 									attrs: {
-										width: gameUnit * 1.5,
-										height: gameUnit * 0.5
+										width: gameUnit * 2,
+										height: (gameUnit * 2) / 3
 									},
 									callback: gameLogic.global.buttonCallbacks.plusButton,
 									context: this,
@@ -2649,8 +2638,8 @@ var GameConfig = function() {
 									x: (gameW/2) + (gameUnit * 0.5),
 									y: gameH - (gameUnit * 1),
 									attrs: {
-										width: gameUnit * 1.5,
-										height: gameUnit * 0.5
+										width: gameUnit * 2,
+										height: (gameUnit * 2) / 3
 									},
 									callback: gameLogic.global.buttonCallbacks.minusButton,
 									context: this,
