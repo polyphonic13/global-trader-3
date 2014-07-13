@@ -38,8 +38,7 @@ var gameData = {
 				spriteTranslations: {
 					tires: 'tires',
 					engine: 'engine',
-					transmission: 'transmission',
-					headlights: 'transmission'
+					transmission: 'transmission'
 				}
 			},
 			medium: {
@@ -70,7 +69,7 @@ var gameData = {
 					tires: 'tires',
 					engine: 'engine',
 					transmission: 'transmission',
-					headlights: 'transmission'
+					headlights: 'engine'
 				}
 			},
 			heavy: {
@@ -106,7 +105,7 @@ var gameData = {
 					engine: 'engine',
 					threePointHitch: 'engine',
 					transmission: 'transmission',
-					headlights: 'transmission'
+					headlights: 'engine'
 				}
 			}
 		},

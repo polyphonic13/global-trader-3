@@ -656,7 +656,7 @@ var gameLogic = {
 						item.name = part.id;
 						item.views.icon.img = part[size].img;
 						item.views.description.text = part.description.toUpperCase();
-						item.views.cost.text = '$' + part[size].cost;
+						item.views.cost.text = '$' + PWG.Utils.formatMoney(part[size].cost, 0);
 						item.views.invisButton.partIdx = idx;
 						item.views.invisButton.input = gameLogic.global.input.partIcon;
 						
@@ -675,8 +675,8 @@ var gameLogic = {
 					this
 				);
 				// trace('partsMenuConfig = ', partsMenuConfig);
-				partsMenuConfig.views.title.text = PartDescriptions[type];
-				partsMenuConfig.views.closeButton.callback = gameLogic.global.buttonCallbacks.partsMenuClose;
+				// partsMenuConfig.views.title.text = PartDescriptions[type];
+				// partsMenuConfig.views.closeButton.callback = gameLogic.global.buttonCallbacks.partsMenuClose;
 				partsMenuConfig.name = 'partsMenu';
 
 				PWG.ViewManager.addView(partsMenuConfig);
@@ -1875,7 +1875,7 @@ var gameLogic = {
 			{
 				event: Events.MACHINE_PARTS_COMPLETE,
 				handler: function(event) {
-					// trace('machine complete, event = ', event);
+					trace('machine complete, event = ', event);
 					PWG.ViewManager.showView('global:confirmButton');
 				}
 			},

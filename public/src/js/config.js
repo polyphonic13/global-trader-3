@@ -1215,33 +1215,33 @@ var GameConfig = function() {
 							height: gameH
 						}
 					},
-					title: {
-						type: 'text',
-						name: 'title',
-						text: '',
-						x: gameUnit * 4,
-						y: gameUnit * 1,
-						style: {
-						    font: (fontSizes.md + 'px Trebuchet MS'),
-					        fill: palette.black
-						},
-						position: {
-							centerX: true
-						}
-					},
-					closeButton: {
-						type: 'button',
-						name: 'closeButton',
-						img: 'buttonClose',
-						x: (gameW - gameUnit * 1.25),
-						y: (gameUnit * 0.25),
-						attrs: {
-							width: gameUnit * 1,
-							height: gameUnit * 1
-						},
-						context: this,
-						frames: [0, 1, 1, 0]
-					},
+					// title: {
+					// 	type: 'text',
+					// 	name: 'title',
+					// 	text: '',
+					// 	x: gameUnit * 4,
+					// 	y: gameUnit * 1,
+					// 	style: {
+					// 	    font: (fontSizes.md + 'px Trebuchet MS'),
+					//         fill: palette.black
+					// 	},
+					// 	position: {
+					// 		centerX: true
+					// 	}
+					// },
+					// closeButton: {
+					// 	type: 'button',
+					// 	name: 'closeButton',
+					// 	img: 'buttonClose',
+					// 	x: (gameW - gameUnit * 1.25),
+					// 	y: (gameUnit * 0.25),
+					// 	attrs: {
+					// 		width: gameUnit * 1,
+					// 		height: gameUnit * 1
+					// 	},
+					// 	context: this,
+					// 	frames: [0, 1, 1, 0]
+					// },
 					items: {
 						type: 'group',
 						name: 'itemsGroup',
