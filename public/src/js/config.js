@@ -988,7 +988,7 @@ var GameConfig = function() {
 						type: 'text',
 						name: 'name',
 						text: '',
-						x: (gameUnit * 0.5),
+						x: (gameUnit * 0.66),
 						y: gameUnit * 3.25,
 						style: {
 						    font: (fontSizes.sm + 'px Trebuchet MS'),
