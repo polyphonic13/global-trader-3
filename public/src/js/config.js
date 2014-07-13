@@ -381,7 +381,7 @@ var GameConfig = function() {
 							height: (gameUnit * 3.25) * 1.09,
 							frame: 0
 						},
-						input: gameLogic.global.input.engineSprite
+						input: gameLogic.global.input.transmissionSprite
 					}
 				},
 				medium: {
@@ -422,47 +422,61 @@ var GameConfig = function() {
 							height: (gameUnit * 4) * 0.91,
 							frame: 0
 						},
-						input: gameLogic.global.input.engineSprite
+						input: gameLogic.global.input.transmissionSprite
 					}
 				},
 				heavy: {
-					engine: {
-						img: 'blockWhite',
-						x: (gameUnit * 4),
-						y: (gameUnit * 10),
-						attrs: {
-							width: gameUnit * 4,
-							height: gameUnit * 2.5,
-							angle: -20
-						}
-					},
-					tires: {
-						img: 'blockWhite',
-						x: gameUnit * 1.5,
-						y: (gameUnit * 8),
-						attrs: {
-							width: gameUnit * 4,
-							height: gameUnit * 2,
-							angle: 40
-						}
-					},
-					cab: {
-						img: 'blockWhite',
-						x: (gameUnit * 2),
-						y: (gameUnit * 6.5),
-						attrs: {
-							width: gameUnit * 4,
-							height: gameUnit * 2.5
-						}
-					},
 					bucket: {
-						img: 'blockWhite',
-						x: gameUnit * 4,
-						y: gameUnit * 2,
+						type: 'sprite',
+						name: 'bucket',
+						img: 'editSkidsteerHeavyBucket',
+						x: (gameUnit * 1.6),
+						y: (gameUnit * 4.05),
 						attrs: {
-							width: gameUnit * 4,
-							height: gameUnit * 3
-						}
+							width: gameUnit * 7.1,
+							height: (gameUnit * 7.1) * 0.98,
+							frame: 0
+						},
+						input: gameLogic.global.input.bucketSprite
+					},
+					tracks: {
+						type: 'sprite',
+						name: 'tracks',
+						img: 'editSkidsteerHeavyTracks',
+						x: (gameUnit * 0.55),
+						y: (gameUnit * 8.25),
+						attrs: {
+							width: gameUnit * 6.75,
+							height: (gameUnit * 6.75) * 0.53,
+							frame: 0
+						},
+						input: gameLogic.global.input.tiresSprite
+					},
+					transmission: {
+						type: 'sprite',
+						name: 'transmission',
+						img: 'editSkidsteerHeavyCab',
+						x: (gameUnit * 1.69),
+						y: (gameUnit * 6.73),
+						attrs: {
+							width: gameUnit * 4.5,
+							height: (gameUnit * 4.5) * 0.69,
+							frame: 0
+						},
+						input: gameLogic.global.input.transmissionSprite
+					},
+					engine: {
+						type: 'sprite',
+						name: 'engine',
+						img: 'editSkidsteerHeavyEngine',
+						x: (gameUnit * 4.05),
+						y: (gameUnit * 9.15),
+						attrs: {
+							width: gameUnit * 2.35,
+							height: (gameUnit * 2.35) * 0.69,
+							frame: 0
+						},
+						input: gameLogic.global.input.engineSprite
 					}
 				}
 			}
@@ -1824,8 +1838,8 @@ var GameConfig = function() {
 					},
 					editSkidsteerHeavyBucket: {
 						url: 'images/screens/equipment_edit/machine_parts/skidsteer/heavy/skidsteer_heavy_bucket_spritesheet.png',
-						width: 239,
-						height: 127,
+						width: 249,
+						height: 244,
 						frames: 2
 					},
 					editSkidsteerHeavyTracks: {
