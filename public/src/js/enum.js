@@ -83,12 +83,12 @@ var USSectors = {
 	SOUTH_WEST: 4
 };
 
-var SectorTitles = [
-	'sectorTitleNE',
-	'sectorTitleSE',
-	'sectorTitleMW',
-	'sectorTitleNW',
-	'sectorTitleSW'
+var SectorGrids = [
+	'sectorGridNE',
+	'sectorGridSE',
+	'sectorGridMW',
+	'sectorGridNW',
+	'sectorGridSW'
 ];
 
 var IconAnimations = {

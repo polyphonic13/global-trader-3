@@ -1061,12 +1061,16 @@ var gameLogic = {
 				// trace('share click');
 			},
 			manualStart: function() {
-				// PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'manual' });
+				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'manual' });
 			},
 			worldStart: function() {
 				var ignitionKey = PWG.ViewManager.getControllerFromPath('home:ignitionKey');
 				ignitionKey.view.events.onAnimationComplete.add(PhaserGame.ignitionAnimationCompleted, this);
 				PWG.PhaserAnimation.play(ignitionKey.name, 'turnOn');
+			},
+			homeButton: function() {
+				trace('home button callback');
+				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
 			},
 			plusButton: function() {
 				PhaserGame.worldZoomOut();
@@ -1494,7 +1498,7 @@ var gameLogic = {
 			create: function() {
 				// trace('BUILD DETAIL GRID, this = ', this);
 				var usDetail = PWG.ViewManager.getControllerFromPath('usDetail');
-				var sectorTitle = PWG.Utils.clone(PhaserGame.config.dynamicViews.sectorTitle);
+				var sectorBg = PWG.Utils.clone(PhaserGame.config.dynamicViews.sectorBg);
 				var gridCoordinates = GridManager.grids[PhaserGame.activeSector];
 				var usDetailGrid = PWG.Utils.clone(PhaserGame.config.dynamicViews.usDetailGrid);
 				var gridItem = PhaserGame.config.dynamicViews.usDetailGridItem;
@@ -1522,12 +1526,10 @@ var gameLogic = {
 					this
 				);
 
-				sectorTitle.img = SectorTitles[PhaserGame.activeSector];
-				PWG.ViewManager.addView(sectorTitle, usDetail, true);
+				sectorBg.img = SectorGrids[PhaserGame.activeSector];
+				PWG.ViewManager.addView(sectorBg, usDetail, true);
 				
 				PWG.ViewManager.addView(usDetailGrid, usDetail, true);
-				// trace('CURRENT US SECTOR = ' + PhaserGame.activeSector);
-				// PWG.ViewManager.callMethod('usDetail:sectorTitle', 'setText', [SectorTitles[PhaserGame.activeSector]], this);
 				
 				if(PhaserGame.notifications[PhaserGame.activeSector].length > 0) {
 					PhaserGame.showNotificationEnvelope();
@@ -2020,6 +2022,7 @@ var gameLogic = {
 		},
 		turnEnd: {
 			create: function() {
+				PWG.ViewManager.hideView('global:turnGroup:homeButton');
 				PWG.ViewManager.hideView('global:backButton');
 			},
 			shutdown: function() {

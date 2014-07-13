@@ -697,15 +697,15 @@ var GameConfig = function() {
 					}
 				}
 			},
-			sectorTitle: {
+			sectorBg: {
 				type: 'sprite',
-				name: 'sectorTitle',
+				name: 'sectorBg',
 				img: '',
-				x: (gameW/2) - (gameUnit * 1.75),
-				y: gameUnit * 2,
+				x: 0,
+				y: 0,
 				attrs: {
-					width: (gameUnit * 4),
-					height: (gameUnit * 4) * 0.37
+					width: gameW,
+					height: gameH
 				}
 			},
 			usDetailGrid: {
@@ -1427,11 +1427,11 @@ var GameConfig = function() {
 					pinDealership: 'images/screens/world/pin_dealership.png',
 					// pinTraderoute: 'images/screens/world/pin_traderoute.png',
 					// us detail
-					sectorTitleNE: 'images/screens/us_detail/sector_title_ne.png',
-					sectorTitleSE: 'images/screens/us_detail/sector_title_se.png',
-					sectorTitleMW: 'images/screens/us_detail/sector_title_mw.png',
-					sectorTitleNW: 'images/screens/us_detail/sector_title_nw.png',
-					sectorTitleSW: 'images/screens/us_detail/sector_title_sw.png',
+					sectorGridNE: 'images/screens/us_detail/sector_grid_ne.png',
+					sectorGridSE: 'images/screens/us_detail/sector_grid_se.png',
+					sectorGridMW: 'images/screens/us_detail/sector_grid_mw.png',
+					sectorGridNW: 'images/screens/us_detail/sector_grid_nw.png',
+					sectorGridSW: 'images/screens/us_detail/sector_grid_sw.png',
 					addNewPlantPrompt: 'images/screens/us_detail/add_new_plant_prompt.png',
 					dealershipRepresentativePrompt: 'images/screens/us_detail/dealership_representative_prompt.png',
 					// building detail
@@ -1609,6 +1609,12 @@ var GameConfig = function() {
 					buttonCheck: {
 						url: 'images/controls/check.png',
 						width: 50,
+						height: 50,
+						frames: 2
+					},
+					buttonHome: {
+						url: 'images/icons/home.png',
+						width: 150,
 						height: 50,
 						frames: 2
 					},
@@ -2598,6 +2604,20 @@ var GameConfig = function() {
 										width: gameUnit * 2.4,
 										height: (gameUnit * 2.5)/3
 									}
+								},
+								homeButton: {
+									type: 'sprite',
+									name: 'homeButton',
+									img: 'buttonHome',
+									x: (gameW/2) - (gameUnit * 0.75),
+									y: gameH - (gameUnit * 1),
+									attrs: {
+											width: gameUnit * 1.5,
+											height: gameUnit * 0.5
+										},
+										callback: gameLogic.global.buttonCallbacks.homeButton,
+										context: this,
+										frames: [0, 1, 1, 0]
 								}
 							}
 						},
