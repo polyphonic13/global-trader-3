@@ -149,11 +149,11 @@ var gameData = {
 				},
 				{
 					name: 'transmission',
-					sprite: false
+					sprite: true
 				},
 				{
 					name: 'engine',
-					sprite: true
+					sprite: false
 				},
 				{
 					name: 'bucket',
@@ -171,9 +171,9 @@ var gameData = {
 				],
 				spriteTranslations: {
 					tires: 'tires',
-					engine: 'engine',
-					transmission: 'engine',
-					quickCoupler: 'engine',
+					engine: 'transmission',
+					transmission: 'transmission',
+					quickCoupler: 'transmission',
 					bucket: 'bucket'
 				}
 			},
@@ -524,6 +524,12 @@ var gameData = {
 			id: 'c1',
 			frame: 1,
 			description: 'Standard',
+			medium: {
+				img: 'quickCouplerMediumStandard',
+				cost: 500,
+				build: 150,
+				sell: 1500
+			},
 			heavy: {
 				img: 'quickCouplerHeavyStandard',
 				cost: 900,
@@ -535,6 +541,12 @@ var gameData = {
 			id: 'c2',
 			frame: 2,
 			description: 'Premium',
+			medium: {
+				img: 'quickCouplerMediumPremium',
+				cost: 750,
+				build: 150,
+				sell: 1500
+			},
 			heavy: {
 				img: 'quickCouplerHeavyPremium',
 				cost: 1200,
@@ -546,6 +558,12 @@ var gameData = {
 			id: 'c3',
 			frame: 3,
 			description: 'Deluxe',
+			medium: {
+				img: 'quickCouplerMediumDeluxe',
+				cost: 1000,
+				build: 150,
+				sell: 1500
+			},
 			heavy: {
 				img: 'quickCouplerHeavyDeluxe',
 				cost: 3000,

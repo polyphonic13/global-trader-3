@@ -640,7 +640,7 @@ var gameLogic = {
 				PhaserGame.activePartType = type;
 				var partsMenu = PWG.ViewManager.getControllerFromPath('equipmentEdit:machineEdit:partsMenu');
 				var partsData = gameData.parts[type];
-				// trace('populatePartsMenu, type = ' + type + '\tparts data = ', partsData);
+				trace('populatePartsMenu, type = ' + type + '\tparts data = ', partsData);
 				var partIconsConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.partIcons);
 				var itemConfig = PhaserGame.config.dynamicViews.partIcon;
 				var offset = itemConfig.offset;
@@ -652,7 +652,7 @@ var gameLogic = {
 				PWG.Utils.each(
 					partsData,
 					function(part, idx) {
-						// trace('\tadding part[' + idx + '] info to views');
+						trace('\tadding part[' + idx + '] info to views, part = ', part);
 						var item = PWG.Utils.clone(itemConfig);
 						item.name = part.id;
 						item.views.icon.img = part[size].img;

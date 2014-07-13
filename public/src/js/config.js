@@ -366,7 +366,6 @@ var GameConfig = function() {
 						attrs: {
 							width: gameUnit * 4.5,
 							height: (gameUnit * 4.5) * 0.64,
-							alpha: 0.66,
 							frame: 0
 						},
 						input: gameLogic.global.input.tiresSprite
@@ -386,43 +385,44 @@ var GameConfig = function() {
 					}
 				},
 				medium: {
-					engine: {
-						img: 'blockWhite',
-						x: (gameUnit * 4),
-						y: (gameUnit * 10),
+					bucket: {
+						type: 'sprite',
+						name: 'bucket',
+						img: 'editSkidsteerMediumBucket',
+						x: (gameUnit * 2.9),
+						y: (gameUnit * 8.35),
 						attrs: {
-							width: gameUnit * 4,
-							height: gameUnit * 2.5,
-							angle: -20
-						}
+							width: gameUnit * 5.2,
+							height: (gameUnit * 5.2) * 0.93,
+							frame: 0
+						},
+						input: gameLogic.global.input.bucketSprite
 					},
 					tires: {
-						img: 'blockWhite',
-						x: gameUnit * 1.5,
-						y: (gameUnit * 8),
+						type: 'sprite',
+						name: 'tires',
+						img: 'editSkidsteerMediumTires',
+						x: (gameUnit * 1.73),
+						y: (gameUnit * 8.55),
 						attrs: {
-							width: gameUnit * 4,
-							height: gameUnit * 2,
-							angle: 40
-						}
+							width: gameUnit * 2.25,
+							height: (gameUnit * 2.25) * 1.1,
+							frame: 0
+						},
+						input: gameLogic.global.input.tiresSprite
 					},
-					cab: {
-						img: 'blockWhite',
-						x: (gameUnit * 2),
-						y: (gameUnit * 6.5),
+					transmission: {
+						type: 'sprite',
+						name: 'transmission',
+						img: 'editSkidsteerMediumCab',
+						x: (gameUnit * 2.125),
+						y: (gameUnit * 5.62),
 						attrs: {
 							width: gameUnit * 4,
-							height: gameUnit * 2.5
-						}
-					},
-					bucket: {
-						img: 'blockWhite',
-						x: gameUnit * 4,
-						y: gameUnit * 2,
-						attrs: {
-							width: gameUnit * 4,
-							height: gameUnit * 3
-						}
+							height: (gameUnit * 4) * 0.91,
+							frame: 0
+						},
+						input: gameLogic.global.input.engineSprite
 					}
 				},
 				heavy: {
@@ -1503,6 +1503,9 @@ var GameConfig = function() {
 					powerTakeoffHeavyPremium: 'images/screens/equipment_edit/parts_icons/powerTakeoff/heavy_premium.png',
 					powerTakeoffHeavyDeluxe: 'images/screens/equipment_edit/parts_icons/powerTakeoff/heavy_deluxe.png',
 					// quickCoupler
+					quickCouplerMediumStandard: 'images/screens/equipment_edit/parts_icons/quickCoupler/medium_standard.png',
+					quickCouplerMediumPremium: 'images/screens/equipment_edit/parts_icons/quickCoupler/medium_premium.png',
+					quickCouplerMediumDeluxe: 'images/screens/equipment_edit/parts_icons/quickCoupler/medium_deluxe.png',
 					quickCouplerHeavyStandard: 'images/screens/equipment_edit/parts_icons/quickCoupler/heavy_standard.png',
 					quickCouplerHeavyPremium: 'images/screens/equipment_edit/parts_icons/quickCoupler/heavy_premium.png',
 					quickCouplerHeavyDeluxe: 'images/screens/equipment_edit/parts_icons/quickCoupler/heavy_deluxe.png',
