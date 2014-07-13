@@ -143,7 +143,7 @@ var GameConfig = function() {
 		var pinImages = {
 			plant: 'pinPlant',
 			dealership: 'pinDealership',
-			traderoute: 'pinTraderoute'
+			tradeRoute: 'pinTradeRoute'
 		};
 		var pinFills = {
 			plant: [
@@ -162,7 +162,7 @@ var GameConfig = function() {
 			]
 		};
 
-		var traderouteArrowConfig = {
+		var tradeRouteArrowConfig = {
 			africa: {
 				img: 'tradeRouteAfrica',
 				x: (gameUnit * 1.8),
@@ -758,14 +758,25 @@ var GameConfig = function() {
 					}
 				}
 			},
-			traderouteArrows: {
+			tradeRouteArrows: {
 				type: 'group',
-				name: 'traderouteArrows',
+				name: 'tradeRouteArrows',
 				views: {}
 			},
-			traderouteArrow: {
+			tradeRouteArrow: {
 				type: 'sprite',
-				name: 'traderouteArrow'
+				name: 'tradeRouteArrow'
+			},
+			tradeRoutePrompt: { 
+				type: 'sprite',
+				name: 'tradeRoutePrompt',
+				img: 'tradeRouteRespresentativePrompt',
+				x: (gameW/2) - (gameUnit * 3),
+				y: (gameUnit * 12.5),
+				attrs: {
+					width: (gameUnit * 6),
+					height: (gameUnit * 6) * 0.34
+				}
 			},
 			// us detail
 			sectorBg: {
@@ -1031,7 +1042,7 @@ var GameConfig = function() {
 					}
 				}
 			},
-			dealershipPrompt: {
+			dealershipPrompt: { 
 				type: 'sprite',
 				name: 'dealershipPrompt',
 				img: 'dealershipRepresentativePrompt',
@@ -1508,14 +1519,15 @@ var GameConfig = function() {
 					endTurnPrompt: 'images/screens/world/end_turn_prompt.png',
 					pinPlant: 'images/screens/world/pin_plant.png',
 					pinDealership: 'images/screens/world/pin_dealership.png',
-					pinTraderoute: 'images/screens/world/pin_traderoute.png',
-					tradeRouteAlertIcon: 'images/screens/world/trade_route_alert.png',
+					pinTradeRoute: 'images/screens/world/pin_tradeRoute.png',
+					tradeRouteAlertIcon: 'images/icons/little_trade_route_alert.png',
 					tradeRouteEurope: 'images/screens/world/trade_route_europe.png',
 					tradeRouteAsia: 'images/screens/world/trade_route_asia.png',
 					tradeRoutePacificNorth: 'images/screens/world/trade_route_pacific_north.png',
 					tradeRoutePacificSouth: 'images/screens/world/trade_route_pacific_south.png',
 					tradeRouteAfrica: 'images/screens/world/trade_route_africa.png',
 					tradeRouteSouthAmerica: 'images/screens/world/trade_route_south_america.png',
+					tradeRouteRepresentativePrompt: 'images/screens/world/trade_route_representative_prompt.png',
 					// us detail
 					sectorGridNE: 'images/screens/us_detail/sector_grid_ne.png',
 					sectorGridSE: 'images/screens/us_detail/sector_grid_se.png',
@@ -1535,7 +1547,7 @@ var GameConfig = function() {
 					tractorBasicIcon: 'images/screens/equipment_list/tractor_basic_icon.png',
 					tractorMediumIcon: 'images/screens/equipment_list/tractor_medium_icon.png',
 					tractorHeavyIcon: 'images/screens/equipment_list/tractor_heavy_icon.png',
-					emptyIcon: 'images/screens/equipment_list/empty_icon.png',
+					emptyIcon: 'images/screens/equipment_list/empty_icon2.png',
 					// equipment create
 					equipmentCreateBg: 'images/screens/equipment_add/equipment_add_bg.png',
 					// equipment edit
@@ -1672,12 +1684,12 @@ var GameConfig = function() {
 						height: 150,
 						frames: 2
 					},
-					buttonEquipmentAdd: {
-						url: 'images/icons/equipment_add.png',
-						width: 175,
-						height: 150,
-						frames: 2
-					},
+					// buttonEquipmentAdd: {
+					// 	url: 'images/icons/equipment_add.png',
+					// 	width: 175,
+					// 	height: 150,
+					// 	frames: 2
+					// },
 					buttonInventory: {
 						url: 'images/icons/inventory.png',
 						width: 175,
@@ -1991,7 +2003,7 @@ var GameConfig = function() {
 					title: 'Dealership',
 					statement: 'We would like to sell ~{quantity}~ per year\nof your ~{plant}~\n~{model}~ inventory\nat $~{resell}~ each.'
 				},
-				traderoute: {
+				tradeRoute: {
 					title: 'Trade Route',
 					statement: 'We would like to import ~{quantity}~ per year\nof your\n~{plant}~\n~{model}~ inventory\nat $~{resell}~ each.'
 				}
@@ -2003,7 +2015,7 @@ var GameConfig = function() {
 					profit: 'Profits: ',
 					newFactories: 'Factories built: ',
 					newDealerships: 'Dealerships established: ',
-					newTraderoutes: 'Trade Routes established: ',
+					newTradeRoutes: 'Trade Routes established: ',
 					newMachineModels: 'Machine models created: ',
 					newMachines: 'Machines built: ',
 					machinesSold: 'Machines sold: '
@@ -2012,7 +2024,7 @@ var GameConfig = function() {
 			bonusesText: {
 				newPlant: 'New Plant built created 1000 jobs',
 				newDealership: 'New Dealership established',
-				newTraderoutes: 'New Trade Route established',
+				newTradeRoutes: 'New Trade Route established',
 				machingManufacturing: '~{machines}~ Machines built'
 			},
 			machineIcons: {
@@ -2033,7 +2045,7 @@ var GameConfig = function() {
 			pinOffsets: pinOffsets,
 			pinImages: pinImages,
 			pinFills: pinFills,
-			traderouteArrowConfig: traderouteArrowConfig,
+			tradeRouteArrowConfig: tradeRouteArrowConfig,
 			starsConfig: starsConfig,
 			machineEditBackgrounds: machineEditBackgrounds,
 			machinePieceSpriteConfig: machinePieceSpriteConfig,
@@ -2580,6 +2592,18 @@ var GameConfig = function() {
 							},
 							input: gameLogic.global.input.notificationEnvelope
 						},
+						tradeRouteAlertIcon: {
+							type: 'sprite',
+							name: 'tradeRouteAlertIcon',
+							img: 'tradeRouteAlertIcon',
+							x: gameW - (gameUnit * 1.35),
+							y: gameUnit * 1.6,
+							attrs: {
+								width: gameUnit * 1.25,
+								height: (gameUnit * 1.25) * 0.89
+							},
+							input: gameLogic.global.input.tradeRouteAlertIcon
+						},
 						notifications: {
 							name: 'notifications',
 							type: 'group',
@@ -2780,20 +2804,20 @@ var GameConfig = function() {
 								visible: false
 							},
 							views: {
-								addEquipmentButton: {
-									type: 'button',
-									name: 'buttonEquipmentAdd',
-									img: 'buttonEquipmentAdd',
-									x: (gameW/2) - (controlButtons.width/2),
-									y: gameH - (gameUnit * 1.66),
-									attrs: {
-										width: controlButtons.width,
-										height: controlButtons.height
-									},
-									callback: gameLogic.global.buttonCallbacks.addEquipment,
-									context: this,
-									frames: [0, 1, 1, 0]
-								}
+								// addEquipmentButton: {
+								// 	type: 'button',
+								// 	name: 'buttonEquipmentAdd',
+								// 	img: 'buttonEquipmentAdd',
+								// 	x: (gameW/2) - (controlButtons.width/2),
+								// 	y: gameH - (gameUnit * 1.66),
+								// 	attrs: {
+								// 		width: controlButtons.width,
+								// 		height: controlButtons.height
+								// 	},
+								// 	callback: gameLogic.global.buttonCallbacks.addEquipment,
+								// 	context: this,
+								// 	frames: [0, 1, 1, 0]
+								// }
 							}
 						},
 						equipmentEditGroup: {

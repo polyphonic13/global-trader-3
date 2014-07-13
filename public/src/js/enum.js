@@ -1,7 +1,7 @@
 var BuildingTypes = {
 	PLANT: 'plant',
 	DEALERSHIP: 'dealership',
-	TRADEROUTE: 'traderoute'
+	TRADE_ROUTE: 'tradeRoute'
 };
 
 var BuildingStates = {
@@ -75,14 +75,24 @@ var PartDescriptions = {
 	
 };
 
-var TradeRoutesLocations = {
-	AFRICA: 'africa',
-	ASIA: 'asia',
-	EUROPE: 'europe',
-	MIDDLE_EAST: 'middleEast',
-	PACIFIC_NORTH: 'pacificNorth',
-	PACIFIC_SOUTH: 'pacificSouth',
-	SOUTH_AMERICA: 'southAmerica'
+var TradeRouteLocations = [
+	'africa',
+	'asia',
+	'europe',
+	'middleEast',
+	'pacificNorth',
+	'pacificSouth',
+	'southAmerica'
+];
+
+var TradeRouteNames = {
+	africa: 'Africa',
+	asia: 'Asia',
+	europe: 'Europe',
+	middleEast: 'The Middle East',
+	pacificNorth: 'The North Pacific',
+	pacificSouth: 'The South Pacific',
+	southAmerica: 'South America'
 };
 
 var USSectors = {

@@ -27,6 +27,7 @@ var playerData = {
 	buildingCount: {
 		plant: 0,
 		dealership: 0,
+		tradeRoute: 0,
 		total: 0
 	},
 	modelCount: {

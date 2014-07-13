@@ -31,6 +31,7 @@ var TurnManager = function() {
 		// trace('--- TurnManager/startTurn');
 		module.currentData = PWG.Utils.clone(turnData);
 		TurnManager.tempDealershipCount = (module.playerData.buildingCount.dealership);
+		TurnManager.tempTradeRouteCount = (module.playerData.buildingCount.tradeRoute);
 	};
 	
 	module.updateBank = function(value) {
@@ -60,7 +61,7 @@ var TurnManager = function() {
 			break;
 			
 			case BuildingTypes.TRADE_ROUTE:
-			modeul.currentData.newTraderoutes++;
+			modeul.currentData.newTradeRoutes++;
 			break;
 			
 			default: 

@@ -125,6 +125,14 @@ var gameLogic = {
 				PhaserGame.addDealershipOpportunityNotification(event);
 			}
 		},
+		// add dealership notification
+		{
+			event: Events.ADD_TRADE_ROUTE_NOTIFICATION,
+			handler: function(event) {
+				// trace('dealership add notification handler, event = ', event);
+				PhaserGame.addTradeRouteOpportunityNotification(event);
+			}
+		},
 		// add dealership
 		{
 			event: Events.ADD_DEALERSHIP,
@@ -145,6 +153,7 @@ var gameLogic = {
 			},
 			create: function() {
 				PWG.ViewManager.hideView('global:notificationEnvelope');
+				PWG.ViewManager.hideView('global:tradeRouteAlertIcon');
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: PhaserGame.config.defaultScreen });
 			},
 			formatBuildingPin: function(type, idx, count) {
@@ -285,16 +294,16 @@ var gameLogic = {
 					}
 				}
 			},
-			addTraderouteArrows: function() {
+			addTradeRouteArrows: function() {
 				var world = PWG.ViewManager.getControllerFromPath('world');
-				var traderouteArrows = PWG.Utils.clone(PhaserGame.config.dynamicViews.traderouteArrows);
-				var traderouteArrow = PhaserGame.config.dynamicViews.traderouteArrow;
-				var traderouteArrowConfig = PhaserGame.config.traderouteArrowConfig;
+				var tradeRouteArrows = PWG.Utils.clone(PhaserGame.config.dynamicViews.tradeRouteArrows);
+				var tradeRouteArrow = PhaserGame.config.dynamicViews.tradeRouteArrow;
+				var tradeRouteArrowConfig = PhaserGame.config.tradeRouteArrowConfig;
 				
 				PWG.Utils.each(
-					traderouteArrowConfig,
+					tradeRouteArrowConfig,
 					function(config, key) {
-						var arrow = PWG.Utils.clone(traderouteArrow);
+						var arrow = PWG.Utils.clone(tradeRouteArrow);
 						arrow.name += key;
 						PWG.Utils.each(
 							config,
@@ -303,13 +312,13 @@ var gameLogic = {
 							},
 							this
 						);
-						traderouteArrows.views[arrow.name] = arrow;
+						tradeRouteArrows.views[arrow.name] = arrow;
 					},
 					this
 				);
 				
-				trace('traderouteArrows now = ', traderouteArrows);
-				PWG.ViewManager.addView(traderouteArrows, world, true);
+				trace('tradeRouteArrows now = ', tradeRouteArrows);
+				PWG.ViewManager.addView(tradeRouteArrows, world, true);
 				
 			},
 			render: function() {
@@ -450,11 +459,25 @@ var gameLogic = {
 				PWG.ViewManager.removeView('notification', 'global:notifications');
 				PhaserGame.cancelAction = null;
 			},
+			showTradeRouteNotification: function() {
+				PWG.ViewManager.hideView('global:tradeRouteAlertIcon');
+				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
+				PhaserGame.worldZoomIn();
+			},
+			removeTradeRouteNotification: function() {
+				
+			},
 			showNotificationEnvelope: function() {
 				PWG.ViewManager.showView('global:notificationEnvelope');
 			},
 			hideNotificationEnvelope: function() {
 				PWG.ViewManager.hideView('global:notificationEnvelope');
+			},
+			showTradeRouteAlert: function() {
+				// PWG.ViewManager.showView('global:tradeRouteAlert');
+			},
+			hideTradeRouteAlert: function() {
+				PWG.ViewManager.hideView('global:tradeRouteAlert');
 			},
 			tileClicked: function(tile) {
 				if(PhaserGame.turnActive) {
@@ -532,21 +555,8 @@ var gameLogic = {
 				var notification = PWG.Utils.clone(PhaserGame.config.dynamicViews.notification);
 				var dealershipPrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.dealershipPrompt);
 				
-				var config;
+				var config = PhaserGame.config.notificationText['dealership'];
 				
-				switch(event.type) {
-					case Events.ADD_DEALERSHIP_NOTIFICATION:
-					config = PhaserGame.config.notificationText['dealership'];
-					break;
-					
-					case Events.ADD_TRADEROUTE_NOTIFICATION:
-					config = PhaserGame.config.notificationText['traderoute'];
-					break;
-					
-					default:
-					// trace('warning: unknown type ' + event.type);
-					break;
-				}
 				var modelName = event.plant.equipment[event.dealership.config.modelId].name;
 				var resell = PWG.Utils.formatMoney(event.dealership.config.resell, 0);
 
@@ -603,66 +613,51 @@ var gameLogic = {
 				var plant = BuildingManager.findBuilding(dealership.config.plantId);
 				plant.dealershipNotifications[dealership.config.modelId] = false;
 			},
-			// TRADEROUTES
-			addTraderouteOpportunityNotification: function(event) {
+			// TRADE_ROUTES
+			addTradeRouteOpportunityNotification: function(event) {
 				var notification = PWG.Utils.clone(PhaserGame.config.dynamicViews.notification);
-				var traderoutePrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.traderoutePrompt);
+				var tradeRoutePrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.tradeRoutePrompt);
 
-				var config;
+				var config = PhaserGame.config.notificationText['tradeRoute'];
 
-				switch(event.type) {
-					case Events.ADD_DEALERSHIP_NOTIFICATION:
-					config = PhaserGame.config.notificationText['traderoute'];
-					break;
-
-					case Events.ADD_TRADEROUTE_NOTIFICATION:
-					config = PhaserGame.config.notificationText['traderoute'];
-					break;
-
-					default:
-					// trace('warning: unknown type ' + event.type);
-					break;
-				}
-				var modelName = event.plant.equipment[event.traderoute.config.modelId].name;
-				var resell = PWG.Utils.formatMoney(event.traderoute.config.resell, 0);
+				var modelName = event.plant.equipment[event.tradeRoute.config.modelId].name;
+				var resell = PWG.Utils.formatMoney(event.tradeRoute.config.resell, 0);
 
 				var statementText = PWG.Utils.parseMarkup(config.statement, {
 					plant: event.plant.name,
-					quantity: event.traderoute.quantityPerYear,
+					quantity: event.tradeRoute.quantityPerYear,
 					model: modelName,
 					resell: resell
 				});
 
-				notification.views.person.img = 'traderouteGirl';
-				// notification.views.title.text = config.title;
-				notification.views.content.text = statementText;
-				// trace('notification = ', notification);
+				notification.views.person.img = 'tradeRouteGirl';
 
-				notification.views[traderoutePrompt.name] = traderoutePrompt;
+				notification.views.content.text = statementText;
+				trace('------ notification = ', notification);
+
+				notification.views[tradeRoutePrompt.name] = tradeRoutePrompt;
 
 				notification.confirmAction = {
-					method: PhaserGame.addTraderoute,
-					params: event.traderoute
+					method: PhaserGame.addTradeRoute,
+					params: event.tradeRoute
 				};
 
 				notification.cancelAction = {
-					method: PhaserGame.resetTraderoute,
-					params: event.traderoute
+					method: PhaserGame.resetTradeRoute,
+					params: event.tradeRoute
 				};
-				// PWG.ViewManager.hideView('global:backButton');
-				// PWG.ViewManager.addView(notification, notifications, true);
+
 				PhaserGame.notifications[event.plant.sector].push(notification);
-				if(PWG.ScreenManager.currentId === 'usDetail' && PhaserGame.activeSector === event.plant.sector) {
-					PhaserGame.showNotificationEnvelope();
-				}
+				PhaserGame.showTradeRouteAlert();
+
 			},
-			addTraderoute: function(traderoute) {
-				trace('addTraderoute, traderoute = ', traderoute);
-				var config = traderoute.config;
+			addTradeRoute: function(tradeRoute) {
+				trace('addTradeRoute, tradeRoute = ', tradeRoute);
+				var config = tradeRoute.config;
 				PhaserGame.removeNotification();
 				config.cell = GridManager.getRandomEmptyCellIndex(config.sector);
 				GridManager.addBuilding(config, config.sector);
-				BuildingManager.addTraderoute(traderoute);
+				BuildingManager.addTradeRoute(tradeRoute);
 
 				var viewPath = 'usDetail:usDetailGrid:usDetailGridItem'+config.cell;
 				var view = PWG.ViewManager.getControllerFromPath(viewPath);
@@ -673,11 +668,11 @@ var gameLogic = {
 				PWG.ViewManager.setFrame(viewPath, frame);
 				view.config.attrs.frame = frame;
 			},
-			resetTraderoute: function(traderoute) {
+			resetTradeRoute: function(tradeRoute) {
 				PhaserGame.removeNotification();
-				trace('resetTraderoute, traderoute = ', traderoute);
-				var plant = BuildingManager.findBuilding(traderoute.config.plantId);
-				plant.traderouteNotifications[traderoute.config.modelId] = false;
+				trace('resetTradeRoute, tradeRoute = ', tradeRoute);
+				var plant = BuildingManager.findBuilding(tradeRoute.config.plantId);
+				plant.tradeRouteNotifications[tradeRoute.config.modelId] = false;
 			},
 			// INVENTORY
 			inventoryAdded: function(plant, parentPath) {
@@ -997,6 +992,11 @@ var gameLogic = {
 			notificationEnvelope: {
 				inputDown: function() {
 					PhaserGame.showNotification();
+				}
+			},
+			tradeRouteAlertIcon: {
+				inputDown: function() {
+					PhaserGame.showTradeRouteNotification();
 				}
 			},
 			newPlant: {
@@ -1467,7 +1467,7 @@ var gameLogic = {
 			{
 				event: Events.WORLD_ZOOMED_IN,
 				handler: function(event) {
-					PhaserGame.addTraderouteArrows();
+					// PhaserGame.addTradeRouteArrows();
 				}
 			},
 			{
@@ -1501,7 +1501,7 @@ var gameLogic = {
 							var typeCounts = {
 								plant: 0,
 								dealership: 0,
-								traderoute: 0
+								tradeRoute: 0
 							};
 							
 							PWG.Utils.each(

@@ -10,7 +10,7 @@ var Machine = function() {
 		sell: 0,
 		plantId: '',
 		dealershipId: '',
-		traderouteId: '',
+		tradeRouteId: '',
 		parts: {}
 	};
 	
