@@ -122,7 +122,7 @@ var gameLogic = {
 			event: Events.ADD_DEALERSHIP_NOTIFICATION,
 			handler: function(event) {
 				// trace('dealership add notification handler, event = ', event);
-				PhaserGame.addRetailOpportunityNotification(event);
+				PhaserGame.addDealershipOpportunityNotification(event);
 			}
 		},
 		// add dealership
@@ -219,6 +219,7 @@ var gameLogic = {
 					PhaserGame.worldView.height = max.height;
 					PhaserGame.worldView.x = max.x;
 					PhaserGame.worldView.y = max.y;
+					PWG.EventCenter.trigger({ type: Events.WORLD_ZOOMED_OUT });
 				}
 			},
 			worldZoomOut: function() {
@@ -249,6 +250,7 @@ var gameLogic = {
 						tween.start();
 
 						PhaserGame.zoomedIn = false;
+						PWG.EventCenter.trigger({ type: Events.WORLD_ZOOMED_OUT });
 					}
 				}
 			},
@@ -279,8 +281,36 @@ var gameLogic = {
 						tween.start();
 
 						PhaserGame.zoomedIn = true;
+						PWG.EventCenter.trigger({ type: Events.WORLD_ZOOMED_IN });
 					}
 				}
+			},
+			addTraderouteArrows: function() {
+				var world = PWG.ViewManager.getControllerFromPath('world');
+				var traderouteArrows = PWG.Utils.clone(PhaserGame.config.dynamicViews.traderouteArrows);
+				var traderouteArrow = PhaserGame.config.dynamicViews.traderouteArrow;
+				var traderouteArrowConfig = PhaserGame.config.traderouteArrowConfig;
+				
+				PWG.Utils.each(
+					traderouteArrowConfig,
+					function(config, key) {
+						var arrow = PWG.Utils.clone(traderouteArrow);
+						arrow.name += key;
+						PWG.Utils.each(
+							config,
+							function(prop, p) {
+								arrow[p] = prop;
+							},
+							this
+						);
+						traderouteArrows.views[arrow.name] = arrow;
+					},
+					this
+				);
+				
+				trace('traderouteArrows now = ', traderouteArrows);
+				PWG.ViewManager.addView(traderouteArrows, world, true);
+				
 			},
 			render: function() {
 				PWG.ScreenManager.render();
@@ -497,7 +527,8 @@ var gameLogic = {
 					PWG.ViewManager.setFrame('usDetail:usDetailGrid:'+tile.name, frame);
 				}
 			},
-			addRetailOpportunityNotification: function(event) {
+			// DEALERSHIPS
+			addDealershipOpportunityNotification: function(event) {
 				var notification = PWG.Utils.clone(PhaserGame.config.dynamicViews.notification);
 				var dealershipPrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.dealershipPrompt);
 				
@@ -572,6 +603,83 @@ var gameLogic = {
 				var plant = BuildingManager.findBuilding(dealership.config.plantId);
 				plant.dealershipNotifications[dealership.config.modelId] = false;
 			},
+			// TRADEROUTES
+			addTraderouteOpportunityNotification: function(event) {
+				var notification = PWG.Utils.clone(PhaserGame.config.dynamicViews.notification);
+				var traderoutePrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.traderoutePrompt);
+
+				var config;
+
+				switch(event.type) {
+					case Events.ADD_DEALERSHIP_NOTIFICATION:
+					config = PhaserGame.config.notificationText['traderoute'];
+					break;
+
+					case Events.ADD_TRADEROUTE_NOTIFICATION:
+					config = PhaserGame.config.notificationText['traderoute'];
+					break;
+
+					default:
+					// trace('warning: unknown type ' + event.type);
+					break;
+				}
+				var modelName = event.plant.equipment[event.traderoute.config.modelId].name;
+				var resell = PWG.Utils.formatMoney(event.traderoute.config.resell, 0);
+
+				var statementText = PWG.Utils.parseMarkup(config.statement, {
+					plant: event.plant.name,
+					quantity: event.traderoute.quantityPerYear,
+					model: modelName,
+					resell: resell
+				});
+
+				notification.views.person.img = 'traderouteGirl';
+				// notification.views.title.text = config.title;
+				notification.views.content.text = statementText;
+				// trace('notification = ', notification);
+
+				notification.views[traderoutePrompt.name] = traderoutePrompt;
+
+				notification.confirmAction = {
+					method: PhaserGame.addTraderoute,
+					params: event.traderoute
+				};
+
+				notification.cancelAction = {
+					method: PhaserGame.resetTraderoute,
+					params: event.traderoute
+				};
+				// PWG.ViewManager.hideView('global:backButton');
+				// PWG.ViewManager.addView(notification, notifications, true);
+				PhaserGame.notifications[event.plant.sector].push(notification);
+				if(PWG.ScreenManager.currentId === 'usDetail' && PhaserGame.activeSector === event.plant.sector) {
+					PhaserGame.showNotificationEnvelope();
+				}
+			},
+			addTraderoute: function(traderoute) {
+				trace('addTraderoute, traderoute = ', traderoute);
+				var config = traderoute.config;
+				PhaserGame.removeNotification();
+				config.cell = GridManager.getRandomEmptyCellIndex(config.sector);
+				GridManager.addBuilding(config, config.sector);
+				BuildingManager.addTraderoute(traderoute);
+
+				var viewPath = 'usDetail:usDetailGrid:usDetailGridItem'+config.cell;
+				var view = PWG.ViewManager.getControllerFromPath(viewPath);
+				var frameKey = config.type.toUpperCase() + '_' + config.state.toUpperCase();
+				var frame = TileCellFrames[frameKey];
+				// trace('\tviewPath = ' + viewPath + ', view = ', view);
+
+				PWG.ViewManager.setFrame(viewPath, frame);
+				view.config.attrs.frame = frame;
+			},
+			resetTraderoute: function(traderoute) {
+				PhaserGame.removeNotification();
+				trace('resetTraderoute, traderoute = ', traderoute);
+				var plant = BuildingManager.findBuilding(traderoute.config.plantId);
+				plant.traderouteNotifications[traderoute.config.modelId] = false;
+			},
+			// INVENTORY
 			inventoryAdded: function(plant, parentPath) {
 				// trace('PhaserGame/inventoryAdded, plant = ', plant);
 				if(plant.sector === PhaserGame.activeSector) {
@@ -601,6 +709,7 @@ var gameLogic = {
 				}
 				AnimationManager.add(config);
 			},
+			// EQUIPMENT EDIT
 			getCurrentMachinePiecePath: function() {
 				return 'equipmentEdit:machineEdit:machinePieceName:' + PhaserGame.machinePieces[PhaserGame.currentMachinePiece];
 			},
@@ -772,6 +881,7 @@ var gameLogic = {
 				// var partsMenu = PWG.ViewManager.getControllerFromPath('equipmentEdit:machineEdit:partsMenu');
 				// partsMenu.view.y = -(PWG.Stage.gameH);
 			},
+			// YEAR END
 			endYear: function() {
 				var levelGoals = gameData.levels[TurnManager.playerData.level].goals;
 				var currentData = TurnManager.currentData;
@@ -1353,6 +1463,20 @@ var gameLogic = {
 			}
 		},
 		world: {
+			listeners: [
+			{
+				event: Events.WORLD_ZOOMED_IN,
+				handler: function(event) {
+					PhaserGame.addTraderouteArrows();
+				}
+			},
+			{
+				event: Events.WORLD_ZOOMED_OUT,
+				handler: function(event) {
+					
+				}
+			}
+			],
 			create: function() {
 
 				var worldMap = PWG.ViewManager.getControllerFromPath('world:worldMap');
@@ -1410,6 +1534,7 @@ var gameLogic = {
 					PhaserGame.initWorldZoom(worldMap.view, PhaserGame.buildingPins);
 				}
 				PhaserGame.worldZoomOutFull();
+
 				PhaserGame.currentZoom = 4;
 				PhaserGame.activeSector = -1;
 

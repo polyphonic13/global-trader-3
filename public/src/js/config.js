@@ -161,6 +161,64 @@ var GameConfig = function() {
 				palette.white
 			]
 		};
+
+		var traderouteArrowConfig = {
+			africa: {
+				img: 'tradeRouteAfrica',
+				x: (gameUnit * 2),
+				y: (gameUnit * 6.5),
+				attrs: {
+					width: (gameUnit * 3),
+					height: (gameUnit * 3) * 0.43
+				}
+			},
+			asia: {
+				img: 'tradeRouteAsia',
+				x: (gameUnit * 2),
+				y: (gameUnit * 5.5),
+				attrs: {
+					width: (gameUnit * 5.25),
+					height: (gameUnit * 5.25) * 0.19
+				}
+			},
+			europe: {
+				img: 'tradeRouteEurope',
+				x: (gameUnit * 2),
+				y: (gameUnit * 6),
+				attrs: {
+					width: (gameUnit * 3),
+					height: (gameUnit * 3) * 0.2
+				}
+			},
+			pacificNorth: {
+				img: 'tradeRoutePacificNorth',
+				x: (gameUnit * 2),
+				y: (gameUnit * 6.75),
+				attrs: {
+					width: (gameUnit * 6),
+					height: (gameUnit * 6) * 0.22
+				}
+			},
+			pacificSouth: {
+				img: 'tradeRoutePacificSouth',
+				x: (gameUnit * 2),
+				y: (gameUnit * 6.75),
+				attrs: {
+					width: (gameUnit * 6),
+					height: (gameUnit * 6) * 0.4
+				}
+			}, 
+			southAmerica: {
+				img: 'tradeRouteSouthAmerica',
+				x: (gameUnit * 2),
+				y: (gameUnit * 6.75),
+				attrs: {
+					width: (gameUnit * 1.25),
+					height: (gameUnit * 1.25) * 2.03
+				}
+			}
+		};
+
 		var starsConfig = {
 			tractor: {
 				basic: {
@@ -553,17 +611,6 @@ var GameConfig = function() {
 					}
 				}
 			},
-			dealershipPrompt: {
-				type: 'sprite',
-				name: 'dealershipPrompt',
-				img: 'dealershipRepresentativePrompt',
-				x: (gameW/2) - (gameUnit * 3),
-				y: (gameUnit * 12.5),
-				attrs: {
-					width: (gameUnit * 6),
-					height: (gameUnit * 6) * 0.34
-				}
-			},
 			missionBrief: {
 				type: 'group',
 				name: 'missionBrief',
@@ -667,6 +714,7 @@ var GameConfig = function() {
 					}
 				}
 			},
+			// world
 			buildingPins: {
 				type: 'group',
 				name: 'buildingPins',
@@ -701,6 +749,16 @@ var GameConfig = function() {
 					}
 				}
 			},
+			traderouteArrows: {
+				type: 'group',
+				name: 'traderouteArrows',
+				views: {}
+			},
+			traderouteArrow: {
+				type: 'sprite',
+				name: 'traderouteArrow'
+			},
+			// us detail
 			sectorBg: {
 				type: 'sprite',
 				name: 'sectorBg',
@@ -820,6 +878,7 @@ var GameConfig = function() {
 					}
 				}
 			},
+			// building edit
 			buildingEditScreen: {
 				type: 'group',
 				name: 'editDetails',
@@ -961,6 +1020,17 @@ var GameConfig = function() {
 							centerX: true
 						}
 					}
+				}
+			},
+			dealershipPrompt: {
+				type: 'sprite',
+				name: 'dealershipPrompt',
+				img: 'dealershipRepresentativePrompt',
+				x: (gameW/2) - (gameUnit * 3),
+				y: (gameUnit * 12.5),
+				attrs: {
+					width: (gameUnit * 6),
+					height: (gameUnit * 6) * 0.34
 				}
 			},
 			machineList: {
@@ -1431,6 +1501,12 @@ var GameConfig = function() {
 					pinDealership: 'images/screens/world/pin_dealership.png',
 					pinTraderoute: 'images/screens/world/pin_traderoute.png',
 					tradeRouteAlertIcon: 'images/screens/world/trade_route_alert.png',
+					tradeRouteEurope: 'images/screens/world/trade_route_europe.png',
+					tradeRouteAsia: 'images/screens/world/trade_route_asia.png',
+					tradeRoutePacificNorth: 'images/screens/world/trade_route_pacific_north.png',
+					tradeRoutePacificSouth: 'images/screens/world/trade_route_pacific_south.png',
+					tradeRouteAfrica: 'images/screens/world/trade_route_africa.png',
+					tradeRouteSouthAmerica: 'images/screens/world/trade_route_south_america.png',
 					// us detail
 					sectorGridNE: 'images/screens/us_detail/sector_grid_ne.png',
 					sectorGridSE: 'images/screens/us_detail/sector_grid_se.png',
@@ -1948,6 +2024,7 @@ var GameConfig = function() {
 			pinOffsets: pinOffsets,
 			pinImages: pinImages,
 			pinFills: pinFills,
+			traderouteArrowConfig: traderouteArrowConfig,
 			starsConfig: starsConfig,
 			machineEditBackgrounds: machineEditBackgrounds,
 			machinePieceSpriteConfig: machinePieceSpriteConfig,

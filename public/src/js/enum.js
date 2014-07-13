@@ -75,6 +75,15 @@ var PartDescriptions = {
 	
 };
 
+var TradeRoutesLocations = {
+	AFRICA: 'africa',
+	ASIA: 'asia',
+	EUROPE: 'europe',
+	PACIFIC_NORTH: 'pacificNorth',
+	PACIFIC_SOUTH: 'pacificSouth',
+	SOUTH_AMERICA: 'southAmerica'
+};
+
 var USSectors = {
 	NORTH_EAST: 0,
 	SOUTH_EAST: 1,

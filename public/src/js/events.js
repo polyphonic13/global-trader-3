@@ -15,6 +15,8 @@ var Events = {
 	BONUSES_UPDATED: 'bonusesUpdated',
 	OPEN_NOTIFICATION: 'openNotification',
 	CLOSE_NOTIFICATION: 'closeNotification',
+	WORLD_ZOOMED_OUT: 'worldZoomedOut',
+	WORLD_ZOOMED_IN: 'worldZoomedIn',
 	OPEN_BUILDINGS_MENU: 'openBuildingsMenu',
 	CLOSE_BUILDINGS_MENU: 'closeBuildingsMenu',
 	ADD_BUILDING: 'addBuilding',
