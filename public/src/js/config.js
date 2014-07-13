@@ -219,9 +219,9 @@ var GameConfig = function() {
 		var machinePieceSpriteConfig = {
 			tractor: {
 				basic: {
-					transmission: {
+					engine: {
 						type: 'sprite',
-						name: 'transmission',
+						name: 'engine',
 						img: 'editTractorBasicEngine',
 						x: (gameUnit * 0.6),
 						y: (gameUnit * 5.75),
@@ -245,9 +245,9 @@ var GameConfig = function() {
 						},
 						input: gameLogic.global.input.tiresSprite
 					},
-					engine: {
+					transmission: {
 						type: 'sprite',
-						name: 'engine',
+						name: 'transmission',
 						img: 'editTractorBasicCab',
 						x: (gameUnit * 3.9),
 						y: (gameUnit * 4.85),
@@ -260,9 +260,9 @@ var GameConfig = function() {
 					}
 				},
 				medium: {
-					transmission: {
+					engine: {
 						type: 'sprite',
-						name: 'transmission',
+						name: 'engine',
 						img: 'editTractorMediumEngine',
 						x: (gameUnit * 1),
 						y: (gameUnit * 6.5),
@@ -286,9 +286,9 @@ var GameConfig = function() {
 						},
 						input: gameLogic.global.input.tiresSprite
 					},
-					engine: {
+					transmission: {
 						type: 'sprite',
-						name: 'engine',
+						name: 'transmission',
 						img: 'editTractorMediumCab',
 						x: (gameUnit * 3.68),
 						y: (gameUnit * 3.4),
@@ -302,64 +302,86 @@ var GameConfig = function() {
 				},
 				heavy: {
 					engine: {
-						img: 'blockWhite',
-						x: 0,
-						y: (gameUnit * 7),
+						type: 'sprite',
+						name: 'engine',
+						img: 'editTractorHeavyEngine',
+						x: (gameUnit * 0.5),
+						y: (gameUnit * 5.55),
 						attrs: {
-							width: gameUnit * 4,
-							height: gameUnit * 5,
-						}
+							width: gameUnit * 4.66,
+							height: (gameUnit * 4.66) * 1.04,
+							frame: 0
+						},
+						input: gameLogic.global.input.transmissionSprite
 					},
-					tires: {
-						img: 'blockWhite',
-						x: (gameUnit * 2.5),
-						y: (gameUnit * 10.5),
+					tracks: {
+						type: 'sprite',
+						name: 'tracks',
+						img: 'editTractorHeavyTracks',
+						x: (gameUnit * 0.35),
+						y: (gameUnit * 7.4),
 						attrs: {
-							width: gameUnit * 6.5,
-							height: gameUnit * 4,
-							angle: -35
-						}
+							width: gameUnit * 8.5,
+							height: (gameUnit * 8.5) * 0.57,
+							frame: 0
+						},
+						input: gameLogic.global.input.tiresSprite
 					},
-					cab: {
-						img: 'blockWhite',
-						x: (gameUnit * 4),
-						y: (gameUnit * 4),
+					transmission: {
+						type: 'sprite',
+						name: 'transmission',
+						img: 'editTractorHeavyCab',
+						x: (gameUnit * 2.8),
+						y: (gameUnit * 3.2),
 						attrs: {
-							width: gameUnit * 3,
-							height: gameUnit * 4
-						}
+							width: gameUnit * 4.75,
+							height: (gameUnit * 4.75) * 1.31,
+							frame: 0
+						},
+						input: gameLogic.global.input.engineSprite
 					}
 				}
 			},
 			skidsteer: {
 				basic: {
 					engine: {
-						img: 'blockWhite',
-						x: 0,
-						y: (gameUnit * 8),
+						type: 'sprite',
+						name: 'engine',
+						img: 'editTractorBasicEngine',
+						x: (gameUnit * 0.6),
+						y: (gameUnit * 5.75),
 						attrs: {
-							width: gameUnit * 4,
-							height: gameUnit * 4,
-						}
+							width: gameUnit * 4.8,
+							height: (gameUnit * 4.8) * 1.1,
+							frame: 0
+						},
+						input: gameLogic.global.input.transmissionSprite
 					},
 					tires: {
-						img: 'blockWhite',
-						x: (gameUnit * 2.5),
-						y: (gameUnit * 10.5),
+						type: 'sprite',
+						name: 'tires',
+						img: 'editTractorBasicTires',
+						x: (gameUnit * 0.15),
+						y: (gameUnit * 6.35),
 						attrs: {
-							width: gameUnit * 4,
-							height: gameUnit * 3,
-							angle: 30
-						}
+							width: gameUnit * 8.7,
+							height: (gameUnit * 8.7) * 0.64,
+							frame: 0
+						},
+						input: gameLogic.global.input.tiresSprite
 					},
-					cab: {
-						img: 'blockWhite',
-						x: (gameUnit * 4),
-						y: (gameUnit * 6),
+					transmission: {
+						type: 'sprite',
+						name: 'transmission',
+						img: 'editTractorBasicCab',
+						x: (gameUnit * 3.9),
+						y: (gameUnit * 4.85),
 						attrs: {
-							width: gameUnit * 2,
-							height: gameUnit * 2.5
-						}
+							width: gameUnit * 3.05,
+							height: (gameUnit * 3.05) * 1.47,
+							frame: 0
+						},
+						input: gameLogic.global.input.engineSprite
 					}
 				},
 				medium: {
@@ -1041,17 +1063,24 @@ var GameConfig = function() {
 							height: gameH
 						}
 					},
-					optionalPartsPlus: {
-						type: 'sprite',
-						name: 'optionalPartsPlus',
-						img: 'optionalPartsPlus',
-						x: gameUnit * 0.1,
-						y: gameUnit * 5,
-						attrs: {
-							width: gameUnit * 1.5,
-							height: gameUnit * 1.5
-						},
-						input: gameLogic.global.input.openOptionalPartsMenu
+					// optionalPartsPlus: {
+					// 	type: 'sprite',
+					// 	name: 'optionalPartsPlus',
+					// 	img: 'optionalPartsPlus',
+					// 	x: gameUnit * 0.1,
+					// 	y: gameUnit * 5,
+					// 	attrs: {
+					// 		width: gameUnit * 1.5,
+					// 		height: gameUnit * 1.5
+					// 	},
+					// 	input: gameLogic.global.input.openOptionalPartsMenu
+					// },
+					machinePieceSprites: {
+						type: 'group',
+						name: 'machinePieceSprites',
+						views: {
+							
+						}
 					},
 					machinePieceMenuNavigator: {
 						type: 'group',
@@ -1168,13 +1197,6 @@ var GameConfig = function() {
 					}
 				}
 			},
-			machinePieceSprites: {
-				type: 'group',
-				name: 'machinePieceSprites',
-				views: 
-				{
-				}
-			},
 			partsMenu: {
 				type: 'group',
 				name: '',
@@ -1185,14 +1207,12 @@ var GameConfig = function() {
 					menuBg: {
 						type: 'sprite',
 						name: 'menuBg',
-						img: 'blockWhite',
-						x: (gameUnit/2),
-						y: (gameUnit/2),
+						img: 'partsFrame',
+						x: 0,
+						y: 0,
 						attrs: {
-							width: (gameW - gameUnit),
-							height: (gameH - gameUnit),
-							alpha: 0.75,
-							fixedToCamera: true
+							width: gameW,
+							height: gameH
 						}
 					},
 					title: {
@@ -1232,38 +1252,38 @@ var GameConfig = function() {
 			partIcon: {
 				type: 'group',
 				name: 'partIcon',
-				offset: (gameUnit * 2),
-				iconH: (gameUnit * 4.5),
+				offset: (gameUnit * 3.7),
+				iconH: (gameUnit * 3.4),
 				views: {
 					bg: {
 						type: 'sprite',
 						name: 'menuItemBg',
 						img: 'blockWhite',
-						x: gameUnit * 0.5,
-						y: 0,
+						x: gameUnit * 0.85,
+						y: 0.25,
 						attrs: {
-							width: gameW - gameUnit,
-							height: (gameUnit * 3),
-							alpha: 0.33
+							width: (gameUnit * 3),
+							height: (gameUnit * 2.5),
+							alpha: 0.1
 						}
 					},
 					icon: {
 						type: 'sprite',
 						name: 'menuItemIcon',
 						img: '',
-						x: gameUnit * 0.5,
-						y: 0,
+						x: -(gameUnit * 1.25),
+						y: -(gameUnit * 2.5),
 						attrs: {
-							width: gameUnit * 3,
-							height: gameUnit * 3
+							width: gameUnit * 7,
+							height: gameUnit * 7
 						}
 					},
 					description: {
 						type: 'text',
 						name: 'menuItemDescription',
 						text: '',
-						x: gameUnit * 4,
-						y: gameUnit * 1,
+						x: gameUnit * 5.5,
+						y: gameUnit * 0.75,
 						style: {
 						    font: (fontSizes.sm + 'px Trebuchet MS'),
 					        fill: palette.black
@@ -1273,8 +1293,8 @@ var GameConfig = function() {
 						type: 'text',
 						name: 'menuItemCost',
 						text: '',
-						x: gameUnit * 4,
-						y: gameUnit * 1.5,
+						x: gameUnit * 5.5,
+						y: gameUnit * 1.25,
 						style: {
 						    font: (fontSizes.md + 'px Trebuchet MS'),
 					        fill: palette.black
@@ -1403,69 +1423,79 @@ var GameConfig = function() {
 					skidsteerHeavyBg: 'images/screens/equipment_edit/skid_steer_heavy.png',
 					optionalPartsPlus: 'images/screens/equipment_edit/optional_parts_plus.png',
 					partsNavigator: 'images/screens/equipment_edit/what_to_buy_menu.png',
-					// temp parts icons
-					// deluxe
-					bucketDeluxe: 'images/parts_icons/temp/deluxe/bucket.png',
-					engineHeavyDeluxe: 'images/parts_icons/temp/deluxe/engine_heavy.png',
-					engineMediumDeluxe: 'images/parts_icons/temp/deluxe/engine_medium.png',
-					engineBasicDeluxe: 'images/parts_icons/temp/deluxe/engine_basic.png',
-					headlightsDeluxe: 'images/parts_icons/temp/deluxe/headlights.png',
-					heaterDeluxe: 'images/parts_icons/temp/deluxe/heater.png',
-					powerTakeoffDeluxe: 'images/parts_icons/temp/deluxe/power_take_off.png',
-					quickCouplerDeluxe: 'images/parts_icons/temp/deluxe/quick_coupler.png',
-					threePointHitchDeluxe: 'images/parts_icons/temp/deluxe/three_point_hitch.png',
-					tiresDeluxe: 'images/parts_icons/temp/deluxe/tires.png',
-					transmissionBasicDeluxe: 'images/parts_icons/temp/deluxe/transmission_basic.png',
-					transmissionHeavyDeluxe: 'images/parts_icons/temp/deluxe/transmission_heavy.png',
-					transmissionMediumDeluxe: 'images/parts_icons/temp/deluxe/transmission_medium.png',
-					// standard
-					bucketStandard: 'images/parts_icons/temp/standard/bucket.png',
-					engineHeavyStandard: 'images/parts_icons/temp/standard/engine_heavy.png',
-					engineMediumStandard: 'images/parts_icons/temp/standard/engine_medium.png',
-					engineBasicStandard: 'images/parts_icons/temp/standard/engine_basic.png',
-					headlightsStandard: 'images/parts_icons/temp/standard/headlights.png',
-					heaterStandard: 'images/parts_icons/temp/standard/heater.png',
-					powerTakeoffStandard: 'images/parts_icons/temp/standard/power_take_off.png',
-					quickCouplerStandard: 'images/parts_icons/temp/standard/quick_coupler.png',
-					threePointHitchStandard: 'images/parts_icons/temp/standard/three_point_hitch.png',
-					tiresStandard: 'images/parts_icons/temp/standard/tires.png',
-					transmissionBasicStandard: 'images/parts_icons/temp/standard/transmission_basic.png',
-					transmissionHeavyStandard: 'images/parts_icons/temp/standard/transmission_heavy.png',
-					transmissionMediumStandard: 'images/parts_icons/temp/standard/transmission_medium.png',					// parts icons
-					// discount
-					bucketDiscount: 'images/parts_icons/temp/discount/bucket.png',
-					engineHeavyDiscount: 'images/parts_icons/temp/discount/engine_heavy.png',
-					engineMediumDiscount: 'images/parts_icons/temp/discount/engine_medium.png',
-					engineBasicDiscount: 'images/parts_icons/temp/discount/engine_basic.png',
-					headlightsDiscount: 'images/parts_icons/temp/discount/headlights.png',
-					heaterDiscount: 'images/parts_icons/temp/discount/heater.png',
-					powerTakeoffDiscount: 'images/parts_icons/temp/discount/power_take_off.png',
-					quickCouplerDiscount: 'images/parts_icons/temp/discount/quick_coupler.png',
-					threePointHitchDiscount: 'images/parts_icons/temp/discount/three_point_hitch.png',
-					tiresDiscount: 'images/parts_icons/temp/discount/tires.png',
-					transmissionBasicDiscount: 'images/parts_icons/temp/discount/transmission_basic.png',
-					transmissionHeavyDiscount: 'images/parts_icons/temp/discount/transmission_medium.png',
-					transmissionMediumDiscount: 'images/parts_icons/temp/discount/transmission_heavy.png',
-					// optional
-					autoPilot: 'images/parts_icons/temp/optional/auto_pilot.png',
-					flameDecal: 'images/parts_icons/temp/optional/flame_decal.png',
-					gps: 'images/parts_icons/temp/optional/gps.png',
-					stainlessExhaust: 'images/parts_icons/temp/optional/stainless_exhaust.png',
-					track: 'images/parts_icons/temp/optional/track.png',
-					// machine view part sections
-					tiresGrey: 'images/parts/tires_grey.gif',
-					tiresGreen: 'images/parts/tires_green.gif',
-					tiresOrange: 'images/parts/tires_orange.gif',
-					tiresRed: 'images/parts/tires_red.gif',
-					engineGrey: 'images/parts/engine_grey.gif',
-					engineGreen: 'images/parts/engine_green.gif',
-					engineOrange: 'images/parts/engine_orange.gif',
-					engineRed: 'images/parts/engine_red.gif',
-					cabGrey: 'images/parts/cab_grey.gif',
-					cabGreen: 'images/parts/cab_green.gif',
-					cabOrange: 'images/parts/cab_orange.gif',
-					cabRed: 'images/parts/cab_red.gif',
-					
+					// parts icons
+					// frame
+					partsFrame: 'images/screens/equipment_edit/parts_frame.png',
+					// engine
+					engineBasicStandard: 'images/screens/equipment_edit/parts_icons/engine/basic_standard.png',
+					engineBasicPremium: 'images/screens/equipment_edit/parts_icons/engine/basic_premium.png',
+					engineBasicDeluxe: 'images/screens/equipment_edit/parts_icons/engine/basic_deluxe.png',
+					engineMediumStandard: 'images/screens/equipment_edit/parts_icons/engine/medium_standard.png',
+					engineMediumPremium: 'images/screens/equipment_edit/parts_icons/engine/medium_premium.png',
+					engineMediumDeluxe: 'images/screens/equipment_edit/parts_icons/engine/medium_deluxe.png',
+					engineHeavyStandard: 'images/screens/equipment_edit/parts_icons/engine/heavy_standard.png',
+					engineHeavyPremium: 'images/screens/equipment_edit/parts_icons/engine/heavy_premium.png',
+					engineHeavyDeluxe: 'images/screens/equipment_edit/parts_icons/engine/heavy_deluxe.png',
+					// transmission
+					transmissionBasicStandard: 'images/screens/equipment_edit/parts_icons/transmission/basic_standard.png',
+					transmissionBasicPremium: 'images/screens/equipment_edit/parts_icons/transmission/basic_premium.png',
+					transmissionBasicDeluxe: 'images/screens/equipment_edit/parts_icons/transmission/basic_deluxe.png',
+					transmissionMediumStandard: 'images/screens/equipment_edit/parts_icons/transmission/medium_standard.png',
+					transmissionMediumPremium: 'images/screens/equipment_edit/parts_icons/transmission/medium_premium.png',
+					transmissionMediumDeluxe: 'images/screens/equipment_edit/parts_icons/transmission/medium_deluxe.png',
+					transmissionHeavyStandard: 'images/screens/equipment_edit/parts_icons/transmission/heavy_standard.png',
+					transmissionHeavyPremium: 'images/screens/equipment_edit/parts_icons/transmission/heavy_premium.png',
+					transmissionHeavyDeluxe: 'images/screens/equipment_edit/parts_icons/transmission/heavy_deluxe.png',
+					// tires
+					tiresBasicStandard: 'images/screens/equipment_edit/parts_icons/tires/basic_standard.png',
+					tiresBasicPremium: 'images/screens/equipment_edit/parts_icons/tires/basic_premium.png',
+					tiresBasicDeluxe: 'images/screens/equipment_edit/parts_icons/tires/basic_deluxe.png',
+					tiresMediumStandard: 'images/screens/equipment_edit/parts_icons/tires/medium_standard.png',
+					tiresMediumPremium: 'images/screens/equipment_edit/parts_icons/tires/medium_premium.png',
+					tiresMediumDeluxe: 'images/screens/equipment_edit/parts_icons/tires/medium_deluxe.png',
+					// tracks
+					tracksHeavyStandard: 'images/screens/equipment_edit/parts_icons/tracks/heavy_standard.png',
+					tracksHeavyPremium: 'images/screens/equipment_edit/parts_icons/tracks/heavy_premium.png',
+					tracksHeavyDeluxe: 'images/screens/equipment_edit/parts_icons/tracks/heavy_deluxe.png',
+					// bucket
+					bucketBasicStandard: 'images/screens/equipment_edit/parts_icons/bucket/basic_standard.png',
+					bucketBasicPremium: 'images/screens/equipment_edit/parts_icons/bucket/basic_premium.png',
+					bucketBasicDeluxe: 'images/screens/equipment_edit/parts_icons/bucket/basic_deluxe.png',
+					bucketMediumStandard: 'images/screens/equipment_edit/parts_icons/bucket/medium_standard.png',
+					bucketMediumPremium: 'images/screens/equipment_edit/parts_icons/bucket/medium_premium.png',
+					bucketMediumDeluxe: 'images/screens/equipment_edit/parts_icons/bucket/medium_deluxe.png',
+					bucketHeavyStandard: 'images/screens/equipment_edit/parts_icons/bucket/heavy_standard.png',
+					bucketHeavyPremium: 'images/screens/equipment_edit/parts_icons/bucket/heavy_premium.png',
+					bucketHeavyDeluxe: 'images/screens/equipment_edit/parts_icons/bucket/heavy_deluxe.png',
+					// headlights
+					headlightsMediumStandard: 'images/screens/equipment_edit/parts_icons/headlights/medium_standard.png',
+					headlightsMediumPremium: 'images/screens/equipment_edit/parts_icons/headlights/medium_premium.png',
+					headlightsMediumDeluxe: 'images/screens/equipment_edit/parts_icons/headlights/medium_deluxe.png',
+					headlightsHeavyStandard: 'images/screens/equipment_edit/parts_icons/headlights/heavy_standard.png',
+					headlightsHeavyPremium: 'images/screens/equipment_edit/parts_icons/headlights/heavy_premium.png',
+					headlightsHeavyDeluxe: 'images/screens/equipment_edit/parts_icons/headlights/heavy_deluxe.png',
+					// threePointHitch
+					threePointHitchHeavyStandard: 'images/screens/equipment_edit/parts_icons/threePointHitch/heavy_standard.png',
+					threePointHitchHeavyPremium: 'images/screens/equipment_edit/parts_icons/threePointHitch/heavy_premium.png',
+					threePointHitchHeavyDeluxe: 'images/screens/equipment_edit/parts_icons/threePointHitch/heavy_deluxe.png',
+					// powerTakeoff
+					powerTakeoffHeavyStandard: 'images/screens/equipment_edit/parts_icons/powerTakeoff/heavy_standard.png',
+					powerTakeoffHeavyPremium: 'images/screens/equipment_edit/parts_icons/powerTakeoff/heavy_premium.png',
+					powerTakeoffHeavyDeluxe: 'images/screens/equipment_edit/parts_icons/powerTakeoff/heavy_deluxe.png',
+					// quickCoupler
+					quickCouplerHeavyStandard: 'images/screens/equipment_edit/parts_icons/quickCoupler/heavy_standard.png',
+					quickCouplerHeavyPremium: 'images/screens/equipment_edit/parts_icons/quickCoupler/heavy_premium.png',
+					quickCouplerHeavyDeluxe: 'images/screens/equipment_edit/parts_icons/quickCoupler/heavy_deluxe.png',
+					// heater
+					heaterStandard: 'images/screens/equipment_edit/parts_icons/heater/standard.png',
+					heaterPremium: 'images/screens/equipment_edit/parts_icons/heater/premium.png',
+					heaterDeluxe: 'images/screens/equipment_edit/parts_icons/heater/deluxe.png',
+					// extras
+					flameDecal: 'images/screens/equipment_edit/parts_icons/extras/flame_decal.png',
+					autoPilot: 'images/screens/equipment_edit/parts_icons/extras/auto_pilot.png',
+					stainlessExhaust: 'images/screens/equipment_edit/parts_icons/extras/stainless_exhaust.png',
+					gps: 'images/screens/equipment_edit/parts_icons/extras/gps.png',
+
 					// NOTIFICATIONS
 					dealershipGirl: 'images/notifications/dealership_girl.png',
 					// TURN END
@@ -1702,7 +1732,7 @@ var GameConfig = function() {
 					},
 					editTractorHeavyEngine: {
 						url: 'images/screens/equipment_edit/machine_parts/tractor/heavy/tractor_heavy_engine_spritesheet.png',
-						width: 115,
+						width: 165,
 						height: 172,
 						frames: 2
 					},

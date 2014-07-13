@@ -104,7 +104,7 @@ var gameData = {
 				spriteTranslations: {
 					tracks: 'tracks',
 					engine: 'engine',
-					threepointHitch: 'engine',
+					threePointHitch: 'engine',
 					transmission: 'transmission',
 					headlights: 'transmission'
 				}
@@ -237,82 +237,64 @@ var gameData = {
 		{
 			id: 'w3',
 			frame: 1,
-			description: 'discount',
+			description: 'Standard',
 			basic: {
-				img: 'tiresDiscount',
+				img: 'tiresBasicStandard',
 				cost: 350,
 				build: 50,
 				sell: 1000
 			},
 			medium: {
-				img: 'tiresDiscount',
+				img: 'tiresMediumStandard',
 				cost: 700,
 				build: 100,
 				sell: 2000
-			},
-			heavy: {
-				img: 'tiresDiscount',
-				cost: 1000,
-				build: 150,
-				sell: 3000
 			}
 		},
 		{
 			id: 'w1',
 			frame: 2,
-			description: 'standard',
+			description: 'Premium',
 			basic: {
-				img: 'tiresStandard',
+				img: 'tiresBasicPremium',
 				cost: 500,
 				build: 100,
 				sell: 2000
 			},
 			medium: {
-				img: 'tiresStandard',
+				img: 'tiresMediumPremium',
 				cost: 1000,
 				build: 200,
 				sell: 4000
-			},
-			heavy: {
-				img: 'tiresStandard',
-				cost: 1500,
-				build: 250,
-				sell: 5000
 			}
 		},
 		{
 			id: 'w4',
 			img: 'tires3',
 			frame: 3,
-			description: 'deluxe',
+			description: 'Deluxe',
 			basic: {
-				img: 'tiresDeluxe',
+				img: 'tiresBasicDeluxe',
 				cost: 1000,
 				build: 250,
 				sell: 5000
 			},
 			medium: {
-				img: 'tiresDeluxe',
+				img: 'tiresMediumDeluxe',
 				cost: 2000,
 				build: 500,
 				sell: 10000
-			},
-			heavy: {
-				img: 'tiresDeluxe',
-				cost: 4000,
-				build: 1000,
-				sell: 20000
 			}
 		}
 		],
-		track: [
+		tracks: [
 		{
 			id: 'w3',
 			img: 'tires2',
 			frame: 1,
-			description: 'discount track',
+			description: 'Standard',
 			heavy: {
-				img: 'track',
+				img: 'tracksHeavyStandard',
 				cost: 1000,
 				build: 150,
 				sell: 3000
@@ -322,9 +304,9 @@ var gameData = {
 			id: 'w1',
 			img: 'tires1',
 			frame: 2,
-			description: 'standard track',
+			description: 'Premium',
 			heavy: {
-				img: 'track',
+				img: 'tracksHeavyPremium',
 				cost: 1500,
 				build: 250,
 				sell: 5000
@@ -334,9 +316,9 @@ var gameData = {
 			id: 'w4',
 			img: 'tires3',
 			frame: 3,
-			description: 'deluxe track',
+			description: 'Delux',
 			heavy: {
-				img: 'track',
+				img: 'tracksHeavyDeluxe',
 				cost: 4000,
 				build: 1000,
 				sell: 20000
@@ -347,21 +329,21 @@ var gameData = {
 		{
 			id: 'e1',
 			frame: 1,
-			description: 'discount',
+			description: 'Standard',
 			basic: {
-				img: 'engineBasicDiscount',
+				img: 'engineBasicStandard',
 				cost: 2000,
 				build: 500,
 				sell: 10000
 			},
 			medium: {
-				img: 'engineMediumDiscount',
+				img: 'engineMediumStandard',
 				cost: 4000,
 				build: 1000,
 				sell: 20000
 			},
 			heavy: {
-				img: 'engineHeavyDiscount',
+				img: 'engineHeavyStandard',
 				cost: 6000,
 				build: 1500,
 				sell: 30000
@@ -370,21 +352,21 @@ var gameData = {
 		{
 			id: 'e2',
 			frame: 2,
-			description: 'standard',
+			description: 'Premium',
 			basic: {
-				img: 'engineBasicStandard',
+				img: 'engineBasicPremium',
 				cost: 3000,
 				build: 750,
 				sell: 15000
 			},
 			medium: {
-				img: 'engineMediumStandard',
+				img: 'engineMediumPremium',
 				cost: 6000,
 				build: 1500,
 				sell: 30000
 			},
 			heavy: {
-				img: 'engineHeavyStandard',
+				img: 'engineHeavyPremium',
 				cost: 9000,
 				build: 2000,
 				sell: 40000
@@ -393,7 +375,7 @@ var gameData = {
 		{
 			id: 'e3',
 			frame: 3,
-			description: 'deluxe',
+			description: 'Deluxe',
 			basic: {
 				img: 'engineBasicDeluxe',
 				cost: 5000,
@@ -418,21 +400,21 @@ var gameData = {
 		{
 			id: 'c1',
 			frame: 1,
-			description: 'discount',
+			description: 'Standard',
 			basic: {
-				img: 'transmissionBasicDiscount',
+				img: 'transmissionBasicStandard',
 				cost: 300,
 				build: 50,
 				sell: 1000
 			},
 			medium: {
-				img: 'transmissionMediumDiscount',
+				img: 'transmissionMediumStandard',
 				cost: 600,
 				build: 100,
 				sell: 2000
 			},
 			heavy: {
-				img: 'transmissionHeavyDiscount',
+				img: 'transmissionHeavyStandard',
 				cost: 900,
 				build: 150,
 				sell: 3000
@@ -441,21 +423,21 @@ var gameData = {
 		{
 			id: 'c2',
 			frame: 2,
-			description: 'standard',
+			description: 'Premium',
 			basic: {
-				img: 'transmissionBasicStandard',
+				img: 'transmissionBasicPremium',
 				cost: 400,
 				build: 75,
 				sell: 1500
 			},
 			medium: {
-				img: 'transmissionMediumStandard',
+				img: 'transmissionMediumPremium',
 				cost: 800,
 				build: 150,
 				sell: 3000
 			},
 			heavy: {
-				img: 'transmissionHeavyStandard',
+				img: 'transmissionHeavyPremium',
 				cost: 1200,
 				build: 225,
 				sell: 4500
@@ -464,7 +446,7 @@ var gameData = {
 		{
 			id: 'c3',
 			frame: 3,
-			description: 'deluxe',
+			description: 'Deluxe',
 			basic: {
 				img: 'transmissionBasicDeluxe',
 				cost: 1000,
@@ -489,21 +471,15 @@ var gameData = {
 		{
 			id: 'c1',
 			frame: 1,
-			description: 'discount',
-			basic: {
-				img: 'headlightsDiscount',
-				cost: 300,
-				build: 50,
-				sell: 1000
-			},
+			description: 'Standard',
 			medium: {
-				img: 'headlightsDiscount',
+				img: 'headlightsMediumStandard',
 				cost: 600,
 				build: 100,
 				sell: 2000
 			},
 			heavy: {
-				img: 'headlightsDiscount',
+				img: 'headlightsHeavyStandard',
 				cost: 900,
 				build: 150,
 				sell: 3000
@@ -512,21 +488,15 @@ var gameData = {
 		{
 			id: 'c2',
 			frame: 2,
-			description: 'standard',
-			basic: {
-				img: 'headlightsStandard',
-				cost: 400,
-				build: 75,
-				sell: 1500
-			},
+			description: 'Premium',
 			medium: {
-				img: 'headlightsStandard',
+				img: 'headlightsMediumPremium',
 				cost: 800,
 				build: 150,
 				sell: 3000
 			},
 			heavy: {
-				img: 'headlightsStandard',
+				img: 'headlightsHeavyPremium',
 				cost: 1200,
 				build: 225,
 				sell: 4500
@@ -535,21 +505,15 @@ var gameData = {
 		{
 			id: 'c3',
 			frame: 3,
-			description: 'deluxe',
-			basic: {
-				img: 'headlightsDeluxe',
-				cost: 1000,
-				build: 250,
-				sell: 500
-			},
+			description: 'Deluxe',
 			medium: {
-				img: 'headlightsDeluxe',
+				img: 'headlightsMediumDeluxe',
 				cost: 2000,
 				build: 500,
 				sell: 1000
 			},
 			heavy: {
-				img: 'headlightsDeluxe',
+				img: 'headlightsHeavyDeluxe',
 				cost: 3000,
 				build: 1000,
 				sell: 2000
@@ -560,9 +524,9 @@ var gameData = {
 		{
 			id: 'c1',
 			frame: 1,
-			description: 'discount',
+			description: 'Standard',
 			heavy: {
-				img: 'quickCouplerDiscount',
+				img: 'quickCouplerHeavyStandard',
 				cost: 900,
 				build: 150,
 				sell: 3000
@@ -571,9 +535,9 @@ var gameData = {
 		{
 			id: 'c2',
 			frame: 2,
-			description: 'standard',
+			description: 'Premium',
 			heavy: {
-				img: 'quickCouplerStandard',
+				img: 'quickCouplerHeavyPremium',
 				cost: 1200,
 				build: 225,
 				sell: 4500
@@ -582,9 +546,9 @@ var gameData = {
 		{
 			id: 'c3',
 			frame: 3,
-			description: 'deluxe',
+			description: 'Deluxe',
 			heavy: {
-				img: 'quickCouplerDeluxe',
+				img: 'quickCouplerHeavyDeluxe',
 				cost: 3000,
 				build: 1000,
 				sell: 2000
@@ -596,9 +560,9 @@ var gameData = {
 			id: 'c1',
 			img: 'transmission1',
 			frame: 1,
-			description: 'discount',
+			description: 'Standard',
 			heavy: {
-				img: 'threePointHitchDiscount',
+				img: 'threePointHitchHeavyStandard',
 				cost: 900,
 				build: 150,
 				sell: 3000
@@ -608,9 +572,9 @@ var gameData = {
 			id: 'c2',
 			img: 'transmission2',
 			frame: 2,
-			description: 'standard',
+			description: 'Premium',
 			heavy: {
-				img: 'threePointHitchStandard',
+				img: 'threePointHitchHeavyPremium',
 				cost: 1200,
 				build: 225,
 				sell: 4500
@@ -619,9 +583,9 @@ var gameData = {
 		{
 			id: 'c3',
 			frame: 3,
-			description: 'deluxe',
+			description: 'Deluxe',
 			heavy: {
-				img: 'threePointHitchDeluxe',
+				img: 'threePointHitchHeavyDeluxe',
 				cost: 3000,
 				build: 1000,
 				sell: 2000
@@ -632,9 +596,9 @@ var gameData = {
 		{
 			id: 'c1',
 			frame: 1,
-			description: 'discount',
+			description: 'Standard',
 			heavy: {
-				img: 'powerTakeoffDiscount',
+				img: 'powerTakeoffHeavyStandard',
 				cost: 900,
 				build: 150,
 				sell: 3000
@@ -643,9 +607,9 @@ var gameData = {
 		{
 			id: 'c2',
 			frame: 2,
-			description: 'standard',
+			description: 'Premium',
 			heavy: {
-				img: 'powerTakeoffStandard',
+				img: 'powerTakeoffHeavyPremium',
 				cost: 1200,
 				build: 225,
 				sell: 4500
@@ -654,9 +618,9 @@ var gameData = {
 		{
 			id: 'c3',
 			frame: 3,
-			description: 'deluxe',
+			description: 'Deluxe',
 			heavy: {
-				img: 'powerTakeoffDeluxe',
+				img: 'powerTakeoffHeavyDeluxe',
 				cost: 3000,
 				build: 1000,
 				sell: 2000
@@ -667,9 +631,9 @@ var gameData = {
 		{
 			id: 'c1',
 			frame: 1,
-			description: 'discount heater',
+			description: 'standard heater',
 			heavy: {
-				img: 'heaterDiscount',
+				img: 'heaterStandard',
 				cost: 900,
 				build: 150,
 				sell: 3000
@@ -678,9 +642,9 @@ var gameData = {
 		{
 			id: 'c2',
 			frame: 2,
-			description: 'standard heater',
+			description: 'premium heater',
 			heavy: {
-				img: 'heaterStandard',
+				img: 'heaterPremium',
 				cost: 1200,
 				build: 225,
 				sell: 4500
@@ -701,23 +665,22 @@ var gameData = {
 		bucket: [
 		{
 			id: 'c1',
-			img: 'transmission1',
 			frame: 1,
-			description: 'discount',
+			description: 'Standard',
 			basic: {
-				img: 'bucketDiscount',
+				img: 'bucketBasicStandard',
 				cost: 300,
 				build: 50,
 				sell: 1000
 			},
 			medium: {
-				img: 'bucketStandard',
+				img: 'bucketBasicPremium',
 				cost: 600,
 				build: 100,
 				sell: 2000
 			},
 			heavy: {
-				img: 'bucketDeluxe',
+				img: 'bucketBasicDeluxe',
 				cost: 900,
 				build: 150,
 				sell: 3000
@@ -725,23 +688,22 @@ var gameData = {
 		},
 		{
 			id: 'c2',
-			img: 'transmission2',
 			frame: 2,
-			description: 'standard',
+			description: 'Premium',
 			basic: {
-				img: 'bucketDiscount',
+				img: 'bucketMediumStandard',
 				cost: 400,
 				build: 75,
 				sell: 1500
 			},
 			medium: {
-				img: 'bucketStandard',
+				img: 'bucketMediumPremium',
 				cost: 800,
 				build: 150,
 				sell: 3000
 			},
 			heavy: {
-				img: 'bucketDeluxe',
+				img: 'bucketMediumDeluxe',
 				cost: 1200,
 				build: 225,
 				sell: 4500
@@ -749,23 +711,22 @@ var gameData = {
 		},
 		{
 			id: 'c3',
-			img: 'transmission3',
 			frame: 3,
-			description: 'deluxe',
+			description: 'Deluxe',
 			basic: {
-				img: 'bucketDiscount',
+				img: 'bucketHeavyStandard',
 				cost: 1000,
 				build: 250,
 				sell: 500
 			},
 			medium: {
-				img: 'bucketStandard',
+				img: 'bucketHeavyPremium',
 				cost: 2000,
 				build: 500,
 				sell: 1000
 			},
 			heavy: {
-				img: 'bucketDeluxe',
+				img: 'bucketHeavyDeluxe',
 				cost: 3000,
 				build: 1000,
 				sell: 2000

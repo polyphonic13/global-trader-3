@@ -617,6 +617,7 @@ var gameLogic = {
 			setSelectedMachinePieceSprite: function() {
 				PhaserGame.resetAllMachinePieceSpriteFrames();
 				var piece = PhaserGame.spriteTranslations[PhaserGame.machinePieces[PhaserGame.currentMachinePiece]];
+				trace('setSelectedMachinePieceSprite, piece = ' + piece + ', currentMachinePiece = ' + PhaserGame.currentMachinePiece + ', machinePieces = ', PhaserGame.machinePieces);
 				PhaserGame.setMachinePieceSpriteFrame(piece, 1);
 			},
 			resetAllMachinePieceSpriteFrames: function() {
@@ -1951,13 +1952,12 @@ var gameLogic = {
 							if(idx === 0) {
 								partSprite.attrs.frame = 1;
 							}
-							machinePieceSprites.views[partSprite.name] = partSprite;
+							machineEdit.views.machinePieceSprites.views[partSprite.name] = partSprite;
 						}
 					},
 					this
 				);
 
-				machineEdit.views[machinePieceSprites.name] = machinePieceSprites;
 				// trace('machineEdit now = ', machineEdit);
 
 				PWG.ViewManager.addView(machineEdit, equipmentEdit, true);
