@@ -147,6 +147,22 @@ var gameLogic = {
 				PWG.ViewManager.hideView('global:notificationEnvelope');
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: PhaserGame.config.defaultScreen });
 			},
+			formatBuildingPin: function(type, idx, count) {
+				var buildingPin = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingPin);
+				var pinLocations = PhaserGame.config.pinPositions.usSectors[idx];
+				var pinOffsets = PhaserGame.config.pinOffsets;
+				var pinFills = PhaserGame.config.pinFills[type];
+
+				buildingPin.name = 'sector'+idx+type;
+				buildingPin.views.pin.img = PhaserGame.config.pinImages[type];
+				buildingPin.views.pin.x += pinLocations.x + pinOffsets[type].x;
+				buildingPin.views.pin.y += pinLocations.y + pinOffsets[type].y;
+				buildingPin.views.locationCount.x += pinLocations.x + pinOffsets[type].x;
+				buildingPin.views.locationCount.y += pinLocations.y + pinOffsets[type].y;
+				buildingPin.views.locationCount.text = 'x' + count;
+				buildingPin.views.locationCount.style.fill = pinFills[idx];
+				return buildingPin;
+			},
 			initWorldZoom: function(worldMap, buildingPins) {
 				PhaserGame.worldZoom = {
 					max: {
@@ -1348,22 +1364,20 @@ var gameLogic = {
 
 				var world = PWG.ViewManager.getControllerFromPath('world');
 				var buildingPins = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingPins);
-				var buildingPin = PhaserGame.config.dynamicViews.buildingPin;
 				var worldPositions = PhaserGame.config.worldPositions;
 
 				PWG.Utils.each(
 					TurnManager.playerData.sectors,
 					function(sector, idx) {
 						var count = PWG.Utils.objLength(sector);
-						trace('\tthere are ' + count + ' buildings in sector['+idx+']');
 						if(count > 0) {
-							var pinLocations = PhaserGame.config.pinPositions.usSectors[idx];
-							var pinOffsets = PhaserGame.config.pinOffsets;
+							trace('\tthere are ' + count + ' buildings in sector['+idx+'] ', sector);
 							var palette = PhaserGame.config.palette;
 							
 							var typeCounts = {
 								plant: 0,
-								dealership: 0
+								dealership: 0,
+								traderoute: 0
 							};
 							
 							PWG.Utils.each(
@@ -1375,33 +1389,12 @@ var gameLogic = {
 							);
 							trace('\ttypeCounts = ', typeCounts);
 							if(typeCounts.plant > 0) {
-								var type = BuildingTypes.PLANT;
-								var plantPin = PWG.Utils.clone(buildingPin);
-								var pinName = 'sector'+idx+type;
-								plantPin.name = pinName;
-								plantPin.views.pin.img = PhaserGame.config.pinImages[type];
-								plantPin.views.pin.x += pinLocations.x + pinOffsets[type].x;
-								plantPin.views.pin.y += pinLocations.y + pinOffsets[type].y;
-								plantPin.views.locationCount.x += pinLocations.x + pinOffsets[type].x;
-								plantPin.views.locationCount.y += pinLocations.y + pinOffsets[type].y;
-								plantPin.views.locationCount.text = 'x' + typeCounts[type];
-								plantPin.views.locationCount.style.fill = (idx === 3) ? palette.black : palette.white
-								buildingPins.views[pinName] = plantPin;
+								var buildingPin = PhaserGame.formatBuildingPin(BuildingTypes.PLANT, idx, typeCounts[BuildingTypes.PLANT]);
+								buildingPins.views[buildingPin.name] = buildingPin;
 							}
 							if(typeCounts.dealership > 0) {
-								var type = BuildingTypes.DEALERSHIP;
-								var dealershipPin = PWG.Utils.clone(buildingPin);
-								var pinName = 'sector'+idx+type;
-								dealershipPin.name = pinName;
-								dealershipPin.views.pin.img = PhaserGame.config.pinImages[type];
-								dealershipPin.views.pin.x += pinLocations.x + pinOffsets[type].x;
-								dealershipPin.views.pin.y += pinLocations.y + pinOffsets[type].y;
-								dealershipPin.views.locationCount.x += pinLocations.x + pinOffsets[type].x;
-								dealershipPin.views.locationCount.y += pinLocations.y + pinOffsets[type].y;
-								dealershipPin.views.locationCount.text = 'x' + typeCounts[type];
-								dealershipPin.views.locationCount.style.fill = (idx === 3 || idx === 0) ? palette.black : palette.white
-								trace('\tadding dealershipPin: ', dealershipPin);
-								buildingPins.views[pinName] = dealershipPin;
+								var buildingPin = PhaserGame.formatBuildingPin(BuildingTypes.DEALERSHIP, idx, typeCounts[BuildingTypes.DEALERSHIP]);
+								buildingPins.views[buildingPin.name] = buildingPin;
 							}
 						}
 					},
@@ -1822,6 +1815,7 @@ var gameLogic = {
 					// var partView = this.partsMenuType + 'Part';
 					// PWG.ViewManager.setFrame('equipmentEdit:machineEdit:editorParts:'+partView, frame);
 					PWG.EventCenter.trigger({ type: Events.CLOSE_PARTS_MENU });
+					PWG.EventCenter.trigger({ type: Events.NEXT_MACHINE_PIECE_ICON });
 				}
 			},
 			// add optional part

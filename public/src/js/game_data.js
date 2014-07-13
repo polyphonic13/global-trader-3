@@ -1185,7 +1185,6 @@ var gameData = {
 			traderoute: 10000
 		},
 		manufacturing: {
-			machine10: 10,
 			machine50: 50,
 			machine100: 100,
 			machine500: 500,

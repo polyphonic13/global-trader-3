@@ -145,6 +145,22 @@ var GameConfig = function() {
 			dealership: 'pinDealership',
 			traderoute: 'pinTraderoute'
 		};
+		var pinFills = {
+			plant: [
+				palette.white,
+				palette.white,
+				palette.white,
+				palette.black,
+				palette.white
+			],
+			dealership: [
+				palette.black,
+				palette.white,
+				palette.white,
+				palette.black,
+				palette.white
+			]
+		};
 		var starsConfig = {
 			tractor: {
 				basic: {
@@ -230,7 +246,7 @@ var GameConfig = function() {
 							height: (gameUnit * 4.8) * 1.1,
 							frame: 0
 						},
-						input: gameLogic.global.input.engineSprite
+						// input: gameLogic.global.input.engineSprite
 					},
 					tires: {
 						type: 'sprite',
@@ -243,7 +259,7 @@ var GameConfig = function() {
 							height: (gameUnit * 8.7) * 0.64,
 							frame: 0
 						},
-						input: gameLogic.global.input.tiresSprite
+						// input: gameLogic.global.input.tiresSprite
 					},
 					transmission: {
 						type: 'sprite',
@@ -256,7 +272,7 @@ var GameConfig = function() {
 							height: (gameUnit * 3.05) * 1.47,
 							frame: 0
 						},
-						input: gameLogic.global.input.transmissionSprite
+						// input: gameLogic.global.input.transmissionSprite
 					}
 				},
 				medium: {
@@ -271,7 +287,7 @@ var GameConfig = function() {
 							height: (gameUnit * 4) * 1.04,
 							frame: 0
 						},
-						input: gameLogic.global.input.engineSprite
+						// input: gameLogic.global.input.engineSprite
 					},
 					tires: {
 						type: 'sprite',
@@ -284,7 +300,7 @@ var GameConfig = function() {
 							height: (gameUnit * 8.1) * 0.89,
 							frame: 0
 						},
-						input: gameLogic.global.input.tiresSprite
+						// input: gameLogic.global.input.tiresSprite
 					},
 					transmission: {
 						type: 'sprite',
@@ -297,7 +313,7 @@ var GameConfig = function() {
 							height: (gameUnit * 2.33) * 2.13,
 							frame: 0
 						},
-						input: gameLogic.global.input.transmissionSprite
+						// input: gameLogic.global.input.transmissionSprite
 					}
 				},
 				heavy: {
@@ -312,7 +328,7 @@ var GameConfig = function() {
 							height: (gameUnit * 4.66) * 1.04,
 							frame: 0
 						},
-						input: gameLogic.global.input.engineSprite
+						// input: gameLogic.global.input.engineSprite
 					},
 					tracks: {
 						type: 'sprite',
@@ -325,7 +341,7 @@ var GameConfig = function() {
 							height: (gameUnit * 8.5) * 0.57,
 							frame: 0
 						},
-						input: gameLogic.global.input.tracksSprite
+						// input: gameLogic.global.input.tracksSprite
 					},
 					transmission: {
 						type: 'sprite',
@@ -338,7 +354,7 @@ var GameConfig = function() {
 							height: (gameUnit * 4.75) * 1.31,
 							frame: 0
 						},
-						input: gameLogic.global.input.transmissionSprite
+						// input: gameLogic.global.input.transmissionSprite
 					}
 				}
 			},
@@ -355,7 +371,7 @@ var GameConfig = function() {
 							height: (gameUnit * 6) * 0.7,
 							frame: 0
 						},
-						input: gameLogic.global.input.bucketSprite
+						// input: gameLogic.global.input.bucketSprite
 					},
 					tires: {
 						type: 'sprite',
@@ -368,7 +384,7 @@ var GameConfig = function() {
 							height: (gameUnit * 4.5) * 0.64,
 							frame: 0
 						},
-						input: gameLogic.global.input.tiresSprite
+						// input: gameLogic.global.input.tiresSprite
 					},
 					transmission: {
 						type: 'sprite',
@@ -381,7 +397,7 @@ var GameConfig = function() {
 							height: (gameUnit * 3.25) * 1.09,
 							frame: 0
 						},
-						input: gameLogic.global.input.transmissionSprite
+						// input: gameLogic.global.input.transmissionSprite
 					}
 				},
 				medium: {
@@ -396,7 +412,7 @@ var GameConfig = function() {
 							height: (gameUnit * 5.2) * 0.93,
 							frame: 0
 						},
-						input: gameLogic.global.input.bucketSprite
+						// input: gameLogic.global.input.bucketSprite
 					},
 					tires: {
 						type: 'sprite',
@@ -409,7 +425,7 @@ var GameConfig = function() {
 							height: (gameUnit * 2.25) * 1.1,
 							frame: 0
 						},
-						input: gameLogic.global.input.tiresSprite
+						// input: gameLogic.global.input.tiresSprite
 					},
 					transmission: {
 						type: 'sprite',
@@ -422,7 +438,7 @@ var GameConfig = function() {
 							height: (gameUnit * 4) * 0.91,
 							frame: 0
 						},
-						input: gameLogic.global.input.transmissionSprite
+						// input: gameLogic.global.input.transmissionSprite
 					}
 				},
 				heavy: {
@@ -437,7 +453,7 @@ var GameConfig = function() {
 							height: (gameUnit * 7.1) * 0.98,
 							frame: 0
 						},
-						input: gameLogic.global.input.bucketSprite
+						// input: gameLogic.global.input.bucketSprite
 					},
 					tracks: {
 						type: 'sprite',
@@ -450,7 +466,7 @@ var GameConfig = function() {
 							height: (gameUnit * 6.75) * 0.53,
 							frame: 0
 						},
-						input: gameLogic.global.input.tiresSprite
+						// input: gameLogic.global.input.tiresSprite
 					},
 					transmission: {
 						type: 'sprite',
@@ -463,7 +479,7 @@ var GameConfig = function() {
 							height: (gameUnit * 4.5) * 0.69,
 							frame: 0
 						},
-						input: gameLogic.global.input.transmissionSprite
+						// input: gameLogic.global.input.transmissionSprite
 					},
 					engine: {
 						type: 'sprite',
@@ -476,7 +492,7 @@ var GameConfig = function() {
 							height: (gameUnit * 2.35) * 0.69,
 							frame: 0
 						},
-						input: gameLogic.global.input.engineSprite
+						// input: gameLogic.global.input.engineSprite
 					}
 				}
 			}
@@ -1931,6 +1947,7 @@ var GameConfig = function() {
 			pinPositions: pinPositions,
 			pinOffsets: pinOffsets,
 			pinImages: pinImages,
+			pinFills: pinFills,
 			starsConfig: starsConfig,
 			machineEditBackgrounds: machineEditBackgrounds,
 			machinePieceSpriteConfig: machinePieceSpriteConfig,
