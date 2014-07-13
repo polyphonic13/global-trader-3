@@ -602,6 +602,15 @@ var gameLogic = {
 				return idx;
 			},
 			hideAllMachinePieceSprites: function() {
+				var machinePieceSprites = PWG.ViewManager.getControllerFromPath('equipmentEdit:machineEdit:machinePieceSprites');
+				PWG.Utils.each(
+					machinePieceSprites.children,
+					function(sprite) {
+						sprite.hide();
+					},
+					this
+				);
+/*
 				PWG.Utils.each(
 					PhaserGame.machinePieces,
 					function(piece) {
@@ -609,8 +618,10 @@ var gameLogic = {
 					},
 					this
 				);
+*/
 			},
 			hideMachinePieceSprite: function(piece) {
+				trace('')
 				var path = 'equipmentEdit:machineEdit:machinePieceSprites:'+piece;
 				PWG.ViewManager.hideView(path);
 			},
@@ -1904,6 +1915,7 @@ var gameLogic = {
 				event: Events.MACHINE_PARTS_COMPLETE,
 				handler: function(event) {
 					trace('machine complete, event = ', event);
+					PhaserGame.hideAllMachinePieceSprites();
 					PWG.ViewManager.showView('global:confirmButton');
 				}
 			},
