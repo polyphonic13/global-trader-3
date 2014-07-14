@@ -1574,7 +1574,7 @@ var gameLogic = {
 				trace('wiper = ', wiper);
 				// trace('levelBrief = ', levelBrief, '\tgoalText = ', goalText);
 				missionBrief.views.briefBg.img = levelBrief.background;
-				
+
 				PWG.Utils.each(
 					levelBrief.text,
 					function(text, idx) {
@@ -1593,7 +1593,7 @@ var gameLogic = {
 				// trace('missionBrief config now = ', missionBrief, '\tbrief = ', brief);
 				PWG.ViewManager.addView(missionBrief, 'brief', true);
 				PWG.ViewManager.addView(wiper, 'brief', true);
-				
+
 				PWG.ViewManager.showView('global:backButton');
 				PWG.ViewManager.hideView('global:turnGroup');
 
