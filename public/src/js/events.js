@@ -46,5 +46,8 @@ var Events = {
 	ADD_PART: 'addPart',
 	ADD_OPTIONAL_PART: 'addOptionalPart',
 	SAVE_MACHINE: 'saveMachine',
-	EDIT_MACHINE: 'editMachine'
+	EDIT_MACHINE: 'editMachine',
+	
+	ADD_DISTRIBUTOR_PROMPT: 'addDistributorPrompt',
+	ADD_DISTRIBUTOR_NOTIFICATION: 'addDistributorNotification'
 };

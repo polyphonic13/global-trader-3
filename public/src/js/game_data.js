@@ -1176,13 +1176,18 @@ var gameData = {
 			calculation: 'length'
 		}
 		]
-	},
+	}
 	],
 	bonuses: {
 		buildings: {
 			plant: 500,
 			dealership: 1000,
 			tradeRoute: 10000
+		},
+		distributors: {
+			added: 5000,
+			partsPurchased: 1000,
+			allPartsUsed: 10000
 		},
 		manufacturing: {
 			machine10: 10,

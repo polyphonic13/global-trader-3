@@ -35,5 +35,36 @@ var WholesaleManager = function() {
 		);
 	};
 	
+	module.addDistributor = function(config) {
+		// trace('BuildingManager/create, type = ' + type + ', cost = ' + gameData.buildings[type].cost + ', bank = ' + TurnManager.playerData.bank);
+		var type = BuildingTypes.DISTRIBUTOR;
+		var count = PWG.Utils.objLength(TurnManager.playerData.distributors[config.sector]);
+		// trace('\tcount = ' + count);
+		config.id = type + count;
+		config.name = type.toUpperCase() + ' ' + (count + 1);
+
+		if(TurnManager.playerData.bank >= gameData.buildings[type].cost) {
+			var plant = new Plant(config);
+			// trace('\tbuilding made');
+			PWG.EventCenter.trigger({ type: Events.UPDATE_BANK, value: (-gameData.buildings[type].cost) });
+			// trace('\tabout to save building data, building  = ', building);
+			module.updateSectors(plant);
+			return true;
+		} else {
+			// trace('no more money');
+			return false;
+		}
+	}
+	
+	module.updateSectors = function(distributor) {
+		module.sectors[distributor.config.sector][distributor.config.id] = distributor;
+		module.addDistrubutorToTurnManager(distributor.config);
+	};
+	
+	module.addDistrubutorToTurnManager = function(config) {
+		// trace('save new building, config = ', config);
+		TurnManager.addDistributor(config);
+	};
+	
 	return module;
 }();

@@ -12,7 +12,8 @@ var TurnManager = function() {
 		newBuildings: [],
 		newMachineModels: [],
 		newMachines: [],
-		machinesSold: []
+		machinesSold: [],
+		newDistributors: []
 	};
 	
 	var module = {};
@@ -71,6 +72,13 @@ var TurnManager = function() {
 		trace('adding bonus points for new ' + building.type + ': ' + gameData.bonuses.buildings[building.type]);
 		module.playerData.bonusPoints += gameData.bonuses.buildings[building.type];
 		PWG.EventCenter.trigger({ type: Events.BONUSES_UPDATED });
+	};
+	
+	module.addDistributor = function(distributor) {
+		module.playerData.distributor[distributor.sector][distributor.id] = distributor;
+		module.currentData.newDistributors.push(distributor);
+		module.playerData.bonusPoints += gameData.bonuses.distributors.added;
+		PWG.EventCenter.trigger({ type: Events.DISTRIBUTOR_ADDED });
 	};
 	
 	module.updateBuilding = function(building) {

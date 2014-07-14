@@ -216,7 +216,7 @@ var gameLogic = {
 						x: (-buildingPins.x) * 0.25,
 						y: (-buildingPins.y) * 0.25
 					}
-				}
+				};
 				trace('world zoom initialized as: ', PhaserGame.worldZoom, '\npin zooom: ', PhaserGame.pinZoom);
 				PhaserGame.worldZoomInitialized = true;
 			},
@@ -299,7 +299,6 @@ var gameLogic = {
 				}
 			},
 			addTradeRouteArrowsAndIcons: function() {
-				var world = PWG.ViewManager.getControllerFromPath('world');
 				var tradeRouteArrows = PWG.Utils.clone(PhaserGame.config.dynamicViews.tradeRouteArrows);
 				var tradeRouteArrow = PhaserGame.config.dynamicViews.tradeRouteArrow;
 				var tradeRouteArrowConfig = PhaserGame.config.tradeRouteArrowConfig;
@@ -370,7 +369,7 @@ var gameLogic = {
 							PWG.Utils.each(
 								tradeRouteIconConfig[area],
 								function(iconProp, ip) {
-									icon[ip] = iconProp
+									icon[ip] = iconProp;
 								},
 								this
 							);
@@ -381,8 +380,8 @@ var gameLogic = {
 					);
 
 				trace('tradeRouteArrows now = ', tradeRouteArrows);
-				PWG.ViewManager.addView(tradeRouteArrows, world, true);
-				PWG.ViewManager.addView(tradeRouteAlertIcons, world, true);
+				PWG.ViewManager.addView(tradeRouteArrows, 'world', true);
+				PWG.ViewManager.addView(tradeRouteAlertIcons, 'world', true);
 			},
 			removeTradeRouteArrows: function() {
 				// trace('removeTradeRouteArrows');
@@ -449,8 +448,7 @@ var gameLogic = {
 			},
 			showEndTurnPrompt: function() {
 				var endTurnPrompt = PhaserGame.config.dynamicViews.endTurnPrompt;
-				var worldCollection = PWG.ViewManager.getControllerFromPath('world');
-				PWG.ViewManager.addView(endTurnPrompt, worldCollection, true);
+				PWG.ViewManager.addView(endTurnPrompt, 'world', true);
 
 				PhaserGame.confirmAction = {
 					method: function() {
@@ -500,7 +498,6 @@ var gameLogic = {
 				var sector = PhaserGame.activeSector;
 				// trace('showNotification, notifications = ', PhaserGame.notifications[sector]);
 				if(PhaserGame.notifications[sector].length > 0) {
-					var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
 					var notification = PhaserGame.notifications[sector].pop();
 
 					if(notification.confirmAction) {
@@ -514,7 +511,7 @@ var gameLogic = {
 					}
 					PWG.ViewManager.hideView('global:backButton');
 					PWG.ViewManager.showView('global:cancelButton');
-					PWG.ViewManager.addView(notification, notifications, true);
+					PWG.ViewManager.addView(notification, 'global:notifications', true);
 
 					if(PhaserGame.notifications[sector].length === 0) {
 						PhaserGame.hideNotificationEnvelope();
@@ -532,7 +529,6 @@ var gameLogic = {
 			showTradeRouteNotification: function(id) {
 				trace('showTradeRouteNotification: ' + id);
 				if(PhaserGame.tradeRouteNotifications.hasOwnProperty(id)) {
-					var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
 					var notification = PhaserGame.tradeRouteNotifications[id];
 					delete PhaserGame.tradeRouteNotifications[id];
 					
@@ -549,7 +545,7 @@ var gameLogic = {
 					
 					PWG.ViewManager.hideView('global:backButton');
 					PWG.ViewManager.showView('global:cancelButton');
-					PWG.ViewManager.addView(notification, notifications, true);
+					PWG.ViewManager.addView(notification, 'global:notifications', true);
 				}
 			},
 			removeTradeRouteNotification: function() {
@@ -624,11 +620,10 @@ var gameLogic = {
 					}
 				}
 			},
-			addBuildingMenu: function() {
+			addBuildingCreatePrompt: function() {
 				// PhaserGame.addBuildingItemsOverlay.call(this, event.value, this.views);
-				var global = PWG.ViewManager.getControllerFromPath('global');
 				var buildingMenu = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingMenu);
-				// trace('addBuildingMenu, buildingMenuConfig = ', buildingMenuConfig);
+				// trace('addBuildingCreatePrompt, buildingMenuConfig = ', buildingMenuConfig);
 				trace('plant = ' + gameData.buildings.plant.cost);
 
 				if(TurnManager.playerData.bank > gameData.buildings.plant.cost) {
@@ -653,7 +648,7 @@ var gameLogic = {
 				};
 				PWG.ViewManager.showView('global:cancelButton');
 				PWG.ViewManager.hideView('global:backButton');
-				PWG.ViewManager.addView(buildingMenu, global, true);
+				PWG.ViewManager.addView(buildingMenu, 'global', true);
 				this.buildingMenuOpen = true;
 			},
 			addBuilding: function(buildingType) {
@@ -706,7 +701,6 @@ var gameLogic = {
 					params: event.dealership
 				};
 				// PWG.ViewManager.hideView('global:backButton');
-				// PWG.ViewManager.addView(notification, notifications, true);
 				PhaserGame.notifications[event.plant.sector].push(notification);
 				if(PWG.ScreenManager.currentId === 'usDetail' && PhaserGame.activeSector === event.plant.sector) {
 					PhaserGame.showNotificationEnvelope();
@@ -813,7 +807,7 @@ var gameLogic = {
 					y: position.y,
 					animationName: 'expand',
 					parentPath: parentPath
-				}
+				};
 				AnimationManager.add(config);
 			},
 			// EQUIPMENT EDIT
@@ -853,7 +847,6 @@ var gameLogic = {
 */
 			},
 			hideMachinePieceSprite: function(piece) {
-				trace('')
 				var path = 'equipmentEdit:machineEdit:machinePieceSprites:'+piece;
 				PWG.ViewManager.hideView(path);
 			},
@@ -881,7 +874,6 @@ var gameLogic = {
 			},
 			populatePartsMenu: function(type, collection) {
 				PhaserGame.activePartType = type;
-				var partsMenu = PWG.ViewManager.getControllerFromPath('equipmentEdit:machineEdit:partsMenu');
 				var partsData = gameData.parts[type];
 				trace('populatePartsMenu, type = ' + type + '\tparts data = ', partsData);
 				var partIconsConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.partIcons);
@@ -923,7 +915,7 @@ var gameLogic = {
 				// partIconsConfig.views.closeButton.callback = gameLogic.global.buttonCallbacks.partsMenuClose;
 				partIconsConfig.name = 'partsMenu';
 
-				PWG.ViewManager.addView(partIconsConfig, partsMenu, true);
+				PWG.ViewManager.addView(partIconsConfig, 'equipmentEdit:machineEdit:partsMenu', true);
 
 				// trace('\tcreated partsMenu from: ', partIconsConfig, '\tcollection now = ', collection);
 			},
@@ -968,7 +960,7 @@ var gameLogic = {
 				partIconsConfig.views.closeButton.callback = gameLogic.global.buttonCallbacks.optionalPartsMenuClose;
 				partIconsConfig.name = 'optionalPartsMenu';
 
-				PWG.ViewManager.addView(partIconsConfig);
+				PWG.ViewManager.addView(partIconsConfig, 'equipmentEdit:machineEdit:partsMenu', true);
 			},
 			showPartsMenu: function() {
 				PWG.ViewManager.showView('equipmentEdit:machineEdit:partsMenu');
@@ -987,6 +979,19 @@ var gameLogic = {
 				PWG.ViewManager.hideView('equipmentEdit:machineEdit:partsMenu');
 				// var partsMenu = PWG.ViewManager.getControllerFromPath('equipmentEdit:machineEdit:partsMenu');
 				// partsMenu.view.y = -(PWG.Stage.gameH);
+			},
+			addDistributorPrompt: function() {
+				var distributorPrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.distrbutorPrompt);
+				
+			},
+			removeDistributorPrompt: function() {
+				
+			},
+			addDistributorNotification: function() {
+				
+			},
+			removeDistributorNotification: function() {
+				
 			},
 			// YEAR END
 			endYear: function() {
@@ -1094,9 +1099,7 @@ var gameLogic = {
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'turnEnd' });
 			},
 			buildYearEndReport: function() {
-				var openedEnvelope = PWG.ViewManager.getControllerFromPath('turnEnd');
-
-				PWG.ViewManager.addView(PhaserGame.yearSummary, openedEnvelope, true);
+				PWG.ViewManager.addView(PhaserGame.yearSummary, 'turnEnd', true);
 				PhaserGame.yearSummary = {};
 			}
 		},
@@ -1525,12 +1528,10 @@ var gameLogic = {
 		},
 		brief: {
 			create: function() {
-				var brief = PWG.ViewManager.getControllerFromPath('brief');
-
 				var levelBrief = gameData.levels[PhaserGame.playerData.level].brief;
 				var missionBrief = PWG.Utils.clone(PhaserGame.config.dynamicViews.missionBrief);
 				var goalText = PhaserGame.config.dynamicViews.goalText;
-				var wiper = PWG.Utils.clone(PhaserGame.config.dynamicViews.wiper)
+				var wiper = PWG.Utils.clone(PhaserGame.config.dynamicViews.wiper);
 				trace('wiper = ', wiper);
 				// trace('levelBrief = ', levelBrief, '\tgoalText = ', goalText);
 				missionBrief.views.briefBg.img = levelBrief.background;
@@ -1551,8 +1552,8 @@ var gameLogic = {
 					this
 				);
 				// trace('missionBrief config now = ', missionBrief, '\tbrief = ', brief);
-				PWG.ViewManager.addView(missionBrief, brief, true);
-				PWG.ViewManager.addView(wiper, brief, true);
+				PWG.ViewManager.addView(missionBrief, 'brief', true);
+				PWG.ViewManager.addView(wiper, 'brief', true);
 				
 				PWG.ViewManager.showView('global:backButton');
 				PWG.ViewManager.hideView('global:turnGroup');
@@ -1567,7 +1568,7 @@ var gameLogic = {
 					// trace('wiper tween complete');
 					wiper.view.events.onTweenComplete = null;
 					// PWG.ViewManager.showView('global:confirmButton');
-				})
+				});
 				tween.to({angle: -65}, 1000, Phaser.Easing.Linear.None, true, Math.random() * 500);
 				tween.start();
 
@@ -1605,7 +1606,6 @@ var gameLogic = {
 				// worldMap.view.x = -(gameUnit * 8.2);
 				PhaserGame.worldView = worldMap.view;
 
-				var world = PWG.ViewManager.getControllerFromPath('world');
 				var buildingPins = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingPins);
 				var worldPositions = PhaserGame.config.worldPositions;
 
@@ -1644,7 +1644,7 @@ var gameLogic = {
 					this
 				);
 				
-				PWG.ViewManager.addView(buildingPins, world, true);
+				PWG.ViewManager.addView(buildingPins, 'world', true);
 
 				PhaserGame.buildingPins = PWG.ViewManager.getControllerFromPath('world:buildingPins').view;
 
@@ -1675,7 +1675,7 @@ var gameLogic = {
 				handler: function(event) {
 					// trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + this.partsMenuOpen + ', partsMenuType = ' + this.partsMenuType);
 					if(!this.buildingMenuOpen) {
-						PhaserGame.addBuildingMenu();
+						PhaserGame.addBuildingCreatePrompt();
 						this.buildingMenuOpen = true;
 					}
 				}
@@ -1738,7 +1738,6 @@ var gameLogic = {
 			],
 			create: function() {
 				// trace('BUILD DETAIL GRID, this = ', this);
-				var usDetail = PWG.ViewManager.getControllerFromPath('usDetail');
 				var sectorBg = PWG.Utils.clone(PhaserGame.config.dynamicViews.sectorBg);
 				var gridCoordinates = GridManager.grids[PhaserGame.activeSector];
 				var usDetailGrid = PWG.Utils.clone(PhaserGame.config.dynamicViews.usDetailGrid);
@@ -1768,9 +1767,9 @@ var gameLogic = {
 				);
 
 				sectorBg.img = SectorGrids[PhaserGame.activeSector];
-				PWG.ViewManager.addView(sectorBg, usDetail, true);
+				PWG.ViewManager.addView(sectorBg, 'usDetail', true);
 				
-				PWG.ViewManager.addView(usDetailGrid, usDetail, true);
+				PWG.ViewManager.addView(usDetailGrid, 'usDetail', true);
 				
 				if(PhaserGame.notifications[PhaserGame.activeSector].length > 0) {
 					PhaserGame.showNotificationEnvelope();
@@ -1814,7 +1813,6 @@ var gameLogic = {
 			}
 			],
 			create: function() {
-				var buildingEdit = PWG.ViewManager.getControllerFromPath('buildingEdit');
 				var building = PhaserGame.activeBuilding;
 				// trace('building = ', building);
 				var buildingEditScreen = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditScreen);
@@ -1855,7 +1853,7 @@ var gameLogic = {
 				);
 				trace('\tbuildingEditScreen now = ', buildingEditScreen);
 
-				PWG.ViewManager.addView(buildingEditScreen, buildingEdit, true);
+				PWG.ViewManager.addView(buildingEditScreen, 'buildingEdit', true);
 
 				if(building.type === BuildingTypes.PLANT) {
 					PWG.ViewManager.showView('global:plantDetailGroup');
@@ -1977,8 +1975,7 @@ var gameLogic = {
 				}
 				
 				// trace('machineList = ', machineList);
-				var equipmentListView = PWG.ViewManager.getControllerFromPath('equipmentList');
-				PWG.ViewManager.addView(machineList, equipmentListView, true);
+				PWG.ViewManager.addView(machineList, 'equipmentList', true);
 				PWG.ViewManager.showView('global:equipmentListGroup');
 			},
 			shutdown: function() {
@@ -2190,7 +2187,6 @@ var gameLogic = {
 				var requiredParts = gameData.machines[type][size].requiredParts;
 				var count = 0;
 				
-				var equipmentEdit = PWG.ViewManager.getControllerFromPath('equipmentEdit');
 				var stars = PWG.Utils.clone(PhaserGame.config.dynamicViews.stars);
 				var machineEdit = PWG.Utils.clone(PhaserGame.config.dynamicViews.machineEdit);
 				var machinePieceMenuItem = PhaserGame.config.dynamicViews.machinePieceMenuItem;
@@ -2245,7 +2241,7 @@ var gameLogic = {
 
 				// trace('machineEdit now = ', machineEdit);
 
-				PWG.ViewManager.addView(machineEdit, equipmentEdit, true);
+				PWG.ViewManager.addView(machineEdit, 'equipmentEdit', true);
 				
 				PWG.ViewManager.showView('global:equipmentEditGroup');
 

@@ -257,7 +257,7 @@ var GameConfig = function() {
 				y: (gameUnit * 8.5)
 			}
 		};
-		
+
 		var starsConfig = {
 			tractor: {
 				basic: {
@@ -596,6 +596,7 @@ var GameConfig = function() {
 		};
 
 		var dynamicViews = {
+			// global
 			notification: {
 				type: 'group',
 				name: 'notification',
@@ -650,6 +651,7 @@ var GameConfig = function() {
 					}
 				}
 			},
+			// brief
 			missionBrief: {
 				type: 'group',
 				name: 'missionBrief',
@@ -736,6 +738,7 @@ var GameConfig = function() {
 					centerX: true
 				}
 			},
+			// world
 			endTurnPrompt: {
 				type: 'group',
 				name: 'endTurnPrompt',
@@ -753,7 +756,6 @@ var GameConfig = function() {
 					}
 				}
 			},
-			// world
 			buildingPins: {
 				type: 'group',
 				name: 'buildingPins',
@@ -825,6 +827,7 @@ var GameConfig = function() {
 					height: (gameUnit * 6) * 0.34
 				}
 			},
+			// us detail
 			sectorBg: {
 				type: 'sprite',
 				name: 'sectorBg',
@@ -929,6 +932,17 @@ var GameConfig = function() {
 							centerX: true
 						}
 					}
+				}
+			},
+			dealershipPrompt: { 
+				type: 'sprite',
+				name: 'dealershipPrompt',
+				img: 'dealershipRepresentativePrompt',
+				x: (gameW/2) - (gameUnit * 3),
+				y: (gameUnit * 12.5),
+				attrs: {
+					width: (gameUnit * 6),
+					height: (gameUnit * 6) * 0.34
 				}
 			},
 			// building edit
@@ -1075,17 +1089,7 @@ var GameConfig = function() {
 					}
 				}
 			},
-			dealershipPrompt: { 
-				type: 'sprite',
-				name: 'dealershipPrompt',
-				img: 'dealershipRepresentativePrompt',
-				x: (gameW/2) - (gameUnit * 3),
-				y: (gameUnit * 12.5),
-				attrs: {
-					width: (gameUnit * 6),
-					height: (gameUnit * 6) * 0.34
-				}
-			},
+			// machine list
 			machineList: {
 				type: 'group',
 				name: 'machineList',
@@ -1190,6 +1194,7 @@ var GameConfig = function() {
 					}
 				}
 			},
+			// machine edit
 			machineEdit: {
 				type: 'group',
 				name: 'machineEdit',
@@ -1379,30 +1384,6 @@ var GameConfig = function() {
 					visible: false
 				},
 				views: {
-					// menuBg: {
-					// 	type: 'sprite',
-					// 	name: 'menuBg',
-					// 	img: 'partsFrame',
-					// 	x: 0,
-					// 	y: -(gameH),
-					// 	attrs: {
-					// 		width: gameW,
-					// 		height: gameH
-					// 	}
-					// },
-					// closeButton: {
-					// 	type: 'button',
-					// 	name: 'closeButton',
-					// 	img: 'buttonClose',
-					// 	x: (gameW - gameUnit * 1.25),
-					// 	y: (gameUnit * 0.25),
-					// 	attrs: {
-					// 		width: gameUnit * 1,
-					// 		height: gameUnit * 1
-					// 	},
-					// 	context: this,
-					// 	frames: [0, 1, 1, 0]
-					// },
 					items: {
 						type: 'group',
 						name: 'itemsGroup',
@@ -1477,13 +1458,72 @@ var GameConfig = function() {
 				}
 			},
 			optionalPartsMenu: {
-				
 			},
+			distributorPrompt: {
+				type: 'group',
+				name: 'distributorPrompt',
+				views: {
+					menuBg: {
+						type: 'sprite',
+						name: 'menuBg',
+						img: 'submenuBg',
+						x: (gameW/2) - (gameUnit * 3),
+						y: (gameUnit * 12.5),
+						attrs: {
+							width: (gameUnit * 6),
+							height: (gameUnit * 6) * 0.34
+						}
+					},
+					title: {
+						type: 'text',
+						name: 'menuItemTitle',
+						text: '',
+						x: 0,
+						y: gameUnit * 13,
+						style: {
+						    font: (fontSizes.sm + 'px Trebuchet MS'),
+					        fill: palette.orange3,
+							align: 'center'
+						},
+						position: {
+							centerX: true
+						}
+					}
+				}
+			},
+			distributorNotification: {
+				type: 'group',
+				name: 'distributorNotification',
+				views: {
+					bg: {
+						type: 'sprite',
+						name: 'distributorBg',
+						img: '',
+						x: 0,
+						y: 0,
+						attrs: {
+							width: gameW,
+							height: gameH
+						}
+					},
+					content: {
+						type: 'text',
+						name: 'content',
+						text: '',
+						x: gameUnit * 1.5,
+						y: gameUnit * 2,
+						style: {
+						    font: (fontSizes.sm + 'px Trebuchet MS'),
+					        fill: palette.white
+						}
+					}
+				}
+			},
+			// year end
 			yearSummary: {
 				type: 'group',
 				name: 'yearSummary',
 				views: {
-					
 				}
 			},
 			achievedGoalText: {
@@ -1673,6 +1713,8 @@ var GameConfig = function() {
 					// NOTIFICATIONS
 					dealershipGirl: 'images/notifications/dealership_girl.png',
 					tradeRouteGirl: 'images/notifications/trade_route_girl.png',
+					// wholeSaleBg: 'images/notifications/wholesale_bg.png',
+
 					// TURN END
 					turnEnd01: 'images/screens/turn_end/turn_end01.png',
 					turnEnd02: 'images/screens/turn_end/turn_end02.png'

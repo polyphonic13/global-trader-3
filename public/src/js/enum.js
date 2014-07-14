@@ -1,7 +1,8 @@
 var BuildingTypes = {
 	PLANT: 'plant',
 	DEALERSHIP: 'dealership',
-	TRADE_ROUTE: 'tradeRoute'
+	TRADE_ROUTE: 'tradeRoute',
+	DISTRIBUTOR: 'distributor'
 };
 
 var BuildingStates = {
