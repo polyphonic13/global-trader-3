@@ -801,7 +801,7 @@ var GameConfig = function() {
 			},
 			tradeRouteAlertIcons: {
 				type: 'group',
-				name: 'tradeRouteIcons',
+				name: 'tradeRouteAlertIcons',
 				views: {}
 			},
 			tradeRouteAvailableIcon: {
@@ -1724,7 +1724,7 @@ var GameConfig = function() {
 
 					// NOTIFICATIONS
 					dealershipGirl: 'images/notifications/dealership_girl.png',
-					tradeRouteGirl: 'images/notifications/trade_route_girl.png',
+					tradeRouteGirl: 'images/notifications/trade_route_guy_asia.png',
 					// wholeSaleBg: 'images/notifications/wholesale_bg.png',
 
 					// TURN END

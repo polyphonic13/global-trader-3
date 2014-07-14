@@ -6,6 +6,7 @@ var US_DETAIL_GRID_CELLS = 6;
 var TIME_TO_MANUFACTOR = 5;
 var MACHINE_LIST_COLUMNS = 2; 
 var MACHINE_LIST_ICONS = 6;
+var MIN_TRADE_ROUTE_LEVEL = 3;
 
 function startGame() {
 	PhaserGame.init(ASPECT_RATIO, document.documentElement.clientHeight);
@@ -364,7 +365,7 @@ var gameLogic = {
 							tradeRouteArrows.views[arrow.name] = arrow;
 
 							var icon = PWG.Utils.clone(tradeRouteAvailableIcon);
-							icon.name += tr;
+							icon.name = tr;
 							icon.tradeRouteId = tr;
 							
 							PWG.Utils.each(
@@ -683,10 +684,10 @@ var gameLogic = {
 				
 				var modelName = event.plant.equipment[event.dealership.config.modelId].name;
 				var resell = PWG.Utils.formatMoney(event.dealership.config.resell, 0);
-
+				trace('addDealershipOppurtunity, dealership = ', event.dealership);
 				var statementText = PWG.Utils.parseMarkup(config.statement, {
 					plant: event.plant.name,
-					quantity: event.dealership.quantityPerYear,
+					quantity: event.dealership.config.maxPerYear,
 					model: modelName,
 					resell: resell
 				});
@@ -778,6 +779,7 @@ var gameLogic = {
 			addTradeRoute: function(tradeRoute) {
 				trace('addTradeRoute, tradeRoute = ', tradeRoute);
 				var config = tradeRoute.config;
+				PWG.ViewManager.removeView(tradeRoute.config.id, 'world:tradeRouteAlertIcons');
 				PhaserGame.removeTradeRouteNotification();
 				BuildingManager.addTradeRoute(tradeRoute);
 			},
@@ -1743,16 +1745,20 @@ var gameLogic = {
 				event: Events.BUILDING_STATE_UPDATED,
 				handler: function(event) {
 					var config = event.building.config;
-					if(config.sector === PhaserGame.activeSector) {
-						var viewPath = 'usDetail:usDetailGrid:usDetailGridItem'+config.cell;
-						var view = PWG.ViewManager.getControllerFromPath(viewPath);
-						var frameKey = config.type.toUpperCase() + '_' + config.state.toUpperCase();
-						var frame = TileCellFrames[frameKey];
-						// trace('\tviewPath = ' + viewPath + ', view = ', view);
+					if(config.type === BuildingTypes.TRADE_ROUTE) {
+						
+					} else {
+						if(config.sector === PhaserGame.activeSector) {
+							var viewPath = 'usDetail:usDetailGrid:usDetailGridItem'+config.cell;
+							var view = PWG.ViewManager.getControllerFromPath(viewPath);
+							var frameKey = config.type.toUpperCase() + '_' + config.state.toUpperCase();
+							var frame = TileCellFrames[frameKey];
+							// trace('\tviewPath = ' + viewPath + ', view = ', view);
 
-						PWG.ViewManager.setFrame(viewPath, frame);
-						view.config.attrs.frame = frame;
-					}
+							PWG.ViewManager.setFrame(viewPath, frame);
+							view.config.attrs.frame = frame;
+						}
+4					}
 				}
 			},
 			// inventory added
