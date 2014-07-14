@@ -75,7 +75,17 @@ var BuildingManager = function() {
 	Plant.prototype.constructionTime = 3;
 	Plant.prototype.buildTime = 0;
 	Plant.prototype.modelCapacity = 6;
- 	Plant.prototype.update = function() {
+ 	Plant.prototype.addMachineModel = function(machine) {
+		this.config.equipment[machine.id] = machine; 
+		this.config.inventory[machine.id] = [];
+		this.dealershipNotifications[machine.id] = false;
+		this.tradeRouteNotifications[machine.id] = false;
+	};
+	Plant.prototype.associateBuilding = function(building, property) {
+		this.config[property][building.config.modelId] = building.config.id;
+		TurnManager.updateBuilding(this.config);
+	};
+	Plant.prototype.update = function() {
 		if(this.config.state !== BuildingStates.PAUSED) {
 			Plant._super.update.apply(this, arguments);
 			if(PWG.Utils.objLength(this.config.equipment) > 0) { 
@@ -116,20 +126,20 @@ var BuildingManager = function() {
 									} 
 
 									// TRADE ROUTES
-									if(!this.config.tradeRoutes.hasOwnProperty(machine.id)) {
-										trace('\tplant['+this.config.id+'].tradeRouteNotifications['+machine.id+'] = ' + this.tradeRouteNotifications[machine.id]);
-										if(!this.tradeRouteNotifications[machine.id]) {
-											module.createTradeRoute(this, machine.id);
-											this.tradeRouteNotifications[machine.id] = true;
-										}
-									} else {
-										var tradeRouteId = this.config.tradeRoutes[machine.id];
-										var tradeRoute = module.findBuilding(tradeRouteId);
-										if(tradeRoute.config.state === BuildingStates.ACTIVE) {
-											var inventory = this.config.inventory[machine.id];
-											tradeRoute.addInventory(this.config);
-										}
-									}
+									// if(!this.config.tradeRoutes.hasOwnProperty(machine.id)) {
+									// 	trace('\tplant['+this.config.id+'].tradeRouteNotifications['+machine.id+'] = ' + this.tradeRouteNotifications[machine.id]);
+									// 	if(!this.tradeRouteNotifications[machine.id]) {
+									// 		module.createTradeRoute(this, machine.id);
+									// 		this.tradeRouteNotifications[machine.id] = true;
+									// 	}
+									// } else {
+									// 	var tradeRouteId = this.config.tradeRoutes[machine.id];
+									// 	var tradeRoute = module.findBuilding(tradeRouteId);
+									// 	if(tradeRoute.config.state === BuildingStates.ACTIVE) {
+									// 		var inventory = this.config.inventory[machine.id];
+									// 		tradeRoute.addInventory(this.config);
+									// 	}
+									// }
 
 									TurnManager.updateBuilding(this.config);
 									
@@ -160,16 +170,6 @@ var BuildingManager = function() {
 		
 		}
 	};
-	Plant.prototype.addMachineModel = function(machine) {
-		this.config.equipment[machine.id] = machine; 
-		this.config.inventory[machine.id] = [];
-		this.dealershipNotifications[machine.id] = false;
-		this.tradeRouteNotifications[machine.id] = false;
-	};
-	Plant.prototype.associateBuilding = function(building, property) {
-		this.config[property][building.config.modelId] = building.config.id;
-		TurnManager.updateBuilding(this.config);
-	};
 	
 	// DEALERSHIP
 	function Dealership(config) {
@@ -190,6 +190,18 @@ var BuildingManager = function() {
 	Dealership.prototype.capacity = 50;
 	Dealership.prototype.resellMaxMultiplier = 6;
 	Dealership.prototype.quantityPerYear = 50;
+	Dealership.prototype.addInventory = function(plant) {
+		// trace('Dealership/addInventory, dealership = ', this.config, '\tplant = ', plant);
+		if(this.config.inventory.length < this.capacity) {
+			var modelId = this.config.modelId;
+			while(plant.inventory[modelId].length > 0 && this.config.inventory.length < this.capacity) {
+				// trace('\ttransferring inventory to dealership');
+				this.config.inventory.push(plant.inventory[modelId].pop());
+				plant.totalInventory--;
+			}
+			TurnManager.updateBuilding(this.config);
+		}
+	};
 	Dealership.prototype.update = function() {
 		// trace('dealership/update: ', this);
 		Dealership._super.update.apply(this, arguments);
@@ -225,18 +237,6 @@ var BuildingManager = function() {
 			}
 		}
 	};
-	Dealership.prototype.addInventory = function(plant) {
-		// trace('Dealership/addInventory, dealership = ', this.config, '\tplant = ', plant);
-		if(this.config.inventory.length < this.capacity) {
-			var modelId = this.config.modelId;
-			while(plant.inventory[modelId].length > 0 && this.config.inventory.length < this.capacity) {
-				// trace('\ttransferring inventory to dealership');
-				this.config.inventory.push(plant.inventory[modelId].pop());
-				plant.totalInventory--;
-			}
-			TurnManager.updateBuilding(this.config);
-		}
-	};
 
 	// TRADE_ROUTE
 	function TradeRoute(config) {
@@ -257,6 +257,18 @@ var BuildingManager = function() {
 	TradeRoute.prototype.capacity = 50;
 	TradeRoute.prototype.resellMaxMultiplier = 6;
 	TradeRoute.prototype.quantityPerYear = 25;
+	TradeRoute.prototype.addInventory = function(plant) {
+		// trace('TradeRoute/addInventory, tradeRoute = ', this.config, '\tplant = ', plant);
+		if(this.config.inventory.length < this.capacity) {
+			var modelId = this.config.modelId;
+			while(plant.inventory[modelId].length > 0 && this.config.inventory.length < this.capacity) {
+				// trace('\ttransferring inventory to tradeRoute');
+				this.config.inventory.push(plant.inventory[modelId].pop());
+				plant.totalInventory--;
+			}
+			TurnManager.updateBuilding(this.config);
+		}
+	};
 	TradeRoute.prototype.update = function() {
 		// trace('tradeRoute/update: ', this);
 		TradeRoute._super.update.apply(this, arguments);
@@ -290,18 +302,6 @@ var BuildingManager = function() {
 					this.sellTime++;
 				}
 			}
-		}
-	};
-	TradeRoute.prototype.addInventory = function(plant) {
-		// trace('TradeRoute/addInventory, tradeRoute = ', this.config, '\tplant = ', plant);
-		if(this.config.inventory.length < this.capacity) {
-			var modelId = this.config.modelId;
-			while(plant.inventory[modelId].length > 0 && this.config.inventory.length < this.capacity) {
-				// trace('\ttransferring inventory to tradeRoute');
-				this.config.inventory.push(plant.inventory[modelId].pop());
-				plant.totalInventory--;
-			}
-			TurnManager.updateBuilding(this.config);
 		}
 	};
 

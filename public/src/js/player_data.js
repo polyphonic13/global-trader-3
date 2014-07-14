@@ -39,5 +39,17 @@ var playerData = {
 		tractor: 0,
 		skidsteer: 0,
 		total: 0
-	}
+	},
+	distributors: [
+		// ne
+		{},
+		// se
+		{},
+		// mw
+		{},
+		// nw
+		{},
+		// sw
+		{}
+	]
 }

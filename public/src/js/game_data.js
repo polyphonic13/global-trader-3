@@ -883,7 +883,7 @@ var gameData = {
 	},
 	// level 2
 	{
-		startingBank: 0,
+		startingBank: 600000,
 		brief: {
 			background: 'briefBg03',
 			text: [
@@ -912,7 +912,7 @@ var gameData = {
 	},
 	// level 3
 	{
-		startingBank: 0,
+		startingBank: 600000,
 		brief: {
 			background: 'briefBg03',
 			text: [
@@ -941,7 +941,7 @@ var gameData = {
 	},
 	// level 4
 	{
-		startingBank: 0,
+		startingBank: 600000,
 		brief: {
 			background: 'briefBg04',
 			text: [
@@ -975,7 +975,7 @@ var gameData = {
 	},
 	// level 5
 	{
-		startingBank: 0,
+		startingBank: 600000,
 		brief: {
 			background: 'briefBg04',
 			text: [
@@ -1009,7 +1009,7 @@ var gameData = {
 	},
 	// level 6
 	{
-		startingBank: 0,
+		startingBank: 600000,
 		brief: {
 			background: 'briefBg04',
 			text: [
@@ -1043,7 +1043,7 @@ var gameData = {
 	},
 	// level 7
 	{
-		startingBank: 0,
+		startingBank: 600000,
 		brief: {
 			background: 'briefBg04',
 			text: [
@@ -1077,7 +1077,7 @@ var gameData = {
 	},
 	// level 8
 	{
-		startingBank: 0,
+		startingBank: 600000,
 		brief: {
 			background: 'briefBg04',
 			text: [
@@ -1111,7 +1111,7 @@ var gameData = {
 	},
 	// level 9
 	{
-		startingBank: 0,
+		startingBank: 600000,
 		brief: {
 			background: 'briefBg04',
 			text: [
@@ -1145,7 +1145,7 @@ var gameData = {
 	},
 	// level 10
 	{
-		startingBank: 0,
+		startingBank: 600000,
 		brief: {
 			background: 'briefBg04',
 			text: [
