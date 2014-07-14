@@ -237,7 +237,6 @@ var BuildingManager = function() {
 			TurnManager.updateBuilding(this.config);
 		}
 	};
-	
 
 	// TRADE_ROUTE
 	function TradeRoute(config) {

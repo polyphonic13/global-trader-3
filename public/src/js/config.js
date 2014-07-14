@@ -797,6 +797,11 @@ var GameConfig = function() {
 				type: 'sprite',
 				name: 'tradeRouteArrow'
 			},
+			tradeRouteAlertIcons: {
+				type: 'group',
+				name: 'tradeRouteIcons',
+				views: {}
+			},
 			tradeRouteAvailableIcon: {
 				type: 'sprite',
 				name: 'tradeRouteAvailbleIcon',
@@ -887,12 +892,27 @@ var GameConfig = function() {
 					menuBg: {
 						type: 'sprite',
 						name: 'menuBg',
-						img: 'addNewPlantPrompt',
+						img: 'submenuBg',
 						x: (gameW/2) - (gameUnit * 3),
 						y: (gameUnit * 12.5),
 						attrs: {
 							width: (gameUnit * 6),
 							height: (gameUnit * 6) * 0.34
+						}
+					},
+					title: {
+						type: 'text',
+						name: 'menuItemTitle',
+						text: '',
+						x: 0,
+						y: gameUnit * 13,
+						style: {
+						    font: (fontSizes.sm + 'px Trebuchet MS'),
+					        fill: palette.orange3,
+							align: 'center'
+						},
+						position: {
+							centerX: true
 						}
 					},
 					cost: {
@@ -908,34 +928,6 @@ var GameConfig = function() {
 						position: {
 							centerX: true
 						}
-					},
-					confirmButton: {
-						type: 'button',
-						name: 'confirmButton',
-						img: 'buttonConfirm',
-						x: controlButtons.right.x,
-						y: controlButtons.bottom.y,
-						attrs: {
-							width: controlButtons.width,
-							height: controlButtons.height
-						},
-						callback: gameLogic.global.buttonCallbacks.buildingAddConfirm,
-						context: this,
-						frames: [0, 1, 1, 0]
-					},
-					cancelButton: {
-						type: 'button',
-						name: 'cancelButton',
-						img: 'buttonCancel',
-						x: controlButtons.left.x,
-						y: controlButtons.bottom.y,
-						attrs: {
-							width: controlButtons.width,
-							height: controlButtons.height
-						},
-						callback: gameLogic.global.buttonCallbacks.buildingAddCancel,
-						context: this,
-						frames: [0, 1, 1, 0]
 					}
 				}
 			},
@@ -1538,6 +1530,7 @@ var GameConfig = function() {
 					gameBg: 'images/screens/metal_background.gif',
 					dashboardBottom: 'images/dashboard_bottom.png',
 					dashboardTop: 'images/dashboard_top.png',
+					submenuBg: 'images/submenu_bg.png',
 					smallEnvelope: 'images/icons/small_envelope.png',
 					// home
 					homeBg: 'images/screens/start/start.png',
