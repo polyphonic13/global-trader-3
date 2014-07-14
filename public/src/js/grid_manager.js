@@ -82,8 +82,10 @@ var GridManager = function() {
 	
 	module.updateBuildingState = function(sector, cell, type, state) {
 		// trace('GridManager/updateBuildingState, sector: ' + sector + ', cell = ' + cell + ', type = ' + type + ', state = ' + state);
-		var frameKey = type.toUpperCase() + '_' + state.toUpperCase();
-		module.grids[sector][cell].frame = TileCellFrames[frameKey];
+		if(type !== BuildingTypes.TRADE_ROUTE) {
+			var frameKey = type.toUpperCase() + '_' + state.toUpperCase();
+			module.grids[sector][cell].frame = TileCellFrames[frameKey];
+		}
 	};
 	
 	module.update = function(sector, cell, value) {

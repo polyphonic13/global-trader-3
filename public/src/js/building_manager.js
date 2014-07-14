@@ -166,10 +166,8 @@ var BuildingManager = function() {
 		this.dealershipNotifications[machine.id] = false;
 		this.tradeRouteNotifications[machine.id] = false;
 	};
-	Plant.prototype.addDealership = function(dealership) {
-		// trace('Plant/addDealership, dealership = ', dealership);
-		this.config.dealerships[dealership.config.modelId] = dealership.config.id;
-		// trace('\tdealerships now = ', this.config.dealerships);
+	Plant.prototype.associateBuilding = function(building, property) {
+		this.config[property][building.config.modelId] = building.config.id;
 		TurnManager.updateBuilding(this.config);
 	};
 	
@@ -248,7 +246,6 @@ var BuildingManager = function() {
 		var model = plant.config.equipment[config.modelId]
 		var resellMultiplier = Math.floor(Math.random() * (this.resellMaxMultiplier - 1) + 2);
 		Building.call(this, config);
-		this.config.worldLocation = config.worldLocation || Math.floor(Math.random() * (TradeRouteLocations.length));
 		this.config.resell = config.resell || (resellMultiplier * model.cost);
 		this.config.inventory = config.inventory || [];
 		this.config.totalSales = config.totalSales || 0;
@@ -408,7 +405,7 @@ var BuildingManager = function() {
 	
 	module.addDealership = function(dealership) {
 		var plant = module.findBuilding(dealership.config.plantId);
-		plant.addDealership(dealership);
+		plant.associateBuilding(dealership, 'dealerships');
 		module.dealerships.push(dealership);
 		module.updateBuildings(dealership);
 	};
@@ -438,7 +435,8 @@ var BuildingManager = function() {
 		// var buildingCount = TurnManager.playerData.buildingCount[BuildingTypes.TRADE_ROUTE];
 		var type = BuildingTypes.TRADE_ROUTE;
 		var tradeRouteId = type + ((TurnManager.tempTradeRouteCount) + 1);
-		var tradeRouteName = type.toUpperCase() + ' ' + TurnManager.tempTradeRouteCount;
+		var worldLocation = Math.floor(Math.random() * (TradeRouteLocations.length));
+		var tradeRouteName = TradeRouteNames[TradeRouteLocations[worldLocation]].toUpperCase() + ' ' + type.toUpperCase() + ' ' + TurnManager.tempTradeRouteCount;
 		TurnManager.tempTradeRouteCount++;
 
 		trace('\tmodelId = ' + modelId + ', count = ' + count);
@@ -449,6 +447,7 @@ var BuildingManager = function() {
 			var tradeRoute = new TradeRoute({
 				id: tradeRouteId,
 				name: tradeRouteName,
+				worldLocation: worldLocation,
 				modelId: model.id,
 				plantId: plant.config.id,
 				// plant: plant.config,
@@ -461,7 +460,7 @@ var BuildingManager = function() {
 
 	module.addTradeRoute = function(tradeRoute) {
 		var plant = module.findBuilding(tradeRoute.config.plantId);
-		plant.addTradeRoute(tradeRoute);
+		plant.associateBuilding(tradeRoute, 'tradeRoutes');
 		module.tradeRoutes.push(tradeRoute);
 		module.updateBuildings(tradeRoute);
 	};

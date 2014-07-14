@@ -175,7 +175,7 @@ var GameConfig = function() {
 			asia: {
 				img: 'tradeRouteAsia',
 				x: (gameUnit * 1.8),
-				y: (gameUnit * 5.75),
+				y: (gameUnit * 5.5),
 				attrs: {
 					width: (gameUnit * 5.25),
 					height: (gameUnit * 5.25) * 0.19
@@ -199,7 +199,7 @@ var GameConfig = function() {
 					height: (gameUnit * 4.25) * 0.22
 				}
 			},
-			pacificNorth: {
+			northPacific: {
 				img: 'tradeRoutePacificNorth',
 				x: (gameUnit * 1.8),
 				y: (gameUnit * 6.75),
@@ -208,7 +208,7 @@ var GameConfig = function() {
 					height: (gameUnit * 6.25) * 0.22
 				}
 			},
-			pacificSouth: {
+			southPacific: {
 				img: 'tradeRoutePacificSouth',
 				x: (gameUnit * 1.8),
 				y: (gameUnit * 6.75),
@@ -222,12 +222,42 @@ var GameConfig = function() {
 				x: (gameUnit * 1.8),
 				y: (gameUnit * 6.75),
 				attrs: {
-					width: (gameUnit * 1.25),
-					height: (gameUnit * 1.25) * 2.03
+					width: (gameUnit * 1),
+					height: (gameUnit * 1) * 2.03
 				}
 			}
 		};
-
+		var tradeRouteIconConfig = {
+			africa: {
+				x: (gameUnit * 4.75),
+				y: (gameUnit * 8.25)
+			},
+			asia: {
+				x: (gameUnit * 7.25),
+				y: (gameUnit * 6)
+			},
+			europe: {
+				x: (gameUnit * 4.75),
+				y: (gameUnit * 6.25)
+			},
+			middleEast: {
+				x: (gameUnit * 6),
+				y: (gameUnit * 6.5)
+			},
+			northPacific: {
+				x: (gameUnit * 8),
+				y: (gameUnit * 6.5)
+			},
+			southPacific: {
+				x: (gameUnit * 7.75),
+				y: (gameUnit * 8.5)
+			},
+			southAmerica: {
+				x: (gameUnit * 2.75),
+				y: (gameUnit * 8.5)
+			}
+		};
+		
 		var starsConfig = {
 			tractor: {
 				basic: {
@@ -767,10 +797,22 @@ var GameConfig = function() {
 				type: 'sprite',
 				name: 'tradeRouteArrow'
 			},
+			tradeRouteAvailableIcon: {
+				type: 'sprite',
+				name: 'tradeRouteAvailbleIcon',
+				img: 'tradeRouteIcon',
+				x: 0,
+				y: 0,
+				attrs: {
+					width: (gameUnit * 1),
+					height: (gameUnit * 1) * 0.93
+				},
+				input: gameLogic.global.input.tradeRouteAvailableIcon
+			},			// us detail
 			tradeRoutePrompt: { 
 				type: 'sprite',
 				name: 'tradeRoutePrompt',
-				img: 'tradeRouteRespresentativePrompt',
+				img: 'tradeRouteRepresentativePrompt',
 				x: (gameW/2) - (gameUnit * 3),
 				y: (gameUnit * 12.5),
 				attrs: {
@@ -778,7 +820,6 @@ var GameConfig = function() {
 					height: (gameUnit * 6) * 0.34
 				}
 			},
-			// us detail
 			sectorBg: {
 				type: 'sprite',
 				name: 'sectorBg',
@@ -1521,6 +1562,7 @@ var GameConfig = function() {
 					pinDealership: 'images/screens/world/pin_dealership.png',
 					pinTradeRoute: 'images/screens/world/pin_tradeRoute.png',
 					tradeRouteAlertIcon: 'images/icons/little_trade_route_alert.png',
+					tradeRouteIcon: 'images/screens/world/trade_route_icon.png',
 					tradeRouteEurope: 'images/screens/world/trade_route_europe.png',
 					tradeRouteAsia: 'images/screens/world/trade_route_asia.png',
 					tradeRoutePacificNorth: 'images/screens/world/trade_route_pacific_north.png',
@@ -1637,6 +1679,7 @@ var GameConfig = function() {
 
 					// NOTIFICATIONS
 					dealershipGirl: 'images/notifications/dealership_girl.png',
+					tradeRouteGirl: 'images/notifications/trade_route_girl.png',
 					// TURN END
 					turnEnd01: 'images/screens/turn_end/turn_end01.png',
 					turnEnd02: 'images/screens/turn_end/turn_end02.png'
@@ -2005,7 +2048,7 @@ var GameConfig = function() {
 				},
 				tradeRoute: {
 					title: 'Trade Route',
-					statement: 'We would like to import ~{quantity}~ per year\nof your\n~{plant}~\n~{model}~ inventory\nat $~{resell}~ each.'
+					statement: 'We would like to import ~{quantity}~\nper year of your ~{plant}~\n~{model}~ inventory\nat $~{resell}~ each.'
 				}
 			},
 			goalsText: {
@@ -2046,6 +2089,7 @@ var GameConfig = function() {
 			pinImages: pinImages,
 			pinFills: pinFills,
 			tradeRouteArrowConfig: tradeRouteArrowConfig,
+			tradeRouteIconConfig: tradeRouteIconConfig,
 			starsConfig: starsConfig,
 			machineEditBackgrounds: machineEditBackgrounds,
 			machinePieceSpriteConfig: machinePieceSpriteConfig,
@@ -2722,18 +2766,18 @@ var GameConfig = function() {
 									}
 								},
 								homeButton: {
-									type: 'sprite',
+									type: 'button',
 									name: 'homeButton',
 									img: 'buttonHome',
 									x: (gameW/2) - (gameUnit * 1),
 									y: gameH - (gameUnit * 1),
 									attrs: {
-											width: gameUnit * 2,
-											height: (gameUnit * 2) / 3
-										},
-										callback: gameLogic.global.buttonCallbacks.worldReturnButton,
-										context: this,
-										frames: [0, 1, 1, 0]
+										width: gameUnit * 2,
+										height: (gameUnit * 2) / 3
+									},
+									callback: gameLogic.global.buttonCallbacks.worldReturnButton,
+									context: this,
+									frames: [0, 1, 1, 0]
 								}
 							}
 						},

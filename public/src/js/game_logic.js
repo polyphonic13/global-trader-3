@@ -223,6 +223,8 @@ var gameLogic = {
 			worldZoomOutFull: function() {
 				if(PWG.ScreenManager.currentId === 'world') {
 					// trace('set w/h: ' + newWidth + '/' + newHeight + ', x/y: ' + newX + '/' + newY);
+					PhaserGame.removeTradeRouteArrowsAndIcons();
+
 					var max = PhaserGame.worldZoom.max;
 					PhaserGame.worldView.width = max.width;
 					PhaserGame.worldView.height = max.height;
@@ -236,16 +238,16 @@ var gameLogic = {
 					// trace('plusButton callback: PhaserGame.worldView.width = ' + PhaserGame.worldView.width);
 					if(PhaserGame.zoomedIn) {
 						trace('worldZoomOut: PhaserGame.zoomed = ' + PhaserGame.zoomedIn);
+						PWG.ViewManager.removeView('tradeRouteArrows', 'world');
+
 						var max = PhaserGame.worldZoom.max;
 						var tween = PhaserGame.phaser.add.tween(PhaserGame.worldView);
 						tween.onComplete.add(function() {
 							// trace('zoom tween complete');
-							if(PhaserGame.currentZoom === 4) {
 								PWG.ViewManager.showView('world:usMap');
 								PWG.ViewManager.showView('world:buildingPins');
 								PWG.EventCenter.trigger({ type: Events.WORLD_ZOOMED_OUT });
-							}
-						});
+  						});
 						tween.to({
 								x: max.x,
 								y: max.y,
@@ -267,10 +269,10 @@ var gameLogic = {
 				if(PWG.ScreenManager.currentId === 'world') {
 					trace('worldZoomIn: PhaserGame.zoomedIn = ' + PhaserGame.zoomedIn);
 					if(!PhaserGame.zoomedIn) {
-						if(PhaserGame.currentZoom === 4) {
-							PWG.ViewManager.hideView('world:usMap');
-							PWG.ViewManager.hideView('world:buildingPins');
-						}
+						PhaserGame.zoomedIn = true;
+						PWG.ViewManager.hideView('world:usMap');
+						PWG.ViewManager.hideView('world:buildingPins');
+
 						var min = PhaserGame.worldZoom.min;
 						var tween = PhaserGame.phaser.add.tween(PhaserGame.worldView);
 						tween.onComplete.add(function() {
@@ -290,36 +292,97 @@ var gameLogic = {
 						);
 						tween.start();
 
-						PhaserGame.zoomedIn = true;
 					}
 				}
 			},
-			addTradeRouteArrows: function() {
+			addTradeRouteArrowsAndIcons: function() {
 				var world = PWG.ViewManager.getControllerFromPath('world');
 				var tradeRouteArrows = PWG.Utils.clone(PhaserGame.config.dynamicViews.tradeRouteArrows);
 				var tradeRouteArrow = PhaserGame.config.dynamicViews.tradeRouteArrow;
-				var tradeRouteArrowConfig = PhaserGame.config.tradeRouteArrowConfig;
+				var tradeRouteAvailableIcon = PhaserGame.config.dynamicViews.tradeRouteAvailableIcon;
 				
-				PWG.Utils.each(
-					tradeRouteArrowConfig,
-					function(config, key) {
-						var arrow = PWG.Utils.clone(tradeRouteArrow);
-						arrow.name += key;
-						PWG.Utils.each(
-							config,
-							function(prop, p) {
-								arrow[p] = prop;
-							},
-							this
-						);
-						tradeRouteArrows.views[arrow.name] = arrow;
-					},
-					this
-				);
+				var tradeRouteArrowConfig = PhaserGame.config.tradeRouteArrowConfig;
+				var tradeRouteIconConfig = PhaserGame.config.tradeRouteIconConfig;
+				
+				// PWG.Utils.each(
+				// 	tradeRouteArrowConfig,
+				// 	function(tradeRoute, tr) {
+				// 		trace('tradeRoute['+tr+'] = ', tradeRoute);
+				// 		
+				// 		var arrow = PWG.Utils.clone(tradeRouteArrow);
+				// 		arrow.name += tr;
+				// 		
+				// 		PWG.Utils.each(
+				// 			tradeRoute,
+				// 			function(arrowProp, ap) {
+				// 				trace('\tadding arrowProp['+ap+']: ' + arrowProp);
+				// 				arrow[ap] = arrowProp;
+				// 			},
+				// 			this
+				// 		);
+				// 		
+				// 		tradeRouteArrows.views[arrow.name] = arrow;
+				// 
+				// 		var icon = PWG.Utils.clone(tradeRouteAvailableIcon);
+				// 		icon.name += tr;
+				// 		
+				// 		PWG.Utils.each(
+				// 			tradeRouteIconConfig[tr],
+				// 			function(iconProp, ip) {
+				// 				icon[ip] = iconProp
+				// 			},
+				// 			this
+				// 		);
+				// 		
+				// 		tradeRouteArrows.views[icon.name] = icon;
+				// 	},
+				// 	this
+				// );
+
+				var availableTradeRoutes = PhaserGame.availableTradeRoutes;
+				trace('availalbe trade routes = ', availableTradeRoutes);
+					PWG.Utils.each(
+						availableTradeRoutes,
+						function(tradeRoute, tr) {
+							trace('\ttradeRoute['+tr+'] = ', tradeRoute);
+							var area = TradeRouteLocations[tradeRoute.config.worldLocation];
+							var arrow = PWG.Utils.clone(tradeRouteArrow);
+							var config = tradeRouteArrowConfig[area];
+							arrow.name += tr;
+
+							PWG.Utils.each(
+								config,
+								function(prop, p) {
+									arrow[p] = prop;
+								},
+								this
+							);
+							tradeRouteArrows.views[arrow.name] = arrow;
+
+							var icon = PWG.Utils.clone(tradeRouteAvailableIcon);
+							icon.name += tr;
+							icon.tradeRouteId = tr;
+							
+							PWG.Utils.each(
+								tradeRouteIconConfig[area],
+								function(iconProp, ip) {
+									icon[ip] = iconProp
+								},
+								this
+							);
+
+							tradeRouteArrows.views[icon.name] = icon;
+						},
+						this
+					);
 				
 				trace('tradeRouteArrows now = ', tradeRouteArrows);
 				PWG.ViewManager.addView(tradeRouteArrows, world, true);
 				
+			},
+			removeTradeRouteArrowsAndIcons: function() {
+				trace('removeTradeRouteArrowsAndIcons');
+				PWG.ViewManager.removeView('tradeRouteArrows', 'world');
 			},
 			render: function() {
 				PWG.ScreenManager.render();
@@ -354,6 +417,8 @@ var gameLogic = {
 				TurnManager.startTurn();
 				BuildingManager.init();
 				PhaserGame.notifications = [[], [], [], [], []];
+				PhaserGame.tradeRouteNotifications = {};
+				PhaserGame.availableTradeRoutes = {};
 				
 				GridManager.init(USSectors, US_DETAIL_GRID_CELLS, US_DETAIL_GRID_CELLS, PWG.Stage.gameW/6);
 
@@ -416,6 +481,7 @@ var gameLogic = {
 				PhaserGame.removeNotification();
 				PhaserGame.hideNotificationEnvelope();
 				PhaserGame.notifications = null;
+				PhaserGame.availableTradeRoutes = null;
 				PhaserGame.cancelAction = null;
 				PhaserGame.confirmAction = null;
 				
@@ -459,13 +525,41 @@ var gameLogic = {
 				PWG.ViewManager.removeView('notification', 'global:notifications');
 				PhaserGame.cancelAction = null;
 			},
-			showTradeRouteNotification: function() {
+			showTradeRouteNotification: function(id) {
+				trace('showTradeRouteNotification: ' + id);
+				if(PhaserGame.tradeRouteNotifications.hasOwnProperty(id)) {
+					var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
+					var notification = PhaserGame.tradeRouteNotifications[id];
+					delete PhaserGame.tradeRouteNotifications[id];
+					
+					if(notification.confirmAction) {
+						PhaserGame.confirmAction = notification.confirmAction;
+						PWG.ViewManager.showView('global:confirmButton');
+					}
+					if(notification.cancelAction) {
+						PhaserGame.cancelAction = notification.cancelAction;
+					} else {
+						PhaserGame.cancelAction = PhaserGame.removeTradeRouteNotification;
+					}
+					PhaserGame.activeTradeRouteNotification = id; 
+					
+					PWG.ViewManager.hideView('global:backButton');
+					PWG.ViewManager.showView('global:cancelButton');
+					PWG.ViewManager.addView(notification, notifications, true);
+				}
+			},
+			removeTradeRouteNotification: function() {
+				trace('removeTradeRouteNotification, id = ' + PhaserGame.activeTradeRouteNotification);
+				PWG.ViewManager.removeView(PhaserGame.activeTradeRouteNotification, 'global:notifications');
+				PhaserGame.activeTradeRouteNotification = '';
+				PWG.ViewManager.hideView('global:confirmButton');
+				PWG.ViewManager.hideView('global:cancelButton');
+				PWG.ViewManager.showView('global:backButton');
+			},
+			showAvailableTradeRouteArrowsAndIcons: function() {
 				PWG.ViewManager.hideView('global:tradeRouteAlertIcon');
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
 				PhaserGame.worldZoomIn();
-			},
-			removeTradeRouteNotification: function() {
-				
 			},
 			showNotificationEnvelope: function() {
 				PWG.ViewManager.showView('global:notificationEnvelope');
@@ -474,7 +568,8 @@ var gameLogic = {
 				PWG.ViewManager.hideView('global:notificationEnvelope');
 			},
 			showTradeRouteAlert: function() {
-				// PWG.ViewManager.showView('global:tradeRouteAlert');
+				trace('showTradeRouteAlert');
+				PWG.ViewManager.showView('global:tradeRouteAlertIcon');
 			},
 			hideTradeRouteAlert: function() {
 				PWG.ViewManager.hideView('global:tradeRouteAlert');
@@ -630,6 +725,7 @@ var gameLogic = {
 					resell: resell
 				});
 
+				notification.name = event.tradeRoute.config.id;
 				notification.views.person.img = 'tradeRouteGirl';
 
 				notification.views.content.text = statementText;
@@ -646,30 +742,19 @@ var gameLogic = {
 					method: PhaserGame.resetTradeRoute,
 					params: event.tradeRoute
 				};
-
-				PhaserGame.notifications[event.plant.sector].push(notification);
+				PhaserGame.availableTradeRoutes[event.tradeRoute.config.id] = event.tradeRoute;
+				PhaserGame.tradeRouteNotifications[notification.name] = notification;
 				PhaserGame.showTradeRouteAlert();
 
 			},
 			addTradeRoute: function(tradeRoute) {
 				trace('addTradeRoute, tradeRoute = ', tradeRoute);
 				var config = tradeRoute.config;
-				PhaserGame.removeNotification();
-				config.cell = GridManager.getRandomEmptyCellIndex(config.sector);
-				GridManager.addBuilding(config, config.sector);
+				PhaserGame.removeTradeRouteNotification();
 				BuildingManager.addTradeRoute(tradeRoute);
-
-				var viewPath = 'usDetail:usDetailGrid:usDetailGridItem'+config.cell;
-				var view = PWG.ViewManager.getControllerFromPath(viewPath);
-				var frameKey = config.type.toUpperCase() + '_' + config.state.toUpperCase();
-				var frame = TileCellFrames[frameKey];
-				// trace('\tviewPath = ' + viewPath + ', view = ', view);
-
-				PWG.ViewManager.setFrame(viewPath, frame);
-				view.config.attrs.frame = frame;
 			},
 			resetTradeRoute: function(tradeRoute) {
-				PhaserGame.removeNotification();
+				PhaserGame.removeTradeRouteNotification();
 				trace('resetTradeRoute, tradeRoute = ', tradeRoute);
 				var plant = BuildingManager.findBuilding(tradeRoute.config.plantId);
 				plant.tradeRouteNotifications[tradeRoute.config.modelId] = false;
@@ -996,7 +1081,12 @@ var gameLogic = {
 			},
 			tradeRouteAlertIcon: {
 				inputDown: function() {
-					PhaserGame.showTradeRouteNotification();
+					PhaserGame.showAvailableTradeRouteArrowsAndIcons();
+				}
+			},
+			tradeRouteAvailableIcon: {
+				inputDown: function() {
+					PhaserGame.showTradeRouteNotification(this.controller.config.tradeRouteId);
 				}
 			},
 			newPlant: {
@@ -1209,31 +1299,31 @@ var gameLogic = {
 				// trace('usDetailStart callback, this = ', this, '\tparam = ', param);
 			}, 
 			northeastDetail: function() {
-				if(PhaserGame.currentZoom === 4) {
+				if(!PhaserGame.zoomedIn) {
 					PhaserGame.activeSector = USSectors.NORTH_EAST;
 					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'usDetail' });
 				}
 			},
 			southeastDetail: function() {
-				if(PhaserGame.currentZoom === 4) {
+				if(!PhaserGame.zoomedIn) {
 					PhaserGame.activeSector = USSectors.SOUTH_EAST;
 					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'usDetail' });
 				}
 			},
 			midwestDetail: function() {
-				if(PhaserGame.currentZoom === 4) {
+				if(!PhaserGame.zoomedIn) {
 					PhaserGame.activeSector = USSectors.MID_WEST;
 					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'usDetail' });
 				}
 			},
 			northwestDetail: function() {
-				if(PhaserGame.currentZoom === 4) {
+				if(!PhaserGame.zoomedIn) {
 					PhaserGame.activeSector = USSectors.NORTH_WEST;
 					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'usDetail' });
 				}
 			},
 			southwestDetail: function() {
-				if(PhaserGame.currentZoom === 4) {
+				if(!PhaserGame.zoomedIn) {
 					PhaserGame.activeSector = USSectors.SOUTH_WEST;
 					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'usDetail' });
 				}
@@ -1467,7 +1557,7 @@ var gameLogic = {
 			{
 				event: Events.WORLD_ZOOMED_IN,
 				handler: function(event) {
-					// PhaserGame.addTradeRouteArrows();
+					PhaserGame.addTradeRouteArrowsAndIcons();
 				}
 			},
 			{
@@ -1525,7 +1615,6 @@ var gameLogic = {
 					this
 				);
 				
-				trace('ADDING BUILDING PINS: ', buildingPins);
 				PWG.ViewManager.addView(buildingPins, world, true);
 
 				PhaserGame.buildingPins = PWG.ViewManager.getControllerFromPath('world:buildingPins').view;
@@ -1542,6 +1631,7 @@ var gameLogic = {
 				PWG.ViewManager.showView('global:plusMinusGroup');
 			},
 			shutdown: function() {
+				PWG.ViewManager.removeView('tradeRouteArrows', 'world');
 				PWG.ViewManager.removeView('buildingPins', 'world');
 				PWG.ViewManager.hideView('global:plusMinusGroup');
 				PhaserGame.worldView = null;

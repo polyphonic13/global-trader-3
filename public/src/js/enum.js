@@ -80,19 +80,19 @@ var TradeRouteLocations = [
 	'asia',
 	'europe',
 	'middleEast',
-	'pacificNorth',
-	'pacificSouth',
+	'northPacific',
+	'southPacific',
 	'southAmerica'
 ];
 
 var TradeRouteNames = {
-	africa: 'Africa',
-	asia: 'Asia',
-	europe: 'Europe',
-	middleEast: 'The Middle East',
-	pacificNorth: 'The North Pacific',
-	pacificSouth: 'The South Pacific',
-	southAmerica: 'South America'
+	africa: 'African',
+	asia: 'Asian',
+	europe: 'European',
+	middleEast: 'Middle Eastern',
+	northPacific: 'North Pacific',
+	southPacific: 'South Pacific',
+	southAmerica: 'South American'
 };
 
 var USSectors = {

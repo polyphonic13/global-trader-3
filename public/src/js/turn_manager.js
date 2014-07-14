@@ -61,7 +61,7 @@ var TurnManager = function() {
 			break;
 			
 			case BuildingTypes.TRADE_ROUTE:
-			modeul.currentData.newTradeRoutes++;
+			module.currentData.newTradeRoutes++;
 			break;
 			
 			default: 
