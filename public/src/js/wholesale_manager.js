@@ -35,6 +35,10 @@ var WholesaleManager = function() {
 		);
 	};
 	
+	module.update = function() {
+
+	};
+	
 	module.addDistributor = function(config) {
 		// trace('BuildingManager/create, type = ' + type + ', cost = ' + gameData.buildings[type].cost + ', bank = ' + TurnManager.playerData.bank);
 		var type = BuildingTypes.DISTRIBUTOR;

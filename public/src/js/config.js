@@ -343,7 +343,7 @@ var GameConfig = function() {
 							height: (gameUnit * 4.8) * 1.1,
 							frame: 0
 						},
-						// input: gameLogic.global.input.engineSprite
+						// input: gameLogic.input.engineSprite
 					},
 					tires: {
 						type: 'sprite',
@@ -356,7 +356,7 @@ var GameConfig = function() {
 							height: (gameUnit * 8.7) * 0.64,
 							frame: 0
 						},
-						// input: gameLogic.global.input.tiresSprite
+						// input: gameLogic.input.tiresSprite
 					},
 					transmission: {
 						type: 'sprite',
@@ -369,7 +369,7 @@ var GameConfig = function() {
 							height: (gameUnit * 3.05) * 1.47,
 							frame: 0
 						},
-						// input: gameLogic.global.input.transmissionSprite
+						// input: gameLogic.input.transmissionSprite
 					}
 				},
 				medium: {
@@ -384,7 +384,7 @@ var GameConfig = function() {
 							height: (gameUnit * 4) * 1.04,
 							frame: 0
 						},
-						// input: gameLogic.global.input.engineSprite
+						// input: gameLogic.input.engineSprite
 					},
 					tires: {
 						type: 'sprite',
@@ -397,7 +397,7 @@ var GameConfig = function() {
 							height: (gameUnit * 8.1) * 0.89,
 							frame: 0
 						},
-						// input: gameLogic.global.input.tiresSprite
+						// input: gameLogic.input.tiresSprite
 					},
 					transmission: {
 						type: 'sprite',
@@ -410,7 +410,7 @@ var GameConfig = function() {
 							height: (gameUnit * 2.33) * 2.13,
 							frame: 0
 						},
-						// input: gameLogic.global.input.transmissionSprite
+						// input: gameLogic.input.transmissionSprite
 					}
 				},
 				heavy: {
@@ -425,7 +425,7 @@ var GameConfig = function() {
 							height: (gameUnit * 4.66) * 1.04,
 							frame: 0
 						},
-						// input: gameLogic.global.input.engineSprite
+						// input: gameLogic.input.engineSprite
 					},
 					tracks: {
 						type: 'sprite',
@@ -438,7 +438,7 @@ var GameConfig = function() {
 							height: (gameUnit * 8.5) * 0.57,
 							frame: 0
 						},
-						// input: gameLogic.global.input.tracksSprite
+						// input: gameLogic.input.tracksSprite
 					},
 					transmission: {
 						type: 'sprite',
@@ -451,7 +451,7 @@ var GameConfig = function() {
 							height: (gameUnit * 4.75) * 1.31,
 							frame: 0
 						},
-						// input: gameLogic.global.input.transmissionSprite
+						// input: gameLogic.input.transmissionSprite
 					}
 				}
 			},
@@ -468,7 +468,7 @@ var GameConfig = function() {
 							height: (gameUnit * 6) * 0.7,
 							frame: 0
 						},
-						// input: gameLogic.global.input.bucketSprite
+						// input: gameLogic.input.bucketSprite
 					},
 					tires: {
 						type: 'sprite',
@@ -481,7 +481,7 @@ var GameConfig = function() {
 							height: (gameUnit * 4.5) * 0.64,
 							frame: 0
 						},
-						// input: gameLogic.global.input.tiresSprite
+						// input: gameLogic.input.tiresSprite
 					},
 					transmission: {
 						type: 'sprite',
@@ -494,7 +494,7 @@ var GameConfig = function() {
 							height: (gameUnit * 3.25) * 1.09,
 							frame: 0
 						},
-						// input: gameLogic.global.input.transmissionSprite
+						// input: gameLogic.input.transmissionSprite
 					}
 				},
 				medium: {
@@ -509,7 +509,7 @@ var GameConfig = function() {
 							height: (gameUnit * 5.2) * 0.93,
 							frame: 0
 						},
-						// input: gameLogic.global.input.bucketSprite
+						// input: gameLogic.input.bucketSprite
 					},
 					tires: {
 						type: 'sprite',
@@ -522,7 +522,7 @@ var GameConfig = function() {
 							height: (gameUnit * 2.25) * 1.1,
 							frame: 0
 						},
-						// input: gameLogic.global.input.tiresSprite
+						// input: gameLogic.input.tiresSprite
 					},
 					transmission: {
 						type: 'sprite',
@@ -535,7 +535,7 @@ var GameConfig = function() {
 							height: (gameUnit * 4) * 0.91,
 							frame: 0
 						},
-						// input: gameLogic.global.input.transmissionSprite
+						// input: gameLogic.input.transmissionSprite
 					}
 				},
 				heavy: {
@@ -550,7 +550,7 @@ var GameConfig = function() {
 							height: (gameUnit * 7.1) * 0.98,
 							frame: 0
 						},
-						// input: gameLogic.global.input.bucketSprite
+						// input: gameLogic.input.bucketSprite
 					},
 					tracks: {
 						type: 'sprite',
@@ -563,7 +563,7 @@ var GameConfig = function() {
 							height: (gameUnit * 6.75) * 0.53,
 							frame: 0
 						},
-						// input: gameLogic.global.input.tiresSprite
+						// input: gameLogic.input.tiresSprite
 					},
 					transmission: {
 						type: 'sprite',
@@ -576,7 +576,7 @@ var GameConfig = function() {
 							height: (gameUnit * 4.5) * 0.69,
 							frame: 0
 						},
-						// input: gameLogic.global.input.transmissionSprite
+						// input: gameLogic.input.transmissionSprite
 					},
 					engine: {
 						type: 'sprite',
@@ -589,7 +589,7 @@ var GameConfig = function() {
 							height: (gameUnit * 2.35) * 0.69,
 							frame: 0
 						},
-						// input: gameLogic.global.input.engineSprite
+						// input: gameLogic.input.engineSprite
 					}
 				}
 			}
@@ -814,7 +814,7 @@ var GameConfig = function() {
 					width: (gameUnit * 1),
 					height: (gameUnit * 1) * 0.93
 				},
-				input: gameLogic.global.input.tradeRouteAvailableIcon
+				input: gameLogic.input.tradeRouteAvailableIcon
 			},			// us detail
 			tradeRoutePrompt: { 
 				type: 'sprite',
@@ -888,9 +888,9 @@ var GameConfig = function() {
 					animations: Animations.dollarIcon
 				}
 			},
-			buildingMenu: {
+			buildingCreatePrompt: {
 				type: 'group',
-				name: 'buildingMenu',
+				name: 'buildingCreatePrompt',
 				views: {
 					menuBg: {
 						type: 'sprite',
@@ -1166,7 +1166,7 @@ var GameConfig = function() {
 							width: (gameUnit * 4),
 							height: (gameUnit * 4)
 						},
-						input: gameLogic.global.input.editMachine
+						input: gameLogic.input.editMachine
 					}
 				}
 			},
@@ -1188,7 +1188,7 @@ var GameConfig = function() {
 							width: (gameUnit * 4),
 							height: (gameUnit * 3.5)
 						},
-						callback: gameLogic.global.buttonCallbacks.addEquipment,
+						callback: gameLogic.buttonCallbacks.addEquipment,
 						context: this,
 						frames: [0]
 					}
@@ -1220,7 +1220,7 @@ var GameConfig = function() {
 					// 		width: gameUnit * 1.5,
 					// 		height: gameUnit * 1.5
 					// 	},
-					// 	input: gameLogic.global.input.openOptionalPartsMenu
+					// 	input: gameLogic.input.openOptionalPartsMenu
 					// },
 					machinePieceSprites: {
 						type: 'group',
@@ -1280,7 +1280,7 @@ var GameConfig = function() {
 									height: gameUnit * 1,
 									alpha: 0
 								},
-								input: gameLogic.global.input.machinePieceForwardIcon
+								input: gameLogic.input.machinePieceForwardIcon
 							},
 							backward: {
 								type: 'sprite',
@@ -1293,7 +1293,7 @@ var GameConfig = function() {
 									height: gameUnit * 1,
 									alpha: 0
 								},
-								input: gameLogic.global.input.machinePieceBackwardIcon
+								input: gameLogic.input.machinePieceBackwardIcon
 							}
 						}
 					},
@@ -1373,7 +1373,7 @@ var GameConfig = function() {
 							height: gameUnit * 1,
 							alpha: 0
 						},
-						input: gameLogic.global.input.openPartsMenu
+						input: gameLogic.input.openPartsMenu
 					}
 				}
 			},
@@ -1488,6 +1488,18 @@ var GameConfig = function() {
 						position: {
 							centerX: true
 						}
+					},
+					invisButton: {
+						type: 'sprite',
+						name: 'distributorPromptButton',
+						img: 'blockClear',
+						x: (gameW/2) - (gameUnit * 3),
+						y: (gameUnit * 12.5),
+						attrs: {
+							width: (gameUnit * 6),
+							height: (gameUnit * 6) * 0.34
+						},
+						input: gameLogic.input.distributorPrompt
 					}
 				}
 			},
@@ -2077,6 +2089,15 @@ var GameConfig = function() {
 			palette: palette,
 			defaultScreen: 'home',
 			notificationText: {
+				notEnoughMoney: {
+					content: 'You do not have\nenough money'
+				},
+				buildingCreate: {
+					content: 'Add new Plant?'
+				},
+				distributorPrompt: {
+					content: 'New Distributor Opportunity'
+				},
 				dealership: {
 					title: 'Dealership',
 					statement: 'We would like to sell ~{quantity}~ per year\nof your ~{plant}~\n~{model}~ inventory\nat $~{resell}~ each.'
@@ -2196,7 +2217,7 @@ var GameConfig = function() {
 								height: (gameUnit * 5),
 								alpha: 0
 							},
-							callback: gameLogic.global.buttonCallbacks.worldStart,
+							callback: gameLogic.buttonCallbacks.worldStart,
 							context: this,
 							frames: [0, 1, 1, 0]
 						},
@@ -2212,7 +2233,7 @@ var GameConfig = function() {
 								height: gameUnit * 2.5,
 								alpha: 0.75
 							},
-							callback: gameLogic.global.buttonCallbacks.manualStart,
+							callback: gameLogic.buttonCallbacks.manualStart,
 							context: this,
 							frames: [0, 1, 1, 0]
 						}
@@ -2315,7 +2336,7 @@ var GameConfig = function() {
 										height: (gameUnit * 2),
 										alpha: 0
 									},
-									callback: gameLogic.global.buttonCallbacks.northwestDetail,
+									callback: gameLogic.buttonCallbacks.northwestDetail,
 									context: this,
 									frames: [0, 0, 0, 0]
 								},
@@ -2330,7 +2351,7 @@ var GameConfig = function() {
 										height: (gameUnit * 2),
 										alpha: 0
 									},
-									callback: gameLogic.global.buttonCallbacks.southwestDetail,
+									callback: gameLogic.buttonCallbacks.southwestDetail,
 									context: this,
 									frames: [0, 0, 0, 0]
 								},
@@ -2345,7 +2366,7 @@ var GameConfig = function() {
 										height: (gameUnit * 4.5),
 										alpha: 0
 									},
-									callback: gameLogic.global.buttonCallbacks.midwestDetail,
+									callback: gameLogic.buttonCallbacks.midwestDetail,
 									context: this,
 									frames: [0, 0, 0, 0]
 								},
@@ -2361,7 +2382,7 @@ var GameConfig = function() {
 										alpha: 0
 									},
 									sector: USSectors.NORTH_EAST,
-									callback: gameLogic.global.buttonCallbacks.northeastDetail,
+									callback: gameLogic.buttonCallbacks.northeastDetail,
 									context: this,
 									frames: [0, 0, 0, 0]
 								},
@@ -2376,7 +2397,7 @@ var GameConfig = function() {
 										height: (gameUnit * 2.5),
 										alpha: 0
 									},
-									callback: gameLogic.global.buttonCallbacks.southeastDetail,
+									callback: gameLogic.buttonCallbacks.southeastDetail,
 									context: this,
 									frames: [0, 0, 0, 0]
 								}
@@ -2447,7 +2468,7 @@ var GameConfig = function() {
 										width: gameUnit * 1,
 										height: gameUnit * 1
 									},
-									callback: gameLogic.global.buttonCallbacks.equipmentListClose,
+									callback: gameLogic.buttonCallbacks.equipmentListClose,
 									context: this,
 									frames: [0, 1, 1, 0]
 								}
@@ -2472,7 +2493,7 @@ var GameConfig = function() {
 						// 				width: gameUnit * 4,
 						// 				height: gameUnit * 2
 						// 			},
-						// 			input: gameLogic.global.input.tractor
+						// 			input: gameLogic.input.tractor
 						// 		},
 						// 		skidsteerIcon: {
 						// 			type: 'sprite',
@@ -2484,7 +2505,7 @@ var GameConfig = function() {
 						// 				width: gameUnit * 4,
 						// 				height: gameUnit * 2
 						// 			},
-						// 			input: gameLogic.global.input.skidsteer
+						// 			input: gameLogic.input.skidsteer
 						// 		}
 						// 	}
 						// }
@@ -2527,7 +2548,7 @@ var GameConfig = function() {
 												width: gameUnit * 4,
 												height: gameUnit * 3
 											},
-											callback: gameLogic.global.buttonCallbacks.newBasicTractor,
+											callback: gameLogic.buttonCallbacks.newBasicTractor,
 											context: this,
 											frames: [0, 1, 1, 0]
 										},
@@ -2541,7 +2562,7 @@ var GameConfig = function() {
 												width: gameUnit * 4,
 												height: gameUnit * 3
 											},
-											callback: gameLogic.global.buttonCallbacks.newMediumTractor,
+											callback: gameLogic.buttonCallbacks.newMediumTractor,
 											context: this,
 											frames: [0, 1, 1, 0]
 										},
@@ -2555,7 +2576,7 @@ var GameConfig = function() {
 												width: gameUnit * 4,
 												height: gameUnit * 3
 											},
-											callback: gameLogic.global.buttonCallbacks.newHeavyTractor,
+											callback: gameLogic.buttonCallbacks.newHeavyTractor,
 											context: this,
 											frames: [0, 1, 1, 0]
 										},
@@ -2569,7 +2590,7 @@ var GameConfig = function() {
 												width: gameUnit * 4,
 												height: gameUnit * 3
 											},
-											callback: gameLogic.global.buttonCallbacks.newBasicSkidsteer,
+											callback: gameLogic.buttonCallbacks.newBasicSkidsteer,
 											context: this,
 											frames: [0, 1, 1, 0]
 										},
@@ -2583,7 +2604,7 @@ var GameConfig = function() {
 												width: gameUnit * 4,
 												height: gameUnit * 3
 											},
-											callback: gameLogic.global.buttonCallbacks.newMediumSkidsteer,
+											callback: gameLogic.buttonCallbacks.newMediumSkidsteer,
 											context: this,
 											frames: [0, 1, 1, 0]
 										},
@@ -2597,7 +2618,7 @@ var GameConfig = function() {
 												width: gameUnit * 4,
 												height: gameUnit * 3
 											},
-											callback: gameLogic.global.buttonCallbacks.newHeavySkidsteer,
+											callback: gameLogic.buttonCallbacks.newHeavySkidsteer,
 											context: this,
 											frames: [0, 1, 1, 0]
 										}
@@ -2635,7 +2656,7 @@ var GameConfig = function() {
 								width: gameW,
 								height: gameH
 							},
-							input: gameLogic.global.input.openedEnvelope
+							input: gameLogic.input.openedEnvelope
 						},
 						closedEnvelope: {
 							type: 'sprite',
@@ -2647,7 +2668,7 @@ var GameConfig = function() {
 								width: gameW,
 								height: gameH
 							},
-							input: gameLogic.global.input.closedEnvelope
+							input: gameLogic.input.closedEnvelope
 						}
 					}
 				},
@@ -2669,7 +2690,7 @@ var GameConfig = function() {
 								width: gameUnit * 1.5,
 								height: (gameUnit * 1.5) * 0.6
 							},
-							input: gameLogic.global.input.notificationEnvelope
+							input: gameLogic.input.notificationEnvelope
 						},
 						tradeRouteAlertIcon: {
 							type: 'sprite',
@@ -2681,7 +2702,7 @@ var GameConfig = function() {
 								width: gameUnit * 1.25,
 								height: (gameUnit * 1.25) * 0.89
 							},
-							input: gameLogic.global.input.tradeRouteAlertIcon
+							input: gameLogic.input.tradeRouteAlertIcon
 						},
 						notifications: {
 							name: 'notifications',
@@ -2714,7 +2735,7 @@ var GameConfig = function() {
 								// 		width: controlButtons.width,
 								// 		height: controlButtons.height
 								// 	},
-								// 	callback: gameLogic.global.buttonCallbacks.settings,
+								// 	callback: gameLogic.buttonCallbacks.settings,
 								// 	context: this,
 								// 	frames: [0, 1, 1, 0]
 								// },
@@ -2728,7 +2749,7 @@ var GameConfig = function() {
 								// 		width: controlButtons.width,
 								// 		height: controlButtons.height
 								// 	},
-								// 	callback: gameLogic.global.buttonCallbacks.share,
+								// 	callback: gameLogic.buttonCallbacks.share,
 								// 	context: this,
 								// 	frames: [0, 1, 1, 0]
 								// }
@@ -2810,7 +2831,7 @@ var GameConfig = function() {
 										width: gameUnit * 2,
 										height: (gameUnit * 2) / 3
 									},
-									callback: gameLogic.global.buttonCallbacks.worldReturnButton,
+									callback: gameLogic.buttonCallbacks.worldReturnButton,
 									context: this,
 									frames: [0, 1, 1, 0]
 								}
@@ -2833,7 +2854,7 @@ var GameConfig = function() {
 										width: gameUnit * 2,
 										height: (gameUnit * 2) / 3
 									},
-									callback: gameLogic.global.buttonCallbacks.plusButton,
+									callback: gameLogic.buttonCallbacks.plusButton,
 									context: this,
 									frames: [0, 1, 1, 0]
 								},
@@ -2847,7 +2868,7 @@ var GameConfig = function() {
 										width: gameUnit * 2,
 										height: (gameUnit * 2) / 3
 									},
-									callback: gameLogic.global.buttonCallbacks.minusButton,
+									callback: gameLogic.buttonCallbacks.minusButton,
 									context: this,
 									frames: [0, 1, 1, 0]
 								}
@@ -2870,7 +2891,7 @@ var GameConfig = function() {
 										width: controlButtons.width,
 										height: controlButtons.height
 									},
-									callback: gameLogic.global.buttonCallbacks.equipmentListStart,
+									callback: gameLogic.buttonCallbacks.equipmentListStart,
 									context: this,
 									frames: [0, 0, 0, 0]
 								}
@@ -2893,7 +2914,7 @@ var GameConfig = function() {
 								// 		width: controlButtons.width,
 								// 		height: controlButtons.height
 								// 	},
-								// 	callback: gameLogic.global.buttonCallbacks.addEquipment,
+								// 	callback: gameLogic.buttonCallbacks.addEquipment,
 								// 	context: this,
 								// 	frames: [0, 1, 1, 0]
 								// }
@@ -2917,7 +2938,7 @@ var GameConfig = function() {
 								width: controlButtons.width,
 								height: controlButtons.height
 							},
-							callback: gameLogic.global.buttonCallbacks.backButton,
+							callback: gameLogic.buttonCallbacks.backButton,
 							context: this,
 							frames: [0, 1, 1, 0]
 						},
@@ -2931,7 +2952,7 @@ var GameConfig = function() {
 								width: controlButtons.width,
 								height: controlButtons.height
 							},
-							callback: gameLogic.global.buttonCallbacks.confirmButton,
+							callback: gameLogic.buttonCallbacks.confirmButton,
 							context: this,
 							frames: [0, 1, 1, 0]
 						},
@@ -2945,7 +2966,7 @@ var GameConfig = function() {
 								width: controlButtons.width,
 								height: controlButtons.height
 							},
-							callback: gameLogic.global.buttonCallbacks.cancelButton,
+							callback: gameLogic.buttonCallbacks.cancelButton,
 							context: this,
 							frames: [0, 1, 1, 0]
 						}
