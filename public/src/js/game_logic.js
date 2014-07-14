@@ -1,7 +1,7 @@
 var ASPECT_RATIO = [9, 16];
 var GAME_NAME = 'global_trader_3_0';
 var TIME_PER_TURN = 52;
-var TURN_TIME_INTERVAL = 3000;
+var TURN_TIME_INTERVAL = 1000;
 var US_DETAIL_GRID_CELLS = 6;
 var TIME_TO_MANUFACTOR = 5;
 var MACHINE_LIST_COLUMNS = 2; 
@@ -238,7 +238,7 @@ var gameLogic = {
 					// trace('plusButton callback: PhaserGame.worldView.width = ' + PhaserGame.worldView.width);
 					if(PhaserGame.zoomedIn) {
 						trace('worldZoomOut: PhaserGame.zoomed = ' + PhaserGame.zoomedIn);
-						PWG.ViewManager.removeView('tradeRouteArrows', 'world');
+						PhaserGame.removeTradeRouteArrowsAndIcons();
 
 						var max = PhaserGame.worldZoom.max;
 						var tween = PhaserGame.phaser.add.tween(PhaserGame.worldView);
@@ -381,7 +381,7 @@ var gameLogic = {
 				
 			},
 			removeTradeRouteArrowsAndIcons: function() {
-				trace('removeTradeRouteArrowsAndIcons');
+				trace('============= removeTradeRouteArrowsAndIcons');
 				PWG.ViewManager.removeView('tradeRouteArrows', 'world');
 			},
 			render: function() {
@@ -1631,7 +1631,7 @@ var gameLogic = {
 				PWG.ViewManager.showView('global:plusMinusGroup');
 			},
 			shutdown: function() {
-				PWG.ViewManager.removeView('tradeRouteArrows', 'world');
+				PhaserGame.removeTradeRouteArrowsAndIcons();
 				PWG.ViewManager.removeView('buildingPins', 'world');
 				PWG.ViewManager.hideView('global:plusMinusGroup');
 				PhaserGame.worldView = null;
