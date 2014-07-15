@@ -864,14 +864,35 @@ var GameConfig = function() {
 				input: gameLogic.input.tradeRouteAvailableIcon
 			},			// us detail
 			tradeRoutePrompt: { 
-				type: 'sprite',
+				type: 'group',
 				name: 'tradeRoutePrompt',
-				img: 'tradeRouteRepresentativePrompt',
-				x: (gameW/2) - (gameUnit * 3),
-				y: (gameUnit * 12.5),
-				attrs: {
-					width: (gameUnit * 6),
-					height: (gameUnit * 6) * 0.34
+				views: {
+					menuBg: {
+						type: 'sprite',
+						name: 'menuBg',
+						img: 'submenuBg',
+						x: (gameW/2) - (gameUnit * 3),
+						y: (gameUnit * 12.5),
+						attrs: {
+							width: (gameUnit * 6),
+							height: (gameUnit * 6) * 0.34
+						}
+					},
+					title: {
+						type: 'text',
+						name: 'menuItemTitle',
+						text: '',
+						x: 0,
+						y: gameUnit * 13,
+						style: {
+						    font: (fontSizes.sm + 'px Trebuchet MS'),
+					        fill: palette.orange3,
+							align: 'center'
+						},
+						position: {
+							centerX: true
+						}
+					}
 				}
 			},
 			// us detail
@@ -2856,7 +2877,7 @@ var GameConfig = function() {
 									    font: (fontSizes.md + 'px Trebuchet MS'),
 								        fill: palette.orange1
 									},
-									x: (gameUnit * 6.25),
+									x: (gameUnit * 6.33),
 									y: (gameUnit * 0.38)
 								},
 								turnIndicator: {

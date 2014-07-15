@@ -6,7 +6,7 @@ var US_DETAIL_GRID_CELLS = 6;
 var TIME_TO_MANUFACTOR = 5;
 var MACHINE_LIST_COLUMNS = 2; 
 var MACHINE_LIST_ICONS = 6;
-var MIN_TRADE_ROUTE_LEVEL = 3;
+var MIN_TRADE_ROUTE_LEVEL = 1;
 
 function startGame() {
 	PhaserGame.init(ASPECT_RATIO, document.documentElement.clientHeight);
@@ -314,32 +314,48 @@ var gameLogic = {
 				var tradeRouteAlertIconConfig = PhaserGame.config.tradeRouteAlertIconConfig;
 				
 				var availableTradeRoutes = PhaserGame.availableTradeRoutes;
-				var existingTradeRoutes = BuildingManager.getExistingTradeRoutes;
+				var existingTradeRoutes = BuildingManager.getExistingTradeRoutes();
+				trace('EXISTING TRADE ROUTES = ', existingTradeRoutes);
+				var arrowsAdded = {
+					africa: false,
+					asia: false,
+					europe: false,
+					middleEast: false,
+					northPacific: false,
+					southPacific: false,
+					southAmerica: false
+				};
 				
 				PWG.Utils.each(
-					tradeRouteArrowConfig,
+					existingTradeRoutes,
+					// tradeRouteArrowConfig,
 					function(tradeRoute, tr) {
 						trace('tradeRoute['+tr+'] = ', tradeRoute);
+						var area = TradeRouteLocations[tradeRoute.worldLocation];
 						
 						var arrow = PWG.Utils.clone(tradeRouteArrow);
 						arrow.name += tr;
 						
-						PWG.Utils.each(
-							tradeRoute,
-							function(arrowProp, ap) {
-								trace('\tadding arrowProp['+ap+']: ' + arrowProp);
-								arrow[ap] = arrowProp;
-							},
-							this
-						);
-						
-						tradeRouteArrows.views[arrow.name] = arrow;
-				
+						if(!arrowsAdded[area]) {
+							PWG.Utils.each(
+								// tradeRoute,
+								tradeRouteArrowConfig[area],
+								function(arrowProp, ap) {
+									// trace('\tadding arrowProp['+ap+']: ' + arrowProp);
+									arrow[ap] = arrowProp;
+								},
+								this
+							);
+
+							tradeRouteArrows.views[arrow.name] = arrow;
+							arrowsAdded[area] = true;
+						}
+										
 						var pin = PWG.Utils.clone(tradeRoutePin);
 						pin.name += tr;
 						
 						PWG.Utils.each(
-							tradeRoutePinConfig[tr],
+							tradeRoutePinConfig[area],
 							function(pinProp, pp) {
 								pin[pp] = pinProp
 							},
@@ -351,25 +367,29 @@ var gameLogic = {
 					this
 				);
 
-				// trace('available trade routes = ', availableTradeRoutes);
+				trace('available trade routes opportunities = ', availableTradeRoutes);
 				PWG.Utils.each(
 					availableTradeRoutes,
 					function(tradeRoute, tr) {
-						trace('\ttradeRoute['+tr+'] = ', tradeRoute);
+						// trace('\ttradeRoute['+tr+'] = ', tradeRoute);
 						var area = TradeRouteLocations[tradeRoute.config.worldLocation];
-						var arrow = PWG.Utils.clone(tradeRouteArrow);
-						var config = tradeRouteArrowConfig[area];
-						arrow.name += tr;
-						
-						PWG.Utils.each(
-							config,
-							function(prop, p) {
-								arrow[p] = prop;
-							},
-							this
-						);
-						tradeRouteArrows.views[arrow.name] = arrow;
-
+				
+						if(!arrowsAdded[area]) {
+							trace('ADDING OPPORTUNITY ARROW FOR: ' + area);
+							var arrow = PWG.Utils.clone(tradeRouteArrow);
+							var config = tradeRouteArrowConfig[area];
+							arrow.name += tr;
+				
+							PWG.Utils.each(
+								config,
+								function(prop, p) {
+									arrow[p] = prop;
+								},
+								this
+							);
+							tradeRouteArrows.views[arrow.name] = arrow;
+						}
+				
 						var icon = PWG.Utils.clone(tradeRouteAvailableIcon);
 						icon.name = tr;
 						icon.tradeRouteId = tr;
@@ -381,13 +401,13 @@ var gameLogic = {
 							},
 							this
 						);
-
+				
 						tradeRouteAlertIcons.views[icon.name] = icon;
 					},
 					this
 				);
 
-				trace('tradeRouteArrows now = ', tradeRouteArrows);
+				trace('tradeRouteArrows now = ', tradeRouteArrows, ', tradeRoutePins = ', tradeRoutePins);
 				PWG.ViewManager.addView(tradeRouteArrows, world, true);
 				PWG.ViewManager.addView(tradeRoutePins, world, true);
 				PWG.ViewManager.addView(tradeRouteAlertIcons, world, true);
@@ -437,6 +457,7 @@ var gameLogic = {
 				PhaserGame.notifications = [[], [], [], [], []];
 				PhaserGame.tradeRouteNotifications = {};
 				PhaserGame.availableTradeRoutes = {};
+				PhaserGame.zoomedIn = false;
 				
 				GridManager.init(USSectors, US_DETAIL_GRID_CELLS, US_DETAIL_GRID_CELLS, PWG.Stage.gameW/6);
 
@@ -545,7 +566,7 @@ var gameLogic = {
 				PhaserGame.cancelAction = null;
 			},
 			showTradeRouteNotification: function(id) {
-				trace('showTradeRouteNotification: ' + id);
+				trace('showTradeRouteNotification: ', id, ', tradeRouteNotifications = ', PhaserGame.tradeRouteNofication);
 				if(PhaserGame.tradeRouteNotifications.hasOwnProperty(id)) {
 					var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
 					var notification = PhaserGame.tradeRouteNotifications[id];
@@ -575,11 +596,20 @@ var gameLogic = {
 				PWG.ViewManager.hideView('global:confirmButton');
 				PWG.ViewManager.hideView('global:cancelButton');
 				PWG.ViewManager.showView('global:backButton');
+				PhaserGame.removeTradeRouteViews();
+				PhaserGame.addTradeRouteViews();
 			},
 			showAvailableTradeRouteArrowsAndIcons: function() {
 				PhaserGame.hideTradeRouteAlert();
-				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
-				PhaserGame.worldZoomIn();
+				if(PWG.ScreenManager.currentId !== 'world') {
+					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
+					PhaserGame.worldZoomIn();
+				} else if(!PhaserGame.zoomedIn) {
+					PhaserGame.worldZoomIn();
+				} else {
+					PhaserGame.removeTradeRouteViews();
+					PhaserGame.addTradeRouteViews();
+				}
 			},
 			showNotificationEnvelope: function() {
 				PWG.ViewManager.showView('global:notificationEnvelope');
@@ -774,8 +804,9 @@ var gameLogic = {
 				notification.views.content.text = statementText;
 				trace('------ notification = ', notification);
 
+				tradeRoutePrompt.views.title.text = event.tradeRoute.config.name;
 				notification.views[tradeRoutePrompt.name] = tradeRoutePrompt;
-
+				
 				notification.confirmAction = {
 					method: PhaserGame.addTradeRoute,
 					params: event.tradeRoute
@@ -1386,7 +1417,11 @@ var gameLogic = {
 		},
 		worldReturnButton: function() {
 			trace('worldReturnButton callback');
-			PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
+			if(PWG.ScreenManager.currentId !== 'world') {
+				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
+			} else if(PhaserGame.zoomedIn) {
+				PhaserGame.worldZoomOut();
+			}
 		},
 		plusButton: function() {
 			PhaserGame.worldZoomOut();
@@ -1776,7 +1811,7 @@ var gameLogic = {
 							PWG.ViewManager.setFrame(viewPath, frame);
 							view.config.attrs.frame = frame;
 						}
-4					}
+					}
 				}
 			},
 			// inventory added
@@ -1790,7 +1825,9 @@ var gameLogic = {
 			{
 				event: Events.MACHINE_SOLD,
 				handler: function(event) {
-					PhaserGame.machineSold(event.dealership, 'usDetail:usDetailGrid');
+					if(event.building.type === BuildingTypes.DEALERSHIP) {
+						PhaserGame.machineSold(event.building, 'usDetail:usDetailGrid');
+					}
 				}
 			},
 			// close building menu

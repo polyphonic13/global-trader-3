@@ -232,7 +232,7 @@ var BuildingManager = function() {
 						TurnManager.sellMachine(this.config.inventory.pop(), this.config.resell);
 						// trace('------- Dealership about to sell a machine:', this);
 						PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
-						PWG.EventCenter.trigger({ type: Events.MACHINE_SOLD, dealership: this.config });
+						PWG.EventCenter.trigger({ type: Events.MACHINE_SOLD, building: this.config });
 						this.config.totalSales += this.config.resell;
 						
 						numToSell--;
@@ -300,7 +300,7 @@ var BuildingManager = function() {
 						TurnManager.sellMachine(this.config.inventory.pop(), this.config.resell);
 						// trace('------- TradeRoute about to sell a machine:', this);
 						PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
-						PWG.EventCenter.trigger({ type: Events.MACHINE_SOLD, tradeRoute: this.config });
+						PWG.EventCenter.trigger({ type: Events.MACHINE_SOLD, building: this.config });
 						this.config.totalSales += this.config.resell;
 
 						numToSell--;
@@ -452,10 +452,13 @@ var BuildingManager = function() {
 
 		// var buildingCount = TurnManager.playerData.buildingCount[BuildingTypes.TRADE_ROUTE];
 		var type = BuildingTypes.TRADE_ROUTE;
-		var tradeRouteId = type + ((TurnManager.tempTradeRouteCount) + 1);
 		var worldLocation = Math.floor(Math.random() * (TradeRouteLocations.length));
-		var tradeRouteName = TradeRouteNames[TradeRouteLocations[worldLocation]].toUpperCase() + ' ' + type.toUpperCase() + ' ' + TurnManager.tempTradeRouteCount;
-		TurnManager.tempTradeRouteCount++;
+		var area = TradeRouteLocations[worldLocation];
+
+		var tradeRouteId = type + '-' + area + ((TurnManager.tempTradeRouteCount[area]) + 1);
+		var tradeRouteName = TradeRouteNames[area].toUpperCase() + '\n' + type.toUpperCase() + ' ' + ((TurnManager.tempTradeRouteCount[area]) + 1);
+		
+		TurnManager.tempTradeRouteCount[area]++;
 
 		trace('\tmodelId = ' + modelId + ', count = ' + count);
 		model = plant.config.equipment[modelId]
@@ -592,6 +595,27 @@ var BuildingManager = function() {
 
 	module.getPlantModelCapacity = function() {
 		return Plant.modelCapacity;
+	};
+	
+	module.getExistingTradeRoutes = function() {
+		var existingTradeRoutes = {};
+		PWG.Utils.each(
+			module.sectors,
+			function(sector) {
+				PWG.Utils.each(
+					sector,
+					function(building) {
+						if(building.config.type === BuildingTypes.TRADE_ROUTE) {
+							existingTradeRoutes[building.config.id] = building.config;
+						}
+					},
+					this
+		 		);
+			},
+			this
+		);
+		
+		return existingTradeRoutes;
 	};
 	
 	module.removeBuilding = function(sector, buildingId) {

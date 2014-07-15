@@ -31,8 +31,33 @@ var TurnManager = function() {
 	module.startTurn = function() {
 		// trace('--- TurnManager/startTurn');
 		module.currentData = PWG.Utils.clone(turnData);
-		TurnManager.tempDealershipCount = (module.playerData.buildingCount.dealership);
-		TurnManager.tempTradeRouteCount = (module.playerData.buildingCount.tradeRoute);
+		module.tempDealershipCount = (module.playerData.buildingCount.dealership);
+		// TurnManager.tempTradeRouteCount = (module.playerData.buildingCount.tradeRoute);
+		module.tempTradeRouteCount = {
+			africa: 0,
+			asia: 0,
+			europe: 0,
+			middleEast: 0,
+			northPacific: 0,
+			southPacific: 0,
+			southAmerica: 0
+		};
+		
+		PWG.Utils.each(
+			module.playerData.sectors,
+			function(sectorBuildings) {
+				PWG.Utils.each(
+					sectorBuildings,
+					function(building) {
+						if(building.type === BuildingTypes.TRADE_ROUTE) {
+							module.tempTradeRouteCount[TradeRouteLocations[building.worldLocation]]++;
+						}
+					},
+					this
+				);
+			},
+			this
+		);
 	};
 	
 	module.updateBank = function(value) {
