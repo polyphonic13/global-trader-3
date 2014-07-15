@@ -124,6 +124,7 @@ var BuildingManager = function() {
 											}
 										} else {
 											var tradeRouteId = this.config.tradeRoutes[machine.id];
+											trace('tradeRouteId = ' + tradeRouteId);
 											var tradeRoute = module.findBuilding(tradeRouteId);
 											if(tradeRoute.config.state === BuildingStates.ACTIVE) {
 												var inventory = this.config.inventory[machine.id];
@@ -338,6 +339,8 @@ var BuildingManager = function() {
 							module.sectors[s][building.id] = new Plant(building);
 						} else if(building.type === BuildingTypes.DEALERSHIP) {
 							module.sectors[s][building.id] = new Dealership(building);
+						} else if(building.type === BuildingTypes.TRADE_ROUTE) {
+							module.sectors[s][building.id] = new TradeRoute(building);
 						}
 					},
 					this
@@ -345,20 +348,21 @@ var BuildingManager = function() {
 			},
 			this
 		);
-		PWG.Utils.each(
-			TurnManager.playerData.dealerships,
-			function(dealership) {
-				module.dealerships.push(new Dealership(dealership));
-			},
-			this
-		);
-		PWG.Utils.each(
-			TurnManager.playerData.tradeRoutes,
-			function(tradeRoute) {
-				module.tradeRoutes.push(new TradeRoute(tradeRoute));
-			},
-			this
-		);
+		// PWG.Utils.each(
+		// 	TurnManager.playerData.dealerships,
+		// 	function(dealership) {
+		// 		module.dealerships.push(new Dealership(dealership));
+		// 	},
+		// 	this
+		// );
+		// PWG.Utils.each(
+		// 	TurnManager.playerData.tradeRoutes,
+		// 	function(tradeRoute) {
+		// 		trace("BYILDING MANAGER ADDING TRADE ROUTE: ", tradeRoute);
+		// 		module.tradeRoutes.push(new TradeRoute(tradeRoute));
+		// 	},
+		// 	this
+		// );
 		// trace('BuildingManager.sectors now = ', module.sectors);
 	};
 	

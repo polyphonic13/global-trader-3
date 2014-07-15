@@ -224,7 +224,7 @@ var gameLogic = {
 			worldZoomOutFull: function() {
 				if(PWG.ScreenManager.currentId === 'world') {
 					// trace('set w/h: ' + newWidth + '/' + newHeight + ', x/y: ' + newX + '/' + newY);
-					PhaserGame.removeTradeRouteArrows();
+					PhaserGame.removeTradeRouteViews();
 
 					var max = PhaserGame.worldZoom.max;
 					PhaserGame.worldView.width = max.width;
@@ -239,7 +239,7 @@ var gameLogic = {
 					// trace('plusButton callback: PhaserGame.worldView.width = ' + PhaserGame.worldView.width);
 					if(PhaserGame.zoomedIn) {
 						trace('worldZoomOut: PhaserGame.zoomed = ' + PhaserGame.zoomedIn);
-						PhaserGame.removeTradeRouteArrows();
+						PhaserGame.removeTradeRouteViews();
 
 						var max = PhaserGame.worldZoom.max;
 						var tween = PhaserGame.phaser.add.tween(PhaserGame.worldView);
@@ -299,7 +299,7 @@ var gameLogic = {
 					}
 				}
 			},
-			addTradeRouteArrowsAndIcons: function() {
+			addTradeRouteViews: function() {
 				var world = PWG.ViewManager.getControllerFromPath('world');
 				var tradeRouteArrows = PWG.Utils.clone(PhaserGame.config.dynamicViews.tradeRouteArrows);
 				var tradeRouteArrow = PhaserGame.config.dynamicViews.tradeRouteArrow;
@@ -391,6 +391,11 @@ var gameLogic = {
 				PWG.ViewManager.addView(tradeRouteArrows, world, true);
 				PWG.ViewManager.addView(tradeRoutePins, world, true);
 				PWG.ViewManager.addView(tradeRouteAlertIcons, world, true);
+			},
+			removeTradeRouteViews: function() {
+				PWG.ViewManager.removeView('tradeRouteArrows', 'world');
+				PWG.ViewManager.removeView('tradeRoutePins', 'world');
+				PWG.ViewManager.removeView('tradeRouteAlertIcons', 'world');
 			},
 			removeTradeRouteArrows: function() {
 				// trace('removeTradeRouteArrows');
@@ -1054,8 +1059,8 @@ var gameLogic = {
 				// trace('PhaserGame/endYear, levelGoals = ', levelGoals);
 				
 				var yearSummary = PWG.Utils.clone(PhaserGame.config.dynamicViews.yearSummary);
-				var achievedGoalText = PhaserGame.config.dynamicViews.achievedGoalText;
-				var failedGoalText = PhaserGame.config.dynamicViews.failedGoalText;
+				var summaryGoalText = PhaserGame.config.dynamicViews.summaryGoalText;
+				var summaryText = PhaserGame.config.dynamicViews.summaryText;
 				var goalsText = PhaserGame.config.goalsText;
 				var item;
 
@@ -1097,25 +1102,30 @@ var gameLogic = {
 							break;
 						}
 						
+						item = PWG.Utils.clone(summaryGoalText);
+						var fill;
 						if(goalPassed) {
-							item = PWG.Utils.clone(achievedGoalText);
+							fill = PhaserGame.config.palette.black;
 						} else {
-							item = PWG.Utils.clone(failedGoalText);
+							fill = PhaserGame.config.palette.darkRed;
 						}
 						item.name += 'summary-' + goal.type;
 						item.text = goalsText.types[goal.type] + textValue;
 						item.y += (idx * item.offsetY);
+						item.style.fill = fill;
 						yearSummary.views['goal'+goal.type] = item;
 					},
 					this
 				);
 				
+				item = PWG.Utils.clone(summaryText);
+
 				if(PhaserGame.levelPassed) {
-					item = PWG.Utils.clone(achievedGoalText);
 					item.text = goalsText.passed;
+					item.style.fill = PhaserGame.config.palette.black;
 				} else {
-					item = PWG.Utils.clone(failedGoalText);
 					item.text = goalsText.failed;
+					item.style.fill = PhaserGame.config.palette.darkRed;
 				}
 				item.name += 'levelPassed';
 				item.y += (levelGoals.length * item.offsetY);
@@ -1646,7 +1656,7 @@ var gameLogic = {
 				event: Events.WORLD_ZOOMED_IN,
 				handler: function(event) {
 					trace('WORLD ZOOMED IN');
-					PhaserGame.addTradeRouteArrowsAndIcons();
+					PhaserGame.addTradeRouteViews();
 					PhaserGame.worldZoomedIn = false;
 				}
 			},
@@ -1721,7 +1731,7 @@ var gameLogic = {
 				PWG.ViewManager.showView('global:plusMinusGroup');
 			},
 			shutdown: function() {
-				PhaserGame.removeTradeRouteArrows();
+				PhaserGame.removeTradeRouteViews();
 				PWG.ViewManager.removeView('buildingPins', 'world');
 				PWG.ViewManager.hideView('global:plusMinusGroup');
 				PhaserGame.worldView = null;

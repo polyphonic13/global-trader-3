@@ -1585,32 +1585,33 @@ var GameConfig = function() {
 				views: {
 				}
 			},
-			achievedGoalText: {
+			summaryGoalText: {
 				type: 'text',
-				name: 'achievedGoalText',
+				name: 'summaryGoalText',
 				text: '',
 				offsetX: 0,
 				offsetY: (gameUnit * 0.75),
 				x: gameUnit * 1.25,
 				y: gameUnit * 6,
 				style: {
-				    font: (fontSizes.sm + 'px Trebuchet MS'),
-			        fill: palette.black
+				    font: (fontSizes.xs + 'px Trebuchet MS'),
+			        fill: ''
 				}
 			},
-			failedGoalText: {
+			summaryText: {
 				type: 'text',
-				name: 'failedGoalText',
+				name: 'summaryText',
 				text: '',
 				offsetX: 0,
 				offsetY: (gameUnit * 0.75),
 				x: gameUnit * 1.25,
 				y: gameUnit * 6,
 				style: {
-				    font: (fontSizes.sm + 'px Trebuchet MS'),
-			        fill: palette.lightRed
+				    font: (fontSizes.md + 'px Trebuchet MS'),
+			        fill: ''
 				}
-			}
+			},
+			
 		};
 
 		var config = {
@@ -2855,8 +2856,8 @@ var GameConfig = function() {
 									    font: (fontSizes.md + 'px Trebuchet MS'),
 								        fill: palette.orange1
 									},
-									x: (gameUnit * 6.67),
-									y: (gameUnit * 0.4)
+									x: (gameUnit * 6.25),
+									y: (gameUnit * 0.38)
 								},
 								turnIndicator: {
 									type: 'sprite',
