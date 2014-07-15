@@ -626,6 +626,79 @@ var GameConfig = function() {
 		};
 
 		var dynamicViews = {
+			// manual
+			manualPage: {
+				type: 'group',
+				name: 'manualPage',
+				offsetY: (gameUnit * 2),
+				views: {
+					bg: {
+						type: 'sprite',
+						name: 'pageBg',
+						img: 'manualPage',
+						x: 0,
+						y: 0,
+						attrs: {
+							width: gameW,
+							height: gameH
+						}
+					},
+					title: {
+						type: 'text',
+						name: 'title',
+						text: '',
+						x: (gameUnit * 2),
+						y: (gameUnit * 0.5),
+						style: {
+						    font: (fontSizes.md + 'px Trebuchet MS'),
+					        fill: palette.black,
+							'text-align': 'center'
+						},
+						position: {
+							// centerX: true
+						}
+					},
+					subtitle: {
+						type: 'text',
+						name: 'subtitle',
+						text: '',
+						x: (gameUnit * 2),
+						y: (gameUnit * 2),
+						style: {
+						    font: (fontSizes.sm + 'px Trebuchet MS'),
+					        fill: palette.black,
+							'text-align': 'center'
+						},
+						position: {
+							// centerX: true
+						}
+					},
+					invisButton: {
+						type: 'sprite',
+						name: 'invisButton',
+						img: 'blockWhite',
+						x: 0,
+						y: 0,
+						attrs: {
+							width: gameW,
+							height: gameH,
+							alpha: 0
+						},
+						input: gameLogic.input.manualPage
+					}
+				}
+			},
+			manualPageText: {
+				type: 'text',
+				name: 'pageText',
+				text: '',
+				x: gameUnit * 2,
+				y: gameUnit * 4,
+				style: {
+				    font: (fontSizes.xs + 'px Trebuchet MS'),
+			        fill: palette.black
+				}
+			},
 			// global
 			notification: {
 				type: 'group',
@@ -1674,7 +1747,8 @@ var GameConfig = function() {
 					// home
 					homeBg: 'images/screens/start/start.png',
 					// manual
-					// manualBg: '',
+					manualBg: 'images/screens/manual/manual_background.png',
+					manualPage: 'images/screens/manual/manual_page.png',
 					// mission brief
 					briefBg01: 'images/screens/brief/mission_brief01.png',
 					briefBg02: 'images/screens/brief/mission_brief02.png',
@@ -2344,7 +2418,8 @@ var GameConfig = function() {
 							attrs: {
 								width: gameW,
 								height: gameH
-							}
+							},
+							input: gameLogic.input.manualBg
 						}
 					}
 				},
@@ -2813,34 +2888,34 @@ var GameConfig = function() {
 							type: 'group',
 							name: 'homeGroup',
 							views: {
-								// buttonSettings: {
-								// 	type: 'button',
-								// 	name: 'buttonSettings',
-								// 	img: 'buttonSettings',
-								// 	x: controlButtons.left.x,
-								// 	y: controlButtons.bottom.y,
-								// 	attrs: {
-								// 		width: controlButtons.width,
-								// 		height: controlButtons.height
-								// 	},
-								// 	callback: gameLogic.buttonCallbacks.settings,
-								// 	context: this,
-								// 	frames: [0, 1, 1, 0]
-								// },
-								// buttonShare: {
-								// 	type: 'button',
-								// 	name: 'buttonShare',
-								// 	img: 'buttonShare',
-								// 	x: controlButtons.right.x,
-								// 	y: controlButtons.bottom.y,
-								// 	attrs: {
-								// 		width: controlButtons.width,
-								// 		height: controlButtons.height
-								// 	},
-								// 	callback: gameLogic.buttonCallbacks.share,
-								// 	context: this,
-								// 	frames: [0, 1, 1, 0]
-								// }
+								buttonSettings: {
+									type: 'button',
+									name: 'buttonSettings',
+									img: 'buttonSettings',
+									x: controlButtons.left.x,
+									y: controlButtons.bottom.y,
+									attrs: {
+										width: controlButtons.width,
+										height: controlButtons.height
+									},
+									callback: gameLogic.buttonCallbacks.settings,
+									context: this,
+									frames: [0, 1, 1, 0]
+								},
+								buttonShare: {
+									type: 'button',
+									name: 'buttonShare',
+									img: 'buttonShare',
+									x: controlButtons.right.x,
+									y: controlButtons.bottom.y,
+									attrs: {
+										width: controlButtons.width,
+										height: controlButtons.height
+									},
+									callback: gameLogic.buttonCallbacks.share,
+									context: this,
+									frames: [0, 1, 1, 0]
+								}
 							}
 						},
 						turnGroup: {

@@ -167,6 +167,41 @@ var gameLogic = {
 				PWG.ViewManager.hideView('global:tradeRouteAlertIcon');
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: PhaserGame.config.defaultScreen });
 			},
+			addManualPage: function(idx) {
+				var manual = PWG.ViewManager.getControllerFromPath('manual');
+				var manualPage = PWG.Utils.clone(PhaserGame.config.dynamicViews.manualPage);
+				var manualPageText = PhaserGame.config.dynamicViews.manualPageText;
+				var pageConfig = TutorialText.pages[idx];
+				trace('making manual page: '+ idx + ', with: ', pageConfig);
+				manualPage.name += idx;
+				manualPage.views.title.text = TutorialText.title;
+				manualPage.views.subtitle.text = TutorialText.subtitle;
+				
+				var pageText = PWG.Utils.clone(manualPageText);
+
+				PWG.Utils.each(
+					pageConfig.blurbs,
+					function(blurb, idx) {
+						var pageText = PWG.Utils.clone(manualPageText);
+						pageText.text = blurb;
+						pageText.y += (idx * manualPage.offsetY);
+						
+						manualPage.views['text'+idx] = pageText;
+					},
+					this
+				);
+				
+				PWG.ViewManager.addView(manualPage, manual, true);
+			},
+			nextManualPage: function() {
+				trace('PhaserGame/nextManualPage, idx = ' + PhaserGame.manualPage);
+				if(PhaserGame.manualPage < TutorialText.pages.length -1) {
+					PhaserGame.manualPage++;
+				} else {
+					PhaserGame.manualPage = 0;
+				}
+				PhaserGame.addManualPage(PhaserGame.manualPage);
+			},
 			formatBuildingPin: function(type, idx, count) {
 				var buildingPin = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingPin);
 				var pinLocations = PhaserGame.config.pinPositions.usSectors[idx];
@@ -1248,6 +1283,20 @@ var gameLogic = {
 		}
 	},
 	input: {
+		manualBg: {
+			inputDown: function() {
+				if(!this.manualOpen) {
+					PhaserGame.manualPage = 0;
+					PhaserGame.addManualPage(0);
+					this.manualOpen = true;
+				}
+			}
+		},
+		manualPage: {
+			inputDown: function() {
+				PhaserGame.nextManualPage();
+			}
+		},
 		notificationEnvelope: {
 			inputDown: function() {
 				PhaserGame.showNotification();
@@ -1454,6 +1503,7 @@ var gameLogic = {
 		},
 		share: function() {
 			// trace('share click');
+			window.open('http://www.facebook.com/cnh');
 		},
 		manualStart: function() {
 			PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'manual' });
@@ -1674,6 +1724,8 @@ var gameLogic = {
 			create: function() {
 				PWG.ViewManager.hideView('global:homeGroup');
 				PWG.ViewManager.showView('global:backButton');
+				
+				
 			},
 			shutdown: function() {
 			}
