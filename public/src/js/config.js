@@ -1339,6 +1339,18 @@ var GameConfig = function() {
 							angle: 45
 						}
 					},
+					alert: {
+						type: 'sprite',
+						name: 'alert',
+						img: 'exclamationAlert',
+						x: (gameUnit * 3.25),
+						y: 0,
+						attrs: {
+							width: gameUnit * 0.75,
+							height: gameUnit * 0.75,
+							visible: false
+						}
+					},
 					invisButton: {
 						type: 'sprite',
 						name: 'machineIconInvisButton',
@@ -1869,6 +1881,7 @@ var GameConfig = function() {
 					pinPlant: 'images/screens/world/pin_plant.png',
 					pinDealership: 'images/screens/world/pin_dealership.png',
 					pinTradeRoute: 'images/screens/world/pin_tradeRoute.png',
+					exclamationAlert: 'images/icons/exclamatin5.png',
 					tradeRouteAlertIcon: 'images/icons/little_trade_route_alert.png',
 					tradeRouteIcon: 'images/screens/world/trade_route_icon.png',
 					tradeRouteEurope: 'images/screens/world/trade_route_europe.png',

@@ -2332,6 +2332,11 @@ var gameLogic = {
 						// item.views.size.text = machine.size;
 
 						item.views.available.text = 'x' + available;
+
+						if(!machine.active) {
+							item.views.alert.attrs.visible = true;
+						}
+
 						item.views.invisButton.machineIdx = machine.id;
 						// increment y to next row:
 						if(count % MACHINE_LIST_COLUMNS === 0) {
