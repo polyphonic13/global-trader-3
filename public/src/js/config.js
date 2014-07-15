@@ -1881,7 +1881,7 @@ var GameConfig = function() {
 					pinPlant: 'images/screens/world/pin_plant.png',
 					pinDealership: 'images/screens/world/pin_dealership.png',
 					pinTradeRoute: 'images/screens/world/pin_tradeRoute.png',
-					exclamationAlert: 'images/icons/exclamatin5.png',
+					exclamationAlert: 'images/icons/exclamation5.png',
 					tradeRouteAlertIcon: 'images/icons/little_trade_route_alert.png',
 					tradeRouteIcon: 'images/screens/world/trade_route_icon.png',
 					tradeRouteEurope: 'images/screens/world/trade_route_europe.png',
@@ -1890,13 +1890,6 @@ var GameConfig = function() {
 					tradeRoutePacificSouth: 'images/screens/world/trade_route_pacific_south.png',
 					tradeRouteAfrica: 'images/screens/world/trade_route_africa.png',
 					tradeRouteSouthAmerica: 'images/screens/world/trade_route_south_america.png',
-					tradeRouteRepresentativePrompt: 'images/screens/world/trade_route_representative_prompt.png',
-					tradeRouteAfricaNotification: 'images/screens/world/trade_route_africa.png',
-					tradeRouteAsiaNotification: 'images/screens/world/trade_route_asia.png',
-					tradeRouteEuropeNotification: 'images/screens/world/trade_route_europe.png',
-					tradeRouteMiddleEastNotification: 'images/screens/world/trade_route_middle_east.png',
-					tradeRouteSouthPacificNotification: 'images/screens/world/trade_route_south_pacific.png',
-					tradeRouteSouthAmericaNotification: 'images/screens/world/trade_route_south_america.png',
 					// us detail
 					sectorGridNE: 'images/screens/us_detail/sector_grid_ne.png',
 					sectorGridSE: 'images/screens/us_detail/sector_grid_se.png',
@@ -2006,8 +1999,13 @@ var GameConfig = function() {
 
 					// NOTIFICATIONS
 					dealershipGirl: 'images/notifications/dealership_girl.png',
-					tradeRouteGirl: 'images/notifications/trade_route_guy_asia.png',
 					// wholeSaleBg: 'images/notifications/wholesale_bg.png',
+					tradeRouteAfricaNotification: 'images/screens/world/trade_route_africa.png',
+					tradeRouteAsiaNotification: 'images/screens/world/trade_route_asia.png',
+					tradeRouteEuropeNotification: 'images/screens/world/trade_route_europe.png',
+					tradeRouteMiddleEastNotification: 'images/screens/world/trade_route_middle_east.png',
+					tradeRouteSouthPacificNotification: 'images/screens/world/trade_route_south_pacific.png',
+					tradeRouteSouthAmericaNotification: 'images/screens/world/trade_route_south_america.png',
 
 					// TURN END
 					turnEnd01: 'images/screens/turn_end/turn_end01.png',
