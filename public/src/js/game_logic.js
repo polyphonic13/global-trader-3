@@ -1,12 +1,12 @@
 var ASPECT_RATIO = [9, 16];
 var GAME_NAME = 'global_trader_3_0';
 var TIME_PER_TURN = 52;
-var TURN_TIME_INTERVAL = 1000;
+var TURN_TIME_INTERVAL = 3000;
 var US_DETAIL_GRID_CELLS = 6;
 var TIME_TO_MANUFACTOR = 5;
 var MACHINE_LIST_COLUMNS = 2; 
 var MACHINE_LIST_ICONS = 6;
-var MIN_TRADE_ROUTE_LEVEL = 1;
+var MIN_TRADE_ROUTE_LEVEL = 4;
 
 function startGame() {
 	PhaserGame.init(ASPECT_RATIO, document.documentElement.clientHeight);
@@ -184,14 +184,31 @@ var gameLogic = {
 					function(blurb, idx) {
 						var pageText = PWG.Utils.clone(manualPageText);
 						pageText.name += idx;
-						pageText.text = blurb;
-						pageText.y += (idx * manualPage.offsetY);
-						
+						pageText.text = blurb.text;
+						pageText.x += blurb.x;
+						pageText.y += blurb.y;
+
 						manualPage.views[pageText.name] = pageText;
 					},
 					this
 				);
-				
+
+				PWG.Utils.each(
+					pageConfig.images,
+					function(image, idx) {
+						var pageImage = PWG.Utils.clone(manualPageImage);
+						pageImage.name += idx;
+						pageImage.img = image.img;
+						pageImage.x += image.x;
+						pageImage.y += image.y;
+						pageImage.attrs.width = image.width;
+						pageImage.attrs.height = image.height;
+
+						manualPage.views[pageImage.name] = pageImage;
+					},
+					this
+				);
+
 				PWG.ViewManager.addView(manualPage, manualPages, true);
 			},
 			nextManualPage: function() {

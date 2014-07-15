@@ -693,10 +693,21 @@ var GameConfig = function() {
 				name: 'pageText',
 				text: '',
 				x: gameUnit * 2,
-				y: gameUnit * 4,
+				y: 0,
 				style: {
 				    font: (fontSizes.xs + 'px Trebuchet MS'),
 			        fill: palette.black
+				}
+			},
+			manualPageImage: {
+				type: 'text',
+				name: 'pageImage',
+				img: '',
+				x: 0,
+				y: 0,
+				attrs: {
+				    width: 0,
+			        height: 0
 				}
 			},
 			// global

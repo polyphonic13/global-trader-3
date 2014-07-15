@@ -1169,69 +1169,182 @@ var TutorialText = {
 	subtitle: 'Instructions and Strategy\nDIGITAL TRADE TOOLBOX',
 	pages: [
 	{
-		blurbs: [{
-			text: 'Turn on the ignition to start.',
+		blurbs: [
+		{
+			text: 'Click on the ignition to start the game.',
 			x: 0,
 			y: 0
 		},
 		{
-			text: 'Choose a US sector where you will build a plant.',
-			x: 0,
-			y: 0
-		},
-		{
-			text: 'Clicking on the sector will bring you to a grid where you will be prompted to build a plant.',
-			x: 0,
-			y: 0
-		},
-		{
-			text: 'The plant turns from grey to red in two weeks,\nmeaning it\'s active and you can\nstart building equipment.',
+			text: 'Look over the Mission Brief.\nThese are the goals you will\nneed to accomplish for the year.\nHit the check button to accept.',
 			x: 0,
 			y: 0
 		}
 		],
 		images: [
+		{
+			img: 'ignition',
+			x: 0,
+			y: 0,
+			width: 0,
+			height: 0
+		},
+		{
+			img: 'confirmButton',
+			x: 0,
+			y: 0,
+			width: 0,
+			height: 0
+		}
 		]
 	},
 	{
 		blurbs: [
 		{
-			text: 'Click on the active plant and see its details, the wrench takes you to the build equipment screen.',
+			text: 'Each level is one year.\nThe 52 weeks of the year countdownt the turn.\nThe yellow dots reflect the current year.',
 			x: 0,
 			y: 0
 		},
 		{
-			text: 'You will be presented with a list of options for building equipment; choose the one that your Mission Brief called for.', 
+			text: 'Choose a sector of the US to view.',
 			x: 0,
 			y: 0
 		},
 		{
-			text: 'The equipment needs to be constructed. Go to the "Choose Part" tab and determine what part to buy from the selection.',
+			text: 'Click on the grid to build a plant.',
 			x: 0,
 			y: 0
 		},
 		{
-			text: 'Your choice of parts will determine the end cost of your product. Strategize when it comes to building relationships with Suppliers, you could end up saving a lot of money.',
+			text: 'The plant completes construction in 3 weeks.\nIt is now active and you can start making equipment.',
 			x: 0,
 			y: 0
 		}
 		],
-		images: []
+		images: [
+		{
+			img: 'confirmButton',
+			x: 0,
+			y: 0,
+			width: 0,
+			height: 0
+		},
+		{
+			img: 'usSector',
+			x: 0,
+			y: 0,
+			width: 0,
+			height: 0
+		},
+		{
+			img: 'grid',
+			x: 0,
+			y: 0,
+			width: 0,
+			height: 0
+		},
+		{
+			img: 'plantIcon',
+			x: 0,
+			y: 0,
+			width: 0,
+			height: 0
+		}
+		]
 	},
 	{
 		blurbs: [
 		{
-			text: 'The stars turn from grey to yellow as you\ncomplete the build out of your equipment.',
+			text: 'Click on the active plant and see its details. The wrench takes you to the\nlist of the plants Tractor and Skid Steer models.',
 			x: 0,
 			y: 0
 		},
 		{
-			text: 'When you build three pieces of equipment,\na regional representative will prompt\nyou to sell through a dealership.',
+			text: 'Click an empty slot to add a new model.',
 			x: 0,
 			y: 0
 		},
 		{
-			text: 'There are many regional representatives out there; be sure to accept the best deal.',
+			text: 'Choose the type and the size to build.', 
+			x: 0,
+			y: 0
+		}
+		],
+		images: [
+		{
+			img: 'plantDetails',
+			x: 0,
+			y: 0,
+			width: 0,
+			height: 0
+		},
+		{
+			img: 'wrench',
+			x: 0,
+			y: 0,
+			width: 0,
+			height: 0
+		},
+		{
+			img: 'emptyMachineIcon',
+			x: 0,
+			y: 0,
+			width: 0,
+			height: 0
+		},
+		{
+			img: 'createMachineIcon',
+			x: 0,
+			y: 0,
+			width: 0,
+			height: 0
+		},
+		]
+	},
+	{
+		blurbs: [
+		{
+			text: 'Required are displayed at the top; click to open part menu.',
+			x: 0,
+			y: 0
+		},
+		{
+			text: 'Your choice of parts will determine\nthe manufacturing cost of your machine.\nStrategize when it comes to building relationships with Suppliers -- you could end up saving a lot of money.',
+			x: 0,
+			y: 0
+		}
+		],
+		images: [
+		{
+			img: 'partNavigator',
+			x: 0,
+			y: 0,
+			width: 0,
+			height: 0
+		},
+		{
+			img: 'partMenu',
+			x: 0,
+			y: 0,
+			width: 0,
+			height: 0
+		}
+		]
+	},
+	{
+		blurbs: [
+		{
+			text: 'The stars turn from grey to yellow as you\nselect each required machine type part.',
+			x: 0,
+			y: 0
+		},
+		{
+			text: 'After a Plant has manufactured some machines,\nRegional Representatives will prompt\nyou to sell through there Dealership.',
+			x: 0,
+			y: 0
+		},
+		{
+			text: 'Not all Dealerships offer the same resale.\nThe first is not always the best.',
 			x: 0,
 			y: 0
 		},
@@ -1245,11 +1358,6 @@ var TutorialText = {
 	},
 	{
 		blurbs: [
-		{
-			text: 'One level is equivalent to one year, or 52 weeks. The yellow dots reflect which level/year you are on.',
-			x: 0,
-			y: 0
-		},
 		{
 			text: 'After you sell domestically,\nyou may receive trade opportunities\nleading to increased revenue and bonus points.',
 			x: 0,
