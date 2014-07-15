@@ -173,11 +173,11 @@ var gameLogic = {
 				var manualPages = PWG.ViewManager.getControllerFromPath('manual:manualPages');
 				var manualPage = PWG.Utils.clone(PhaserGame.config.dynamicViews.manualPage);
 				var manualPageText = PhaserGame.config.dynamicViews.manualPageText;
-				var pageConfig = TutorialText.pages[idx];
+				var pageConfig = gameData.tutorialText.pages[idx];
 				trace('making manual page: '+ idx + ', with: ', pageConfig, '\tpages = ', manualPages);
 				manualPage.name += idx;
-				manualPage.views.title.text = TutorialText.title;
-				manualPage.views.subtitle.text = TutorialText.subtitle;
+				manualPage.views.title.text = gameData.tutorialText.title;
+				manualPage.views.subtitle.text = gameData.tutorialText.subtitle;
 				
 				var pageText = PWG.Utils.clone(manualPageText);
 
@@ -215,7 +215,7 @@ var gameLogic = {
 			},
 			nextManualPage: function() {
 				trace('PhaserGame/nextManualPage, idx = ' + PhaserGame.manualPage);
-				if(PhaserGame.manualPage < TutorialText.pages.length -1) {
+				if(PhaserGame.manualPage < gameData.tutorialText.pages.length -1) {
 					PhaserGame.manualPage++;
 				} else {
 					PhaserGame.manualPage = 0;
@@ -1138,7 +1138,7 @@ var gameLogic = {
 
 				PWG.ViewManager.addView(partIconsConfig, partsMenu, true);
 
-				if(WholesaleManager.getPartCount(PhaserGame.activePartType, PhaserGame.activeMachineSize) > 0) {
+				if(WholesaleManager.getTotalPartTypeCount(PhaserGame.activePartType, PhaserGame.activeMachineSize) > 0) {
 					PhaserGame.addWholesalePartPrompt();
 				}
 				// trace('\tcreated partsMenu from: ', partIconsConfig, '\tcollection now = ', collection);
@@ -2460,11 +2460,13 @@ var gameLogic = {
 					PWG.EventCenter.trigger({ type: Events.NEXT_MACHINE_PIECE_ICON });
 				}
 			},
+			// add wholesale part
 			{
 				event: Events.ADD_WHOLESALE_PART, 
 				handler: function(event) {
-					var part = event.distributorId;
-					PhaserGame.activeMachine.setPart(PhaserGame.activePartType, event.value, false);
+					var type = PhaserGame.activePartType;
+					PhaserGame.activeMachine.setPart(type, event.value, false);
+					// WholesaleManager.usePart(type, PhaserGame.activeMachineSize, event.distributorId);
 
 					PWG.EventCenter.trigger({ type: Events.CLOSE_WHOLESALE_PARTS_MENU });
 					PWG.EventCenter.trigger({ type: Events.NEXT_MACHINE_PIECE_ICON });

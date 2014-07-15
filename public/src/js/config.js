@@ -2384,6 +2384,7 @@ var GameConfig = function() {
 					profit: 'Profits: ',
 					newPlants: 'Plants built: ',
 					newDealerships: 'Dealerships established: ',
+					newDistributors: 'Partnered Distributors: ',
 					newTradeRoutes: 'Trade Routes established: ',
 					newMachineModels: 'Machine models created: ',
 					newMachines: 'Machines built: ',
@@ -2393,8 +2394,9 @@ var GameConfig = function() {
 			bonusesText: {
 				newPlant: 'New Plant built created 1000 jobs',
 				newDealership: 'New Dealership established',
+				newDistributor: 'New Distributor relationship',
 				newTradeRoutes: 'New Trade Route established',
-				machingManufacturing: '~{machines}~ Machines built'
+				machineManufacturing: '~{machines}~ Machines built'
 			},
 			machineIcons: {
 				tractor: {

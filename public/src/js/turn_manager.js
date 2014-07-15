@@ -9,6 +9,8 @@ var TurnManager = function() {
 		newSkidsteerModels: 0,
 		newTractors: 0,
 		newSkidsteers: 0,
+		wholesalePartsUsed: 0,
+		emptiedWholesaleInventories: 0,
 		newBuildings: [],
 		newMachineModels: [],
 		newMachines: [],
@@ -166,16 +168,17 @@ var TurnManager = function() {
 		PWG.EventCenter.trigger({ type: Events.BONUSES_UPDATED });
 	};
 	
-	module.wholesaleInventoryUsed = function(distributor) {
-		trace('TurnManager/wholesaleInventoryUsed');
+	module.wholesalePartUsed = function() {
+		module.currentData.wholesalePartsUsed++;
+	};
+	
+	module.wholesaleInventoryEmptied = function(distributor) {
+		trace('TurnManager/wholesaleInventoryEmptied');
+		module.currentData.emptiedWholesaleInventories++;
 		module.playerData.bonusPoints += gameData.bonuses.distributors.allPartsUsed;
 		PWG.EventCenter.trigger({ type: Events.BONUSES_UPDATED });
 	};
 
-	module.userDistributorPart = function(distributor) {
-		module.currentData.wholesalePartsUsed++;
-	};
-	
 	module.get = function(prop) {
 		// trace('--- TurnManager/get, prop = ', prop);
 		if(module.playerData.hasOwnProperty(prop)) {

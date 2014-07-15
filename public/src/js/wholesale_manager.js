@@ -114,25 +114,30 @@ var WholesaleManager = function() {
 		TurnManager.addDistributor(config);
 	};
 	
-	module.getPartCount = function(type, size) {
+	module.getTotalPartTypeCount = function(type, size) {
 		var partCount = 0;
 		if(module.parts.hasOwnProperty(type)) {
 			if(module.parts[type].hasOwnProperty(size)) {
-				var distributor = module.parts[sector][part][size];
-				if(distributor.quantity > 0) {
-					partCount = distributor.quantity;
-				}
+				var distributors = module.parts[part][size];
+				PWG.Utils.each(
+					distributors,
+					function(distributor) {
+						partCount += distributor.quantity;
+					},
+					this
+				);
 			}
 		}
 		trace('WholesaleManager/hasPart: ' + type + '.' + size + ' = ' + partCount);
 		return partCount;
 	};
 	
-	module.usePart = function(type, size) {
+	module.usePart = function(type, size, distributorId) {
 		trace('WholesaleManager/usePart: ' + type + '.' + size + ', quantity = ' + module.parts[type][size].quantity);
-		var distributor = module.parts[type][size];
+		var distributor = module.parts[type][size][distributorId];
 		if(distributor.quantity > 0) {
 			distributor.quantity--;
+			TurnManager.wholesalePartUsed();
 
 			if(distributor.quantity <= 0) {
 				module.removeDistributorFromParts(distributor);
@@ -143,7 +148,7 @@ var WholesaleManager = function() {
 	module.removeDistributorFromParts = function(distributor) {
 		trace('WholesaleManager/removeDistributorFromParts');
 		delete module.parts[distributor.partType][distributor.partSize][distributor.id];
-		TurnManager.wholesaleInventoryUsed(distributor);
+		TurnManager.wholesaleInventoryEmptied(distributor);
 	};
 	
 	module.calculateQuantity = function() {

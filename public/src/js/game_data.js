@@ -920,7 +920,7 @@ var gameData = {
 			text: [
 				'Make $250,000 in profits',
 				'Sell 30 machines',
-				'Manufacture 50 machines'
+				'Establish 1 Wholesale Distributor'
 			]
 		},
 		goals: [
@@ -935,8 +935,8 @@ var gameData = {
 			calculation: 'length'
 		},
 		{
-			type: 'newMachines',
-			value: 5,
+			type: 'newDistributors',
+			value: 1,
 			calculation: 'length'
 		}
 		]
@@ -1000,7 +1000,7 @@ var gameData = {
 			text: [
 				'Make $1,000,000 in profits',
 				'Build 5 Plants',
-				'Create 5 Machine Models',
+				'Establish 5 Wholesale Distributors',
 				'Produce 100 Machines'
 			]
 		},
@@ -1016,7 +1016,7 @@ var gameData = {
 			calculation: 'number'
 		},
 		{
-			type: 'newMachineModels',
+			type: 'newDistributors',
 			value: 5,
 			calculation: 'length'
 		},
@@ -1163,241 +1163,276 @@ var gameData = {
 			machine10000: 10000,
 			machine50000: 50000
 		}
+	},
+	tutorialText: {
+		title: 'Global Trader 3.0\nCNH INDUSTRIAL',
+		subtitle: 'Instructions and Strategy\nDIGITAL TRADE TOOLBOX',
+		pages: [
+		{
+			blurbs: [
+			{
+				text: 'Click on the ignition to start the game.',
+				x: 0,
+				y: 0
+			},
+			{
+				text: 'Look over the Mission Brief.\nThese are the goals you will\nneed to accomplish for the year.\nHit the check button to accept.',
+				x: 0,
+				y: 0
+			}
+			],
+			images: [
+			{
+				img: 'ignition',
+				x: 0,
+				y: 0,
+				width: 0,
+				height: 0
+			},
+			{
+				img: 'confirmButton',
+				x: 0,
+				y: 0,
+				width: 0,
+				height: 0
+			}
+			]
+		},
+		{
+			blurbs: [
+			{
+				text: 'Each level is one year.\nThe 52 weeks of the year countdownt the turn.\nThe yellow dots reflect the current year.',
+				x: 0,
+				y: 0
+			},
+			{
+				text: 'Choose a sector of the US to view.',
+				x: 0,
+				y: 0
+			},
+			{
+				text: 'Click on the grid to build a plant.',
+				x: 0,
+				y: 0
+			},
+			{
+				text: 'The plant completes construction in 3 weeks.\nIt is now active and you can start making equipment.',
+				x: 0,
+				y: 0
+			}
+			],
+			images: [
+			{
+				img: 'confirmButton',
+				x: 0,
+				y: 0,
+				width: 0,
+				height: 0
+			},
+			{
+				img: 'usSector',
+				x: 0,
+				y: 0,
+				width: 0,
+				height: 0
+			},
+			{
+				img: 'grid',
+				x: 0,
+				y: 0,
+				width: 0,
+				height: 0
+			},
+			{
+				img: 'plantIcon',
+				x: 0,
+				y: 0,
+				width: 0,
+				height: 0
+			}
+			]
+		},
+		{
+			blurbs: [
+			{
+				text: 'Click on the active plant and see its details. The wrench takes you to the\nlist of the plants Tractor and Skid Steer models.',
+				x: 0,
+				y: 0
+			},
+			{
+				text: 'Click an empty slot to add a new model.',
+				x: 0,
+				y: 0
+			},
+			{
+				text: 'Choose the type and the size to build.', 
+				x: 0,
+				y: 0
+			}
+			],
+			images: [
+			{
+				img: 'plantDetails',
+				x: 0,
+				y: 0,
+				width: 0,
+				height: 0
+			},
+			{
+				img: 'wrench',
+				x: 0,
+				y: 0,
+				width: 0,
+				height: 0
+			},
+			{
+				img: 'emptyMachineIcon',
+				x: 0,
+				y: 0,
+				width: 0,
+				height: 0
+			},
+			{
+				img: 'createMachineIcon',
+				x: 0,
+				y: 0,
+				width: 0,
+				height: 0
+			}
+			]
+		},
+		{
+			blurbs: [
+			{
+				text: 'Required parts are displayed above.\nClick to open the parts menu.',
+				x: 0,
+				y: 0
+			},
+			{
+				text: 'The choice of parts will affect\nthe manufacturing cost of a machine.',
+				x: 0,
+				y: 0
+			},
+			{
+				text: 'There may be Wholesale oppurtunities for parts.\nBuy in bulk to save on manufacturing\ncosts later.',
+				x: 0,
+				y: 0
+			}
+			],
+			images: [
+			{
+				img: 'partNavigator',
+				x: 0,
+				y: 0,
+				width: 0,
+				height: 0
+			},
+			{
+				img: 'partMenu',
+				x: 0,
+				y: 0,
+				width: 0,
+				height: 0
+			}
+			]
+		},
+		{
+			blurbs: [
+			{
+				text: 'The stars turn from grey to yellow as you\nselect each required machine type part.',
+				x: 0,
+				y: 0
+			},
+			{
+				text: 'After a Plant has manufactured 3 machines,\nRegional Representatives will prompt\nyou to sell through their Dealership.',
+				x: 0,
+				y: 0
+			},
+			{
+				text: 'Not all Dealerships offer the same resale.\nThe first is not always the best.',
+				x: 0,
+				y: 0
+			}
+			],
+			images: []
+		},
+		{
+			blurbs: [
+			{
+				text: 'After you sell domestically,\nyou may receive trade opportunities\nleading to increased revenue and bonus points.',
+				x: 0,
+				y: 0
+			},
+			{
+				text: 'Clicking the prompt returns to\nthe world map and displays\nthe potential trade route.',
+				x: 0,
+				y: 0
+			},
+			{
+				text: 'Click the trade route to expand\nthe Trade Representative\'s offer.',
+				x: 0,
+				y: 0
+			},
+			{
+				text: 'Accepting is optional.\nSome trade routes are better than others!',
+				x: 0,
+				y: 0
+			}
+			],
+			images: [
+			{
+				img: 'tradeRouteAlert',
+				x: 0,
+				y: 0,
+				width: 0,
+				height: 0
+			},
+			{
+				img: 'worldMapTradeRoutes',
+				x: 0,
+				y: 0,
+				width: 0,
+				height: 0
+			},
+			{
+				img: 'tradeRouteNotification',
+				x: 0,
+				y: 0,
+				width: 0,
+				height: 0
+			}]
+		},
+		{
+			blurbs:
+			[ 
+			{
+				text: 'Keep track of your bank, the turn time,\nand Bonus Points\nat the top of your screen.',
+				x: 0,
+				y: 0
+			},
+			{
+				text: 'At the end of the year, an envelope\nwill contain the Year End summary.\nWhen all goals are met,\nyou can advance to the next level.',
+				x: 0,
+				y: 0
+			}
+			],
+			images: [
+			{
+				img: 'dashboardTop',
+				x: 0,
+				y: 0,
+				width: 0,
+				height: 0
+			},
+			{
+				img: 'yearEndSummary',
+				x: 0,
+				y: 0,
+				width: 0,
+				height: 0
+			}
+			]
+		}
+		]
 	}
-};
-
-var TutorialText = {
-	title: 'Global Trader 3.0\nCNH INDUSTRIAL',
-	subtitle: 'Instructions and Strategy\nDIGITAL TRADE TOOLBOX',
-	pages: [
-	{
-		blurbs: [
-		{
-			text: 'Click on the ignition to start the game.',
-			x: 0,
-			y: 0
-		},
-		{
-			text: 'Look over the Mission Brief.\nThese are the goals you will\nneed to accomplish for the year.\nHit the check button to accept.',
-			x: 0,
-			y: 0
-		}
-		],
-		images: [
-		{
-			img: 'ignition',
-			x: 0,
-			y: 0,
-			width: 0,
-			height: 0
-		},
-		{
-			img: 'confirmButton',
-			x: 0,
-			y: 0,
-			width: 0,
-			height: 0
-		}
-		]
-	},
-	{
-		blurbs: [
-		{
-			text: 'Each level is one year.\nThe 52 weeks of the year countdownt the turn.\nThe yellow dots reflect the current year.',
-			x: 0,
-			y: 0
-		},
-		{
-			text: 'Choose a sector of the US to view.',
-			x: 0,
-			y: 0
-		},
-		{
-			text: 'Click on the grid to build a plant.',
-			x: 0,
-			y: 0
-		},
-		{
-			text: 'The plant completes construction in 3 weeks.\nIt is now active and you can start making equipment.',
-			x: 0,
-			y: 0
-		}
-		],
-		images: [
-		{
-			img: 'confirmButton',
-			x: 0,
-			y: 0,
-			width: 0,
-			height: 0
-		},
-		{
-			img: 'usSector',
-			x: 0,
-			y: 0,
-			width: 0,
-			height: 0
-		},
-		{
-			img: 'grid',
-			x: 0,
-			y: 0,
-			width: 0,
-			height: 0
-		},
-		{
-			img: 'plantIcon',
-			x: 0,
-			y: 0,
-			width: 0,
-			height: 0
-		}
-		]
-	},
-	{
-		blurbs: [
-		{
-			text: 'Click on the active plant and see its details. The wrench takes you to the\nlist of the plants Tractor and Skid Steer models.',
-			x: 0,
-			y: 0
-		},
-		{
-			text: 'Click an empty slot to add a new model.',
-			x: 0,
-			y: 0
-		},
-		{
-			text: 'Choose the type and the size to build.', 
-			x: 0,
-			y: 0
-		}
-		],
-		images: [
-		{
-			img: 'plantDetails',
-			x: 0,
-			y: 0,
-			width: 0,
-			height: 0
-		},
-		{
-			img: 'wrench',
-			x: 0,
-			y: 0,
-			width: 0,
-			height: 0
-		},
-		{
-			img: 'emptyMachineIcon',
-			x: 0,
-			y: 0,
-			width: 0,
-			height: 0
-		},
-		{
-			img: 'createMachineIcon',
-			x: 0,
-			y: 0,
-			width: 0,
-			height: 0
-		},
-		]
-	},
-	{
-		blurbs: [
-		{
-			text: 'Required are displayed at the top; click to open part menu.',
-			x: 0,
-			y: 0
-		},
-		{
-			text: 'Your choice of parts will determine\nthe manufacturing cost of your machine.\nStrategize when it comes to building relationships with Suppliers -- you could end up saving a lot of money.',
-			x: 0,
-			y: 0
-		}
-		],
-		images: [
-		{
-			img: 'partNavigator',
-			x: 0,
-			y: 0,
-			width: 0,
-			height: 0
-		},
-		{
-			img: 'partMenu',
-			x: 0,
-			y: 0,
-			width: 0,
-			height: 0
-		}
-		]
-	},
-	{
-		blurbs: [
-		{
-			text: 'The stars turn from grey to yellow as you\nselect each required machine type part.',
-			x: 0,
-			y: 0
-		},
-		{
-			text: 'After a Plant has manufactured some machines,\nRegional Representatives will prompt\nyou to sell through there Dealership.',
-			x: 0,
-			y: 0
-		},
-		{
-			text: 'Not all Dealerships offer the same resale.\nThe first is not always the best.',
-			x: 0,
-			y: 0
-		},
-		{
-			text: 'Keep track of your revenue, elapsed time,\nand bonus points from job creation\nat the top of your screen.',
-			x: 0,
-			y: 0
-		}
-		],
-		images: []
-	},
-	{
-		blurbs: [
-		{
-			text: 'After you sell domestically,\nyou may receive trade opportunities\nleading to increased revenue and bonus points.',
-			x: 0,
-			y: 0
-		},
-		{
-			text: 'Look out for the exclamation; click it to see potential trade routes. Click on the route.',
-			x: 0,
-			y: 0
-		},
-		{
-			text: 'Clicking on Home returns you to\nthe Map Screen, where you will seen\nall of your active plants and dealerships.',
-			x: 0,
-			y: 0
-		}
-		],
-		images: []
-	},
-	{
-		blurbs:
-		[ 
-		{
-			text: 'Clicking on an active plant\nwill take you to your inventory\nand how many pieces of equipment\nyou are manufacturing there.',
-			x: 0,
-			y: 0
-		},
-		{
-			text: 'You will be notified when you have\ncompleted the mission or when your time has elapsed.',
-			x: 0,
-			y: 0
-		},
-		{
-			text: 'If you have succeeded, you are on to the next level\nwhere you will encounter global opportunities\nfor trade and more complex\nmanufacturing goals.',
-			x: 0,
-			y: 0
-		}
-		],
-		images: []
-	}
-	]
 };
