@@ -24,7 +24,7 @@ var Machine = function() {
 		this.requiredPartsTotal = requiredParts.length;
 		this.requiredPartsCount = 0;
 		this.isComplete = false;
-		
+
 		PWG.Utils.each(
 			requiredParts,
 			function(part) {
@@ -37,7 +37,7 @@ var Machine = function() {
 			},
 			this
 		);
-		
+
 		if(this.requiredPartsCount >= this.requiredPartsTotal) {
 			this.isComplete = true;
 		}
@@ -54,6 +54,14 @@ var Machine = function() {
 		return this.config[prop];
 	};
 	
+	Machine.prototype.isComplete = function() {
+		var complete = false;
+		if(this.requiredPartsCount >= this.requiredPartsTotal) {
+			complete = true;
+		}
+		return complete;
+	};
+	
 	Machine.prototype.setPart = function(part, val) {
 		// trace('Machine/setPart, part = ' + part + ', val = ', val);
 		this.config.parts[part] = val;
@@ -62,11 +70,13 @@ var Machine = function() {
 			if(this.requiredParts.hasOwnProperty(part) && !this.requiredParts[part]) {
 				this.requiredParts[part] = true;
 				this.requiredPartsCount++;
+				PWG.EventCenter.trigger({ type: Event.REQUIRED_PART_ADDED });
 				// trace('\trequiredPartsCount now: ' + this.requiredPartsCount + '/' + this.requiredPartsTotal);
-				if(this.requiredPartsCount >= this.requiredPartsTotal) {
-					this.isComplete = true;
-					PWG.EventCenter.trigger({ type: Events.MACHINE_PARTS_COMPLETE, value: this.config });
-				}
+			}
+
+			if(this.requiredPartsCount >= this.requiredPartsTotal) {
+				this.isComplete = true;
+				PWG.EventCenter.trigger({ type: Events.MACHINE_PARTS_COMPLETE, value: this.config });
 			}
 		}
 	};

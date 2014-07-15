@@ -39,6 +39,7 @@ var Events = {
 	PREV_MACHINE_PIECE_ICON: 'prevMachinePieceIcon',
 	MACHINE_TYPE_SELECTION: 'machineTypeSelection',
 	MACHINE_SIZE_SELECTION: 'machineSizeSelection',
+	REQUIRED_PART_ADDED: 'requirePartAdded',
 	MACHINE_PARTS_COMPLETE: 'machinePartsComplete',
 	OPEN_OPTIONAL_PARTS_MENU: 'openOptionalPartsMenu',
 	OPEN_PARTS_MENU: 'openPartsMenu',

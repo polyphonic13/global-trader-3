@@ -1169,49 +1169,123 @@ var TutorialText = {
 	subtitle: 'Instructions and Strategy\nDIGITAL TRADE TOOLBOX',
 	pages: [
 	{
-		blurbs: [
-		'Turn on the ignition to start.',
-		'Look over the Mission Brief;\nthese are the goals you need to accomplish\nto ascend the next levels and win.\nHit the check button to accept.',
-		'Choose a US sector where you will build a plant.',
-		'Clicking on the sector will bring you to a grid where you will be prompted to build a plant.',
-		'The plant turns from grey to red in two weeks,\nmeaning it\'s active and you can\nstart building equipment.',
+		blurbs: [{
+			text: 'Turn on the ignition to start.',
+			x: 0,
+			y: 0
+		},
+		{
+			text: 'Choose a US sector where you will build a plant.',
+			x: 0,
+			y: 0
+		},
+		{
+			text: 'Clicking on the sector will bring you to a grid where you will be prompted to build a plant.',
+			x: 0,
+			y: 0
+		},
+		{
+			text: 'The plant turns from grey to red in two weeks,\nmeaning it\'s active and you can\nstart building equipment.',
+			x: 0,
+			y: 0
+		}
 		],
 		images: [
 		]
 	},
 	{
 		blurbs: [
-		'Click on the active plant and see its details, the wrench takes you to the build equipment screen.',
-		'You will be presented with a list of options for building equipment; choose the one that your Mission Brief called for.',
-		'The equipment needs to be constructed. Go to the "Choose Part" tab and determine what part to buy from the selection.',
-		'Your choice of parts will determine the end cost of your product. Strategize when it comes to building relationships with Suppliers, you could end up saving a lot of money.',
+		{
+			text: 'Click on the active plant and see its details, the wrench takes you to the build equipment screen.',
+			x: 0,
+			y: 0
+		},
+		{
+			text: 'You will be presented with a list of options for building equipment; choose the one that your Mission Brief called for.', 
+			x: 0,
+			y: 0
+		},
+		{
+			text: 'The equipment needs to be constructed. Go to the "Choose Part" tab and determine what part to buy from the selection.',
+			x: 0,
+			y: 0
+		},
+		{
+			text: 'Your choice of parts will determine the end cost of your product. Strategize when it comes to building relationships with Suppliers, you could end up saving a lot of money.',
+			x: 0,
+			y: 0
+		}
 		],
 		images: []
 	},
 	{
 		blurbs: [
-		'The stars turn from grey to yellow as you\ncomplete the build out of your equipment.',
-		'When you build three pieces of equipment,\na regional representative will prompt\nyou to sell through a dealership.',
-		'There are many regional representatives out there; be sure to accept the best deal.',
-		'Keep track of your revenue, elapsed time,\nand bonus points from job creation\nat the top of your screen.',
+		{
+			text: 'The stars turn from grey to yellow as you\ncomplete the build out of your equipment.',
+			x: 0,
+			y: 0
+		},
+		{
+			text: 'When you build three pieces of equipment,\na regional representative will prompt\nyou to sell through a dealership.',
+			x: 0,
+			y: 0
+		},
+		{
+			text: 'There are many regional representatives out there; be sure to accept the best deal.',
+			x: 0,
+			y: 0
+		},
+		{
+			text: 'Keep track of your revenue, elapsed time,\nand bonus points from job creation\nat the top of your screen.',
+			x: 0,
+			y: 0
+		}
 		],
 		images: []
 	},
 	{
 		blurbs: [
-		'One level is equivalent to one year, or 52 weeks. The yellow dots reflect which level/year you are on.',
-		'After you sell domestically,\nyou may receive trade opportunities\nleading to increased revenue and bonus points.',
-		'Look out for the exclamation; click it to see potential trade routes. Click on the route.',
-		'Clicking on Home returns you to\nthe Map Screen, where you will seen\nall of your active plants and dealerships.',
+		{
+			text: 'One level is equivalent to one year, or 52 weeks. The yellow dots reflect which level/year you are on.',
+			x: 0,
+			y: 0
+		},
+		{
+			text: 'After you sell domestically,\nyou may receive trade opportunities\nleading to increased revenue and bonus points.',
+			x: 0,
+			y: 0
+		},
+		{
+			text: 'Look out for the exclamation; click it to see potential trade routes. Click on the route.',
+			x: 0,
+			y: 0
+		},
+		{
+			text: 'Clicking on Home returns you to\nthe Map Screen, where you will seen\nall of your active plants and dealerships.',
+			x: 0,
+			y: 0
+		}
 		],
 		images: []
 	},
 	{
 		blurbs:
 		[ 
-			'Clicking on an active plant\nwill take you to your inventory\nand how many pieces of equipment\nyou are manufacturing there.',
-			'You will be notified when you have\ncompleted the mission or when your time has elapsed.',
-			'If you have succeeded, you are on to the next level\nwhere you will encounter global opportunities\nfor trade and more complex\nmanufacturing goals.'
+		{
+			text: 'Clicking on an active plant\nwill take you to your inventory\nand how many pieces of equipment\nyou are manufacturing there.',
+			x: 0,
+			y: 0
+		},
+		{
+			text: 'You will be notified when you have\ncompleted the mission or when your time has elapsed.',
+			x: 0,
+			y: 0
+		},
+		{
+			text: 'If you have succeeded, you are on to the next level\nwhere you will encounter global opportunities\nfor trade and more complex\nmanufacturing goals.',
+			x: 0,
+			y: 0
+		}
 		],
 		images: []
 	}

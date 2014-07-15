@@ -1119,6 +1119,42 @@ var gameLogic = {
 				// var partsMenu = PWG.ViewManager.getControllerFromPath('equipmentEdit:machineEdit:partsMenu');
 				// partsMenu.view.y = -(PWG.Stage.gameH);
 			},
+			addMachineDiscardPrompt: function() {
+				PhaserGame.cancelAction = null;
+
+				if(PhaserGame.newMachine) {
+
+					var equipmentEdit = PWG.ViewManager.getControllerFromPath('equipmentEdit');
+					var discardMachinePrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.discardMachinePrompt);
+
+					PhaserGame.cancelAction = {
+						method: function() {
+							PhaserGame.removeMachineDiscardPrompt();
+						},
+						params: {}
+					};
+					PhaserGame.confirmAction = {
+						method: function() {
+							PhaserGame.removeMachineDiscardPrompt();
+							PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentList' });
+						},
+						params: {}
+					};
+
+					PWG.ViewManager.showView('global:confirmButton');
+					PWG.ViewManager.addView(discardMachinePrompt, equipmentEdit, true);
+				} else {
+					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentList' });
+				}
+			},
+			removeMachineDiscardPrompt: function() {
+				PWG.ViewManager.removeView('discardMachinePrompt', 'equipmentEdit');
+				PhaserGame.confirmAction = null;
+				PhaserGame.cancelAction = null;
+				if(!PhaserGame.activeMachine.isComplete()) {
+					PWG.ViewManager.hideView('global:confirmButton');
+				}
+			},
 			addDistributorPrompt: function() {
 				var distributorPrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.distrbutorPrompt);
 				var notificationText = PhaserGame.config.notificationText;
@@ -2239,13 +2275,13 @@ var gameLogic = {
 				event: Events.PREV_MACHINE_PIECE_ICON,
 				handler: function(event) {
 					PWG.ViewManager.hideView(PhaserGame.getCurrentMachinePiecePath());
-					
+
 					if(PhaserGame.currentMachinePiece > 1) {
 						PhaserGame.currentMachinePiece--;
 					} else {
 						PhaserGame.currentMachinePiece = PhaserGame.machinePieces.length - 1;
 					}
-					
+
 					PhaserGame.setSelectedMachinePieceSprite();
 
 					// show piece name text/button
@@ -2257,11 +2293,7 @@ var gameLogic = {
 				event: Events.ADD_PART,
 				handler: function(event) {
 					PhaserGame.activeMachine.setPart(PhaserGame.activePartType, event.value);
-					
-					if(event.value !== this.partsMenuType) {
-						var stars = PWG.ViewManager.getControllerFromPath('equipmentEdit:machineEdit:stars');
-						stars.view.frame++;
-					}
+
 					// trace('add part, type = ' + event.value + ', part type = ' + this.partsMenuType + ', view collection = ', this.views);
 					// var frame = gameData.parts[this.partsMenuType][event.value].frame;
 					// trace('frame = ' + frame + ', type = ' + this.partsMenuType + ', collection = ', this.views);
@@ -2269,6 +2301,15 @@ var gameLogic = {
 					// PWG.ViewManager.setFrame('equipmentEdit:machineEdit:editorParts:'+partView, frame);
 					PWG.EventCenter.trigger({ type: Events.CLOSE_PARTS_MENU });
 					PWG.EventCenter.trigger({ type: Events.NEXT_MACHINE_PIECE_ICON });
+				}
+			},
+			// required part added
+			{
+				event: Events.REQUIRED_PART_ADDED,
+				handler: function(event) {
+					trace('equipmentEdit/' + event.type + ' hander');
+					var stars = PWG.ViewManager.getControllerFromPath('equipmentEdit:machineEdit:stars');
+					stars.view.frame++;
 				}
 			},
 			// add optional part
@@ -2392,6 +2433,7 @@ var gameLogic = {
 					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentList' });
 				}
 			}
+
 			],
 			create: function() {
 				PhaserGame.machinePieces = [];
@@ -2458,8 +2500,17 @@ var gameLogic = {
 				// trace('machineEdit now = ', machineEdit);
 
 				PWG.ViewManager.addView(machineEdit, equipmentEdit, true);
-				
+
 				PWG.ViewManager.showView('global:equipmentEditGroup');
+				PWG.ViewManager.hideView('global:backButton');
+				PWG.ViewManager.showView('global:cancelButton');
+
+				PhaserGame.cancelAction = {
+					method: function() {
+						PhaserGame.addMachineDiscardPrompt();
+					},
+					params: {}
+				};
 
 				PhaserGame.spriteTranslations = gameData.machines[type][size].spriteTranslations;
 				PhaserGame.machineDirty = true;
@@ -2469,6 +2520,9 @@ var gameLogic = {
 				PWG.ViewManager.removeView('machineEdit', 'equipmentEdit');
 				PWG.ViewManager.hideView('global:equipmentEditGroup');
 				PWG.ViewManager.hideView('global:confirmButton');
+				PWG.ViewManager.hideView('global:cancelButton');
+				PWG.ViewManager.showView('global:backButton');
+				PhaserGame.cancelAction = null;
 				this.partsMenuType = '';
 				this.partsMenuOpen = false;
 				PhaserGame.machineDirty = false;
@@ -2484,6 +2538,5 @@ var gameLogic = {
 				PWG.ViewManager.removeView('yearSummary', 'turnEnd');
 			}
 		}
-		
 	}
 };
