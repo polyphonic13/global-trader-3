@@ -33,6 +33,8 @@ var TurnManager = function() {
 		module.currentData = PWG.Utils.clone(turnData);
 		module.tempDealershipCount = (module.playerData.buildingCount.dealership);
 		// TurnManager.tempTradeRouteCount = (module.playerData.buildingCount.tradeRoute);
+		module.tempDistributorCount = (module.playerData.distributors.length);
+
 		module.tempTradeRouteCount = {
 			africa: 0,
 			asia: 0,
@@ -42,7 +44,7 @@ var TurnManager = function() {
 			southPacific: 0,
 			southAmerica: 0
 		};
-		
+
 		PWG.Utils.each(
 			module.playerData.sectors,
 			function(sectorBuildings) {
@@ -99,13 +101,6 @@ var TurnManager = function() {
 		PWG.EventCenter.trigger({ type: Events.BONUSES_UPDATED });
 	};
 	
-	module.addDistributor = function(distributor) {
-		module.playerData.distributor[distributor.sector][distributor.id] = distributor;
-		module.currentData.newDistributors.push(distributor);
-		module.playerData.bonusPoints += gameData.bonuses.distributors.added;
-		PWG.EventCenter.trigger({ type: Events.DISTRIBUTOR_ADDED });
-	};
-	
 	module.updateBuilding = function(building) {
 		// trace('--- TurnManager/updateBuilding, building = ', building);
 		module.playerData.sectors[building.sector][building.id] = building;
@@ -114,7 +109,7 @@ var TurnManager = function() {
 	module.addMachineModel = function(model) {
 		// trace('--- TurnManager/addMachineModel, model = ', model);
 		// module.playerData.sectors[PhaserGame.activeSector][PhaserGame.activeBuilding.id].equipment[PhaserGame.activeMachine.config.id] = model;
-		BuildingManager.addMachineModelToPlant(PhaserGame.activeSector, PhaserGame.activeBuilding.id, model)
+		BuildingManager.addMachineModelToPlant(PhaserGame.activeSector, PhaserGame.activeBuilding.id, model);
 		module.playerData.modelCount[PhaserGame.activeMachineType]++;
 		module.currentData.newMachineModels.push(model);
 		if(model.type === EquipmentTypes.TRACTOR) {
@@ -162,6 +157,23 @@ var TurnManager = function() {
 		// trace('TurnManager/sellMachine, amount = ' + amount + ', machine = ', machine);
 		module.currentData.machinesSold.push(machine);
 		module.updateBank(amount);
+	};
+	
+	module.addDistributor = function(distributor) {
+		module.playerData.distributor[distributor.sector][distributor.id] = distributor;
+		module.currentData.newDistributors.push(distributor);
+		module.playerData.bonusPoints += gameData.bonuses.distributors.added;
+		PWG.EventCenter.trigger({ type: Events.BONUSES_UPDATED });
+	};
+	
+	module.wholesaleInventoryUsed = function(distributor) {
+		trace('TurnManager/wholesaleInventoryUsed');
+		module.playerData.bonusPoints += gameData.bonuses.distributors.allPartsUsed;
+		PWG.EventCenter.trigger({ type: Events.BONUSES_UPDATED });
+	};
+
+	module.userDistributorPart = function(distributor) {
+		module.currentData.wholesalePartsUsed++;
 	};
 	
 	module.get = function(prop) {

@@ -220,18 +220,18 @@ var gameData = {
 			}
 		}
 	},
+	partNames: {
+		tires: 'Tires',
+		tracks: 'Tracks',
+		engine: 'Engine',
+		transmission: 'Transmission',
+		bucket: 'Bucket',
+		headlights: 'Headlights',
+		quickCoupler: 'Quick Coupler',
+		threePointHitch: 'Three Point Hitch',
+		powerTakeoff: 'Power Takeoff'
+	},
 	parts: {
-		titles: {
-			tires: 'Tires',
-			tracks: 'Tracks',
-			engine: 'Engine',
-			transmission: 'Transmission',
-			bucket: 'Bucket',
-			headlights: 'Headlights',
-			quickCoupler: 'Quick Coupler',
-			threePointHitch: 'Three Point Hitch',
-			powerTakeoff: 'Power Takeoff'
-		},
 		tires: [
 		{
 			id: 'w3',
@@ -644,41 +644,6 @@ var gameData = {
 			}
 		}
 		],
-		heater: [
-		{
-			id: 'c1',
-			frame: 1,
-			description: 'standard heater',
-			heavy: {
-				img: 'heaterStandard',
-				cost: 900,
-				build: 150,
-				sell: 3000
-			}
-		},
-		{
-			id: 'c2',
-			frame: 2,
-			description: 'premium heater',
-			heavy: {
-				img: 'heaterPremium',
-				cost: 1200,
-				build: 225,
-				sell: 4500
-			}
-		},
-		{
-			id: 'c3',
-			frame: 3,
-			description: 'deluxe heater',
-			heavy: {
-				img: 'heaterDeluxe',
-				cost: 3000,
-				build: 1000,
-				sell: 2000
-			}
-		}
-		],
 		bucket: [
 		{
 			id: 'c1',
@@ -744,6 +709,43 @@ var gameData = {
 			},
 			heavy: {
 				img: 'bucketHeavyDeluxe',
+				cost: 3000,
+				build: 1000,
+				sell: 2000
+			}
+		}
+		]
+	},
+	optionalParts: {
+		heater: [
+		{
+			id: 'c1',
+			frame: 1,
+			description: 'standard heater',
+			heavy: {
+				img: 'heaterStandard',
+				cost: 900,
+				build: 150,
+				sell: 3000
+			}
+		},
+		{
+			id: 'c2',
+			frame: 2,
+			description: 'premium heater',
+			heavy: {
+				img: 'heaterPremium',
+				cost: 1200,
+				build: 225,
+				sell: 4500
+			}
+		},
+		{
+			id: 'c3',
+			frame: 3,
+			description: 'deluxe heater',
+			heavy: {
+				img: 'heaterDeluxe',
 				cost: 3000,
 				build: 1000,
 				sell: 2000

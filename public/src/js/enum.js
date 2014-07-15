@@ -1,8 +1,8 @@
 var BuildingTypes = {
 	PLANT: 'plant',
 	DEALERSHIP: 'dealership',
-	TRADE_ROUTE: 'tradeRoute',
-	DISTRIBUTOR: 'distributor'
+	DISTRIBUTOR: 'distributor',
+	TRADE_ROUTE: 'tradeRoute'
 };
 
 var BuildingStates = {
@@ -76,12 +76,24 @@ var PartDescriptions = {
 	
 };
 
+var DistributorLocations = [
+	'Goodfield, IL',
+	'Fargo, ND',
+	'Grand Island, NB',
+	'Wichita, KS',
+	'Benson, MN',
+	'Calhoun, GA',
+	'New Holland, PA',
+	'Racine, WI',
+	'Burlington, IL'
+];
+
 var TradeRouteLocations = [
 	'africa',
 	'asia',
 	'europe',
 	'middleEast',
-	'northPacific',
+	// 'northPacific',
 	'southPacific',
 	'southAmerica'
 ];
@@ -91,7 +103,7 @@ var TradeRouteNames = {
 	asia: 'Asian',
 	europe: 'European',
 	middleEast: 'Middle Eastern',
-	northPacific: 'North Pacific',
+	// northPacific: 'North Pacific',
 	southPacific: 'South Pacific',
 	southAmerica: 'South American'
 };
@@ -115,4 +127,4 @@ var SectorGrids = [
 var IconAnimations = {
 	DOLLAR_SIGN: 'dollarSign',
 	PLUS_SIGN: 'plusSign'
-}
+};

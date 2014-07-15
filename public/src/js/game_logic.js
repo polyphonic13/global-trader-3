@@ -1,12 +1,14 @@
 var ASPECT_RATIO = [9, 16];
 var GAME_NAME = 'global_trader_3_0';
+var FACEBOOK_URL = 'https://www.facebook.com/cnhitrade';
 var TIME_PER_TURN = 52;
 var TURN_TIME_INTERVAL = 3000;
 var US_DETAIL_GRID_CELLS = 6;
-var TIME_TO_MANUFACTOR = 5;
 var MACHINE_LIST_COLUMNS = 2; 
 var MACHINE_LIST_ICONS = 6;
-var MIN_TRADE_ROUTE_LEVEL = 4;
+var MIN_WHOLESALE_LEVEL = 3;
+var MIN_TRADE_ROUTE_LEVEL = 5;
+var NUM_PART_QUALITIES = 3;
 
 function startGame() {
 	PhaserGame.init(ASPECT_RATIO, document.documentElement.clientHeight);
@@ -126,19 +128,19 @@ var gameLogic = {
 				PhaserGame.addDealershipOpportunityNotification(event);
 			}
 		},
+		// add distributor notification
+		{
+			event: Events.ADD_DISTRIBUTOR_NOTIFICATION,
+			handler: function(event) {
+				PhaserGame.addDistributorOpportunityNotification(event);
+			}
+		},
 		// add trade route notification
 		{
 			event: Events.ADD_TRADE_ROUTE_NOTIFICATION,
 			handler: function(event) {
 				// trace('dealership add notification handler, event = ', event);
 				PhaserGame.addTradeRouteOpportunityNotification(event);
-			}
-		},
-		// add dealership
-		{
-			event: Events.ADD_DEALERSHIP,
-			handler: function(event) {
-				PhaserGame.addDealership();
 			}
 		},
 		// machine sold
@@ -526,11 +528,12 @@ var gameLogic = {
 				// trace('START TURN');
 				TurnManager.startTurn();
 				BuildingManager.init();
+				WholesaleManager.init();
 				PhaserGame.notifications = [[], [], [], [], []];
 				PhaserGame.tradeRouteNotifications = {};
 				PhaserGame.availableTradeRoutes = {};
 				PhaserGame.zoomedIn = false;
-				
+
 				GridManager.init(USSectors, US_DETAIL_GRID_CELLS, US_DETAIL_GRID_CELLS, PWG.Stage.gameW/6);
 
 				PhaserGame.turnActive = true;
@@ -538,13 +541,7 @@ var gameLogic = {
 				PhaserGame.turnTimer = new PWG.PhaserTime.Controller('turnTime');
 				PhaserGame.turnTimer.loop(TURN_TIME_INTERVAL, function() {
 						// trace('\ttimePerTurn = ' + PhaserGame.timePerTurn + ', views = ', this.views);
-						PhaserGame.timePerTurn--;
-						if(PhaserGame.timePerTurn <= 0) {
-							PWG.EventCenter.trigger({ type: Events.TURN_COMPLETED });
-						} else {
-							BuildingManager.update();
-							PWG.EventCenter.trigger({ type: Events.GAME_TIME_UPDATED, value: PhaserGame.timePerTurn });
-						}
+						PhaserGame.incrementTurnTime();
 					},
 					this
 				);
@@ -553,6 +550,19 @@ var gameLogic = {
 				PWG.ViewManager.callMethod('global:turnGroup:bankText', 'setText', [text], this);
 				PWG.ViewManager.callMethod('global:turnGroup:bonusText', 'setText', [TurnManager.get('bonusPoints')], this);
 				PWG.ViewManager.setFrame('global:turnGroup:turnIndicator', TurnManager.playerData.level);
+			},
+			incrementTurnTime: function() {
+				PhaserGame.timePerTurn--;
+				if(PhaserGame.timePerTurn <= 0) {
+					PWG.EventCenter.trigger({ type: Events.TURN_COMPLETED });
+				} else {
+					BuildingManager.update();
+
+					if(TurnManager.playerData.level >= MIN_WHOLESALE_LEVEL) {
+						WholesaleManager.update();
+					}
+					PWG.EventCenter.trigger({ type: Events.GAME_TIME_UPDATED, value: PhaserGame.timePerTurn });
+				}
 			},
 			showEndTurnPrompt: function() {
 				var endTurnPrompt = PhaserGame.config.dynamicViews.endTurnPrompt;
@@ -587,6 +597,7 @@ var gameLogic = {
 			stopTurn: function() {
 				PWG.PhaserTime.removeTimer('turnTime');
 				PWG.EventCenter.trigger({ type: Events.CLOSE_PARTS_MENU });
+				PWG.EventCenter.trigger({ type: Events.CLOSE_WHOLESALE_PARTS_MENU });
 				PWG.EventCenter.trigger({ type: Events.CLOSE_OPTIONAL_PARTS_MENU });
 				
 				PhaserGame.removeNotification();
@@ -809,7 +820,7 @@ var gameLogic = {
 					resell: resell
 				});
 
-				notification.views.person.img = 'dealershipGirl';
+				notification.views.person.img = PhaserGame.notificationPeopleImages['dealership'];
 				// notification.views.title.text = config.title;
 				notification.views.content.text = statementText;
 				// trace('notification = ', notification);
@@ -854,6 +865,60 @@ var gameLogic = {
 				var plant = BuildingManager.findBuilding(dealership.config.plantId);
 				plant.dealershipNotifications[dealership.config.modelId] = false;
 			},
+			// DEALERSHIPS
+			addDistributorOpportunityNotification: function(event) {
+				var distributor = event.distributor;
+				var notification = PWG.Utils.clone(PhaserGame.config.dynamicViews.notification);
+				var distributorPrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.distributorPrompt);
+
+				var config = PhaserGame.config.notificationText['distributor'];
+
+				var modelName = event.plant.equipment[event.distributor.config.modelId].name;
+				var resell = PWG.Utils.formatMoney(event.distributor.config.resell, 0);
+				// trace('addDistributorOppurtunity, distributor = ', event.distributor);
+				var statementText = PWG.Utils.parseMarkup(
+					config.statement, 
+					{
+						quantity: distributor.config.quantity,
+						part: distributor.config.part,
+						size: distributor.config.size,
+						cost: PWG.Utils.formatMoney(distributor.config.cost, 0)
+					});
+
+				notification.views.person.img = PhaserGame.notificationPeopleImages['distributor'];
+				// notification.views.title.text = config.title;
+				notification.views.content.text = statementText;
+				// trace('notification = ', notification);
+
+				notification.views[distributorPrompt.name] = distributorPrompt;
+
+				notification.confirmAction = {
+					method: PhaserGame.addDistributor,
+					params: distributor
+				};
+
+				notification.cancelAction = {
+					method: PhaserGame.resetDistributor,
+					params: distributor
+				};
+				// PWG.ViewManager.hideView('global:backButton');
+				PhaserGame.notifications[event.plant.sector].push(notification);
+				if(PWG.ScreenManager.currentId === 'usDetail' && PhaserGame.activeSector === event.plant.sector) {
+					PhaserGame.showNotificationEnvelope();
+				}
+			},
+			addDistributor: function(distributor) {
+				trace('addDistributor, distributor = ', distributor);
+				var config = distributor.config;
+				PhaserGame.removeNotification();
+				WholesaleManager.addDistributor(distributor);
+			},
+			resetDistributor: function(distributor) {
+				PhaserGame.removeNotification();
+				// trace('resetDealership, dealership = ', dealership);
+				var plant = BuildingManager.findBuilding(dealership.config.plantId);
+				plant.dealershipNotifications[dealership.config.modelId] = false;
+			},
 			// TRADE_ROUTES
 			addTradeRouteOpportunityNotification: function(event) {
 				var notification = PWG.Utils.clone(PhaserGame.config.dynamicViews.notification);
@@ -872,8 +937,9 @@ var gameLogic = {
 				});
 
 				notification.name = event.tradeRoute.config.id;
-				notification.views.person.img = 'tradeRouteGirl';
-
+				// notification.views.person.img = 'tradeRouteGirl';
+				notification.views.bg.img = PhaserGame.config.notificationPeopleImages.tradeRoutes[TradeRouteLocations[event.tradeRoute.config.worldLocation]];
+				
 				notification.views.content.text = statementText;
 				// trace('------ notification = ', notification);
 
@@ -1072,7 +1138,64 @@ var gameLogic = {
 
 				PWG.ViewManager.addView(partIconsConfig, partsMenu, true);
 
+				if(WholesaleManager.getPartCount(PhaserGame.activePartType, PhaserGame.activeMachineSize) > 0) {
+					PhaserGame.addWholesalePartPrompt();
+				}
 				// trace('\tcreated partsMenu from: ', partIconsConfig, '\tcollection now = ', collection);
+			},
+			addWholesalePartsMenu: function() {
+				var partsMenu = PWG.ViewManager.getControllerFromPath('equipmentEdit:machineEdit:partsMenu');
+				var partIconsConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.partIcons);
+				var type = PhaserGame.activePartType;
+				var size = PhaserGame.activeMachineSize;
+				var itemConfig = PhaserGame.config.dynamicViews.partIcon;
+				var distributors = WholesaleManager.parts[type][size];
+				var partsData = gameData.parts[type];
+				var count = 0;
+
+				PWG.Utils.each(
+					distributors,
+					function(distributor, id) {
+						var item = PWG.Utils.clone(itemConfig);
+						item.name = id + '_' + type;
+						item.views.icon.img = distributor.part.img;
+						item.views.description.text = distributor.partDescription.toUpperCase();
+						item.views.cost.text = 'Available: ' + distributor.quantity;
+						item.views.invisButton.distributorId = id;
+						item.views.invisButton.input = gameLogic.input.wholesalePartIcon;
+						
+						itemY = (iconH * count) + offset;
+						PWG.Utils.each(
+							item.views,
+							function(view) {
+								view.y += itemY;
+							},
+							this
+						);
+
+						partIconsConfig.views['items'].views[count] = item;
+						count++;
+					},
+					this
+				);
+
+				partIconsConfig.name = 'wholesalePartsMenu';
+
+				PhaserGame.cancelAction = {
+					method: function() {
+						PhaserGame.removeWholesalePartsMenu();
+					},
+					params: {}
+				};
+				PWG.ViewManager.showView('global:cancelButton');
+				PWG.ViewManager.addView(partIconsConfig, partsMenu, true);
+			},
+			removeWholesalePartsMenu: function() {
+				PWG.ViewManager.removeView('wholesalePartsMenu', 'partsMenu');
+				PhaserGame.cancelAction = null;
+				if(!PhaserGame.wholesalePartChosen) {
+					PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PhaserGame.activePartType });
+				}
 			},
 			populateOptionalPartsMenu: function(collection) {
 				var partsMenu = PWG.ViewManager.getControllerFromPath('equipmentEdit:machineEdit:partsMenu');
@@ -1088,7 +1211,7 @@ var gameLogic = {
 				PWG.Utils.each(
 					optionalParts,
 					function(optionalPart, idx) {
-						var part = gameData.parts[optionalPart][0];
+						var part = gameData.optionalParts[optionalPart][0];
 						// trace('\tadding optional part[' + idx + '] info to views: ', part);
 						var item = PWG.Utils.clone(itemConfig);
 						item.name = part.id + idx;
@@ -1117,6 +1240,23 @@ var gameLogic = {
 				partIconsConfig.name = 'optionalPartsMenu';
 
 				PWG.ViewManager.addView(partIconsConfig, partsMenu, true);
+			},
+			addWholesalePartPrompt: function() {
+				var equipmentEdit = PWV.ViewManager.getControllerFromPath('equipmentEdit');
+				var wholesalePartPrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.wholesalePartPrompt);
+				wholesalePrompt.title.text = PhaserGame.config.notifications.wholesalePrompt;
+
+				PWG.ViewManager.addView(wholesalePartPrompt, equipmentEdit, true);
+				PhaserGame.wholesalePromptAdded = true;
+			},
+			removeWholesalePartPrompt: function() {
+				PWG.ViewManager.removeView('wholesalePartPrompt', 'equipementEdit');
+				PhaserGame.cancelAction = null;
+				if(PhaserGame.wholesaleCancelled) {
+					PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PhaserGame.activePartType });
+					PhaserGame.wholesaleCancelled;
+				}
+				PhaserGame.wholesalePromptAdded = false;
 			},
 			showPartsMenu: function() {
 				PWG.ViewManager.showView('equipmentEdit:machineEdit:partsMenu');
@@ -1460,6 +1600,7 @@ var gameLogic = {
 				PWG.EventCenter.trigger({ type: Events.OPEN_OPTIONAL_PARTS_MENU });
 			}
 		},
+/*
 		tiresSprite: {
 			inputDown: function() {
 				// trace('tire icon input down');
@@ -1514,16 +1655,15 @@ var gameLogic = {
 				PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PartTypes.THREE_POINT_HITCH });
 			}
 		},
-		partsMenu: {
-			closeButton: {
-				callback: function() {
-					PWG.EventCenter.trigger({ type: Events.CLOSE_PARTS_MENU });
-				}
-			}
-		},
+*/
 		partIcon: {
 			inputDown: function(event) {
 				PWG.EventCenter.trigger({ type: Events.ADD_PART, value: this.controller.config.partIdx });
+			}
+		},
+		wholesalePartIcon: {
+			inputDown: function(event) {
+				PWG.EventCenter.trigger({ type: Events.ADD_WHOLESALE_PART, value: this.controller.config.distributorId });
 			}
 		},
 		optionalPartIcon: {
@@ -1535,6 +1675,11 @@ var gameLogic = {
 		distributorPrompt: {
 			inputDown: function(event) {
 				PWG.EventCenter.trigger({ type: Events.ADD_DISTRIBUTOR_NOTIFICATION });
+			}
+		},
+		wholesalePartPrompt: {
+			inputDown: function(event) {
+				PWG.EventCenter.trigger({ type: Events.OPEN_WHOLESALE_PARTS_MENU, value: this.controller.config.part });
 			}
 		},
 		closedEnvelope: {
@@ -1557,7 +1702,7 @@ var gameLogic = {
 		},
 		share: function() {
 			// trace('share click');
-			window.open('http://www.facebook.com/cnh');
+			window.open(FACEBOOK_URL);
 		},
 		manualStart: function() {
 			PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'manual' });
@@ -2309,14 +2454,19 @@ var gameLogic = {
 			{
 				event: Events.ADD_PART,
 				handler: function(event) {
-					PhaserGame.activeMachine.setPart(PhaserGame.activePartType, event.value);
+					PhaserGame.activeMachine.setPart(PhaserGame.activePartType, event.value, false);
 
-					// trace('add part, type = ' + event.value + ', part type = ' + this.partsMenuType + ', view collection = ', this.views);
-					// var frame = gameData.parts[this.partsMenuType][event.value].frame;
-					// trace('frame = ' + frame + ', type = ' + this.partsMenuType + ', collection = ', this.views);
-					// var partView = this.partsMenuType + 'Part';
-					// PWG.ViewManager.setFrame('equipmentEdit:machineEdit:editorParts:'+partView, frame);
 					PWG.EventCenter.trigger({ type: Events.CLOSE_PARTS_MENU });
+					PWG.EventCenter.trigger({ type: Events.NEXT_MACHINE_PIECE_ICON });
+				}
+			},
+			{
+				event: Events.ADD_WHOLESALE_PART, 
+				handler: function(event) {
+					var part = event.distributorId;
+					PhaserGame.activeMachine.setPart(PhaserGame.activePartType, event.value, false);
+
+					PWG.EventCenter.trigger({ type: Events.CLOSE_WHOLESALE_PARTS_MENU });
 					PWG.EventCenter.trigger({ type: Events.NEXT_MACHINE_PIECE_ICON });
 				}
 			},
@@ -2368,9 +2518,10 @@ var gameLogic = {
 							// PhaserGame.setMachinePieceSpriteFrame(event.value, 1);
 							PhaserGame.setSelectedMachinePieceSprite();
 							PWG.ViewManager.showView(PhaserGame.getCurrentMachinePiecePath());
-							
+
 							// populate menu with new piece type
 							PhaserGame.populatePartsMenu.call(this, event.value, this.views);
+
 						}
 						// PWG.ViewManager.showView('partsMenu');
 						PhaserGame.showPartsMenu();
@@ -2389,6 +2540,19 @@ var gameLogic = {
 						// PWG.ViewManager.hideView('partsMenu');
 						PhaserGame.hidePartsMenu();
 						PhaserGame.partsMenuOpen = false;
+					}
+					if(PhaserGame.wholesalePromptAdded) {
+						PhaserGame.removeWholesalePrompt();
+					}
+				}
+			},
+			// close wholesale parts menu
+			{
+				event: Events.CLOSE_WHOLESALE_PARTS_MENU,
+				handler: function(event) {
+					PhaserGame.removeWholesalePartsMenu();
+					if(PhaserGame.wholesalePromptAdded) {
+						PhaserGame.removeWholesalePrompt();
 					}
 				}
 			},
@@ -2490,7 +2654,7 @@ var gameLogic = {
 					function(part, idx) {
 						var item = PWG.Utils.clone(machinePieceMenuItem);
 						item.name = part.name;
-						item.views.name.text = gameData.parts.titles[part.name];
+						item.views.name.text = gameData.partNames[part.name];
 						if(count > 0) {
 							item.attrs.visible = false;
 						} else {

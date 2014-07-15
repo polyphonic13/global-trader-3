@@ -6,7 +6,7 @@ var BuildingManager = function() {
 	module.PLANT_MIN_EXPORT_INVENTORY = 5;
 	module.PLANT_MAX_INVENTORY = 100;
 	module.PLANT_MAX_DEALERSHIPS = 6;
-	
+
 	module.DEALERSHIP_MAX_INVENTORY = 50;
 	module.DEALERSHIP_MAX_SALE_QUANTITY = 5;
 	module.DEALERSHIP_MAX_SALES_PER_YEAR = 25;
@@ -18,6 +18,7 @@ var BuildingManager = function() {
 	
 	module.TIME_TO_BUILD_MACHINE = 2;
 	module.TIME_TO_SELL_MACHINES = 3;
+	module.MACHINE_PRODUCTION_COST = 20000;
 	
 	// BUILDING BASE CLASS
 	function Building(config) {
@@ -101,16 +102,17 @@ var BuildingManager = function() {
 						this.config.equipment,
 						function(machine) {
 							// trace('machine = ', machine);
-							if(TurnManager.playerData.bank > machine.cost) {
+							var productionCost = machine.cost + MACHINE_PRODUCTION_COST;
+							if(TurnManager.playerData.bank > productionCost) {
 								if(this.config.totalInventory < module.PLANT_MAX_INVENTORY) {
 									// trace('manufactored machine: ' +  machine.id + ', dealerships: ', this.config.dealerships);
-									PWG.EventCenter.trigger({ type: Events.UPDATE_BANK, value: (-machine.cost) });
+									PWG.EventCenter.trigger({ type: Events.UPDATE_BANK, value: (-productionCost) });
 									PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
 									PWG.EventCenter.trigger({ type: Events.INVENTORY_ADDED, plant: this.config, machine: machine.id });
-									
+
 									this.config.inventory[machine.id].push(machine);
 									this.config.totalInventory++;
-									
+
 									TurnManager.addPlantInventory(machine);
 
 									// TRADE ROUTES

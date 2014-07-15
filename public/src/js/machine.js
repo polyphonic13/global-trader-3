@@ -7,11 +7,12 @@ var Machine = function() {
 		type: '',
 		size: '',
 		cost: 0,
-		sell: 0,
 		plantId: '',
 		dealershipId: '',
 		tradeRouteId: '',
-		parts: {}
+		parts: {},
+		wholesaleParts: {},
+		optionalParts: {}
 	};
 	
 	function Machine(config) {
@@ -62,9 +63,14 @@ var Machine = function() {
 		return complete;
 	};
 	
-	Machine.prototype.setPart = function(part, val) {
+	Machine.prototype.setPart = function(part, val, wholesale) {
 		// trace('Machine/setPart, part = ' + part + ', val = ', val);
-		this.config.parts[part] = val;
+		if(wholesale) {
+			this.config.wholesaleParts[part] = val;
+		} else {
+			this.config.parts[part] = val;
+		}
+
 		if(!this.isComplete) {
 			// trace('\trequiredParts = ', this.requiredParts);
 			if(this.requiredParts.hasOwnProperty(part) && !this.requiredParts[part]) {
@@ -92,7 +98,13 @@ var Machine = function() {
 			function(val, key) {
 				// trace('\tval = ' + val + ', key = ' + key);
 				this.config.cost += gameData.parts[key][val][this.config.size].cost;
-				this.config.sell += gameData.parts[key][val][this.config.size].sell;
+			},
+			this
+		);
+		PWG.Utils.each(
+			this.config.optionalParts,
+			function(part, p) {
+				this.config.cost += gameData.parts[part][p][this.config.size].cost;
 			},
 			this
 		);

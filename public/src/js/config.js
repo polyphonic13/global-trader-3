@@ -199,15 +199,15 @@ var GameConfig = function() {
 					height: (gameUnit * 4.25) * 0.22
 				}
 			},
-			northPacific: {
-				img: 'tradeRoutePacificNorth',
-				x: (gameUnit * 1.8),
-				y: (gameUnit * 6.75),
-				attrs: {
-					width: (gameUnit * 6.25),
-					height: (gameUnit * 6.25) * 0.22
-				}
-			},
+			// northPacific: {
+			// 	img: 'tradeRoutePacificNorth',
+			// 	x: (gameUnit * 1.8),
+			// 	y: (gameUnit * 6.75),
+			// 	attrs: {
+			// 		width: (gameUnit * 6.25),
+			// 		height: (gameUnit * 6.25) * 0.22
+			// 	}
+			// },
 			southPacific: {
 				img: 'tradeRoutePacificSouth',
 				x: (gameUnit * 1.8),
@@ -244,10 +244,10 @@ var GameConfig = function() {
 				x: (gameUnit * 5.75),
 				y: (gameUnit * 6.25)
 			},
-			northPacific: {
-				x: (gameUnit * 7.5),
-				y: (gameUnit * 6.2)
-			},
+			// northPacific: {
+			// 	x: (gameUnit * 7.5),
+			// 	y: (gameUnit * 6.2)
+			// },
 			southPacific: {
 				x: (gameUnit * 7.5),
 				y: (gameUnit * 8.5)
@@ -274,10 +274,10 @@ var GameConfig = function() {
 				x: (gameUnit * 6),
 				y: (gameUnit * 6.5)
 			},
-			northPacific: {
-				x: (gameUnit * 8),
-				y: (gameUnit * 6.5)
-			},
+			// northPacific: {
+			// 	x: (gameUnit * 8),
+			// 	y: (gameUnit * 6.5)
+			// },
 			southPacific: {
 				x: (gameUnit * 7.75),
 				y: (gameUnit * 8.5)
@@ -286,6 +286,20 @@ var GameConfig = function() {
 				x: (gameUnit * 2.75),
 				y: (gameUnit * 8.5)
 			}
+		};
+		var notificationPeopleImages = {
+			dealership: 'dealershipGirl',
+			distributor: 'distributorGuy',
+			tradeRoutes: {
+				africa: 'tradeRouteAfricaNotification',
+				asia: 'tradeRouteAsiaNotification',
+				europe: 'tradeRouteEuropeNotification',
+				middleEast: 'tradeRouteMiddleEastNotification',
+				southPacific: 'tradeRouteSouthPacificNotification',
+				southAmerica: 'tradeRouteSouthAmericaNotification'
+			}
+		};
+		var tradeRouteNotificationImages = {
 		};
 
 		var starsConfig = {
@@ -1733,6 +1747,51 @@ var GameConfig = function() {
 					}
 				}
 			},
+			wholesalePartPrompt: {
+				type: 'group',
+				name: 'tradeRoutePrompt',
+				views: {
+					menuBg: {
+						type: 'sprite',
+						name: 'menuBg',
+						img: 'submenuBg',
+						x: (gameW/2) - (gameUnit * 3),
+						y: (gameUnit * 12.5),
+						attrs: {
+							width: (gameUnit * 6),
+							height: (gameUnit * 6) * 0.34
+						}
+					},
+					title: {
+						type: 'text',
+						name: 'menuItemTitle',
+						text: '',
+						x: 0,
+						y: gameUnit * 13,
+						style: {
+						    font: (fontSizes.sm + 'px Trebuchet MS'),
+					        fill: palette.orange3,
+							align: 'center'
+						},
+						position: {
+							centerX: true
+						}
+					},
+					invisButton: {
+						type: 'sprite',
+						name: 'invisButton',
+						img: 'blockWhite',
+						x: (gameW/2) - (gameUnit * 3),
+						y: (gameUnit * 12.5),
+						attrs: {
+							width: (gameUnit * 6),
+							height: (gameUnit * 6) * 0.34,
+							alpha: 0
+						},
+						input: gameLogic.input.wholesalePartPrompt
+					}
+				}
+			},
 			// year end
 			yearSummary: {
 				type: 'group',
@@ -1819,6 +1878,12 @@ var GameConfig = function() {
 					tradeRouteAfrica: 'images/screens/world/trade_route_africa.png',
 					tradeRouteSouthAmerica: 'images/screens/world/trade_route_south_america.png',
 					tradeRouteRepresentativePrompt: 'images/screens/world/trade_route_representative_prompt.png',
+					tradeRouteAfricaNotification: 'images/screens/world/trade_route_africa.png',
+					tradeRouteAsiaNotification: 'images/screens/world/trade_route_asia.png',
+					tradeRouteEuropeNotification: 'images/screens/world/trade_route_europe.png',
+					tradeRouteMiddleEastNotification: 'images/screens/world/trade_route_middle_east.png',
+					tradeRouteSouthPacificNotification: 'images/screens/world/trade_route_south_pacific.png',
+					tradeRouteSouthAmericaNotification: 'images/screens/world/trade_route_south_america.png',
 					// us detail
 					sectorGridNE: 'images/screens/us_detail/sector_grid_ne.png',
 					sectorGridSE: 'images/screens/us_detail/sector_grid_se.png',
@@ -2299,15 +2364,16 @@ var GameConfig = function() {
 				buildingCreate: {
 					content: 'Add new Plant?'
 				},
-				distributorPrompt: {
-					content: 'New Distributor Opportunity'
-				},
 				dealership: {
-					title: 'Dealership',
 					statement: 'We would like to sell ~{quantity}~ per year\nof your ~{plant}~\n~{model}~ inventory\nat $~{resell}~ each.'
 				},
+				distributorPrompt: {
+					statement: 'We would like to offer you\n~{quantity}~ ~{size}~ ~{type}~\n for the wholesale cost of ~{cost}~.'
+				},
+				wholesaleParts: {
+					statement: 'Click here to view\nwholesale part inventory'
+				},
 				tradeRoute: {
-					title: 'Trade Route',
 					statement: 'We would like to import ~{quantity}~\nper year of your ~{plant}~\n~{model}~ inventory\nat $~{resell}~ each.'
 				}
 			},
@@ -2351,6 +2417,7 @@ var GameConfig = function() {
 			tradeRouteArrowConfig: tradeRouteArrowConfig,
 			tradeRoutePinConfig: tradeRoutePinConfig,
 			tradeRouteAlertIconConfig: tradeRouteAlertIconConfig,
+			notificationPeopleImages: notificationPeopleImages,
 			starsConfig: starsConfig,
 			machineEditBackgrounds: machineEditBackgrounds,
 			machinePieceSpriteConfig: machinePieceSpriteConfig,
