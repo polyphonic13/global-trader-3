@@ -2420,6 +2420,11 @@ var GameConfig = function() {
 								height: gameH
 							},
 							input: gameLogic.input.manualBg
+						},
+						manualPages: {
+							type: 'group',
+							name: 'manualPages',
+							views: {}
 						}
 					}
 				},

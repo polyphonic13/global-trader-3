@@ -168,11 +168,11 @@ var gameLogic = {
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: PhaserGame.config.defaultScreen });
 			},
 			addManualPage: function(idx) {
-				var manual = PWG.ViewManager.getControllerFromPath('manual');
+				var manualPages = PWG.ViewManager.getControllerFromPath('manual:manualPages');
 				var manualPage = PWG.Utils.clone(PhaserGame.config.dynamicViews.manualPage);
 				var manualPageText = PhaserGame.config.dynamicViews.manualPageText;
 				var pageConfig = TutorialText.pages[idx];
-				trace('making manual page: '+ idx + ', with: ', pageConfig);
+				trace('making manual page: '+ idx + ', with: ', pageConfig, '\tpages = ', manualPages);
 				manualPage.name += idx;
 				manualPage.views.title.text = TutorialText.title;
 				manualPage.views.subtitle.text = TutorialText.subtitle;
@@ -183,15 +183,16 @@ var gameLogic = {
 					pageConfig.blurbs,
 					function(blurb, idx) {
 						var pageText = PWG.Utils.clone(manualPageText);
+						pageText.name += idx;
 						pageText.text = blurb;
 						pageText.y += (idx * manualPage.offsetY);
 						
-						manualPage.views['text'+idx] = pageText;
+						manualPage.views[pageText.name] = pageText;
 					},
 					this
 				);
 				
-				PWG.ViewManager.addView(manualPage, manual, true);
+				PWG.ViewManager.addView(manualPage, manualPages, true);
 			},
 			nextManualPage: function() {
 				trace('PhaserGame/nextManualPage, idx = ' + PhaserGame.manualPage);
@@ -1728,6 +1729,7 @@ var gameLogic = {
 				
 			},
 			shutdown: function() {
+				PWG.ViewManager.removeView('manualPages', 'manual');
 			}
 		},
 		brief: {
