@@ -184,9 +184,9 @@ var GameConfig = function() {
 			europe: {
 				img: 'tradeRouteEurope',
 				x: (gameUnit * 1.8),
-				y: (gameUnit * 6.2),
+				y: (gameUnit * 6),
 				attrs: {
-					width: (gameUnit * 2.75),
+					width: (gameUnit * 2.5),
 					height: (gameUnit * 2.75) * 0.2
 				}
 			},
@@ -227,7 +227,37 @@ var GameConfig = function() {
 				}
 			}
 		};
-		var tradeRouteIconConfig = {
+		var tradeRoutePinConfig = {
+			africa: {
+				x: (gameUnit * 4.75),
+				y: (gameUnit * 7.75)
+			},
+			asia: {
+				x: (gameUnit * 6.75),
+				y: (gameUnit * 5.75)
+			},
+			europe: {
+				x: (gameUnit * 4.25),
+				y: (gameUnit * 5.75)
+			},
+			middleEast: {
+				x: (gameUnit * 5.75),
+				y: (gameUnit * 6.25)
+			},
+			northPacific: {
+				x: (gameUnit * 7.5),
+				y: (gameUnit * 6.2)
+			},
+			southPacific: {
+				x: (gameUnit * 7.5),
+				y: (gameUnit * 8.25)
+			},
+			southAmerica: {
+				x: (gameUnit * 2.5),
+				y: (gameUnit * 8.25)
+			}
+		};
+		var tradeRouteAlertIconConfig = {
 			africa: {
 				x: (gameUnit * 4.75),
 				y: (gameUnit * 8.25)
@@ -799,6 +829,23 @@ var GameConfig = function() {
 				type: 'sprite',
 				name: 'tradeRouteArrow'
 			},
+			tradeRoutePins: {
+				type: 'group',
+				name: 'tradeRoutePins',
+				views: {}
+			},
+			tradeRoutePin: {
+				type: 'sprite',
+				name: 'tradeRoutePin-',
+				img: 'pinTradeRoute',
+				x: 0,
+				y: 0,
+				attrs: {
+					width: (gameUnit * 0.9),
+					height: (gameUnit * 0.9) * 0.93
+				},
+				input: gameLogic.input.tradeRouteAvailableIcon
+			},			// us detail
 			tradeRouteAlertIcons: {
 				type: 'group',
 				name: 'tradeRouteAlertIcons',
@@ -2145,7 +2192,8 @@ var GameConfig = function() {
 			pinImages: pinImages,
 			pinFills: pinFills,
 			tradeRouteArrowConfig: tradeRouteArrowConfig,
-			tradeRouteIconConfig: tradeRouteIconConfig,
+			tradeRoutePinConfig: tradeRoutePinConfig,
+			tradeRouteAlertIconConfig: tradeRouteAlertIconConfig,
 			starsConfig: starsConfig,
 			machineEditBackgrounds: machineEditBackgrounds,
 			machinePieceSpriteConfig: machinePieceSpriteConfig,

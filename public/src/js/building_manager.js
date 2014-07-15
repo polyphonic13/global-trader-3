@@ -115,9 +115,9 @@ var BuildingManager = function() {
 
 									// TRADE ROUTES
 									if(this.config.inventory[machine.id].length > module.PLANT_MIN_EXPORT_INVENTORY && TurnManager.get('level') >= MIN_TRADE_ROUTE_LEVEL) {
-										trace('trade route check for ' + machine.id);
+										// trace('trade route check for ' + machine.id);
 										if(!this.config.tradeRoutes.hasOwnProperty(machine.id)) {
-											trace('\tplant['+this.config.id+'].tradeRouteNotifications['+machine.id+'] = ' + this.tradeRouteNotifications[machine.id]);
+											// trace('\tplant['+this.config.id+'].tradeRouteNotifications['+machine.id+'] = ' + this.tradeRouteNotifications[machine.id]);
 											if(!this.tradeRouteNotifications[machine.id]) {
 												module.createTradeRoute(this, machine.id);
 												this.tradeRouteNotifications[machine.id] = true;
@@ -136,7 +136,7 @@ var BuildingManager = function() {
 									// if there is enough inventory of this machine to sell and it doesn't already have a dealership...
 									if(this.config.inventory[machine.id].length > module.PLANT_MIN_SELL_INVENTORY) {
 										if(!this.config.dealerships.hasOwnProperty(machine.id)) {
-											trace('\tplant['+this.config.id+'].dealershipNotifications['+machine.id+'] = ' + this.dealershipNotifications[machine.id]);
+											// trace('\tplant['+this.config.id+'].dealershipNotifications['+machine.id+'] = ' + this.dealershipNotifications[machine.id]);
 											if(!this.dealershipNotifications[machine.id]) {
 												module.createDealership(this, machine.id);
 												this.dealershipNotifications[machine.id] = true;

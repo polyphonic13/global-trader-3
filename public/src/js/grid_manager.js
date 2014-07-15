@@ -55,8 +55,10 @@ var GridManager = function() {
 
 	module.addBuilding = function(building, sector) {
 		// trace('GridManager/addBuilding, sector = ' + sector + ', building = ', building, module.grids);
-		var frameKey = building.type.toUpperCase() + '_' + building.state.toUpperCase();
-		module.grids[sector][building.cell].frame = TileCellFrames[frameKey];
+		if(building.type !== BuildingTypes.TRADE_ROUTE) {
+			var frameKey = building.type.toUpperCase() + '_' + building.state.toUpperCase();
+			module.grids[sector][building.cell].frame = TileCellFrames[frameKey];
+		}
 		// trace('\tsetting grid['+building.sector+']['+building.cell+'].frame to frameKey: ' + frameKey + ', frame = ' + TileCellFrames[frameKey]);
 	};
 
