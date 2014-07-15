@@ -229,7 +229,7 @@ var GameConfig = function() {
 		};
 		var tradeRoutePinConfig = {
 			africa: {
-				x: (gameUnit * 4.75),
+				x: (gameUnit * 4.6),
 				y: (gameUnit * 7.75)
 			},
 			asia: {
@@ -238,7 +238,7 @@ var GameConfig = function() {
 			},
 			europe: {
 				x: (gameUnit * 4.25),
-				y: (gameUnit * 5.75)
+				y: (gameUnit * 5.9)
 			},
 			middleEast: {
 				x: (gameUnit * 5.75),
@@ -250,7 +250,7 @@ var GameConfig = function() {
 			},
 			southPacific: {
 				x: (gameUnit * 7.5),
-				y: (gameUnit * 8.25)
+				y: (gameUnit * 8.5)
 			},
 			southAmerica: {
 				x: (gameUnit * 2.5),
@@ -816,7 +816,7 @@ var GameConfig = function() {
 						style: {
 						    font: (fontSizes.xs + 'px Trebuchet MS'),
 					        fill: palette.white
-						},
+						}
 					}
 				}
 			},
@@ -835,16 +835,33 @@ var GameConfig = function() {
 				views: {}
 			},
 			tradeRoutePin: {
-				type: 'sprite',
+				type: 'group',
 				name: 'tradeRoutePin-',
-				img: 'pinTradeRoute',
-				x: 0,
-				y: 0,
-				attrs: {
-					width: (gameUnit * 0.9),
-					height: (gameUnit * 0.9) * 0.93
-				},
-				input: gameLogic.input.tradeRouteAvailableIcon
+				views: {
+					pin: {
+						type: 'sprite',
+						img: 'pinTradeRoute',
+						x: 0,
+						y: 0,
+						attrs: {
+							width: (gameUnit * 0.9),
+							height: (gameUnit * 0.9) * 0.93
+						},
+						
+					},
+					locationCount: {
+						type: 'text',
+						name: 'locationCount',
+						text: 'x',
+						x: gameUnit * 0.6,
+						y: (gameUnit * 0.25),
+						style: {
+						    font: (fontSizes.xs + 'px Trebuchet MS'),
+					        fill: palette.black
+						}
+					}
+					
+				}
 			},			// us detail
 			tradeRouteAlertIcons: {
 				type: 'group',
@@ -1668,7 +1685,7 @@ var GameConfig = function() {
 					windshieldWiperMask: 'images/screens/brief/windshield_wiper_mask.png',
 					windowFrame: 'images/screens/brief/window_frame.png',
 					// world
-					mapOcean: 'images/screens/world/map_ocean.png',
+					mapOcean: 'images/screens/world/map_ocean2.png',
 					mapWorld: 'images/screens/world/map_world4.png',
 					mapUS: 'images/screens/world/map_us.png',
 					endTurnPrompt: 'images/screens/world/end_turn_prompt.png',

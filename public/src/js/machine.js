@@ -55,14 +55,14 @@ var Machine = function() {
 	};
 	
 	Machine.prototype.setPart = function(part, val) {
-		trace('Machine/setPart, part = ' + part + ', val = ', val);
+		// trace('Machine/setPart, part = ' + part + ', val = ', val);
 		this.config.parts[part] = val;
 		if(!this.isComplete) {
-			trace('\trequiredParts = ', this.requiredParts);
+			// trace('\trequiredParts = ', this.requiredParts);
 			if(this.requiredParts.hasOwnProperty(part) && !this.requiredParts[part]) {
 				this.requiredParts[part] = true;
 				this.requiredPartsCount++;
-				trace('\trequiredPartsCount now: ' + this.requiredPartsCount + '/' + this.requiredPartsTotal);
+				// trace('\trequiredPartsCount now: ' + this.requiredPartsCount + '/' + this.requiredPartsTotal);
 				if(this.requiredPartsCount >= this.requiredPartsTotal) {
 					this.isComplete = true;
 					PWG.EventCenter.trigger({ type: Events.MACHINE_PARTS_COMPLETE, value: this.config });

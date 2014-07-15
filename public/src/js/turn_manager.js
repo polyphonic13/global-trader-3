@@ -94,7 +94,7 @@ var TurnManager = function() {
 			// trace('ERROR unknown building type: ' + building.type);
 			break;
 		}
-		trace('adding bonus points for new ' + building.type + ': ' + gameData.bonuses.buildings[building.type]);
+		// trace('adding bonus points for new ' + building.type + ': ' + gameData.bonuses.buildings[building.type]);
 		module.playerData.bonusPoints += gameData.bonuses.buildings[building.type];
 		PWG.EventCenter.trigger({ type: Events.BONUSES_UPDATED });
 	};
@@ -144,7 +144,7 @@ var TurnManager = function() {
 			function(machineBonus, key) {
 				// trace('total = ' + total + ', machineBonus = ' + machineBonus + ', key = ' + key);
 				if(total >= machineBonus && !module.playerData.bonusesAchieved[key]) {
-					trace('adding bonus points for ' + machineBonus + ' machines built: ' + gameData.bonuses.manufacturing[key]);
+					// trace('adding bonus points for ' + machineBonus + ' machines built: ' + gameData.bonuses.manufacturing[key]);
 					module.playerData.bonusesAchieved[key] = true;
 					module.playerData.bonusPoints += gameData.bonuses.manufacturing[key];
 					PWG.EventCenter.trigger({ type: Events.BONUSES_UPDATED });

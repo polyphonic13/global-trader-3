@@ -124,7 +124,7 @@ var BuildingManager = function() {
 											}
 										} else {
 											var tradeRouteId = this.config.tradeRoutes[machine.id];
-											trace('tradeRouteId = ' + tradeRouteId);
+											// trace('tradeRouteId = ' + tradeRouteId);
 											var tradeRoute = module.findBuilding(tradeRouteId);
 											if(tradeRoute.config.state === BuildingStates.ACTIVE) {
 												var inventory = this.config.inventory[machine.id];
@@ -188,7 +188,7 @@ var BuildingManager = function() {
 		var plant = module.findBuilding(config.plantId);
 		var model = plant.config.equipment[config.modelId]
 		var resellMultiplier = Math.floor(Math.random() * (this.resellMaxMultiplier - 1) + 2);
-		trace('resellMultilplier = ' + resellMultiplier);
+		// trace('resellMultilplier = ' + resellMultiplier);
 		Building.call(this, config);
 		this.config.resell = config.resell || (resellMultiplier * model.cost);
 		this.config.maxPerYear = config.maxPerYear || Math.floor(Math.random() * (module.DEALERSHIP_MAX_SALES_PER_YEAR - module.DEALERSHIP_MIN_SALES_PER_YEAR) + module.DEALERSHIP_MIN_SALES_PER_YEAR);
@@ -358,7 +358,7 @@ var BuildingManager = function() {
 		// PWG.Utils.each(
 		// 	TurnManager.playerData.tradeRoutes,
 		// 	function(tradeRoute) {
-		// 		trace("BYILDING MANAGER ADDING TRADE ROUTE: ", tradeRoute);
+		// 		// trace("BYILDING MANAGER ADDING TRADE ROUTE: ", tradeRoute);
 		// 		module.tradeRoutes.push(new TradeRoute(tradeRoute));
 		// 	},
 		// 	this
@@ -403,7 +403,7 @@ var BuildingManager = function() {
 		var dealershipName = type.toUpperCase() + ' ' + TurnManager.tempDealershipCount;
 		TurnManager.tempDealershipCount++;
 		
-		trace('\tmodelId = ' + modelId + ', count = ' + count);
+		// trace('\tmodelId = ' + modelId + ', count = ' + count);
 		model = plant.config.equipment[modelId]
 
 		// trace('model now = ', model);
@@ -460,7 +460,7 @@ var BuildingManager = function() {
 		
 		TurnManager.tempTradeRouteCount[area]++;
 
-		trace('\tmodelId = ' + modelId + ', count = ' + count);
+		// trace('\tmodelId = ' + modelId + ', count = ' + count);
 		model = plant.config.equipment[modelId]
 
 		// trace('model now = ', model);
