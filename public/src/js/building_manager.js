@@ -106,81 +106,93 @@ var BuildingManager = function() {
 								var productionCost = machine.cost + MACHINE_PRODUCTION_COST;
 								if(TurnManager.playerData.bank > productionCost) {
 									if(this.config.totalInventory < module.PLANT_MAX_INVENTORY) {
-										// trace('manufactored machine: ' +  machine.id + ', dealerships: ', this.config.dealerships);
-										PWG.EventCenter.trigger({ type: Events.UPDATE_BANK, value: (-productionCost) });
-										PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
-										PWG.EventCenter.trigger({ type: Events.INVENTORY_ADDED, plant: this.config, machine: machine.id });
 
-										this.config.inventory[machine.id].push(machine);
-
+										var allPartsAdded = true;
 										if(PWG.Utils.objLength(machine.wholesaleParts) > 0) {
-											trace('THIS MACHINE USES WHOLESALE PARTS');
+											trace('THIS MACHINE ' + machine.id + ' USES WHOLESALE PARTS');
 											PWG.Utils.each(
 												machine.wholesaleParts,
 												function(distributorId, part) {
-													WholesaleManager.usePart(part, size, distributorId);
-													if(WholesaleManager.distributors[distributorId].quantity <= 0) {
+													var distributor = WholesaleManager.distributors[distributorId];
+													if(distributor.quantity > 0) {
+														WholesaleManager.usePart(part, size, distributorId);
+													} else {
+														trace('\tand there are none left. :(');
 														this.config.equipment[machine.id].active = false;
+														wholesalePartsAdded = false;
 													}
 												},
 												this
 											);
 										}
-										this.config.totalInventory++;
 
-										TurnManager.addPlantInventory(machine);
+										if(allPartsAdded) {
+											// trace('manufactured machine: ' +  machine.id + ', dealerships: ', this.config.dealerships);
+											PWG.EventCenter.trigger({ type: Events.UPDATE_BANK, value: (-productionCost) });
+											PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
+											PWG.EventCenter.trigger({ type: Events.INVENTORY_ADDED, plant: this.config, machine: machine.id });
 
-										// TRADE ROUTES
-										if(this.config.inventory[machine.id].length > module.PLANT_MIN_EXPORT_INVENTORY && TurnManager.get('level') >= MIN_TRADE_ROUTE_LEVEL) {
-											// trace('trade route check for ' + machine.id);
-											if(!this.config.tradeRoutes.hasOwnProperty(machine.id)) {
-												// trace('\tplant['+this.config.id+'].tradeRouteNotifications['+machine.id+'] = ' + this.tradeRouteNotifications[machine.id]);
-												if(!this.tradeRouteNotifications[machine.id]) {
-													module.createTradeRoute(this, machine.id);
-													this.tradeRouteNotifications[machine.id] = true;
-												}
-											} else {
-												var tradeRouteId = this.config.tradeRoutes[machine.id];
-												// trace('sending inventory to tradeRouteId = ' + tradeRouteId);
-												var tradeRoute = module.findBuilding(tradeRouteId);
-												if(tradeRoute.config.state === BuildingStates.ACTIVE) {
-													var inventory = this.config.inventory[machine.id];
-													tradeRoute.addInventory(this.config);
+											this.config.totalInventory++;
+											this.config.inventory[machine.id].push(machine);
+
+											TurnManager.addPlantInventory(machine);
+
+											// TRADE ROUTES
+											if(this.config.inventory[machine.id].length > module.PLANT_MIN_EXPORT_INVENTORY && TurnManager.get('level') >= MIN_TRADE_ROUTE_LEVEL) {
+												// trace('trade route check for ' + machine.id);
+												if(!this.config.tradeRoutes.hasOwnProperty(machine.id)) {
+													// trace('\tplant['+this.config.id+'].tradeRouteNotifications['+machine.id+'] = ' + this.tradeRouteNotifications[machine.id]);
+													if(!this.tradeRouteNotifications[machine.id]) {
+														module.createTradeRoute(this, machine.id);
+														this.tradeRouteNotifications[machine.id] = true;
+													}
+												} else {
+													var tradeRouteId = this.config.tradeRoutes[machine.id];
+													// trace('sending inventory to tradeRouteId = ' + tradeRouteId);
+													var tradeRoute = module.findBuilding(tradeRouteId);
+													if(tradeRoute.config.state === BuildingStates.ACTIVE) {
+														var inventory = this.config.inventory[machine.id];
+														tradeRoute.addInventory(this.config);
+													}
 												}
 											}
+
+											// DEALERSHIPS
+											// if there is enough inventory of this machine to sell and it doesn't already have a dealership...
+											if(this.config.inventory[machine.id].length > module.PLANT_MIN_SELL_INVENTORY) {
+												if(!this.config.dealerships.hasOwnProperty(machine.id)) {
+													// trace('\tplant['+this.config.id+'].dealershipNotifications['+machine.id+'] = ' + this.dealershipNotifications[machine.id]);
+													if(!this.dealershipNotifications[machine.id]) {
+														module.createDealership(this, machine.id);
+														this.dealershipNotifications[machine.id] = true;
+													}
+												} else {
+													var dealershipId = this.config.dealerships[machine.id];
+													var dealership = module.findBuilding(dealershipId);
+													if(dealership.config.state === BuildingStates.ACTIVE) {
+														var inventory = this.config.inventory[machine.id];
+														dealership.addInventory(this.config);
+													}
+												}
+											} 
+
+											TurnManager.updateBuilding(this.config);
+										} else {
+											// notify issue with wholesale part supply
+											// alert(this.config.id + ' could not manufacture ' + machine.id + ': no more wholesale parts');
 										}
-
-										// DEALERSHIPS
-										// if there is enough inventory of this machine to sell and it doesn't already have a dealership...
-										if(this.config.inventory[machine.id].length > module.PLANT_MIN_SELL_INVENTORY) {
-											if(!this.config.dealerships.hasOwnProperty(machine.id)) {
-												// trace('\tplant['+this.config.id+'].dealershipNotifications['+machine.id+'] = ' + this.dealershipNotifications[machine.id]);
-												if(!this.dealershipNotifications[machine.id]) {
-													module.createDealership(this, machine.id);
-													this.dealershipNotifications[machine.id] = true;
-												}
-											} else {
-												var dealershipId = this.config.dealerships[machine.id];
-												var dealership = module.findBuilding(dealershipId);
-												if(dealership.config.state === BuildingStates.ACTIVE) {
-													var inventory = this.config.inventory[machine.id];
-													dealership.addInventory(this.config);
-												}
-											}
-										} 
-
-										TurnManager.updateBuilding(this.config);
 
 									} else {
 										// notify output capacity reached
 										// alert(this.config.id + ' created max inventory');
 									}
-								} 
-								else 
-								{
-									// notifiy out of bank
+								} else {
+									// notify out of bank
 									// alert('not enough money to create inventory');
 								}
+							} else {
+								// notify machine needs attention
+								// alert('machine needs attention');
 							}
 						},
 						this
