@@ -3,7 +3,7 @@ var TurnManager = function() {
 		bankAdjustments: 0,
 		profit: 0,
 		bonuses: 0,
-		newFactories: 0,
+		newPlants: 0,
 		newDealerships: 0,
 		newTractorModels: 0,
 		newSkidsteerModels: 0,
@@ -79,7 +79,7 @@ var TurnManager = function() {
 		
 		switch(building.type) {
 			case BuildingTypes.PLANT: 
-			module.currentData.newFactories++;
+			module.currentData.newPlants++;
 			break;
 			
 			case BuildingTypes.DEALERSHIP: 

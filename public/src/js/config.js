@@ -2198,7 +2198,7 @@ var GameConfig = function() {
 				failed: 'Goals not met.\nPlease try again.',
 				types: {
 					profit: 'Profits: ',
-					newFactories: 'Factories built: ',
+					newPlants: 'Plants built: ',
 					newDealerships: 'Dealerships established: ',
 					newTradeRoutes: 'Trade Routes established: ',
 					newMachineModels: 'Machine models created: ',

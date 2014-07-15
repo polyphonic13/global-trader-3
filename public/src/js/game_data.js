@@ -865,7 +865,7 @@ var gameData = {
 		},
 		goals: [
 		{
-			type: 'newFactories',
+			type: 'newPlants',
 			value: 1,
 			calculation: 'number'
 		},
@@ -889,7 +889,7 @@ var gameData = {
 			text: [
 				'Make $100,000 in profits',
 				'Sell 10 machines',
-				'Manufacture 5 machines'
+				'Manufacture 25 machines'
 			]
 		},
 		goals: [
@@ -916,15 +916,15 @@ var gameData = {
 		brief: {
 			background: 'briefBg03',
 			text: [
-				'Make $100,000 in profits',
-				'Sell 10 machines',
-				'Manufacture 5 machines'
+				'Make $250,000 in profits',
+				'Sell 30 machines',
+				'Manufacture 50 machines'
 			]
 		},
 		goals: [
 		{
 			type: 'profit',
-			value: 100000,
+			value: 250000,
 			calculation: 'money'
 		},
 		{
@@ -945,9 +945,9 @@ var gameData = {
 		brief: {
 			background: 'briefBg04',
 			text: [
-				'Build 1 Plant',
-				'Create 2 Machine Models',
-				'Produce 10 Machines'
+				'Build 3 Dealerships',
+				'Create 5 Machine Models',
+				'Produce 100 Machines'
 			]
 		},
 		goals: [
@@ -957,8 +957,8 @@ var gameData = {
 			calculation: 'money'
 		},
 		{
-			type: 'newFactories',
-			value: 2,
+			type: 'newDealerships',
+			value: 3,
 			calculation: 'number'
 		},
 		{
@@ -979,31 +979,14 @@ var gameData = {
 		brief: {
 			background: 'briefBg04',
 			text: [
-				'Build 1 Plant',
-				'Create 2 Machine Models',
-				'Produce 10 Machines'
+				'Create 1 Trade Route'
 			]
 		},
 		goals: [
 		{
-			type: 'profit',
-			value: 1000000,
-			calculation: 'money'
-		},
-		{
-			type: 'newFactories',
+			type: 'newTradeRoutes',
 			value: 2,
 			calculation: 'number'
-		},
-		{
-			type: 'newMachineModels',
-			value: 2,
-			calculation: 'length'
-		},
-		{
-			type: 'newMachines',
-			value: 50,
-			calculation: 'length'
 		}
 		]
 	},
@@ -1013,9 +996,10 @@ var gameData = {
 		brief: {
 			background: 'briefBg04',
 			text: [
-				'Build 1 Plant',
-				'Create 2 Machine Models',
-				'Produce 10 Machines'
+				'Make $1,000,000 in profits',
+				'Build 5 Plants',
+				'Create 5 Machine Models',
+				'Produce 100 Machines'
 			]
 		},
 		goals: [
@@ -1025,18 +1009,18 @@ var gameData = {
 			calculation: 'money'
 		},
 		{
-			type: 'newFactories',
-			value: 2,
+			type: 'newPlants',
+			value: 5,
 			calculation: 'number'
 		},
 		{
 			type: 'newMachineModels',
-			value: 2,
+			value: 5,
 			calculation: 'length'
 		},
 		{
 			type: 'newMachines',
-			value: 50,
+			value: 100,
 			calculation: 'length'
 		}
 		]
@@ -1049,17 +1033,17 @@ var gameData = {
 			text: [
 				'Build 1 Plant',
 				'Create 2 Machine Models',
-				'Produce 10 Machines'
+				'Produce 500 Machines'
 			]
 		},
 		goals: [
 		{
 			type: 'profit',
-			value: 1000000,
+			value: 10000000,
 			calculation: 'money'
 		},
 		{
-			type: 'newFactories',
+			type: 'newPlants',
 			value: 2,
 			calculation: 'number'
 		},
@@ -1081,31 +1065,20 @@ var gameData = {
 		brief: {
 			background: 'briefBg04',
 			text: [
-				'Build 1 Plant',
-				'Create 2 Machine Models',
-				'Produce 10 Machines'
+				'Establish 5 Trade Routes'
+				'Make $10,000,000 in profits'
 			]
 		},
 		goals: [
 		{
 			type: 'profit',
-			value: 1000000,
+			value: 10000000,
 			calculation: 'money'
 		},
 		{
-			type: 'newFactories',
-			value: 2,
+			type: 'newTradeRoutes',
+			value: 5,
 			calculation: 'number'
-		},
-		{
-			type: 'newMachineModels',
-			value: 2,
-			calculation: 'length'
-		},
-		{
-			type: 'newMachines',
-			value: 50,
-			calculation: 'length'
 		}
 		]
 	},
@@ -1127,7 +1100,7 @@ var gameData = {
 			calculation: 'money'
 		},
 		{
-			type: 'newFactories',
+			type: 'newPlants',
 			value: 2,
 			calculation: 'number'
 		},
@@ -1149,31 +1122,20 @@ var gameData = {
 		brief: {
 			background: 'briefBg04',
 			text: [
-				'Build 1 Plant',
-				'Create 2 Machine Models',
-				'Produce 10 Machines'
+				'Establish 10 Trade Routes',
+				'Make $50,000,000 in profits'
 			]
 		},
 		goals: [
 		{
 			type: 'profit',
-			value: 1000000,
+			value: 50000000,
 			calculation: 'money'
 		},
 		{
-			type: 'newFactories',
-			value: 2,
+			type: 'newTradeRoutes',
+			value: 10,
 			calculation: 'number'
-		},
-		{
-			type: 'newMachineModels',
-			value: 2,
-			calculation: 'length'
-		},
-		{
-			type: 'newMachines',
-			value: 50,
-			calculation: 'length'
 		}
 		]
 	}
