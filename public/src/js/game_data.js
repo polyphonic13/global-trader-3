@@ -1065,7 +1065,7 @@ var gameData = {
 		brief: {
 			background: 'briefBg04',
 			text: [
-				'Establish 5 Trade Routes'
+				'Establish 5 Trade Routes',
 				'Make $10,000,000 in profits'
 			]
 		},

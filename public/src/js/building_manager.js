@@ -124,7 +124,7 @@ var BuildingManager = function() {
 											}
 										} else {
 											var tradeRouteId = this.config.tradeRoutes[machine.id];
-											// trace('tradeRouteId = ' + tradeRouteId);
+											// trace('sending inventory to tradeRouteId = ' + tradeRouteId);
 											var tradeRoute = module.findBuilding(tradeRouteId);
 											if(tradeRoute.config.state === BuildingStates.ACTIVE) {
 												var inventory = this.config.inventory[machine.id];
@@ -455,7 +455,7 @@ var BuildingManager = function() {
 		var worldLocation = Math.floor(Math.random() * (TradeRouteLocations.length));
 		var area = TradeRouteLocations[worldLocation];
 
-		var tradeRouteId = type + '-' + area + ((TurnManager.tempTradeRouteCount[area]) + 1);
+		var tradeRouteId = type + '_' + area + ((TurnManager.tempTradeRouteCount[area]) + 1);
 		var tradeRouteName = TradeRouteNames[area].toUpperCase() + '\n' + type.toUpperCase() + ' ' + ((TurnManager.tempTradeRouteCount[area]) + 1);
 		
 		TurnManager.tempTradeRouteCount[area]++;

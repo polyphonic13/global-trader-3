@@ -836,10 +836,11 @@ var GameConfig = function() {
 			},
 			tradeRoutePin: {
 				type: 'group',
-				name: 'tradeRoutePin-',
+				name: 'tradeRoutePin_',
 				views: {
 					pin: {
 						type: 'sprite',
+						name: 'pin',
 						img: 'pinTradeRoute',
 						x: 0,
 						y: 0,

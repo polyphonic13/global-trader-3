@@ -126,7 +126,7 @@ var gameLogic = {
 				PhaserGame.addDealershipOpportunityNotification(event);
 			}
 		},
-		// add dealership notification
+		// add trade route notification
 		{
 			event: Events.ADD_TRADE_ROUTE_NOTIFICATION,
 			handler: function(event) {
@@ -139,6 +139,16 @@ var gameLogic = {
 			event: Events.ADD_DEALERSHIP,
 			handler: function(event) {
 				PhaserGame.addDealership();
+			}
+		},
+		// machine sold
+		{
+			event: Events.MACHINE_SOLD,
+			handler: function(event) {
+				// if(event.building.type === BuildingTypes.DEALERSHIP) {
+					// PhaserGame.machineSold(event.building, 'usDetail:usDetailGrid');
+					PhaserGame.machineSold(event.building);
+				// }
 			}
 		}
 		],
@@ -847,20 +857,48 @@ var gameLogic = {
 			inventoryAdded: function(plant, parentPath) {
 				// trace('PhaserGame/inventoryAdded, plant = ', plant);
 				if(plant.sector === PhaserGame.activeSector) {
-					PhaserGame.addIconAnimation(IconAnimations.PLUS_SIGN, plant, parentPath);
+					PhaserGame.addUsDetailIconAnimation(IconAnimations.PLUS_SIGN, plant, parentPath);
 				}
 			},
-			machineSold: function(dealership, parentPath) {
+			// machineSold: function(dealership, parentPath) {
+			machineSold: function(building) {
 				// trace('PhaserGame/machineSold, dealership = ', dealership);
-				if(dealership.sector === PhaserGame.activeSector) {
-					PhaserGame.addIconAnimation(IconAnimations.DOLLAR_SIGN, dealership, parentPath);
+				if(building.type === BuildingTypes.DEALERSHIP) {
+					if(PWG.ScreenManager.currentId === 'usDetail' && building.sector === PhaserGame.activeSector) {
+						PhaserGame.addUsDetailIconAnimation(IconAnimations.DOLLAR_SIGN, building, 'usDetail:usDetailGrid');
+					}
+				} else if(building.type === BuildingTypes.TRADE_ROUTE) {
+					if(PWG.ScreenManager.currentId === 'world' && PhaserGame.zoomedIn) {
+						PhaserGame.addWorldIconAnimation(IconAnimations.DOLLAR_SIGN, building, 'world:tradeRoutePins:tradeRoutePin_');
+					}
 				}
 			},
-			addIconAnimation: function(icon, building, parentPath) {
+			addUsDetailIconAnimation: function(icon, building, parentPath) {
 				// trace('PhaserGame/addIconAnimation, building = ', building);
 				// var cell = GridManager.grids[building.sector][building.cell];
 				var position = PWG.ViewManager.getControllerFromPath(parentPath+':usDetailGridItem'+building.cell).view.position;
-				var key = icon + '-' + building.sector + '-' + building.cell;
+				var key = icon + '_' + building.sector + '_' + building.cell;
+				var name = icon + AnimationManager.getNextIndex(key);
+				var config = {
+					type: icon,
+					key: key,
+					name: name,
+					x: position.x,
+					y: position.y,
+					animationName: 'expand',
+					parentPath: parentPath
+				};
+				AnimationManager.add(config);
+			},
+			addWorldIconAnimation: function(icon, building, parentPath) {
+				trace('PhaserGame/addWorldIconAnimation, building = ', building);
+				var path = parentPath+building.id;
+				trace('\tpath = ' + path);
+				var parent = PWG.ViewManager.getControllerFromPath(path);
+				trace('\tparent = ', parent);
+				var position = parent.children.pin.view.position;
+				trace('\tposition = ', position);
+				var key = icon + '_' + building.worldLocation;
 				var name = icon + AnimationManager.getNextIndex(key);
 				var config = {
 					type: icon,
@@ -1830,15 +1868,6 @@ var gameLogic = {
 				event: Events.INVENTORY_ADDED,
 				handler: function(event) {
 					PhaserGame.inventoryAdded(event.plant, 'usDetail:usDetailGrid');
-				}
-			},
-			// machine sold
-			{
-				event: Events.MACHINE_SOLD,
-				handler: function(event) {
-					if(event.building.type === BuildingTypes.DEALERSHIP) {
-						PhaserGame.machineSold(event.building, 'usDetail:usDetailGrid');
-					}
 				}
 			},
 			// close building menu
