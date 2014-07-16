@@ -162,6 +162,18 @@ var GameConfig = function() {
 			]
 		};
 
+		var notificationPeopleImages = {
+			dealership: 'dealershipGirl',
+			distributor: 'distributorGuy',
+			tradeRoutes: {
+				africa: 'tradeRouteAfricaNotification',
+				asia: 'tradeRouteAsiaNotification',
+				europe: 'tradeRouteEuropeNotification',
+				middleEast: 'tradeRouteMiddleEastNotification',
+				southPacific: 'tradeRouteSouthPacificNotification',
+				southAmerica: 'tradeRouteSouthAmericaNotification'
+			}
+		};
 		var tradeRouteArrowConfig = {
 			africa: {
 				img: 'tradeRouteAfrica',
@@ -286,20 +298,6 @@ var GameConfig = function() {
 				x: (gameUnit * 2.75),
 				y: (gameUnit * 8.5)
 			}
-		};
-		var notificationPeopleImages = {
-			dealership: 'dealershipGirl',
-			distributor: 'distributorGuy',
-			tradeRoutes: {
-				africa: 'tradeRouteAfricaNotification',
-				asia: 'tradeRouteAsiaNotification',
-				europe: 'tradeRouteEuropeNotification',
-				middleEast: 'tradeRouteMiddleEastNotification',
-				southPacific: 'tradeRouteSouthPacificNotification',
-				southAmerica: 'tradeRouteSouthAmericaNotification'
-			}
-		};
-		var tradeRouteNotificationImages = {
 		};
 
 		var starsConfig = {

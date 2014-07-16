@@ -77,7 +77,7 @@ var Machine = function() {
 			if(this.requiredParts.hasOwnProperty(part) && !this.requiredParts[part]) {
 				this.requiredParts[part] = true;
 				this.requiredPartsCount++;
-				PWG.EventCenter.trigger({ type: Event.REQUIRED_PART_ADDED });
+				PWG.EventCenter.trigger({ type: Events.REQUIRED_PART_ADDED });
 				trace('\trequiredPartsCount now: ' + this.requiredPartsCount + '/' + this.requiredPartsTotal);
 			}
 
