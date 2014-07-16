@@ -1,7 +1,7 @@
 var BuildingTypes = {
 	PLANT: 'plant',
 	DEALERSHIP: 'dealership',
-	DISTRIBUTOR: 'distributor',
+	SUPPLIER: 'supplier',
 	TRADE_ROUTE: 'tradeRoute'
 };
 
@@ -78,7 +78,7 @@ var PartDescriptions = {
 	
 };
 
-var DistributorLocations = [
+var SupplierLocations = [
 	'Goodfield, IL',
 	'Fargo, ND',
 	'Grand Island, NB',

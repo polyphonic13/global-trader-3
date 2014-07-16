@@ -15,7 +15,7 @@ var TurnManager = function() {
 		newMachineModels: [],
 		newMachines: [],
 		machinesSold: [],
-		newDistributors: []
+		newSuppliers: []
 	};
 	
 	var module = {};
@@ -35,7 +35,7 @@ var TurnManager = function() {
 		module.currentData = PWG.Utils.clone(turnData);
 		module.tempDealershipCount = (module.playerData.buildingCount.dealership);
 		// TurnManager.tempTradeRouteCount = (module.playerData.buildingCount.tradeRoute);
-		module.tempDistributorCount = (module.playerData.distributors.length) || 0;
+		module.tempSupplierCount = (module.playerData.suppliers.length);
 
 		module.tempTradeRouteCount = {
 			africa: 0,
@@ -113,8 +113,6 @@ var TurnManager = function() {
 		// module.playerData.sectors[PhaserGame.activeSector][PhaserGame.activeBuilding.id].equipment[PhaserGame.activeMachine.config.id] = model;
 		BuildingManager.addMachineModelToPlant(PhaserGame.activeSector, PhaserGame.activeBuilding.id, model);
 		module.playerData.modelCount[PhaserGame.activeMachineType]++;
-		module.playerData.modelCount.total++;
-		
 		module.currentData.newMachineModels.push(model);
 		if(model.type === EquipmentTypes.TRACTOR) {
 			module.currentData.newTractorModels++;
@@ -163,10 +161,10 @@ var TurnManager = function() {
 		module.updateBank(amount);
 	};
 	
-	module.addDistributor = function(distributor) {
-		module.playerData.distributors[distributor.id] = distributor;
-		module.currentData.newDistributors.push(distributor);
-		module.playerData.bonusPoints += gameData.bonuses.distributors.added;
+	module.addSupplier = function(supplier) {
+		module.playerData.supplier[supplier.sector][supplier.id] = supplier;
+		module.currentData.newSuppliers.push(supplier);
+		module.playerData.bonusPoints += gameData.bonuses.suppliers.added;
 		PWG.EventCenter.trigger({ type: Events.BONUSES_UPDATED });
 	};
 	
@@ -174,10 +172,10 @@ var TurnManager = function() {
 		module.currentData.wholesalePartsUsed++;
 	};
 	
-	module.wholesaleInventoryEmptied = function(distributor) {
+	module.wholesaleInventoryEmptied = function(supplier) {
 		trace('TurnManager/wholesaleInventoryEmptied');
 		module.currentData.emptiedWholesaleInventories++;
-		module.playerData.bonusPoints += gameData.bonuses.distributors.allPartsUsed;
+		module.playerData.bonusPoints += gameData.bonuses.suppliers.allPartsUsed;
 		PWG.EventCenter.trigger({ type: Events.BONUSES_UPDATED });
 	};
 

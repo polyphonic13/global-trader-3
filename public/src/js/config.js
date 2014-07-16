@@ -164,7 +164,7 @@ var GameConfig = function() {
 
 		var notificationPeopleImages = {
 			dealership: 'dealershipGirl',
-			distributor: 'distributorGuy',
+			supplier: 'supplierGuy',
 			tradeRoutes: {
 				africa: 'tradeRouteAfricaNotification',
 				asia: 'tradeRouteAsiaNotification',
@@ -1730,9 +1730,9 @@ var GameConfig = function() {
 			},
 			optionalPartsMenu: {
 			},
-			distributorPrompt: {
+			supplierPrompt: {
 				type: 'group',
-				name: 'distributorPrompt',
+				name: 'supplierPrompt',
 				views: {
 					menuBg: {
 						type: 'sprite',
@@ -1762,7 +1762,7 @@ var GameConfig = function() {
 					},
 					invisButton: {
 						type: 'sprite',
-						name: 'distributorPromptButton',
+						name: 'supplierPromptButton',
 						img: 'blockClear',
 						x: (gameW/2) - (gameUnit * 3),
 						y: (gameUnit * 12.5),
@@ -1770,17 +1770,17 @@ var GameConfig = function() {
 							width: (gameUnit * 6),
 							height: (gameUnit * 6) * 0.34
 						},
-						input: gameLogic.input.distributorPrompt
+						input: gameLogic.input.supplierPrompt
 					}
 				}
 			},
-			distributorNotification: {
+			supplierNotification: {
 				type: 'group',
-				name: 'distributorNotification',
+				name: 'supplierNotification',
 				views: {
 					bg: {
 						type: 'sprite',
-						name: 'distributorBg',
+						name: 'supplierBg',
 						img: '',
 						x: 0,
 						y: 0,
@@ -2092,7 +2092,7 @@ var GameConfig = function() {
 
 					// NOTIFICATIONS
 					dealershipGirl: 'images/notifications/dealership_girl.png',
-					distributorGuy: 'images/notifications/distributor_guy.png',
+					supplierGuy: 'images/notifications/supplier_guy.png',
 					tradeRouteAfricaNotification: 'images/notifications/trade_route_africa.png',
 					tradeRouteAsiaNotification: 'images/notifications/trade_route_asia.png',
 					tradeRouteEuropeNotification: 'images/notifications/trade_route_europe.png',
@@ -2471,10 +2471,10 @@ var GameConfig = function() {
 				dealership: {
 					statement: 'We would like to sell ~{quantity}~ per year\nof your ~{plant}~\n~{model}~ inventory\nat $~{resell}~ each.'
 				},
-				distributorPrompt: {
+				supplierPrompt: {
 					statement: 'Click here for\nWholesale Parts',
 				},
-				distributorNotification: {
+				supplierNotification: {
 					statement: 'We would like to offer you\n~{quantity}~ ~{size}~ ~{type}~\nfor the wholesale cost\nof ~{cost}~.'
 				},
 				wholesaleParts: {
@@ -2491,7 +2491,7 @@ var GameConfig = function() {
 					profit: 'Profits: ',
 					newPlants: 'Plants built: ',
 					newDealerships: 'Dealerships established: ',
-					newDistributors: 'Partnered Distributors: ',
+					newSuppliers: 'Partnered Suppliers: ',
 					newTradeRoutes: 'Trade Routes established: ',
 					newMachineModels: 'Machine models created: ',
 					newMachines: 'Machines built: ',
@@ -2501,7 +2501,7 @@ var GameConfig = function() {
 			bonusesText: {
 				newPlant: 'New Plant built created 1000 jobs',
 				newDealership: 'New Dealership established',
-				newDistributor: 'New Distributor relationship',
+				newSupplier: 'New Supplier relationship',
 				newTradeRoutes: 'New Trade Route established',
 				machineManufacturing: '~{machines}~ Machines built'
 			},

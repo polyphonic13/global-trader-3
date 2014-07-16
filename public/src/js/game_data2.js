@@ -807,7 +807,7 @@ var gameData = {
 			text: [
 				'Make $250,000 in profits',
 				'Sell 30 machines',
-				'Establish 1\nWholesale Distributor'
+				'Establish 1\nWholesale Supplier'
 			]
 		},
 		goals: [
@@ -822,7 +822,7 @@ var gameData = {
 			calculation: 'length'
 		},
 		{
-			type: 'newDistributors',
+			type: 'newSuppliers',
 			value: 1,
 			calculation: 'length'
 		}
@@ -887,7 +887,7 @@ var gameData = {
 			text: [
 				'Make $1,000,000 in profits',
 				'Build 5 Plants',
-				'Establish 5\nWholesale Distributors',
+				'Establish 5\nWholesale Suppliers',
 				'Produce 100 Machines'
 			]
 		},
@@ -903,7 +903,7 @@ var gameData = {
 			calculation: 'number'
 		},
 		{
-			type: 'newDistributors',
+			type: 'newSuppliers',
 			value: 5,
 			calculation: 'length'
 		},
@@ -1035,7 +1035,7 @@ var gameData = {
 			dealership: 1000,
 			tradeRoute: 10000
 		},
-		distributors: {
+		suppliers: {
 			added: 5000,
 			partsPurchased: 1000,
 			allPartsUsed: 10000

@@ -2,7 +2,7 @@ var ASPECT_RATIO = [9, 16];
 var GAME_NAME = 'global_trader_3_0';
 var FACEBOOK_URL = 'https://www.facebook.com/cnhitrade';
 var TIME_PER_TURN = 52;
-var TURN_TIME_INTERVAL = 3000;
+var TURN_TIME_INTERVAL = 1000;
 var US_DETAIL_GRID_CELLS = 6;
 var MACHINE_LIST_COLUMNS = 2; 
 var MACHINE_LIST_ICONS = 6;
@@ -128,11 +128,11 @@ var gameLogic = {
 				PhaserGame.addDealershipOpportunityNotification(event);
 			}
 		},
-		// add distributor notification
+		// add supplier notification
 		{
-			event: Events.ADD_DISTRIBUTOR_NOTIFICATION,
+			event: Events.ADD_SUPPLIER_NOTIFICATION,
 			handler: function(event) {
-				PhaserGame.addDistributorOpportunityNotification(event);
+				PhaserGame.addSupplierOpportunityNotification(event);
 			}
 		},
 		// add trade route notification
@@ -537,7 +537,7 @@ var gameLogic = {
 				BuildingManager.init();
 				WholesaleManager.init();
 				PhaserGame.notifications = [[], [], [], [], []];
-				PhaserGame.distributorNotifications = [];
+				PhaserGame.supplierNotifications = [];
 				PhaserGame.tradeRouteNotifications = {};
 				PhaserGame.availableTradeRoutes = {};
 				PhaserGame.zoomedIn = false;
@@ -612,7 +612,7 @@ var gameLogic = {
 				PhaserGame.hideNotificationEnvelope();
 				PhaserGame.hideTradeRouteAlert();
 				PhaserGame.notifications = null;
-				PhaserGame.distributorNotifications = null;
+				PhaserGame.supplierNotifications = null;
 				PhaserGame.availableTradeRoutes = null;
 				PhaserGame.cancelAction = null;
 				PhaserGame.confirmAction = null;
@@ -657,30 +657,30 @@ var gameLogic = {
 				PWG.ViewManager.removeView('notification', 'global:notifications');
 				PhaserGame.cancelAction = null;
 			},
-			showDistributorNotification: function() {
+			showSupplierNotification: function() {
 				var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
-				var distributorNotification = PhaserGame.distributorNotifications.pop();
-				PWG.ViewManager.addView(distributorNotification, notifications, true);
+				var supplierNotification = PhaserGame.supplierNotifications.pop();
+				PWG.ViewManager.addView(supplierNotification, notifications, true);
 				PWG.ViewManager.hideView('global:backButton');
 				PWG.ViewManager.showView('global:cancelButton');
 				PWG.ViewManager.showView('global:confirmButton');
 
 				PhaserGame.confirmAction = {
 					method: function() {
-						PhaserGame.addDistributor(PhaserGame.activeDistributor);
+						PhaserGame.addSupplier(PhaserGame.activeSupplier);
 					},
 					params: {}
 				};
 
 				PhaserGame.cancelAction = {
 					method: function() {
-						PhaserGame.resetDistributor(PhaserGame.activeDistributor);
+						PhaserGame.resetSupplier(PhaserGame.activeSupplier);
 					},
 					params: {}
 				};
 			},
-			hideDistributorNotification: function() {
-				PhaserGame.activeDistributor = null;
+			hideSupplierNotification: function() {
+				PhaserGame.activeSupplier = null;
 				PWG.ViewManager.showView('global:backButton');
 				PWG.ViewManager.hideView('global:cancelButton');
 				PWG.ViewManager.hideView('global:confirmButton');
@@ -906,52 +906,59 @@ var gameLogic = {
 				plant.dealershipNotifications[dealership.config.modelId] = false;
 			},
 			// DEALERSHIPS
-			addDistributorOpportunityNotification: function(event) {
-				trace('addDistributorOpportunityNotification, event = ', event);
-				var distributor = event.distributor;
+			addSupplierOpportunityNotification: function(event) {
+				trace('addSupplierOpportunityNotification, event = ', event);
+				var supplier = event.supplier;
 				var notification = PWG.Utils.clone(PhaserGame.config.dynamicViews.notification);
-				var distributorNotification = PWG.Utils.clone(PhaserGame.config.dynamicViews.distributorNotification);
+				var supplierNotification = PWG.Utils.clone(PhaserGame.config.dynamicViews.supplierNotification);
 
-				var config = PhaserGame.config.notificationText['distributorNotification'];
+				var config = PhaserGame.config.notificationText['supplierNotification'];
 
-				trace('addDistributorOppurtunity, distributor = ', event.distributor);
+				trace('addSupplierOppurtunity, supplier = ', event.supplier);
+				var partType = supplier.config.partType;
+				var typeText;
+				if(partType === PartTypes.HEADLIGHTS || partType === PartTypes.TIRES || partType === PartTypes.TRACKS) {
+					typeText = PartDescriptions[partType];
+				} else {
+					typeText = PartDescriptions[partType] + 's';
+				}
 				var statementText = PWG.Utils.parseMarkup(
 					config.statement, 
 					{
-						quantity: distributor.config.quantity,
-						type: (PartDescriptions[distributor.config.partType] + 's'),
-						size: distributor.config.partSize[0],
-						cost: ('$' + PWG.Utils.formatMoney(distributor.config.cost, 0))
+						quantity: supplier.config.quantity,
+						type: (PartDescriptions[supplier.config.partType] + 's'),
+						size: (supplier.config.partSize[0]).toUpperCase(),
+						cost: ('$' + PWG.Utils.formatMoney(supplier.config.cost, 0))
 					});
 
-				notification.views.person.img = PhaserGame.config.notificationPeopleImages['distributor'];
+				notification.views.person.img = PhaserGame.config.notificationPeopleImages['supplier'];
 				// notification.views.title.text = config.title;
 				notification.views.content.text = statementText;
 				// trace('notification = ', notification);
-				PhaserGame.activeDistributor = distributor;
-				notification.views[distributorNotification.name] = distributorNotification;
-				PhaserGame.distributorNotifications.push(notification);
-				PhaserGame.addDistributorPrompt();
+				PhaserGame.activeSupplier = supplier;
+				notification.views[supplierNotification.name] = supplierNotification;
+				PhaserGame.supplierNotifications.push(notification);
+				PhaserGame.addSupplierPrompt();
 			},
-			addDistributorPrompt: function() {
-				var distributorPrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.distributorPrompt);
+			addSupplierPrompt: function() {
+				var supplierPrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.supplierPrompt);
 				var notificationText = PhaserGame.config.notificationText;
-				distributorPrompt.views.title.text = notificationText.distributorPrompt.statement;
+				supplierPrompt.views.title.text = notificationText.supplierPrompt.statement;
 				var global = PWG.ViewManager.getControllerFromPath('global');
-				PWG.ViewManager.addView(distributorPrompt, global, true);
+				PWG.ViewManager.addView(supplierPrompt, global, true);
 			},
-			removeDistributorPrompt: function() {
-				PWG.ViewManager.removeView('distributorPrompt', 'global');
+			removeSupplierPrompt: function() {
+				PWG.ViewManager.removeView('supplierPrompt', 'global');
 			},
-			addDistributor: function(distributor) {
-				trace('addDistributor, distributor = ', distributor);
-				PhaserGame.hideDistributorNotification();
-				PhaserGame.removeDistributorPrompt();
-				WholesaleManager.addDistributor(distributor);
+			addSupplier: function(supplier) {
+				trace('addSupplier, supplier = ', supplier);
+				PhaserGame.hideSupplierNotification();
+				PhaserGame.removeSupplierPrompt();
+				WholesaleManager.addSupplier(supplier);
 			},
-			resetDistributor: function(distributor) {
-				PhaserGame.hideDistributorNotification();
-				PhaserGame.removeDistributorPrompt();
+			resetSupplier: function(supplier) {
+				PhaserGame.hideSupplierNotification();
+				PhaserGame.removeSupplierPrompt();
 				// trace('resetDealership, dealership = ', dealership);
 			},
 			// TRADE_ROUTES
@@ -1188,7 +1195,7 @@ var gameLogic = {
 				var type = PhaserGame.activePartType;
 				var size = PhaserGame.activeMachineSize;
 				var itemConfig = PhaserGame.config.dynamicViews.wholesalePartIcon;
-				var distributors = WholesaleManager.parts[type][size];
+				var suppliers = WholesaleManager.parts[type][size];
 				var partsData = gameData.parts[type][size];
 				var offset = itemConfig.offset;
 				var iconH = itemConfig.iconH;
@@ -1197,15 +1204,15 @@ var gameLogic = {
 				var count = 0;
 
 				PWG.Utils.each(
-					distributors,
-					function(distributor, id) {
-						trace('distributor['+id+'] = ', distributor);
+					suppliers,
+					function(supplier, id) {
+						trace('supplier['+id+'] = ', supplier);
 						var item = PWG.Utils.clone(itemConfig);
 						item.name = id + '_' + type;
-						item.views.icon.img = distributor.part.img;
-						item.views.description.text = distributor.part.description.toUpperCase();
-						item.views.available.text = distributor.quantity + ' available';
-						item.views.invisButton.distributorId = id;
+						item.views.icon.img = supplier.part.img;
+						item.views.description.text = supplier.part.description.toUpperCase();
+						item.views.available.text = supplier.quantity + ' available';
+						item.views.invisButton.supplierId = id;
 						item.views.invisButton.input = gameLogic.input.wholesalePartIcon;
 						
 						itemY = (iconH * count) + offset;
@@ -1357,27 +1364,27 @@ var gameLogic = {
 				PWG.ViewManager.removeView('discardMachinePrompt', 'equipmentEdit');
 				PhaserGame.confirmAction = null;
 				PhaserGame.cancelAction = null;
-				if(!PhaserGame.activeMachine.isComplete()) {
+				if(!PhaserGame.activeMachine.isComplete) {
 					PWG.ViewManager.hideView('global:confirmButton');
 				}
 			},
-			addDistributorNotification: function() {
-				var distributorNotification = PWG.Utils.clone(PhaserGame.config.dynamicViews.distributorNotifcation);
+			addSupplierNotification: function() {
+				var supplierNotification = PWG.Utils.clone(PhaserGame.config.dynamicViews.supplierNotifcation);
 
 				var global = PWG.ViewManager.getControllerFromPath('global');
-				PWG.ViewManager.addView(distributorNotification, global, true);
+				PWG.ViewManager.addView(supplierNotification, global, true);
 
 				PhaserGame.confirmAction = {
 					method: function() {
-						PhaserGame.removeDistributorNotification();
-						PhaserGame.addDistributor();
+						PhaserGame.removeSupplierNotification();
+						PhaserGame.addSupplier();
 					},
 					params: {}
 				};
 
 				PhaserGame.cancelAction = {
 					method: function() {
-						PhaserGame.removeDistributorNotification();
+						PhaserGame.removeSupplierNotification();
 					},
 					params: {}
 				};
@@ -1387,8 +1394,8 @@ var gameLogic = {
 				PWG.ViewManager.hideView('global:confirmButton');
 				PWG.ViewManager.hideView('global:cancelButton');
 			},
-			removeDistributorNotification: function() {
-				PWG.ViewManager.removeView('distributorNotification', 'global');
+			removeSupplierNotification: function() {
+				PWG.ViewManager.removeView('supplierNotification', 'global');
 				PWG.ViewManager.hideView('global:confirmButton');
 				PWG.ViewManager.hideView('global:cancelButton');
 				PhaserGame.cancelAction = null;
@@ -1642,7 +1649,7 @@ var gameLogic = {
 		},
 		wholesalePartIcon: {
 			inputDown: function(event) {
-				PWG.EventCenter.trigger({ type: Events.ADD_WHOLESALE_PART, value: this.controller.config.distributorId });
+				PWG.EventCenter.trigger({ type: Events.ADD_WHOLESALE_PART, value: this.controller.config.supplierId });
 			}
 		},
 		optionalPartIcon: {
@@ -1651,9 +1658,9 @@ var gameLogic = {
 				PWG.EventCenter.trigger({ type: Events.ADD_OPTIONAL_PART, value: this.controller.config.part });
 			}
 		},
-		distributorPrompt: {
+		supplierPrompt: {
 			inputDown: function(event) {
-				PhaserGame.showDistributorNotification();
+				PhaserGame.showSupplierNotification();
 			}
 		},
 		wholesalePartPrompt: {
@@ -2452,7 +2459,7 @@ var gameLogic = {
 					trace('ADD WHOLESALE PART');
 					var type = PhaserGame.activePartType;
 					PhaserGame.activeMachine.setPart(type, event.value, true);
-					// WholesaleManager.usePart(type, PhaserGame.activeMachineSize, event.distributorId);
+					// WholesaleManager.usePart(type, PhaserGame.activeMachineSize, event.supplierId);
 
 					PWG.EventCenter.trigger({ type: Events.CLOSE_WHOLESALE_PARTS_MENU });
 					PWG.EventCenter.trigger({ type: Events.NEXT_MACHINE_PIECE_ICON });
@@ -2574,11 +2581,11 @@ var gameLogic = {
 					}
 				}
 			},
-			// add distributor notification
+			// add supplier notification
 			{
-				event: Events.ADD_DISTRIBUTOR_NOTIFICATION,
+				event: Events.ADD_SUPPLIER_NOTIFICATION,
 				handler: function(event) {
-					PhaserGame.addDistributorNotifcation();
+					PhaserGame.addSupplierNotifcation();
 				}
 			},
 			// machine complete

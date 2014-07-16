@@ -29,9 +29,9 @@ var Events = {
 	CLOSE_DEALERSHIP_NOTIFICATION: 'closeDealershipNotification',
 	ADD_DEALERSHIP: 'addDealership',
 
-	ADD_DISTRIBUTOR_NOTIFICATION: 'addDistributorNotification',
-	CLOSE_DISTRIBUTOR_NOTIFICATION: 'closeDistributorNotification',
-	ADD_DISTRIBUTOR: 'addDistributor',
+	ADD_SUPPLIER_NOTIFICATION: 'addSupplierNotification',
+	CLOSE_SUPPLIER_NOTIFICATION: 'closeSupplierNotification',
+	ADD_SUPPLIER: 'addSupplier',
 
 	ADD_TRADE_ROUTE_NOTIFICATION: 'addTradeRouteNotification',
 	CLOSE_TRADE_ROUTE_NOTIFICATION: 'closeTradeRouteNotification',
@@ -44,6 +44,7 @@ var Events = {
 	PREV_MACHINE_PIECE_ICON: 'prevMachinePieceIcon',
 	MACHINE_TYPE_SELECTION: 'machineTypeSelection',
 	MACHINE_SIZE_SELECTION: 'machineSizeSelection',
+	REQUIRED_PART_ADDED: 'requirePartAdded',
 	MACHINE_PARTS_COMPLETE: 'machinePartsComplete',
 	OPEN_OPTIONAL_PARTS_MENU: 'openOptionalPartsMenu',
 	OPEN_PARTS_MENU: 'openPartsMenu',
@@ -51,12 +52,11 @@ var Events = {
 	OPEN_WHOLESALE_PARTS_MENU: 'openWholesalePartsMenu',
 	CLOSE_WHOLESALE_PARTS_MENU: 'closeWholesalePartsMenu',
 	ADD_PART: 'addPart',
-	REQUIRED_PART_ADDED: 'requiredPartAdded',
 	ADD_WHOLESALE_PART: 'addWholesalePart',
 	ADD_OPTIONAL_PART: 'addOptionalPart',
 	SAVE_MACHINE: 'saveMachine',
 	EDIT_MACHINE: 'editMachine',
 	
-	ADD_DISTRIBUTOR_PROMPT: 'addDistributorPrompt',
-	ADD_DISTRIBUTOR_NOTIFICATION: 'addDistributorNotification'
+	ADD_SUPPLIER_PROMPT: 'addSupplierPrompt',
+	ADD_SUPPLIER_NOTIFICATION: 'addSupplierNotification'
 };
