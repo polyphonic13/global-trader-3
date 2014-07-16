@@ -807,7 +807,7 @@ var gameData = {
 			text: [
 				'Make $250,000 in profits',
 				'Sell 30 machines',
-				'Establish 1 Wholesale Distributor'
+				'Establish 1\nWholesale Distributor'
 			]
 		},
 		goals: [
@@ -887,7 +887,7 @@ var gameData = {
 			text: [
 				'Make $1,000,000 in profits',
 				'Build 5 Plants',
-				'Establish 5 Wholesale Distributors',
+				'Establish 5\nWholesale Distributors',
 				'Produce 100 Machines'
 			]
 		},

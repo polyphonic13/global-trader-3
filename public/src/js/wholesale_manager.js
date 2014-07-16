@@ -12,7 +12,7 @@ var WholesaleManager = function() {
 	module.PARTS_QUANTITY_MULTIPLIER = 100;			// base part quantity multiplier
 	
 	function Distributor(config) {
-		// trace('Distributor/constructor, config = ', config);
+		trace('Distributor/constructor, config = ', config);
 		this.config = config;
 
 		this.config.quantity = config.quantity || module.calculateQuantity();
@@ -23,7 +23,7 @@ var WholesaleManager = function() {
 	module.parts = {};
 	
 	module.init = function() {
-		// trace('WholesaleManager/init');
+		trace('WholesaleManager/init');
 		module.distributorsAdded = 0;
 		module.notificationActive = false;
 		// establish 
@@ -48,7 +48,7 @@ var WholesaleManager = function() {
 		PWG.Utils.each(
 			TurnManager.playerData.distributors,
 			function(distributor) {
-				// trace('\t\tdistributors['+distributor.id+'] = ', distributor);
+				trace('\t\tdistributors['+distributor.id+'] = ', distributor);
 				module.distributors[distributor.id] = new Distributor(distributor);
 				// only add this distributor to the available parts if it still has inventory
 				if(distributor.quantity > 0) {
@@ -62,18 +62,18 @@ var WholesaleManager = function() {
 	module.update = function() {
 		// there isn't a current notification pending
 		if(!module.notificationActive) {
-			// trace('WholesaleManager/update\n');
+			trace('WholesaleManager/update\n');
 			// haven't made max number of distributors for this turn
 			// if(module.distributorsAdded < module.turnMax) { 
 			if(module.distributorsAdded < 1) { 
 				module.weekLag++;
 				// waited long enough since last new distributor
 				if(module.weekLag > module.WEEK_LAG_AMOUNT) {
-					// trace('\tadded = ' + module.distributorsAdded + ' / ' + module.turnMax + '\n\tweekLag = ' + module.weekLag + ' / ' + module.WEEK_LAG_AMOUNT);
+					trace('\tadded = ' + module.distributorsAdded + ' / ' + module.turnMax + '\n\tweekLag = ' + module.weekLag + ' / ' + module.WEEK_LAG_AMOUNT);
 					module.weekLag = 0;
 
 					var diceRoll = PWG.Utils.diceRoll(); 
-					// trace('\tdiceRoll = ' + diceRoll + ', chance = ' + module.POSSIBILE_DISTRIBUTOR_CHANCE);
+					trace('\tdiceRoll = ' + diceRoll + ', chance = ' + module.POSSIBILE_DISTRIBUTOR_CHANCE);
 					// beat add probability test
 					if(diceRoll >= module.POSSIBILE_DISTRIBUTOR_CHANCE) {
 
@@ -81,11 +81,11 @@ var WholesaleManager = function() {
 						var parts = gameData.parts;
 						var type = PWG.Utils.randomProperty(PartTypes);
 						// var size = PWG.Utils.randomProperty(EquipmentSizes);
-						// trace('\ttype = ' + type);
+						trace('\ttype = ' + type);
 						var size = PWG.Utils.randomKey(gameData.parts[type]);
-						// trace('\tsize = ' + size);
+						trace('\tsize = ' + size);
 						var quality = (Math.floor(Math.random() * (gameData.parts[type][size].length - 1)));
-						// trace('\tquality = ' + quality);
+						trace('\tquality = ' + quality);
 						// don't already have max distributors for this part type
 						if(PWG.Utils.objLength(module.parts[type][size]) < module.DISTRIBUTORS_PER_PART_MAX) {
 							config.part = gameData.parts[type][size][quality];
@@ -102,7 +102,7 @@ var WholesaleManager = function() {
 	};
 	
 	module.createDistributor = function(config) {
-		// trace('WholesaleManager/createDistributor, confg = ', config);
+		trace('WholesaleManager/createDistributor, confg = ', config);
 		var type = BuildingTypes.DISTRIBUTOR;
 		var count = TurnManager.tempDistributorCount;
 
@@ -116,13 +116,13 @@ var WholesaleManager = function() {
 	};
 
 	module.addDistributor = function(distributor) {
-		// trace('WhoelsaleManager/addDistributor');
+		trace('WhoelsaleManager/addDistributor');
 		module.notificationActive = false;
 		module.distributorsAdded++;
 		module.distributors[distributor.config.id] = distributor;
-		// trace('\tadding distributor to parts['+distributor.config.partType+']['+distributor.config.partSize+']['+distributor.config.id+']');
+		trace('\tadding distributor to parts['+distributor.config.partType+']['+distributor.config.partSize+']['+distributor.config.id+']');
 		module.parts[distributor.config.partType][distributor.config.partSize][distributor.config.id] = distributor.config;
-		// trace('\tparts now = ', module.parts);
+		trace('\tparts now = ', module.parts);
 		TurnManager.addDistributor(distributor.config);
 	};
 	
@@ -140,12 +140,12 @@ var WholesaleManager = function() {
 				);
 			}
 		}
-		// trace('WholesaleManager/hasPart: ' + type + '.' + size + ' = ' + partCount);
+		trace('WholesaleManager/hasPart: ' + type + '.' + size + ' = ' + partCount);
 		return partCount;
 	};
 	
 	module.usePart = function(type, size, distributorId) {
-		// trace('WholesaleManager/usePart: ' + type + '.' + size + ', quantity = ' + module.parts[type][size][distributorId].quantity);
+		trace('WholesaleManager/usePart: ' + type + '.' + size + ', quantity = ' + module.parts[type][size][distributorId].quantity);
 		var distributor = module.parts[type][size][distributorId];
 		if(distributor.quantity > 0) {
 			distributor.quantity--;
@@ -158,7 +158,7 @@ var WholesaleManager = function() {
 	};
 	
 	module.removeDistributorFromParts = function(distributor) {
-		// trace('WholesaleManager/removeDistributorFromParts');
+		trace('WholesaleManager/removeDistributorFromParts');
 		delete module.parts[distributor.partType][distributor.partSize][distributor.id];
 		TurnManager.wholesaleInventoryEmptied(distributor);
 	};
@@ -168,13 +168,13 @@ var WholesaleManager = function() {
 	};
 	
 	module.calculateCostModifier = function(config) {
-		// trace('WholesaleManager/calculateCostModifier');
+		trace('WholesaleManager/calculateCostModifier');
 		var baseCost = config.part.cost;
-		// trace('baseCost = ' + baseCost);
+		trace('baseCost = ' + baseCost);
 		var rand = (Math.floor(Math.random() * (module.PARTS_COST_MODIFIER_MAX - module.PARTS_COST_MODIFIER_MIN) + module.PARTS_COST_MODIFIER_MIN));
-		// trace('\trand = ' + rand)
+		trace('\trand = ' + rand)
 		var costModifier = rand / 100;
-		// trace('\tcostModifier = ' + costModifier);
+		trace('\tcostModifier = ' + costModifier);
 		return (baseCost * costModifier) * config.quantity;
 	};
 
