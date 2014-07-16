@@ -43,13 +43,15 @@ var PartTypes = {
 	TIRES: 'tires',
 	ENGINE: 'engine',
 	TRANSMISSION: 'transmission',
-	CAB: 'cab',
 	HEADLIGHTS: 'headlights',
 	BUCKET: 'bucket',
 	TRACKS: 'tracks',
 	THREE_POINT_HITCH: 'threePointHitch',
 	POWER_TAKE_OFF: 'powerTakeoff',
-	QUICK_COUPLER: 'quickCoupler',
+	QUICK_COUPLER: 'quickCoupler'
+};
+
+var OptionalPartTypes = {	
 	CAB_HEATER: 'cabHeater',
 	AUTO_PILOT: 'autoPilot',
 	STAINLESS_EXHAUST: 'stainlessExhaust',

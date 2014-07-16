@@ -65,7 +65,7 @@ var Machine = function() {
 	};
 	
 	Machine.prototype.setPart = function(part, val, wholesale) {
-		// trace('Machine/setPart, part = ' + part + ', val = ', val);
+		trace('Machine/setPart, part = ' + part + ', val = ', val, ', wholesale = ' + wholesale);
 		if(wholesale) {
 			this.config.wholesaleParts[part] = val;
 		} else {
@@ -78,7 +78,7 @@ var Machine = function() {
 				this.requiredParts[part] = true;
 				this.requiredPartsCount++;
 				PWG.EventCenter.trigger({ type: Event.REQUIRED_PART_ADDED });
-				// trace('\trequiredPartsCount now: ' + this.requiredPartsCount + '/' + this.requiredPartsTotal);
+				trace('\trequiredPartsCount now: ' + this.requiredPartsCount + '/' + this.requiredPartsTotal);
 			}
 
 			if(this.requiredPartsCount >= this.requiredPartsTotal) {
@@ -93,19 +93,19 @@ var Machine = function() {
 	};
 	
 	Machine.prototype.calculateCostAndPoints = function() {
-		// trace('Machine['+this.config.id+']/calculateCost, this = ', this);
+		trace('Machine['+this.config.id+']/calculateCost, this = ', this);
 		PWG.Utils.each(
 			this.config.parts,
 			function(val, key) {
-				// trace('\tval = ' + val + ', key = ' + key);
-				this.config.cost += gameData.parts[key][val][this.config.size].cost;
+				trace('\tval = ' + val + ', key = ' + key);
+				this.config.cost += gameData.parts[key][this.config.size][val].cost;
 			},
 			this
 		);
 		PWG.Utils.each(
 			this.config.optionalParts,
 			function(part, p) {
-				this.config.cost += gameData.parts[part][p][this.config.size].cost;
+				this.config.cost += gameData.parts[part][this.config.size][val].cost;
 			},
 			this
 		);

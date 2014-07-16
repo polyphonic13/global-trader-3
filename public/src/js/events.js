@@ -52,6 +52,7 @@ var Events = {
 	OPEN_WHOLESALE_PARTS_MENU: 'openWholesalePartsMenu',
 	CLOSE_WHOLESALE_PARTS_MENU: 'closeWholesalePartsMenu',
 	ADD_PART: 'addPart',
+	REQUIRED_PART_ADDED: 'requiredPartAdded',
 	ADD_WHOLESALE_PART: 'addWholesalePart',
 	ADD_OPTIONAL_PART: 'addOptionalPart',
 	SAVE_MACHINE: 'saveMachine',

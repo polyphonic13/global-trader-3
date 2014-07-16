@@ -1653,6 +1653,72 @@ var GameConfig = function() {
 					
 				}
 			},
+			wholesalePartIcon: {
+				type: 'group',
+				name: 'partIcon',
+				offset: (gameUnit * 3.7),
+				iconH: (gameUnit * 3.4),
+				views: {
+					bg: {
+						type: 'sprite',
+						name: 'menuItemBg',
+						img: 'blockWhite',
+						x: gameUnit * 0.85,
+						y: 0.25,
+						attrs: {
+							width: (gameUnit * 3),
+							height: (gameUnit * 2.5),
+							alpha: 0.1
+						}
+					},
+					icon: {
+						type: 'sprite',
+						name: 'menuItemIcon',
+						img: '',
+						x: -(gameUnit * 1.25),
+						y: -(gameUnit * 2.5),
+						attrs: {
+							width: gameUnit * 7,
+							height: gameUnit * 7
+						}
+					},
+					description: {
+						type: 'text',
+						name: 'menuItemDescription',
+						text: '',
+						x: gameUnit * 5.33,
+						y: gameUnit * 0.75,
+						style: {
+						    font: (fontSizes.sm + 'px Trebuchet MS'),
+					        fill: palette.black
+						}
+					},
+					available: {
+						type: 'text',
+						name: 'menuItemCost',
+						text: '',
+						x: gameUnit * 5.33,
+						y: gameUnit * 1.25,
+						style: {
+						    font: (fontSizes.sm + 'px Trebuchet MS'),
+					        fill: palette.black
+						}
+					},
+					invisButton: {
+						type: 'sprite',
+						name: 'menuItemInvisBtn',
+						img: 'blockClear',
+						partId: -1,
+						x: gameUnit * 0.5,
+						y: 0,
+						attrs: {
+							width: gameW - gameUnit,
+							height: (gameUnit * 3)
+						}
+					}
+					
+				}
+			},
 			optionalPartsMenu: {
 			},
 			distributorPrompt: {
@@ -1761,7 +1827,7 @@ var GameConfig = function() {
 			},
 			wholesalePartPrompt: {
 				type: 'group',
-				name: 'tradeRoutePrompt',
+				name: 'wholesalePartPrompt',
 				views: {
 					menuBg: {
 						type: 'sprite',
@@ -1884,11 +1950,11 @@ var GameConfig = function() {
 					exclamationAlert: 'images/icons/exclamation5.png',
 					tradeRouteAlertIcon: 'images/icons/little_trade_route_alert.png',
 					tradeRouteIcon: 'images/screens/world/trade_route_icon.png',
-					tradeRouteEurope: 'images/screens/world/trade_route_europe.png',
-					tradeRouteAsia: 'images/screens/world/trade_route_asia.png',
-					tradeRoutePacificNorth: 'images/screens/world/trade_route_pacific_north.png',
-					tradeRoutePacificSouth: 'images/screens/world/trade_route_pacific_south.png',
 					tradeRouteAfrica: 'images/screens/world/trade_route_africa.png',
+					tradeRouteAsia: 'images/screens/world/trade_route_asia.png',
+					tradeRouteEurope: 'images/screens/world/trade_route_europe.png',
+					tradeRouteMiddleEast: 'images/screens/world/trade_route_middle_east.png',
+					tradeRoutePacificSouth: 'images/screens/world/trade_route_south_pacific.png',
 					tradeRouteSouthAmerica: 'images/screens/world/trade_route_south_america.png',
 					// us detail
 					sectorGridNE: 'images/screens/us_detail/sector_grid_ne.png',
@@ -1999,13 +2065,13 @@ var GameConfig = function() {
 
 					// NOTIFICATIONS
 					dealershipGirl: 'images/notifications/dealership_girl.png',
-					// wholeSaleBg: 'images/notifications/wholesale_bg.png',
-					tradeRouteAfricaNotification: 'images/screens/world/trade_route_africa.png',
-					tradeRouteAsiaNotification: 'images/screens/world/trade_route_asia.png',
-					tradeRouteEuropeNotification: 'images/screens/world/trade_route_europe.png',
-					tradeRouteMiddleEastNotification: 'images/screens/world/trade_route_middle_east.png',
-					tradeRouteSouthPacificNotification: 'images/screens/world/trade_route_south_pacific.png',
-					tradeRouteSouthAmericaNotification: 'images/screens/world/trade_route_south_america.png',
+					distributorGuy: 'images/notifications/distributor_guy.png',
+					tradeRouteAfricaNotification: 'images/notifications/trade_route_africa.png',
+					tradeRouteAsiaNotification: 'images/notifications/trade_route_asia.png',
+					tradeRouteEuropeNotification: 'images/notifications/trade_route_europe.png',
+					tradeRouteMiddleEastNotification: 'images/notifications/trade_route_middle_east.png',
+					tradeRouteSouthPacificNotification: 'images/notifications/trade_route_south_pacific.png',
+					tradeRouteSouthAmericaNotification: 'images/notifications/trade_route_south_america.png',
 
 					// TURN END
 					turnEnd01: 'images/screens/turn_end/turn_end01.png',
@@ -2379,10 +2445,10 @@ var GameConfig = function() {
 					statement: 'We would like to sell ~{quantity}~ per year\nof your ~{plant}~\n~{model}~ inventory\nat $~{resell}~ each.'
 				},
 				distributorPrompt: {
-					statement: 'We would like to offer you\n~{quantity}~ ~{size}~ ~{type}~\n for the wholesale cost of ~{cost}~.'
+					statement: 'We would like to offer you\n~{quantity}~ ~{size}~ ~{type}~\nfor the wholesale cost\nof ~{cost}~.'
 				},
 				wholesaleParts: {
-					statement: 'Click here to view\nwholesale part inventory'
+					statement: 'Click here to view\nwholesale parts'
 				},
 				tradeRoute: {
 					statement: 'We would like to import ~{quantity}~\nper year of your ~{plant}~\n~{model}~ inventory\nat $~{resell}~ each.'
