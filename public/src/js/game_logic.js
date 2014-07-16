@@ -2,7 +2,7 @@ var ASPECT_RATIO = [9, 16];
 var GAME_NAME = 'global_trader_3_0';
 var FACEBOOK_URL = 'https://www.facebook.com/cnhitrade';
 var TIME_PER_TURN = 52;
-var TURN_TIME_INTERVAL = 3000;
+var TURN_TIME_INTERVAL = 1000;
 var US_DETAIL_GRID_CELLS = 6;
 var MACHINE_LIST_COLUMNS = 2; 
 var MACHINE_LIST_ICONS = 6;
@@ -172,23 +172,29 @@ var gameLogic = {
 			addManualPage: function(idx) {
 				var manualPages = PWG.ViewManager.getControllerFromPath('manual:manualPages');
 				var manualPage = PWG.Utils.clone(PhaserGame.config.dynamicViews.manualPage);
+				var manualPageNumber = PWG.Utils.clone(PhaserGame.config.dynamicViews.manualPageNumber);
 				var manualPageText = PhaserGame.config.dynamicViews.manualPageText;
-				var pageConfig = gameData.tutorialText.pages[idx];
+				var manualPageImage = PhaserGame.config.dynamicViews.manualPageImage;
+				var pageConfig = PhaserGame.config.tutorial.pages[idx];
 				trace('making manual page: '+ idx + ', with: ', pageConfig, '\tpages = ', manualPages);
 				manualPage.name += idx;
-				manualPage.views.title.text = gameData.tutorialText.title;
-				manualPage.views.subtitle.text = gameData.tutorialText.subtitle;
+				manualPage.views.title.text = PhaserGame.config.tutorial.title;
+				// manualPage.views.subtitle.text = PhaserGame.config.tutorial.subtitle;
+				
+				manualPageNumber.text = (idx + 1) + '/' + PhaserGame.config.tutorial.pages.length;
+				manualPage.views[manualPageNumber.name] = manualPageNumber;
 				
 				var pageText = PWG.Utils.clone(manualPageText);
 
 				PWG.Utils.each(
 					pageConfig.blurbs,
 					function(blurb, idx) {
+						// trace('blurb['+idx+'] = ', blurb);
 						var pageText = PWG.Utils.clone(manualPageText);
 						pageText.name += idx;
 						pageText.text = blurb.text;
-						pageText.x += blurb.x;
-						pageText.y += blurb.y;
+						pageText.x = blurb.x;
+						pageText.y = blurb.y;
 
 						manualPage.views[pageText.name] = pageText;
 					},
@@ -205,17 +211,18 @@ var gameLogic = {
 						pageImage.y += image.y;
 						pageImage.attrs.width = image.width;
 						pageImage.attrs.height = image.height;
-
+				
 						manualPage.views[pageImage.name] = pageImage;
 					},
 					this
 				);
 
+				
 				PWG.ViewManager.addView(manualPage, manualPages, true);
 			},
 			nextManualPage: function() {
 				trace('PhaserGame/nextManualPage, idx = ' + PhaserGame.manualPage);
-				if(PhaserGame.manualPage < gameData.tutorialText.pages.length -1) {
+				if(PhaserGame.manualPage < PhaserGame.config.tutorial.pages.length -1) {
 					PhaserGame.manualPage++;
 				} else {
 					PhaserGame.manualPage = 0;

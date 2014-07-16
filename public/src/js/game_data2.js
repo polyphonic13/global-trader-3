@@ -232,489 +232,438 @@ var gameData = {
 		powerTakeoff: 'Power Takeoff'
 	},
 	parts: {
-		tires: [
-		{
-			id: 'w3',
-			frame: 1,
-			description: 'Standard',
-			basic: {
+		tires: {
+			basic: [
+			{
+				description: 'Standard',
 				img: 'tiresBasicStandard',
 				cost: 350,
 				build: 50,
 				sell: 1000
 			},
-			medium: {
-				img: 'tiresMediumStandard',
-				cost: 700,
-				build: 100,
-				sell: 2000
-			}
-		},
-		{
-			id: 'w1',
-			frame: 2,
-			description: 'Premium',
-			basic: {
+			{
+				description: 'Premium',
 				img: 'tiresBasicPremium',
-				cost: 500,
-				build: 100,
-				sell: 2000
-			},
-			medium: {
-				img: 'tiresMediumPremium',
-				cost: 1000,
-				build: 200,
-				sell: 4000
-			}
-		},
-		{
-			id: 'w4',
-			img: 'tires3',
-			frame: 3,
-			description: 'Deluxe',
-			basic: {
-				img: 'tiresBasicDeluxe',
 				cost: 1000,
 				build: 250,
 				sell: 5000
 			},
-			medium: {
+			{
+				description: 'Deluxe',
+				img: 'tiresBasicDeluxe',
+				cost: 1350,
+				build: 250,
+				sell: 5000
+			}
+			],
+			medium: [
+			{
+				description: 'Standard',
+				img: 'tiresMediumStandard',
+				cost: 700,
+				build: 200,
+				sell: 1400
+			},
+			{
+				description: 'Premium',
+				img: 'tiresMediumPremium',
+				cost: 1000,
+				build: 200,
+				sell: 4000
+			},
+			{
+				description: 'Deluxe',
 				img: 'tiresMediumDeluxe',
 				cost: 2000,
 				build: 500,
 				sell: 10000
 			}
-		}
-		],
-		tracks: [
-		{
-			id: 'w3',
-			img: 'tires2',
-			frame: 1,
-			description: 'Standard',
-			heavy: {
+			]
+		},
+		tracks: {
+			heavy: [
+			{
+				description: 'Standard',
 				img: 'tracksHeavyStandard',
 				cost: 1000,
 				build: 150,
 				sell: 3000
-			}
-		},
-		{
-			id: 'w1',
-			img: 'tires1',
-			frame: 2,
-			description: 'Premium',
-			heavy: {
+			},
+			{
+				description: 'Deluxe',
 				img: 'tracksHeavyPremium',
 				cost: 1500,
 				build: 250,
 				sell: 5000
-			}
-		},
-		{
-			id: 'w4',
-			img: 'tires3',
-			frame: 3,
-			description: 'Deluxe',
-			heavy: {
+			},
+			{
+				description: 'Deluxe',
 				img: 'tracksHeavyDeluxe',
 				cost: 4000,
 				build: 1000,
 				sell: 20000
 			}
-		}
-		],
-		engine: [
-		{
-			id: 'e1',
-			frame: 1,
-			description: 'Standard',
-			basic: {
+			]
+		},
+		engine: {
+			basic: [
+			{
+				description: 'Standard',
 				img: 'engineBasicStandard',
 				cost: 2000,
 				build: 500,
 				sell: 10000
 			},
-			medium: {
-				img: 'engineMediumStandard',
-				cost: 4000,
-				build: 1000,
-				sell: 20000
-			},
-			heavy: {
-				img: 'engineHeavyStandard',
-				cost: 6000,
-				build: 1500,
-				sell: 30000
-			}
-		},
-		{
-			id: 'e2',
-			frame: 2,
-			description: 'Premium',
-			basic: {
+			{
+				description: 'Deluxe',
 				img: 'engineBasicPremium',
 				cost: 3000,
 				build: 750,
 				sell: 15000
 			},
-			medium: {
+			{
+				description: 'Deluxe',
+				img: 'engineBasicDeluxe',
+				cost: 5000,
+				build: 500,
+				sell: 10000
+			}
+			],
+			medium: [
+			{
+				description: 'Standard',
+				img: 'engineMediumStandard',
+				cost: 4000,
+				build: 1000,
+				sell: 20000
+			},
+			{
+				description: 'Premium',
 				img: 'engineMediumPremium',
 				cost: 6000,
 				build: 1500,
 				sell: 30000
 			},
-			heavy: {
-				img: 'engineHeavyPremium',
-				cost: 9000,
-				build: 2000,
-				sell: 40000
-			}
-		},
-		{
-			id: 'e3',
-			frame: 3,
-			description: 'Deluxe',
-			basic: {
-				img: 'engineBasicDeluxe',
-				cost: 5000,
-				build: 500,
-				sell: 10000
-			},
-			medium: {
+			{
+				description: 'Deluxe',
 				img: 'engineMediumDeluxe',
 				cost: 10000,
 				build: 1000,
 				sell: 20000
+			}
+			],
+			heavy: [
+			{
+				description: 'Standard',
+				img: 'engineHeavyStandard',
+				cost: 6000,
+				build: 1500,
+				sell: 30000
 			},
-			heavy: {
+			{
+				description: 'Premium',
+				img: 'engineHeavyPremium',
+				cost: 9000,
+				build: 2000,
+				sell: 40000
+			},
+			{
+				description: 'Deluxe',
 				img: 'engineHeavyDeluxe',
 				cost: 15000,
 				build: 1500,
 				sell: 30000
 			}
-		}
-		],
-		transmission: [
-		{
-			id: 'c1',
-			frame: 1,
-			description: 'Standard',
-			basic: {
+			]
+		},
+		transmission: {
+			basic: [
+			{
+				description: 'Standard',
 				img: 'transmissionBasicStandard',
 				cost: 300,
 				build: 50,
 				sell: 1000
 			},
-			medium: {
-				img: 'transmissionMediumStandard',
-				cost: 600,
-				build: 100,
-				sell: 2000
-			},
-			heavy: {
-				img: 'transmissionHeavyStandard',
-				cost: 900,
-				build: 150,
-				sell: 3000
-			}
-		},
-		{
-			id: 'c2',
-			frame: 2,
-			description: 'Premium',
-			basic: {
+			{
+				description: 'Premium',
 				img: 'transmissionBasicPremium',
 				cost: 400,
 				build: 75,
 				sell: 1500
 			},
-			medium: {
+			{
+				description: 'Deluxe',
+				img: 'transmissionBasicDeluxe',
+				cost: 1000,
+				build: 250,
+				sell: 500
+			}
+			],
+			medium: [
+			{
+				description: 'Standard',
+				img: 'transmissionMediumStandard',
+				cost: 600,
+				build: 100,
+				sell: 2000
+			},
+			{
+				description: 'Premium',
 				img: 'transmissionMediumPremium',
 				cost: 800,
 				build: 150,
 				sell: 3000
 			},
-			heavy: {
-				img: 'transmissionHeavyPremium',
-				cost: 1200,
-				build: 225,
-				sell: 4500
-			}
-		},
-		{
-			id: 'c3',
-			frame: 3,
-			description: 'Deluxe',
-			basic: {
-				img: 'transmissionBasicDeluxe',
-				cost: 1000,
-				build: 250,
-				sell: 500
-			},
-			medium: {
+			{
+				description: 'Deluxe',
 				img: 'transmissionMediumDeluxe',
 				cost: 2000,
 				build: 500,
 				sell: 1000
+			}
+			],
+			heavy: [
+			{
+				description: 'Standard',
+				img: 'transmissionHeavyStandard',
+				cost: 900,
+				build: 150,
+				sell: 3000
 			},
-			heavy: {
+			{
+				description: 'Premium',
+				img: 'transmissionHeavyPremium',
+				cost: 1200,
+				build: 225,
+				sell: 4500
+			},
+			{
+				description: 'Deluxe',
 				img: 'transmissionHeavyDeluxe',
 				cost: 3000,
 				build: 1000,
 				sell: 2000
 			}
-		}
-		],
-		headlights: [
-		{
-			id: 'c1',
-			frame: 1,
-			description: 'Standard',
-			medium: {
-				img: 'headlightsMediumStandard',
-				cost: 600,
-				build: 100,
-				sell: 2000
-			},
-			heavy: {
-				img: 'headlightsHeavyStandard',
-				cost: 900,
-				build: 150,
-				sell: 3000
-			}
+			]
 		},
-		{
-			id: 'c2',
-			frame: 2,
-			description: 'Premium',
-			medium: {
-				img: 'headlightsMediumPremium',
-				cost: 800,
-				build: 150,
-				sell: 3000
-			},
-			heavy: {
-				img: 'headlightsHeavyPremium',
-				cost: 1200,
-				build: 225,
-				sell: 4500
-			}
-		},
-		{
-			id: 'c3',
-			frame: 3,
-			description: 'Deluxe',
-			medium: {
-				img: 'headlightsMediumDeluxe',
-				cost: 2000,
-				build: 500,
-				sell: 1000
-			},
-			heavy: {
-				img: 'headlightsHeavyDeluxe',
-				cost: 3000,
-				build: 1000,
-				sell: 2000
-			}
-		}
-		],
-		quickCoupler: [
-		{
-			id: 'c1',
-			frame: 1,
-			description: 'Standard',
-			medium: {
-				img: 'quickCouplerMediumStandard',
-				cost: 500,
-				build: 150,
-				sell: 1500
-			},
-			heavy: {
-				img: 'quickCouplerHeavyStandard',
-				cost: 900,
-				build: 150,
-				sell: 3000
-			}
-		},
-		{
-			id: 'c2',
-			frame: 2,
-			description: 'Premium',
-			medium: {
-				img: 'quickCouplerMediumPremium',
-				cost: 750,
-				build: 150,
-				sell: 1500
-			},
-			heavy: {
-				img: 'quickCouplerHeavyPremium',
-				cost: 1200,
-				build: 225,
-				sell: 4500
-			}
-		},
-		{
-			id: 'c3',
-			frame: 3,
-			description: 'Deluxe',
-			medium: {
-				img: 'quickCouplerMediumDeluxe',
-				cost: 1000,
-				build: 150,
-				sell: 1500
-			},
-			heavy: {
-				img: 'quickCouplerHeavyDeluxe',
-				cost: 3000,
-				build: 1000,
-				sell: 2000
-			}
-		}
-		],
-		threePointHitch: [
-		{
-			id: 'c1',
-			img: 'transmission1',
-			frame: 1,
-			description: 'Standard',
-			heavy: {
-				img: 'threePointHitchHeavyStandard',
-				cost: 900,
-				build: 150,
-				sell: 3000
-			}
-		},
-		{
-			id: 'c2',
-			img: 'transmission2',
-			frame: 2,
-			description: 'Premium',
-			heavy: {
-				img: 'threePointHitchHeavyPremium',
-				cost: 1200,
-				build: 225,
-				sell: 4500
-			}
-		},
-		{
-			id: 'c3',
-			frame: 3,
-			description: 'Deluxe',
-			heavy: {
-				img: 'threePointHitchHeavyDeluxe',
-				cost: 3000,
-				build: 1000,
-				sell: 2000
-			}
-		}
-		],
-		powerTakeoff: [
-		{
-			id: 'c1',
-			frame: 1,
-			description: 'Standard',
-			heavy: {
-				img: 'powerTakeoffHeavyStandard',
-				cost: 900,
-				build: 150,
-				sell: 3000
-			}
-		},
-		{
-			id: 'c2',
-			frame: 2,
-			description: 'Premium',
-			heavy: {
-				img: 'powerTakeoffHeavyPremium',
-				cost: 1200,
-				build: 225,
-				sell: 4500
-			}
-		},
-		{
-			id: 'c3',
-			frame: 3,
-			description: 'Deluxe',
-			heavy: {
-				img: 'powerTakeoffHeavyDeluxe',
-				cost: 3000,
-				build: 1000,
-				sell: 2000
-			}
-		}
-		],
-		bucket: [
-		{
-			id: 'c1',
-			frame: 1,
-			description: 'Standard',
-			basic: {
+		bucket: {
+			basic: [
+			{
+				description: 'Standard',
 				img: 'bucketBasicStandard',
 				cost: 300,
 				build: 50,
 				sell: 1000
 			},
-			medium: {
-				img: 'bucketBasicPremium',
-				cost: 600,
-				build: 100,
-				sell: 2000
-			},
-			heavy: {
-				img: 'bucketBasicDeluxe',
-				cost: 900,
-				build: 150,
-				sell: 3000
-			}
-		},
-		{
-			id: 'c2',
-			frame: 2,
-			description: 'Premium',
-			basic: {
+			{
+				description: 'Deluxe',
 				img: 'bucketMediumStandard',
 				cost: 400,
 				build: 75,
 				sell: 1500
 			},
-			medium: {
+			{
+				description: 'Deluxe',
+				img: 'bucketHeavyStandard',
+				cost: 1000,
+				build: 250,
+				sell: 500
+			}
+			],
+			medium: [
+			{
+				description: 'Standard',
+				img: 'bucketBasicPremium',
+				cost: 600,
+				build: 100,
+				sell: 2000
+			},
+			{
+				description: 'Premium',
 				img: 'bucketMediumPremium',
 				cost: 800,
 				build: 150,
 				sell: 3000
 			},
-			heavy: {
-				img: 'bucketMediumDeluxe',
-				cost: 1200,
-				build: 225,
-				sell: 4500
-			}
-		},
-		{
-			id: 'c3',
-			frame: 3,
-			description: 'Deluxe',
-			basic: {
-				img: 'bucketHeavyStandard',
-				cost: 1000,
-				build: 250,
-				sell: 500
-			},
-			medium: {
+			{
+				description: 'Deluxe',
 				img: 'bucketHeavyPremium',
 				cost: 2000,
 				build: 500,
 				sell: 1000
+			}
+			],
+			heavy: [
+			{
+				description: 'Standard',
+				img: 'bucketBasicDeluxe',
+				cost: 900,
+				build: 150,
+				sell: 3000
 			},
-			heavy: {
+			{
+				description: 'Premium',
+				img: 'bucketMediumDeluxe',
+				cost: 1200,
+				build: 225,
+				sell: 4500
+			},
+			{
+				description: 'Deluxe',
 				img: 'bucketHeavyDeluxe',
 				cost: 3000,
 				build: 1000,
 				sell: 2000
 			}
+			]
+		},
+		headlights: {
+			medium: [
+			{
+				description: 'Standard',
+				img: 'headlightsMediumStandard',
+				cost: 600,
+				build: 100,
+				sell: 2000
+			},
+			{
+				description: 'Premium',
+				img: 'headlightsMediumPremium',
+				cost: 800,
+				build: 150,
+				sell: 3000
+			},
+			{
+				description: 'Deluxe',
+				img: 'headlightsMediumDeluxe',
+				cost: 2000,
+				build: 500,
+				sell: 1000
+			}
+			],
+			heavy: [
+			{
+				description: 'Standard',
+				img: 'headlightsHeavyStandard',
+				cost: 900,
+				build: 150,
+				sell: 3000
+			},
+			{
+				description: 'Premium',
+				img: 'headlightsHeavyPremium',
+				cost: 1200,
+				build: 225,
+				sell: 4500
+			},
+			{
+				description: 'Deluxe',
+				img: 'headlightsHeavyDeluxe',
+				cost: 3000,
+				build: 1000,
+				sell: 2000
+			}
+			]
+		},
+		threePointHitch: {
+			heavy: [
+			{
+				description: 'Standard',
+				img: 'threePointHitchHeavyStandard',
+				cost: 900,
+				build: 150,
+				sell: 3000
+			},
+			{
+				description: 'Premium',
+				img: 'threePointHitchHeavyPremium',
+				cost: 1200,
+				build: 225,
+				sell: 4500
+			},
+			{
+				description: 'Deluxe',
+				img: 'threePointHitchHeavyDeluxe',
+				cost: 3000,
+				build: 1000,
+				sell: 2000
+			}
+			]
+		},
+		quickCoupler: {
+			medium: [
+			{
+				description: 'Standard',
+				img: 'quickCouplerMediumStandard',
+				cost: 500,
+				build: 150,
+				sell: 1500
+			},
+			{
+				description: 'Premium',
+				img: 'quickCouplerMediumPremium',
+				cost: 750,
+				build: 150,
+				sell: 1500
+			},
+			{
+				description: 'Deluxe',
+				img: 'quickCouplerMediumDeluxe',
+				cost: 1000,
+				build: 150,
+				sell: 1500
+			}
+			],
+			heavy: [
+			{
+				description: 'Standard',
+				img: 'quickCouplerHeavyStandard',
+				cost: 900,
+				build: 150,
+				sell: 3000
+			},
+			{
+				description: 'Premium',
+				img: 'quickCouplerHeavyPremium',
+				cost: 1200,
+				build: 225,
+				sell: 4500
+			},
+			{
+				description: 'Deluxe',
+				img: 'quickCouplerHeavyDeluxe',
+				cost: 3000,
+				build: 1000,
+				sell: 2000
+			}
+			]
+		},
+		powerTakeoff: {
+			heavy: [
+			{
+				description: 'Standard',
+				img: 'powerTakeoffHeavyStandard',
+				cost: 900,
+				build: 150,
+				sell: 3000
+			},
+			{
+				description: 'Premium',
+				img: 'powerTakeoffHeavyPremium',
+				cost: 1200,
+				build: 225,
+				sell: 4500
+			},
+			{
+				description: 'Deluxe',
+				img: 'powerTakeoffHeavyDeluxe',
+				cost: 3000,
+				build: 1000,
+				sell: 2000
+			}
+			]
 		}
-		]
 	},
 	optionalParts: {
 		heater: [
@@ -722,34 +671,28 @@ var gameData = {
 			id: 'c1',
 			frame: 1,
 			description: 'standard heater',
-			heavy: {
-				img: 'heaterStandard',
-				cost: 900,
-				build: 150,
-				sell: 3000
-			}
+			img: 'heaterStandard',
+			cost: 900,
+			build: 150,
+			sell: 3000
 		},
 		{
 			id: 'c2',
 			frame: 2,
 			description: 'premium heater',
-			heavy: {
-				img: 'heaterPremium',
-				cost: 1200,
-				build: 225,
-				sell: 4500
-			}
+			img: 'heaterPremium',
+			cost: 1200,
+			build: 225,
+			sell: 4500
 		},
 		{
 			id: 'c3',
 			frame: 3,
 			description: 'deluxe heater',
-			heavy: {
-				img: 'heaterDeluxe',
-				cost: 3000,
-				build: 1000,
-				sell: 2000
-			}
+			img: 'heaterDeluxe',
+			cost: 3000,
+			build: 1000,
+			sell: 2000
 		}
 		],
 		flameDecal: [
@@ -757,24 +700,10 @@ var gameData = {
 			id: 'c1',
 			frame: 1,
 			description: 'flame decal',
-			basic: {
-				img: 'flameDecal',
-				cost: 30,
-				build: 50,
-				sell: 1000
-			},
-			medium: {
-				img: 'flameDecal',
-				cost: 30,
-				build: 50,
-				sell: 1000
-			},
-			heavy: {
-				img: 'flameDecal',
-				cost: 30,
-				build: 50,
-				sell: 1000
-			}
+			img: 'flameDecal',
+			cost: 30,
+			build: 50,
+			sell: 1000
 		}
 		],
 		gps: [
@@ -782,24 +711,10 @@ var gameData = {
 			id: 'c1',
 			frame: 1,
 			description: 'GPS',
-			basic: {
-				img: 'gps',
-				cost: 50,
-				build: 50,
-				sell: 1000
-			},
-			medium: {
-				img: 'gps',
-				cost: 50,
-				build: 50,
-				sell: 1000
-			},
-			heavy: {
-				img: 'gps',
-				cost: 50,
-				build: 50,
-				sell: 1000
-			}
+			img: 'gps',
+			cost: 50,
+			build: 50,
+			sell: 1000
 		}
 		],
 		stainlessExhaust: [
@@ -807,24 +722,10 @@ var gameData = {
 			id: 'c1',
 			frame: 1,
 			description: 'stainless exhaust',
-			basic: {
-				img: 'stainlessExhause',
-				cost: 100,
-				build: 50,
-				sell: 1000
-			},
-			medium: {
-				img: 'stainlessExhause',
-				cost: 100,
-				build: 50,
-				sell: 1000
-			},
-			heavy: {
-				img: 'stainlessExhause',
-				cost: 100,
-				build: 50,
-				sell: 1000
-			}
+			img: 'stainlessExhause',
+			cost: 100,
+			build: 50,
+			sell: 1000
 		}
 		],
 		autoPilot: [
@@ -832,24 +733,10 @@ var gameData = {
 			id: 'c1',
 			frame: 1,
 			description: 'auto pilot',
-			basic: {
-				img: 'autoPilot',
-				cost: 300,
-				build: 50,
-				sell: 1000
-			},
-			medium: {
-				img: 'autoPilot',
-				cost: 300,
-				build: 50,
-				sell: 1000
-			},
-			heavy: {
-				img: 'autoPilot',
-				cost: 300,
-				build: 50,
-				sell: 1000
-			}
+			img: 'autoPilot',
+			cost: 300,
+			build: 50,
+			sell: 1000
 		}
 		]
 	},
@@ -947,7 +834,7 @@ var gameData = {
 		brief: {
 			background: 'briefBg04',
 			text: [
-				'Build 3 Dealerships',
+				'Establish 3 Dealerships',
 				'Create 5 Machine Models',
 				'Produce 100 Machines'
 			]
@@ -1163,276 +1050,5 @@ var gameData = {
 			machine10000: 10000,
 			machine50000: 50000
 		}
-	},
-	tutorialText: {
-		title: 'Global Trader 3.0\nCNH INDUSTRIAL',
-		subtitle: 'Instructions and Strategy\nDIGITAL TRADE TOOLBOX',
-		pages: [
-		{
-			blurbs: [
-			{
-				text: 'Click on the ignition to start the game.',
-				x: 0,
-				y: 0
-			},
-			{
-				text: 'Look over the Mission Brief.\nThese are the goals you will\nneed to accomplish for the year.\nHit the check button to accept.',
-				x: 0,
-				y: 0
-			}
-			],
-			images: [
-			{
-				img: 'ignition',
-				x: 0,
-				y: 0,
-				width: 0,
-				height: 0
-			},
-			{
-				img: 'confirmButton',
-				x: 0,
-				y: 0,
-				width: 0,
-				height: 0
-			}
-			]
-		},
-		{
-			blurbs: [
-			{
-				text: 'Each level is one year.\nThe 52 weeks of the year countdownt the turn.\nThe yellow dots reflect the current year.',
-				x: 0,
-				y: 0
-			},
-			{
-				text: 'Choose a sector of the US to view.',
-				x: 0,
-				y: 0
-			},
-			{
-				text: 'Click on the grid to build a plant.',
-				x: 0,
-				y: 0
-			},
-			{
-				text: 'The plant completes construction in 3 weeks.\nIt is now active and you can start making equipment.',
-				x: 0,
-				y: 0
-			}
-			],
-			images: [
-			{
-				img: 'confirmButton',
-				x: 0,
-				y: 0,
-				width: 0,
-				height: 0
-			},
-			{
-				img: 'usSector',
-				x: 0,
-				y: 0,
-				width: 0,
-				height: 0
-			},
-			{
-				img: 'grid',
-				x: 0,
-				y: 0,
-				width: 0,
-				height: 0
-			},
-			{
-				img: 'plantIcon',
-				x: 0,
-				y: 0,
-				width: 0,
-				height: 0
-			}
-			]
-		},
-		{
-			blurbs: [
-			{
-				text: 'Click on the active plant and see its details. The wrench takes you to the\nlist of the plants Tractor and Skid Steer models.',
-				x: 0,
-				y: 0
-			},
-			{
-				text: 'Click an empty slot to add a new model.',
-				x: 0,
-				y: 0
-			},
-			{
-				text: 'Choose the type and the size to build.', 
-				x: 0,
-				y: 0
-			}
-			],
-			images: [
-			{
-				img: 'plantDetails',
-				x: 0,
-				y: 0,
-				width: 0,
-				height: 0
-			},
-			{
-				img: 'wrench',
-				x: 0,
-				y: 0,
-				width: 0,
-				height: 0
-			},
-			{
-				img: 'emptyMachineIcon',
-				x: 0,
-				y: 0,
-				width: 0,
-				height: 0
-			},
-			{
-				img: 'createMachineIcon',
-				x: 0,
-				y: 0,
-				width: 0,
-				height: 0
-			}
-			]
-		},
-		{
-			blurbs: [
-			{
-				text: 'Required parts are displayed above.\nClick to open the parts menu.',
-				x: 0,
-				y: 0
-			},
-			{
-				text: 'The choice of parts will affect\nthe manufacturing cost of a machine.',
-				x: 0,
-				y: 0
-			},
-			{
-				text: 'There may be Wholesale oppurtunities for parts.\nBuy in bulk to save on manufacturing\ncosts later.',
-				x: 0,
-				y: 0
-			}
-			],
-			images: [
-			{
-				img: 'partNavigator',
-				x: 0,
-				y: 0,
-				width: 0,
-				height: 0
-			},
-			{
-				img: 'partMenu',
-				x: 0,
-				y: 0,
-				width: 0,
-				height: 0
-			}
-			]
-		},
-		{
-			blurbs: [
-			{
-				text: 'The stars turn from grey to yellow as you\nselect each required machine type part.',
-				x: 0,
-				y: 0
-			},
-			{
-				text: 'After a Plant has manufactured 3 machines,\nRegional Representatives will prompt\nyou to sell through their Dealership.',
-				x: 0,
-				y: 0
-			},
-			{
-				text: 'Not all Dealerships offer the same resale.\nThe first is not always the best.',
-				x: 0,
-				y: 0
-			}
-			],
-			images: []
-		},
-		{
-			blurbs: [
-			{
-				text: 'After you sell domestically,\nyou may receive trade opportunities\nleading to increased revenue and bonus points.',
-				x: 0,
-				y: 0
-			},
-			{
-				text: 'Clicking the prompt returns to\nthe world map and displays\nthe potential trade route.',
-				x: 0,
-				y: 0
-			},
-			{
-				text: 'Click the trade route to expand\nthe Trade Representative\'s offer.',
-				x: 0,
-				y: 0
-			},
-			{
-				text: 'Accepting is optional.\nSome trade routes are better than others!',
-				x: 0,
-				y: 0
-			}
-			],
-			images: [
-			{
-				img: 'tradeRouteAlert',
-				x: 0,
-				y: 0,
-				width: 0,
-				height: 0
-			},
-			{
-				img: 'worldMapTradeRoutes',
-				x: 0,
-				y: 0,
-				width: 0,
-				height: 0
-			},
-			{
-				img: 'tradeRouteNotification',
-				x: 0,
-				y: 0,
-				width: 0,
-				height: 0
-			}]
-		},
-		{
-			blurbs:
-			[ 
-			{
-				text: 'Keep track of your bank, the turn time,\nand Bonus Points\nat the top of your screen.',
-				x: 0,
-				y: 0
-			},
-			{
-				text: 'At the end of the year, an envelope\nwill contain the Year End summary.\nWhen all goals are met,\nyou can advance to the next level.',
-				x: 0,
-				y: 0
-			}
-			],
-			images: [
-			{
-				img: 'dashboardTop',
-				x: 0,
-				y: 0,
-				width: 0,
-				height: 0
-			},
-			{
-				img: 'yearEndSummary',
-				x: 0,
-				y: 0,
-				width: 0,
-				height: 0
-			}
-			]
-		}
-		]
 	}
 };

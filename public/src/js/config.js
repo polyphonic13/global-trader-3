@@ -712,7 +712,7 @@ var GameConfig = function() {
 				}
 			},
 			manualPageImage: {
-				type: 'text',
+				type: 'sprite',
 				name: 'pageImage',
 				img: '',
 				x: 0,
@@ -720,6 +720,17 @@ var GameConfig = function() {
 				attrs: {
 				    width: 0,
 			        height: 0
+				}
+			},
+			manualPageNumber: {
+				type: 'text',
+				name: 'pageNumber',
+				text: '',
+				x: gameUnit * 2,
+				y: gameH - (gameUnit * 3.5),
+				style: {
+				    font: (fontSizes.xs + 'px Trebuchet MS'),
+			        fill: palette.black
 				}
 			},
 			// global
@@ -1927,6 +1938,24 @@ var GameConfig = function() {
 					// manual
 					manualBg: 'images/screens/manual/manual_background.png',
 					manualPage: 'images/screens/manual/manual_page.png',
+					ssIgnition: 'images/screens/manual/ss_ignition.png',
+					ssGoals: 'images/screens/manual/ss_goals.png',
+					ssYearIndicators: 'images/screens/manual/ss_year_indicators.png',
+					ssUsSector: 'images/screens/manual/ss_us_sector.png',
+					ssGrid: 'images/screens/manual/ss_grid.png',
+					ssPlant: 'images/screens/manual/ss_plant.png',
+					ssPlantDetails: 'images/screens/manual/ss_plant_details.png',
+					ssEmptySlot: 'images/screens/manual/ss_empty_slot.png',
+					ssTractorMedium: 'images/screens/manual/ss_tractor_medium.png',
+					ssPartsNavigator: 'images/screens/manual/ss_parts_navigator.png',
+					ssPartsMenu: 'images/screens/manual/ss_parts_menu.png',
+					ssStars: 'images/screens/manual/ss_stars.png',
+					ssDealershipGirl: 'images/screens/manual/ss_dealership_girl.png',
+					ssDashboardTop: 'images/screens/manual/ss_dashboard_top.png',
+					ssYearEnd: 'images/screens/manual/ss_year_end.png',
+					ssDealershipEnvelope: 'images/screens/manual/ss_dealership_envelope.png',
+					ssFactoryProduction: 'images/screens/manual/ss_plant_production.png',
+					ssTradeRoutes: 'images/screens/manual/ss_trade_routes.png',
 					// mission brief
 					briefBg01: 'images/screens/brief/mission_brief01.png',
 					briefBg02: 'images/screens/brief/mission_brief02.png',
@@ -3335,7 +3364,288 @@ var GameConfig = function() {
 				'equipmentList',
 				'equipmentCreate',
 				'equipmentEdit'
-			]
+			],
+			tutorial: {
+				title: 'Global Trader 3.0\nCNH INDUSTRIAL',
+				subtitle: 'Instructions and Strategy\nDIGITAL TRADE TOOLBOX',
+				pages: [
+				// 1
+				{
+					blurbs: [
+					{
+						text: 'Click on the ignition\nto start the game.',
+						x: (gameUnit * 2),
+						y: (gameUnit * 3)
+					},
+					{
+						text: 'Look over the Mission Brief.\nThese are the goals you will\nneed to accomplish\nfor the year.\n\nPress the check button\nto begin the turn.',
+						x: (gameUnit * 4.5),
+						y: (gameUnit * 7.5)
+					}
+					],
+					images: [
+					{
+						img: 'ssIgnition',
+						x: (gameUnit * 6),
+						y: (gameUnit * 3),
+						width: (gameUnit * 2),
+						height: (gameUnit * 2) * 1.78
+					},
+					{
+						img: 'ssGoals',
+						x: (gameUnit * 2),
+						y: (gameUnit * 7.5),
+						width: (gameUnit * 2),
+						height: (gameUnit * 2) * 1.76
+					}
+					]
+				},
+				// 2
+				{
+					blurbs: [
+					{
+						text: 'Each level is one year.\nThe 52 weeks of the\nyear countdown the turn.\nThe yellow dots reflect\nthe current year.',
+						x: (gameUnit * 2),
+						y: (gameUnit * 3)
+					},
+					{
+						text: 'Choose a sector of the US to view.',
+						x: (gameUnit * 2),
+						y: (gameUnit * 5)
+					},
+					{
+						text: 'Click on the grid to build a plant.',
+						x: (gameUnit * 2),
+						y: (gameUnit * 7)
+					},
+					{
+						text: 'The plant completes\nconstruction in 3 weeks.\nIt is then active.\nYou can start making\nequipment.',
+						x: (gameUnit * 2),
+						y: (gameUnit * 10)
+					}
+					],
+					images: [
+					{
+						img: 'ssYearIndicators',
+						x: (gameUnit * 6),
+						y: (gameUnit * 3),
+						width: (gameUnit * 1.5),
+						height: (gameUnit * 1.5) * 0.54
+					},
+					{
+						img: 'ssUsSector',
+						x: (gameUnit * 2),
+						y: (gameUnit * 5.5),
+						width: (gameUnit * 2),
+						height: (gameUnit * 2) * 0.65
+					},
+					{
+						img: 'ssGrid',
+						x: (gameUnit * 2),
+						y: (gameUnit * 7.8),
+						width: (gameUnit * 2),
+						height: (gameUnit * 2)
+					},
+					{
+						img: 'ssPlant',
+						x: (gameUnit * 6),
+						y: (gameUnit * 10),
+						width: (gameUnit * 1),
+						height: (gameUnit * 1) * 0.96
+					}
+					]
+				},
+				// 3
+				{
+					blurbs: [
+					{
+						text: 'Click on the active plant\nto see its details.\nThe wrench takes\nyou a list of the\nplant\'s\nTractor and\nSkid Steer models.',
+						x: (gameUnit * 2),
+						y: (gameUnit * 3)
+					},
+					{
+						text: 'Click an empty slot\nto add a new model.',
+						x: (gameUnit * 4.5),
+						y: (gameUnit * 7.5)
+					},
+					{
+						text: 'Choose the type and\nthe size to build.', 
+						x: (gameUnit * 2),
+						y: (gameUnit * 10)
+					}
+					],
+					images: [
+					{
+						img: 'ssPlantDetails',
+						x: (gameUnit * 5.5),
+						y: (gameUnit * 3),
+						width: (gameUnit * 2.5),
+						height: (gameUnit * 2.5) * 1.58
+					},
+					{
+						img: 'ssEmptySlot',
+						x: (gameUnit * 2),
+						y: (gameUnit * 7.5),
+						width: (gameUnit * 2),
+						height: (gameUnit * 2) * 0.85
+					},
+					{
+						img: 'ssTractorMedium',
+						x: (gameUnit * 5.5),
+						y: (gameUnit * 10),
+						width: (gameUnit * 2),
+						height: (gameUnit * 2) * 0.79
+					}
+					]
+				},
+				// 4
+				{
+					blurbs: [
+					{
+						text: 'Required parts are displayed above.\nClick to open the parts menu.',
+						x: (gameUnit * 2),
+						y: (gameUnit * 3)
+					},
+					{
+						text: 'The choice of parts will affect\nthe manufacturing cost of a machine.',
+						x: (gameUnit * 2),
+						y: (gameUnit * 6)
+					},
+					{
+						text: 'There may be Wholesale oppurtunities for parts.\nBuy in bulk to save on manufacturing\ncosts later.',
+						x: (gameUnit * 2),
+						y: (gameUnit * 10)
+					}
+					],
+					images: [
+					{
+						img: 'ssPartsNavigator',
+						x: (gameUnit * 2),
+						y: (gameUnit * 4),
+						width: gameUnit * 4,
+						height: (gameUnit * 4) * 0.29
+					},
+					{
+						img: 'ssPartsMenu',
+						x: (gameUnit * 2),
+						y: (gameUnit * 7),
+						width: gameUnit * 2,
+						height: (gameUnit * 2) * 1.33
+					}
+					]
+				},
+				// 5
+				{
+					blurbs: [
+					{
+						text: 'The stars turn from grey to yellow as you\nselect each required machine type part.',
+						x: (gameUnit * 2),
+						y: (gameUnit * 3)
+					},
+					{
+						text: 'After a Plant has manufactured 3 machines,\nRegional Representatives will prompt\nyou to sell through their Dealership.',
+						x: (gameUnit * 2),
+						y: (gameUnit * 5.5)
+					},
+					{
+						text: 'Not all Dealerships offer the same resale.\nThe first is not always the best.',
+						x: (gameUnit * 2),
+						y: (gameUnit * 11)
+					}
+					],
+					images: [
+					{
+						img: 'ssDealershipGirl',
+						x: (gameUnit * 2),
+						y: (gameUnit * 7),
+						width: (gameUnit * 2),
+						height: (gameUnit * 2) * 1.67
+					},
+					{
+						img: 'ssStars',
+						x: (gameUnit * 2),
+						y: (gameUnit * 4),
+						width: (gameUnit * 4),
+						height: (gameUnit * 4) * 0.2
+					}
+					]
+				},
+				// 6
+				{
+					blurbs: [
+					{
+						text: 'After you sell domestically you,\nmay receive trade opportunities\nleading to increased revenue\nand bonus points.',
+						x: (gameUnit * 2),
+						y: (gameUnit * 3)
+					},
+					{
+						text: 'Clicking the prompt returns to\nthe world map and displays\nthe potential trade route.',
+						x: (gameUnit * 2),
+						y: (gameUnit * 5)
+					},
+					{
+						text: 'Click the trade route to see\nthe Trade Representative\'s offer.',
+						x: (gameUnit * 2),
+						y: (gameUnit * 9.5)
+					},
+					{
+						text: 'Accepting is optional.\nSome trade routes are better than others!',
+						x: (gameUnit * 2),
+						y: (gameUnit * 10.5)
+					}
+					],
+					images: [
+					{
+						img: 'tradeRouteAlertIcon',
+						x: (gameUnit * 7),
+						y: (gameUnit * 3),
+						width: (gameUnit * 1.5),
+						height: (gameUnit * 1.5) * 0.89
+					},
+					{
+						img: 'ssTradeRoutes',
+						x: (gameUnit * 2),
+						y: (gameUnit * 6.5),
+						width: (gameUnit * 4),
+						height: (gameUnit * 4) * 0.68
+					}
+					]
+				},
+				// 7
+				{
+					blurbs:
+					[ 
+					{
+						text: 'Keep track of your bank\nthe turn time,\nand the Bonus Points\nin the top dashboard.',
+						x: (gameUnit * 2),
+						y: (gameUnit * 3)
+					},
+					{
+						text: 'At the end of the year, an envelope\nwill contain the Year End summary.\nWhen all goals are met,\nyou can advance to the next level.',
+						x: (gameUnit * 2),
+						y: (gameUnit * 6)
+					}
+					],
+					images: [
+					{
+						img: 'ssDashboardTop',
+						x: (gameUnit * 2),
+						y: (gameUnit * 4.5),
+						width: (gameUnit * 4.5),
+						height: (gameUnit * 4.5) * 0.17
+					},
+					{
+						img: 'ssYearEnd',
+						x: (gameUnit * 2),
+						y: (gameUnit * 7.5),
+						width: (gameUnit * 3),
+						height: (gameUnit * 3) * 1.3
+					}
+					]
+				}
+				]
+			}
+
 		};
 		callback.call(context, config);
 	};
