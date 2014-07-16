@@ -2,7 +2,7 @@ var ASPECT_RATIO = [9, 16];
 var GAME_NAME = 'global_trader_3_0';
 var FACEBOOK_URL = 'https://www.facebook.com/cnhitrade';
 var TIME_PER_TURN = 52;
-var TURN_TIME_INTERVAL = 3000;
+var TURN_TIME_INTERVAL = 1500;
 var US_DETAIL_GRID_CELLS = 6;
 var MACHINE_LIST_COLUMNS = 2; 
 var MACHINE_LIST_ICONS = 6;
@@ -664,7 +664,10 @@ var gameLogic = {
 				PWG.ViewManager.hideView('global:backButton');
 				PWG.ViewManager.showView('global:cancelButton');
 				PWG.ViewManager.showView('global:confirmButton');
-
+				
+				if(PWG.ScreenManager.currentId === 'buildingEdit') {
+					PWG.ViewManager.hideView('global:plantDetailGroup:equipmentButton');
+				}
 				PhaserGame.confirmAction = {
 					method: function() {
 						PhaserGame.addSupplier(PhaserGame.activeSupplier);
@@ -685,6 +688,9 @@ var gameLogic = {
 				PWG.ViewManager.hideView('global:cancelButton');
 				PWG.ViewManager.hideView('global:confirmButton');
 				PWG.ViewManager.removeView('notification', 'global:notifications');
+				if(PWG.ScreenManager.currentId === 'buildingEdit') {
+					PWG.ViewManager.showView('global:plantDetailGroup:equipmentButton');
+				}
 				PhaserGame.cancelAction = null;
 				PhaserGame.confirmAction = null;
 			},
@@ -803,7 +809,7 @@ var gameLogic = {
 				// trace('plant = ' + gameData.buildings.plant.cost);
 
 				if(TurnManager.playerData.bank > gameData.buildings.plant.cost) {
-					buildingCreatePrompt.views.title.text = notificationText.buildingCreate.content;
+					buildingCreatePrompt.views.title.text = notificationText.buildingCreate.content.toUpperCase();
 					PhaserGame.confirmAction = {
 						method: function() {
 							PWG.EventCenter.trigger({ type: Events.ADD_BUILDING });
@@ -813,7 +819,7 @@ var gameLogic = {
 					PWG.ViewManager.showView('global:confirmButton');
 					buildingCreatePrompt.views.cost.text = '$' + PWG.Utils.formatMoney(gameData.buildings.plant.cost, 0);
 				} else {
-					buildingCreatePrompt.views.title.text = notificationText.notEnoughMoney.content;
+					buildingCreatePrompt.views.title.text = notificationText.notEnoughMoney.content.toUpperCase();
 				}
 
 				PhaserGame.cancelAction = {
@@ -848,12 +854,12 @@ var gameLogic = {
 				var notification = PWG.Utils.clone(PhaserGame.config.dynamicViews.notification);
 				var dealershipPrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.dealershipPrompt);
 				
-				var config = PhaserGame.config.notificationText['dealership'];
+				var notificationText = PhaserGame.config.notificationText['dealership'];
 				
 				var modelName = event.plant.equipment[event.dealership.config.modelId].name;
 				var resell = PWG.Utils.formatMoney(event.dealership.config.resell, 0);
 				// trace('addDealershipOppurtunity, dealership = ', event.dealership);
-				var statementText = PWG.Utils.parseMarkup(config.statement, {
+				var statementText = PWG.Utils.parseMarkup(notificationText.content, {
 					plant: event.plant.name,
 					quantity: event.dealership.config.maxPerYear,
 					model: modelName,
@@ -862,7 +868,7 @@ var gameLogic = {
 
 				notification.views.person.img = PhaserGame.config.notificationPeopleImages['dealership'];
 				// notification.views.title.text = config.title;
-				notification.views.content.text = statementText;
+				notification.views.content.text = statementText.toUpperCase();
 				// trace('notification = ', notification);
 				
 				notification.views[dealershipPrompt.name] = dealershipPrompt;
@@ -905,14 +911,14 @@ var gameLogic = {
 				var plant = BuildingManager.findBuilding(dealership.config.plantId);
 				plant.dealershipNotifications[dealership.config.modelId] = false;
 			},
-			// DEALERSHIPS
+			// SUPPLIERS
 			addSupplierOpportunityNotification: function(event) {
 				trace('addSupplierOpportunityNotification, event = ', event);
 				var supplier = event.supplier;
 				var notification = PWG.Utils.clone(PhaserGame.config.dynamicViews.notification);
 				var supplierNotification = PWG.Utils.clone(PhaserGame.config.dynamicViews.supplierNotification);
 
-				var config = PhaserGame.config.notificationText['supplierNotification'];
+				var notificationText = PhaserGame.config.notificationText['supplierNotification'];
 
 				trace('addSupplierOppurtunity, supplier = ', event.supplier);
 				var partType = supplier.config.partType;
@@ -923,7 +929,7 @@ var gameLogic = {
 					typeText = PartDescriptions[partType] + 's';
 				}
 				var statementText = PWG.Utils.parseMarkup(
-					config.statement, 
+					notificationText.content, 
 					{
 						quantity: supplier.config.quantity,
 						type: (PartDescriptions[supplier.config.partType] + 's'),
@@ -933,7 +939,7 @@ var gameLogic = {
 
 				notification.views.person.img = PhaserGame.config.notificationPeopleImages['supplier'];
 				// notification.views.title.text = config.title;
-				notification.views.content.text = statementText;
+				notification.views.content.text = statementText.toUpperCase();
 				// trace('notification = ', notification);
 				PhaserGame.activeSupplier = supplier;
 				notification.views[supplierNotification.name] = supplierNotification;
@@ -943,7 +949,7 @@ var gameLogic = {
 			addSupplierPrompt: function() {
 				var supplierPrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.supplierPrompt);
 				var notificationText = PhaserGame.config.notificationText;
-				supplierPrompt.views.title.text = notificationText.supplierPrompt.statement;
+				supplierPrompt.views.title.text = notificationText.supplierPrompt.content.toUpperCase();
 				var global = PWG.ViewManager.getControllerFromPath('global');
 				PWG.ViewManager.addView(supplierPrompt, global, true);
 			},
@@ -966,12 +972,12 @@ var gameLogic = {
 				var notification = PWG.Utils.clone(PhaserGame.config.dynamicViews.notification);
 				var tradeRoutePrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.tradeRoutePrompt);
 
-				var config = PhaserGame.config.notificationText['tradeRoute'];
+				var notificationText = PhaserGame.config.notificationText['tradeRoute'];
 
 				var modelName = event.plant.equipment[event.tradeRoute.config.modelId].name;
 				var resell = PWG.Utils.formatMoney(event.tradeRoute.config.resell, 0);
 
-				var statementText = PWG.Utils.parseMarkup(config.statement, {
+				var statementText = PWG.Utils.parseMarkup(notificationText.content, {
 					plant: event.plant.name,
 					quantity: event.tradeRoute.quantityPerYear,
 					model: modelName,
@@ -982,7 +988,7 @@ var gameLogic = {
 				// notification.views.person.img = 'tradeRouteGirl';
 				notification.views.person.img = PhaserGame.config.notificationPeopleImages.tradeRoutes[TradeRouteLocations[event.tradeRoute.config.worldLocation]];
 				
-				notification.views.content.text = statementText;
+				notification.views.content.text = statementText.toUpperCase();
 				// trace('------ notification = ', notification);
 
 				tradeRoutePrompt.views.title.text = event.tradeRoute.config.name;
@@ -1300,7 +1306,7 @@ var gameLogic = {
 			addWholesalePartPrompt: function() {
 				var equipmentEdit = PWG.ViewManager.getControllerFromPath('equipmentEdit');
 				var wholesalePartPrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.wholesalePartPrompt);
-				wholesalePartPrompt.views.title.text = PhaserGame.config.notificationText.wholesaleParts.statement;
+				wholesalePartPrompt.views.title.text = PhaserGame.config.notificationText.wholesaleParts.content.toUpperCase();
 
 				PWG.ViewManager.addView(wholesalePartPrompt, equipmentEdit, true);
 				PhaserGame.wholesalePromptAdded = true;

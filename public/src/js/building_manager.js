@@ -220,7 +220,7 @@ var BuildingManager = function() {
 		var resellMultiplier = Math.floor(Math.random() * (this.resellMaxMultiplier - 1) + 2);
 		// trace('resellMultilplier = ' + resellMultiplier);
 		Building.call(this, config);
-		this.config.resell = config.resell || (resellMultiplier * model.cost);
+		this.config.resell = config.resell || (resellMultiplier * model.cost) + module.MACHINE_PRODUCTION_COST;
 		this.config.maxPerYear = config.maxPerYear || Math.floor(Math.random() * (module.DEALERSHIP_MAX_SALES_PER_YEAR - module.DEALERSHIP_MIN_SALES_PER_YEAR) + module.DEALERSHIP_MIN_SALES_PER_YEAR);
 		this.config.inventory = config.inventory || [];
 		this.config.totalSales = config.totalSales || 0;
@@ -290,7 +290,7 @@ var BuildingManager = function() {
 		var model = plant.config.equipment[config.modelId];
 		var resellMultiplier = Math.floor(Math.random() * (this.resellMaxMultiplier - 1) + 3);
 		Building.call(this, config);
-		this.config.resell = config.resell || (resellMultiplier * model.cost);
+		this.config.resell = config.resell || (resellMultiplier * model.cost) + module.MACHINE_PRODUCTION_COST;
 		this.config.maxPerYear = config.maxPerYear || Math.floor(Math.random() * (module.TRADE_ROUTE_MAX_SALES_PER_YEAR - module.TRADE_ROUTE_MIN_SALES_PER_YEAR) + module.DEALERSHIP_MIN_SALES_PER_YEAR);
 		this.config.inventory = config.inventory || [];
 		this.config.totalSales = config.totalSales || 0;

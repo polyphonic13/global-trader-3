@@ -34,8 +34,8 @@ var GameConfig = function() {
 		var fontSizes = {
 			xxs: (gameUnit * 0.25),
 			xs: (gameUnit * 0.3),
-			sm: (gameUnit * 0.45),
-			md: (gameUnit * 0.66),
+			sm: (gameUnit * 0.4),
+			md: (gameUnit * 0.6),
 			lg: (gameUnit * 1.0),
 			xl: (gameUnit * 1.5)
 		};
@@ -1820,11 +1820,11 @@ var GameConfig = function() {
 					title: {
 						type: 'text',
 						name: 'menuItemTitle',
-						text: 'Discard New Machine?',
+						text: 'DISCARD\nCHANGES?',
 						x: 0,
 						y: gameUnit * 13,
 						style: {
-						    font: (fontSizes.md + 'px Trebuchet MS'),
+						    font: (fontSizes.sm + 'px Trebuchet MS'),
 					        fill: palette.orange3,
 							align: 'center'
 						},
@@ -2469,19 +2469,19 @@ var GameConfig = function() {
 					content: 'Add new Plant?'
 				},
 				dealership: {
-					statement: 'We would like to sell ~{quantity}~ per year\nof your ~{plant}~\n~{model}~ inventory\nat $~{resell}~ each.'
+					content: 'We would like to sell ~{quantity}~\nper year of your\n~{plant}~ ~{model}~\ninventory at $~{resell}~ each.'
 				},
 				supplierPrompt: {
-					statement: 'Click here for\nWholesale Parts',
+					content: 'Build Supplier\nRelationship',
 				},
 				supplierNotification: {
-					statement: 'We would like to offer you\n~{quantity}~ ~{size}~ ~{type}~\nfor the wholesale cost\nof ~{cost}~.'
+					content: 'We would like to offer you\n~{quantity}~ ~{size}~ ~{type}~\nfor the wholesale cost\nof ~{cost}~.'
 				},
 				wholesaleParts: {
-					statement: 'Click here to view\nwholesale parts'
+					content: 'Click here to view\nwholesale parts'
 				},
 				tradeRoute: {
-					statement: 'We would like to import ~{quantity}~\nper year of your ~{plant}~\n~{model}~ inventory\nat $~{resell}~ each.'
+					content: 'We would like to import ~{quantity}~\nper year of your ~{plant}~\n~{model}~ inventory\nat $~{resell}~ each.'
 				}
 			},
 			goalsText: {

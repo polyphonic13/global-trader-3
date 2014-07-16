@@ -103,7 +103,7 @@ var gameData = {
 				spriteTranslations: {
 					tracks: 'tracks',
 					engine: 'engine',
-					threePointHitch: 'engine',
+					threePointHitch: 'transmission',
 					transmission: 'transmission',
 					headlights: 'engine'
 				}
@@ -772,7 +772,7 @@ var gameData = {
 	},
 	// level 2
 	{
-		startingBank: 600000,
+		startingBank: 100000,
 		brief: {
 			background: 'briefBg03',
 			text: [
@@ -801,7 +801,7 @@ var gameData = {
 	},
 	// level 3
 	{
-		startingBank: 600000,
+		startingBank: 100000,
 		brief: {
 			background: 'briefBg03',
 			text: [
@@ -830,7 +830,7 @@ var gameData = {
 	},
 	// level 4
 	{
-		startingBank: 600000,
+		startingBank: 100000,
 		brief: {
 			background: 'briefBg04',
 			text: [
@@ -864,7 +864,7 @@ var gameData = {
 	},
 	// level 5
 	{
-		startingBank: 600000,
+		startingBank: 100000,
 		brief: {
 			background: 'briefBg04',
 			text: [
@@ -881,7 +881,7 @@ var gameData = {
 	},
 	// level 6
 	{
-		startingBank: 600000,
+		startingBank: 100000,
 		brief: {
 			background: 'briefBg04',
 			text: [
@@ -916,7 +916,7 @@ var gameData = {
 	},
 	// level 7
 	{
-		startingBank: 600000,
+		startingBank: 100000,
 		brief: {
 			background: 'briefBg04',
 			text: [
@@ -950,7 +950,7 @@ var gameData = {
 	},
 	// level 8
 	{
-		startingBank: 600000,
+		startingBank: 100000,
 		brief: {
 			background: 'briefBg04',
 			text: [
@@ -973,7 +973,7 @@ var gameData = {
 	},
 	// level 9
 	{
-		startingBank: 600000,
+		startingBank: 100000,
 		brief: {
 			background: 'briefBg04',
 			text: [
@@ -1007,7 +1007,7 @@ var gameData = {
 	},
 	// level 10
 	{
-		startingBank: 600000,
+		startingBank: 100000,
 		brief: {
 			background: 'briefBg04',
 			text: [

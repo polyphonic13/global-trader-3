@@ -4,7 +4,7 @@ var WholesaleManager = function() {
 	module.SUPPLIERS_PER_PART_MAX = 3;			// max number of suppliers per part type
 	module.SUPPLIERS_PER_TURN_MULTIPLIER = 5; 	// random number x level of max suppliers available per turn
 	module.WEEK_LAG_AMOUNT = 3;						// delay between each timer (week) tick before possible supplier add
-	module.POSSIBILE_SUPPLIER_CHANCE = 1;		// 1 - x chance of adding a supplier (dice > this number)
+	module.POSSIBILE_SUPPLIER_CHANCE = 4;		// 1 - x chance of adding a supplier (dice > this number)
 	module.PARTS_COST_MODIFIER_MAX = 5;				// maximum cost to reduce parts cost by (100/multipler)
 	module.PARTS_COST_MODIFIER_MIN = 2;				// minium cost to reduce parts cost by (100/multiplier)
 	module.PARTS_QUANTITY_MAX = 10;					// maximum base quantity of parts
@@ -28,6 +28,7 @@ var WholesaleManager = function() {
 		module.notificationActive = false;
 		// establish 
 		module.turnMax = (Math.floor(Math.random() * (module.SUPPLIERS_PER_TURN_MULTIPLIER - 1) + 1)) + TurnManager.playerData.level;
+		trace('\tturnMax = ' + module.turnMax);
 		module.weekLag = 0;
 
 		PWG.Utils.each(
@@ -64,8 +65,7 @@ var WholesaleManager = function() {
 		if(!module.notificationActive) {
 			trace('WholesaleManager/update\n');
 			// haven't made max number of suppliers for this turn
-			// if(module.suppliersAdded < module.turnMax) { 
-			if(module.suppliersAdded < 1) { 
+			if(module.suppliersAdded < module.turnMax) { 
 				module.weekLag++;
 				// waited long enough since last new supplier
 				if(module.weekLag > module.WEEK_LAG_AMOUNT) {

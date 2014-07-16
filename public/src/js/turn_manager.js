@@ -27,15 +27,18 @@ var TurnManager = function() {
 	module.init = function() {
 		// trace('--- TurnManager/init');
 		module.playerData = PWG.Utils.clone(PhaserGame.playerData);
-		module.playerData.bank += gameData.levels[module.playerData.level].startingBank;
+		trace('TURN MANAGER: bank = ' + module.playerData.bank);
 	};
 	
 	module.startTurn = function() {
 		// trace('--- TurnManager/startTurn');
 		module.currentData = PWG.Utils.clone(turnData);
+		trace('\tpre initiative, bank ' + module.playerData.bank);
+		module.playerData.bank += gameData.levels[module.playerData.level].startingBank;
+		trace('\tpost initiative, bank = ' + module.playerData.bank);
 		module.tempDealershipCount = (module.playerData.buildingCount.dealership);
 		// TurnManager.tempTradeRouteCount = (module.playerData.buildingCount.tradeRoute);
-		module.tempSupplierCount = (module.playerData.suppliers.length);
+		module.tempSupplierCount = (module.playerData.suppliers.length) || 0;
 
 		module.tempTradeRouteCount = {
 			africa: 0,
@@ -162,7 +165,7 @@ var TurnManager = function() {
 	};
 	
 	module.addSupplier = function(supplier) {
-		module.playerData.supplier[supplier.sector][supplier.id] = supplier;
+		module.playerData.suppliers[supplier.id] = supplier;
 		module.currentData.newSuppliers.push(supplier);
 		module.playerData.bonusPoints += gameData.bonuses.suppliers.added;
 		PWG.EventCenter.trigger({ type: Events.BONUSES_UPDATED });
