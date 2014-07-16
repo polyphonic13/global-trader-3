@@ -2,12 +2,12 @@ var ASPECT_RATIO = [9, 16];
 var GAME_NAME = 'global_trader_3_0';
 var FACEBOOK_URL = 'https://www.facebook.com/cnhitrade';
 var TIME_PER_TURN = 52;
-var TURN_TIME_INTERVAL = 1000;
+var TURN_TIME_INTERVAL = 3000;
 var US_DETAIL_GRID_CELLS = 6;
 var MACHINE_LIST_COLUMNS = 2; 
 var MACHINE_LIST_ICONS = 6;
-var MIN_WHOLESALE_LEVEL = 1;
-var MIN_TRADE_ROUTE_LEVEL = 1;
+var MIN_WHOLESALE_LEVEL = 3;
+var MIN_TRADE_ROUTE_LEVEL = 5;
 var NUM_PART_QUALITIES = 3;
 
 function startGame() {
@@ -912,7 +912,7 @@ var gameLogic = {
 				var notification = PWG.Utils.clone(PhaserGame.config.dynamicViews.notification);
 				var distributorNotification = PWG.Utils.clone(PhaserGame.config.dynamicViews.distributorNotification);
 
-				var config = PhaserGame.config.notificationText['distributorPrompt'];
+				var config = PhaserGame.config.notificationText['distributorNotification'];
 
 				trace('addDistributorOppurtunity, distributor = ', event.distributor);
 				var statementText = PWG.Utils.parseMarkup(
@@ -931,18 +931,27 @@ var gameLogic = {
 				PhaserGame.activeDistributor = distributor;
 				notification.views[distributorNotification.name] = distributorNotification;
 				PhaserGame.distributorNotifications.push(notification);
-				PhaserGame.showDistributorNotification();
-				// var global = PWG.ViewManager.getControllerFromPath('global:notifications');
-				// PWG.ViewManager.addView(notification, global, true);
+				PhaserGame.addDistributorPrompt();
+			},
+			addDistributorPrompt: function() {
+				var distributorPrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.distributorPrompt);
+				var notificationText = PhaserGame.config.notificationText;
+				distributorPrompt.views.title.text = notificationText.distributorPrompt.statement;
+				var global = PWG.ViewManager.getControllerFromPath('global');
+				PWG.ViewManager.addView(distributorPrompt, global, true);
+			},
+			removeDistributorPrompt: function() {
+				PWG.ViewManager.removeView('distributorPrompt', 'global');
 			},
 			addDistributor: function(distributor) {
 				trace('addDistributor, distributor = ', distributor);
-				var config = distributor.config;
 				PhaserGame.hideDistributorNotification();
+				PhaserGame.removeDistributorPrompt();
 				WholesaleManager.addDistributor(distributor);
 			},
 			resetDistributor: function(distributor) {
 				PhaserGame.hideDistributorNotification();
+				PhaserGame.removeDistributorPrompt();
 				// trace('resetDealership, dealership = ', dealership);
 			},
 			// TRADE_ROUTES
@@ -1352,16 +1361,6 @@ var gameLogic = {
 					PWG.ViewManager.hideView('global:confirmButton');
 				}
 			},
-			addDistributorPrompt: function() {
-				var distributorPrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.distrbutorPrompt);
-				var notificationText = PhaserGame.config.notificationText;
-				distributorPrompt.views.title.text = notificationText.distributorPrompt.content;
-				var global = PWG.ViewManager.getControllerFromPath('global');
-				PWG.ViewManager.addView(distributorPrompt, global, true);
-			},
-			removeDistributorPrompt: function() {
-				PWG.ViewManager.removeView('distributorPrompt', 'global');
-			},
 			addDistributorNotification: function() {
 				var distributorNotification = PWG.Utils.clone(PhaserGame.config.dynamicViews.distributorNotifcation);
 
@@ -1636,62 +1635,6 @@ var gameLogic = {
 				PWG.EventCenter.trigger({ type: Events.OPEN_OPTIONAL_PARTS_MENU });
 			}
 		},
-/*
-		tiresSprite: {
-			inputDown: function() {
-				// trace('tire icon input down');
-				PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PartTypes.TIRES });
-			}
-		},
-		tracksSprite: {
-			inputDown: function() {
-				// trace('tire icon input down');
-				PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PartTypes.TRACKS });
-			}
-		},
-		engineSprite: {
-			inputDown: function() {
-				// trace('engine icon input down');
-				PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PartTypes.ENGINE });
-			}
-		},
-		transmissionSprite: {
-			inputDown: function() {
-				// trace('transmission icon input down');
-				PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PartTypes.TRANSMISSION });
-			}
-		},
-		headlightsSprite: {
-			inputDown: function() {
-				// trace('headlights icon input down');
-				PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PartTypes.HEADLIGHTS });
-			}
-		},
-		bucketSprite: {
-			inputDown: function() {
-				// trace('bucket icon input down');
-				PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PartTypes.BUCKET });
-			}
-		},
-		powerTakeoffSprite: {
-			inputDown: function() {
-				// trace('cab icon input down');
-				PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PartTypes.POWER_TAKEOFF });
-			}
-		},
-		quickCouplerSprite: {
-			inputDown: function() {
-				// trace('cab icon input down');
-				PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PartTypes.QUICK_COUPLER });
-			}
-		},
-		threePointHitchSprite: {
-			inputDown: function() {
-				// trace('cab icon input down');
-				PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: PartTypes.THREE_POINT_HITCH });
-			}
-		},
-*/
 		partIcon: {
 			inputDown: function(event) {
 				PWG.EventCenter.trigger({ type: Events.ADD_PART, value: this.controller.config.partIdx });
@@ -1710,7 +1653,7 @@ var gameLogic = {
 		},
 		distributorPrompt: {
 			inputDown: function(event) {
-				PWG.EventCenter.trigger({ type: Events.ADD_DISTRIBUTOR_NOTIFICATION });
+				PhaserGame.showDistributorNotification();
 			}
 		},
 		wholesalePartPrompt: {

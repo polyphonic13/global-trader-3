@@ -2472,6 +2472,9 @@ var GameConfig = function() {
 					statement: 'We would like to sell ~{quantity}~ per year\nof your ~{plant}~\n~{model}~ inventory\nat $~{resell}~ each.'
 				},
 				distributorPrompt: {
+					statement: 'Click here for\nWholesale Parts',
+				},
+				distributorNotification: {
 					statement: 'We would like to offer you\n~{quantity}~ ~{size}~ ~{type}~\nfor the wholesale cost\nof ~{cost}~.'
 				},
 				wholesaleParts: {
