@@ -1,3 +1,16 @@
+var TutorialTypes = {
+	INIT: 'init',
+	WORLD: 'world',
+	US_DETAIL: 'usDetail',
+	PLANT: 'plant',
+	PLANT_DETAILS: 'plantDetails',
+	EQUIPMENT_LIST: 'equipmentList',
+	EQUIPMENT_CREATE: 'equipmentCreate',
+	EQUIPMENT_EDIT: 'equipmentEdit',
+	DEALERSHIP: 'dealership',
+	SUPPLIER: 'supplier',
+	TRADE_ROUTE: 'tradeRoute'
+};
 var BuildingTypes = {
 	PLANT: 'plant',
 	DEALERSHIP: 'dealership',

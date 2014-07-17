@@ -1,4 +1,17 @@
 var playerData = {
+	firstPlay: {
+		init: true,
+		world: true,
+		usDetail: true,
+		plant: true,
+		plantDetails: true,
+		equipmentList: true,
+		equipmentCreate: true,
+		equipmentEdit: true,
+		dealership: true,
+		supplier: true,
+		tradeRoute: true
+	},
 	level: 0,
 	bank: 0,
 	profit: 0,

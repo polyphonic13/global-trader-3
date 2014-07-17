@@ -162,6 +162,64 @@ var GameConfig = function() {
 			]
 		};
 
+		var notificationText = {
+			tutorial: {
+				init: {
+					content: 'Hello! Let\'s get started.\nClick the gear below to\ncheck out the game manual.\nOtherwise, click the ignition to\nstart the game.'
+				},
+				world: {
+					content: 'This is the world map.\nClick on a US Sector icon.\nto see to a detailed\nview of the area.'
+				},
+				usDetail: {
+					content: 'This is a grid of locations\nin this area.\nClick an empty cell\nto create a new Plant.'
+				},
+				plant: {
+					content: 'Your Plant has finished\nconstruction!\nClick on the Plant\nto see details.'
+				},
+				plantDetails: {
+					content: 'Here are the details\nof your new Plant.\nNot much going on yet.\nClick the wrench.'
+				},
+				equipmentList: {
+					content: 'This is a list of your Plant\'s\nTractors and Skid Steers.\nClick an empty slot\nto add a new model.'
+				},
+				equipmentCreate: {
+					content: 'Click on a crate to choose\na new Tractor or Skid Steer\nmodel and its size.'
+				},
+				equipmentEdit: {
+					content: 'Click the part name to\nsee the parts you can buy.\nThe machine behind me will cycle\nthrough parts to be added.'
+				},
+				dealership: {
+					content: 'Great! Your Plant will now\nbegin manufacturing. Once it has\nmade 3, Dealerships will begin\n offering to sell your equipment.\nLook for the envelope in the\nUS Sector screen.'
+				},
+				supplier: {
+					content: ''
+				},
+				traderoute: {
+					content: ''
+				}
+			},
+			notEnoughMoney: {
+				content: 'You do not have\nenough money'
+			},
+			buildingCreate: {
+				content: 'Add new Plant?'
+			},
+			dealership: {
+				content: 'We would like to sell ~{quantity}~\nper year of your\n~{plant}~ ~{model}~\ninventory at $~{resell}~ each.'
+			},
+			supplierPrompt: {
+				content: 'Build Supplier\nRelationship',
+			},
+			supplierNotification: {
+				content: 'We would like to offer you\n~{quantity}~ ~{size}~ ~{type}~\nfor the wholesale cost\nof ~{cost}~.'
+			},
+			wholesaleParts: {
+				content: 'Click here to view\nwholesale parts'
+			},
+			tradeRoute: {
+				content: 'We would like to import ~{quantity}~\nper year of your ~{plant}~\n~{model}~ inventory\nat $~{resell}~ each.'
+			}
+		};
 		var notificationPeopleImages = {
 			dealership: 'dealershipGirl',
 			supplier: 'supplierGuy',
@@ -638,6 +696,77 @@ var GameConfig = function() {
 		};
 
 		var dynamicViews = {
+			// tutorial guy
+			tutorialGuy: {
+				type: 'group',
+				name: 'tutorialGuy',
+				views: {
+					bg: {
+						type: 'sprite',
+						name: 'bg',
+						img: 'tutorialGuy',
+						x: 0,
+						y: 0,
+						attrs: {
+							width: gameW,
+							height: gameH
+						}
+					},
+					content: {
+						type: 'text',
+						name: 'content',
+						text: '',
+						x: (gameUnit * 1.66),
+						y: (gameUnit * 2),
+						style: {
+						    font: (fontSizes.sm + 'px Trebuchet MS'),
+					        fill: palette.white
+						},
+						// position: {
+						// 	centerX: true
+						// }
+					},
+					submenuBg: {
+						type: 'sprite',
+						name: 'menuBg',
+						img: 'submenuBg',
+						x: (gameW/2) - (gameUnit * 3),
+						y: (gameUnit * 12.5),
+						attrs: {
+							width: (gameUnit * 6),
+							height: (gameUnit * 6) * 0.34
+						}
+					},
+					submenuText: {
+						type: 'text',
+						name: 'submenuText',
+						text: 'DISMISS',
+						x: 0,
+						y: gameUnit * 13.25,
+						style: {
+						    font: (fontSizes.md + 'px Trebuchet MS'),
+					        fill: palette.orange3,
+							align: 'center'
+						},
+						position: {
+							centerX: true
+						}
+					},
+					dismissButton: {
+						type: 'sprite',
+						name: 'dismissButton',
+						img: 'blockWhite',
+						x: (gameW/2) - (gameUnit * 3),
+						y: (gameUnit * 12.5),
+						attrs: {
+							width: (gameUnit * 6),
+							height: (gameUnit * 6) * 0.34,
+							alpha: 0
+						},
+						input: gameLogic.input.dismissTutorial
+					}
+				}
+			},
 			// manual
 			manualPage: {
 				type: 'group',
@@ -2091,6 +2220,7 @@ var GameConfig = function() {
 					gps: 'images/screens/equipment_edit/parts_icons/extras/gps.png',
 
 					// NOTIFICATIONS
+					tutorialGuy: 'images/notifications/tutorial_guy.png',
 					dealershipGirl: 'images/notifications/dealership_girl.png',
 					supplierGuy: 'images/notifications/supplier_guy.png',
 					tradeRouteAfricaNotification: 'images/notifications/trade_route_africa.png',
@@ -2105,7 +2235,7 @@ var GameConfig = function() {
 					turnEnd02: 'images/screens/turn_end/turn_end02.png'
 				},
 				sprites: {
-					buttonSettings: {
+					buttonManual: {
 						url: 'images/icons/settings.png',
 						width: 175,
 						height: 150,
@@ -2461,29 +2591,7 @@ var GameConfig = function() {
 			},
 			palette: palette,
 			defaultScreen: 'home',
-			notificationText: {
-				notEnoughMoney: {
-					content: 'You do not have\nenough money'
-				},
-				buildingCreate: {
-					content: 'Add new Plant?'
-				},
-				dealership: {
-					content: 'We would like to sell ~{quantity}~\nper year of your\n~{plant}~ ~{model}~\ninventory at $~{resell}~ each.'
-				},
-				supplierPrompt: {
-					content: 'Build Supplier\nRelationship',
-				},
-				supplierNotification: {
-					content: 'We would like to offer you\n~{quantity}~ ~{size}~ ~{type}~\nfor the wholesale cost\nof ~{cost}~.'
-				},
-				wholesaleParts: {
-					content: 'Click here to view\nwholesale parts'
-				},
-				tradeRoute: {
-					content: 'We would like to import ~{quantity}~\nper year of your ~{plant}~\n~{model}~ inventory\nat $~{resell}~ each.'
-				}
-			},
+			notificationText: notificationText,
 			goalsText: {
 				passed: 'All goals met.\nCongratulations.',
 				failed: 'Goals not met.\nPlease try again.',
@@ -3112,17 +3220,17 @@ var GameConfig = function() {
 							type: 'group',
 							name: 'homeGroup',
 							views: {
-								buttonSettings: {
+								buttonManual: {
 									type: 'button',
-									name: 'buttonSettings',
-									img: 'buttonSettings',
+									name: 'buttonManual',
+									img: 'buttonManual',
 									x: controlButtons.left.x,
 									y: controlButtons.bottom.y,
 									attrs: {
 										width: controlButtons.width,
 										height: controlButtons.height
 									},
-									callback: gameLogic.buttonCallbacks.settings,
+									callback: gameLogic.buttonCallbacks.openManual,
 									context: this,
 									frames: [0, 1, 1, 0]
 								},
