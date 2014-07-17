@@ -74,6 +74,7 @@ module.exports = function(grunt) {
 				banner: '/*! <%= pkg.name %> v<%= pkg.version %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
 				preserveComments: false,
 				compress: true,
+				sourceMap: true,
 				// report: 'gzip'
 				report: 'min'
 			},

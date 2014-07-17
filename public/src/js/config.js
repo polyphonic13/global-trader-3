@@ -2102,7 +2102,7 @@ var GameConfig = function() {
 					endTurnPrompt: 'images/screens/world/end_turn_prompt.png',
 					pinPlant: 'images/screens/world/pin_plant.png',
 					pinDealership: 'images/screens/world/pin_dealership.png',
-					pinTradeRoute: 'images/screens/world/pin_tradeRoute.png',
+					pinTradeRoute: 'images/screens/world/pin_trade_route.png',
 					exclamationAlert: 'images/icons/exclamation5.png',
 					tradeRouteAlertIcon: 'images/icons/little_trade_route_alert.png',
 					tradeRouteIcon: 'images/screens/world/trade_route_icon.png',
