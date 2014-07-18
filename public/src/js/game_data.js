@@ -920,8 +920,8 @@ var gameData = {
 		brief: {
 			background: 'briefBg04',
 			text: [
-				'Build 1 Plant',
-				'Create 2 Machine Models',
+				'Build 2 Plants',
+				'Create 10 Machine Models',
 				'Produce 500 Machines'
 			]
 		},
@@ -938,12 +938,12 @@ var gameData = {
 		},
 		{
 			type: 'newMachineModels',
-			value: 2,
+			value: 10,
 			calculation: 'length'
 		},
 		{
 			type: 'newMachines',
-			value: 50,
+			value: 500,
 			calculation: 'length'
 		}
 		]
@@ -977,9 +977,9 @@ var gameData = {
 		brief: {
 			background: 'briefBg04',
 			text: [
-				'Build 1 Plant',
-				'Create 2 Machine Models',
-				'Produce 10 Machines'
+				'Build 10 Plants',
+				'Create 20 Machine Models',
+				'Produce 100 Machines'
 			]
 		},
 		goals: [
@@ -990,17 +990,17 @@ var gameData = {
 		},
 		{
 			type: 'newPlants',
-			value: 2,
+			value: 10,
 			calculation: 'number'
 		},
 		{
 			type: 'newMachineModels',
-			value: 2,
+			value: 20,
 			calculation: 'length'
 		},
 		{
 			type: 'newMachines',
-			value: 50,
+			value: 100,
 			calculation: 'length'
 		}
 		]
