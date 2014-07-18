@@ -111,7 +111,7 @@ var GameConfig = function() {
 			// southeast
 			{
 				x: gameUnit * 5.5,
-				y: gameUnit * 9.6
+				y: gameUnit * 9.4
 			},
 			// midwest
 			{
@@ -196,10 +196,13 @@ var GameConfig = function() {
 				},
 				traderoute: {
 					content: ''
+				},
+				outOfWholesaleParts: {
+					content: ''
 				}
 			},
 			notEnoughMoney: {
-				content: 'You do not have\nenough money'
+				content: 'You need to earn\nmore money first'
 			},
 			buildingCreate: {
 				content: 'Add new Plant?'

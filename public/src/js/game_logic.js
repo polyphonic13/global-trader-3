@@ -849,6 +849,7 @@ var gameLogic = {
 					buildingCreatePrompt.views.cost.text = '$' + PWG.Utils.formatMoney(gameData.buildings.plant.cost, 0);
 				} else {
 					buildingCreatePrompt.views.title.text = notificationText.notEnoughMoney.content.toUpperCase();
+					PhaserGame.notEnoughMoneyPromptActive = true;
 				}
 
 				PhaserGame.cancelAction = {
@@ -2309,6 +2310,15 @@ var gameLogic = {
 			},
 			shutdown: function() {
 				// hide add building button
+				if(PhaserGame.notEnoughMoneyPromptActive) {
+					PWG.ViewManager.removeView('buildingCreatePrompt', 'global');
+					PhaserGame.confirmAction = null;
+					PhaserGame.cancelAction = null;
+					PWG.ViewManager.hideView('global:confirmButton');
+					PWG.ViewManager.hideView('global:cancelButton');
+					PWG.ViewManager.showView('global:backButton');
+					this.buildingCreatePromptOpen = false;
+				}
 				PWG.ViewManager.removeGroupChildren('usDetail:usDetailGrid');
 				PhaserGame.hideNotificationEnvelope();
 			}
