@@ -211,7 +211,7 @@ var GameConfig = function() {
 				content: 'Build Supplier\nRelationship',
 			},
 			supplierNotification: {
-				content: 'We would like to offer you\n~{quantity}~ ~{size}~ ~{type}~\nfor the wholesale cost\nof ~{cost}~.'
+				content: 'We would like to offer you\n~{quantity}~ ~{size}~ ~{type}~\nfor the cost\nof ~{cost}~.'
 			},
 			wholesaleParts: {
 				content: 'Click here to view\nwholesale parts'

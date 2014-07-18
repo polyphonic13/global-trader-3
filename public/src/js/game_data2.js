@@ -290,7 +290,7 @@ var gameData = {
 				sell: 3000
 			},
 			{
-				description: 'Deluxe',
+				description: 'Premium',
 				img: 'tracksHeavyPremium',
 				cost: 1500,
 				build: 250,

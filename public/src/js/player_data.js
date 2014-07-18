@@ -10,7 +10,8 @@ var playerData = {
 		equipmentEdit: true,
 		dealership: true,
 		supplier: true,
-		tradeRoute: true
+		tradeRoute: true,
+		outOfWholesaleParts: true
 	},
 	level: 0,
 	bank: 0,

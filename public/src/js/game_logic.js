@@ -2470,9 +2470,9 @@ var gameLogic = {
 
 						item.views.available.text = 'x' + available;
 
-						if(!machine.active) {
-							item.views.alert.attrs.visible = true;
-						}
+						// if(!machine.active) {
+						// 	item.views.alert.attrs.visible = true;
+						// }
 
 						item.views.invisButton.machineIdx = machine.id;
 						// increment y to next row:
