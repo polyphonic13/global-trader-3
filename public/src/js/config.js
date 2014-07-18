@@ -199,6 +199,9 @@ var GameConfig = function() {
 				},
 				outOfWholesaleParts: {
 					content: ''
+				},
+				allCompleted: {
+					content: 'CONGRATULATIONS!\nYou\'ve become an expert\nGlobal Trader!\n\nWant to play more?\nTry to beat your previous score'
 				}
 			},
 			notEnoughMoney: {
@@ -723,11 +726,12 @@ var GameConfig = function() {
 						y: (gameUnit * 2),
 						style: {
 						    font: (fontSizes.sm + 'px Trebuchet MS'),
-					        fill: palette.white
+					        fill: palette.white,
+							'text-align': 'center'
 						},
-						// position: {
-						// 	centerX: true
-						// }
+						position: {
+							centerX: true
+						}
 					},
 					submenuBg: {
 						type: 'sprite',
@@ -3626,7 +3630,7 @@ var GameConfig = function() {
 						y: (gameUnit * 6)
 					},
 					{
-						text: 'There may be Wholesale oppurtunities for parts.\nBuy in bulk to save on manufacturing\ncosts later.',
+						text: 'There may be Parts Supplier oppurtunities.\nBuy in bulk to save on manufacturing\ncosts later.',
 						x: (gameUnit * 2),
 						y: (gameUnit * 10)
 					}

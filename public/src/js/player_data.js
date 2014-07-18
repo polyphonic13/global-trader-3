@@ -14,6 +14,7 @@ var playerData = {
 		outOfWholesaleParts: true
 	},
 	level: 0,
+	allCompleted: false,
 	bank: 0,
 	profit: 0,
 	bonusPoints: 0,
