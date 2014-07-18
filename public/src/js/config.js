@@ -6,8 +6,8 @@ var GameConfig = function() {
 	
 	module.init = function(callback, context) {
 		// stage sizes cached
-		var stateW = PWG.Stage.stateW;
-		var stateH = PWG.Stage.stateH;
+		var winW = PWG.Stage.winW;
+		var winH = PWG.Stage.winH;
 		var gameW = PWG.Stage.gameW;
 		var gameH = PWG.Stage.gameH;
 		var gameUnit = PWG.Stage.unit;
@@ -2059,9 +2059,6 @@ var GameConfig = function() {
 				images: {
 					// generic
 					blockWhite: 'images/block_white.png',
-					blockRed: 'images/block_red.gif',
-					blockBlue: 'images/block_blue.gif',
-					blockGreen: 'images/block_green.gif',
 					blockClear: 'images/block_clear.png',
 					// global
 					gameBg: 'images/screens/metal_background.gif',
@@ -2301,18 +2298,6 @@ var GameConfig = function() {
 						width: 320,
 						height: 573,
 						frames: 3
-					},
-					buttonClose: {
-						url: 'images/button_close.png',
-						width: 50,
-						height: 50,
-						frames: 2
-					},
-					buttonCheck: {
-						url: 'images/controls/check.png',
-						width: 50,
-						height: 50,
-						frames: 2
 					},
 					buttonHome: {
 						url: 'images/icons/home.png',
@@ -2555,25 +2540,6 @@ var GameConfig = function() {
 						width: 239,
 						height: 127,
 						frames: 2
-					},
-					// other stuff
-					tiresSprites: {
-						url: 'images/parts/tires_spritesheet.gif',
-						width: 125,
-						height: 125,
-						frames: 16
-					},
-					engineSprites: {
-						url: 'images/parts/engine_spritesheet.gif',
-						width: 100,
-						height: 100,
-						frames: 16
-					},
-					cabSprites: {
-						url: 'images/parts/cab_spritesheet.gif',
-						width: 100,
-						height: 100,
-						frames: 16
 					}
 				}
 			},
@@ -2658,8 +2624,8 @@ var GameConfig = function() {
 							x: 0,
 							y: 0,
 							attrs: {
-								width: gameW,
-								height: gameH,
+								width: winW,
+								height: winH,
 								fixedToCamera: true
 							}
 						}
@@ -3218,7 +3184,7 @@ var GameConfig = function() {
 							x: 0,
 							y: gameUnit * 13.5,
 							attrs: {
-								width: gameW,
+								width: gameW * 1,
 								height: gameUnit * 2.5,
 								fixedToCamera: true
 							}
