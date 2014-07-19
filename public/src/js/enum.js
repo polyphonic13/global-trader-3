@@ -9,7 +9,8 @@ var TutorialTypes = {
 	EQUIPMENT_EDIT: 'equipmentEdit',
 	DEALERSHIP: 'dealership',
 	SUPPLIER: 'supplier',
-	TRADE_ROUTE: 'tradeRoute'
+	TRADE_ROUTE: 'tradeRoute',
+	ALL_COMPLETED: 'allCompleted'
 };
 var BuildingTypes = {
 	PLANT: 'plant',

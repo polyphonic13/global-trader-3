@@ -921,19 +921,71 @@ var gameData = {
 			background: 'briefBg04',
 			text: [
 				'Build 2 Plants',
-				'Create 10 Machine Models',
-				'Produce 500 Machines'
+				'Create 5 Machine Models',
+				'Produce 200 Machines'
+			]
+		},
+		goals: [
+		{
+			type: 'newPlants',
+			value: 2,
+			calculation: 'number'
+		},
+		{
+			type: 'newMachineModels',
+			value: 5,
+			calculation: 'length'
+		},
+		{
+			type: 'newMachines',
+			value: 200,
+			calculation: 'length'
+		}
+		]
+	},
+	// level 8
+	{
+		startingBank: 100000,
+		brief: {
+			background: 'briefBg04',
+			text: [
+				'Establish 3 Trade Routes',
+				'Make $5,000,000 in profits'
 			]
 		},
 		goals: [
 		{
 			type: 'profit',
-			value: 10000000,
+			value: 5000000,
+			calculation: 'money'
+		},
+		{
+			type: 'newTradeRoutes',
+			value: 3,
+			calculation: 'number'
+		}
+		]
+	},
+	// level 9
+	{
+		startingBank: 100000,
+		brief: {
+			background: 'briefBg04',
+			text: [
+				'Build 10 Plants',
+				'Create 10 Machine Models',
+				'Produce 100 Machines'
+			]
+		},
+		goals: [
+		{
+			type: 'profit',
+			value: 1000000,
 			calculation: 'money'
 		},
 		{
 			type: 'newPlants',
-			value: 2,
+			value: 10,
 			calculation: 'number'
 		},
 		{
@@ -943,12 +995,12 @@ var gameData = {
 		},
 		{
 			type: 'newMachines',
-			value: 500,
+			value: 100,
 			calculation: 'length'
 		}
 		]
 	},
-	// level 8
+	// level 10
 	{
 		startingBank: 100000,
 		brief: {
@@ -967,63 +1019,6 @@ var gameData = {
 		{
 			type: 'newTradeRoutes',
 			value: 5,
-			calculation: 'number'
-		}
-		]
-	},
-	// level 9
-	{
-		startingBank: 100000,
-		brief: {
-			background: 'briefBg04',
-			text: [
-				'Build 10 Plants',
-				'Create 20 Machine Models',
-				'Produce 100 Machines'
-			]
-		},
-		goals: [
-		{
-			type: 'profit',
-			value: 1000000,
-			calculation: 'money'
-		},
-		{
-			type: 'newPlants',
-			value: 10,
-			calculation: 'number'
-		},
-		{
-			type: 'newMachineModels',
-			value: 20,
-			calculation: 'length'
-		},
-		{
-			type: 'newMachines',
-			value: 100,
-			calculation: 'length'
-		}
-		]
-	},
-	// level 10
-	{
-		startingBank: 100000,
-		brief: {
-			background: 'briefBg04',
-			text: [
-				'Establish 10 Trade Routes',
-				'Make $50,000,000 in profits'
-			]
-		},
-		goals: [
-		{
-			type: 'profit',
-			value: 50000000,
-			calculation: 'money'
-		},
-		{
-			type: 'newTradeRoutes',
-			value: 10,
 			calculation: 'number'
 		}
 		]

@@ -113,16 +113,16 @@ var BuildingManager = function() {
 											PWG.Utils.each(
 												machine.wholesaleParts,
 												function(supplierId, part) {
-													trace('\tsupplierId = ' + supplierId + ', part = ' + part + ', supplier = ', WholesaleManager.suppliers[supplierId]);
+													// trace('\tsupplierId = ' + supplierId + ', part = ' + part + ', supplier = ', WholesaleManager.suppliers[supplierId]);
 													var supplier = WholesaleManager.suppliers[supplierId];
 													if(supplier.config.quantity > 0) {
 														var partUsed = WholesaleManager.usePart(part, machine.size, supplierId);
 														if(!partUsed) {
-															trace('\tfailed to add part, deactivating machine');
+															// trace('\tfailed to add part, deactivating machine');
 															this.config.equipment[machine.id].active = false;
 														}
 													} else {
-														trace('\tand there are none left. :(');
+														// trace('\tand there are none left. :(');
 														this.config.equipment[machine.id].active = false;
 														wholesalePartsAdded = false;
 													}
@@ -153,7 +153,7 @@ var BuildingManager = function() {
 													}
 												} else {
 													var tradeRouteId = this.config.tradeRoutes[machine.id];
-													// trace('sending inventory to tradeRouteId = ' + tradeRouteId);
+													trace('sending inventory to tradeRouteId = ' + tradeRouteId);
 													var tradeRoute = module.findBuilding(tradeRouteId);
 													if(tradeRoute.config.state === BuildingStates.ACTIVE) {
 														var inventory = this.config.inventory[machine.id];
@@ -243,13 +243,17 @@ var BuildingManager = function() {
 		// if(this.config.inventory.length < this.capacity) {
 		if(this.numberSold < this.config.maxPerYear) {	
 			var modelId = this.config.modelId;
-			while(plant.inventory[modelId].length > 0 && this.config.inventory.length < this.capacity) {
-				// trace('\ttransferring inventory to dealership');
-				this.config.inventory.push(plant.inventory[modelId].pop());
-				plant.totalInventory--;
-				this.numberSold++;
+			if(typeof(plant.inventory[modelId] !== 'undefined')) {
+				try {
+					while(plant.inventory[modelId].length > 0 && this.config.inventory.length < this.capacity) {
+						// trace('\ttransferring inventory to dealership');
+						this.config.inventory.push(plant.inventory[modelId].pop());
+						plant.totalInventory--;
+						this.numberSold++;
+					}
+					TurnManager.updateBuilding(this.config);
+				} catch(e) {}
 			}
-			TurnManager.updateBuilding(this.config);
 		}
 	};
 	Dealership.prototype.update = function() {
@@ -312,12 +316,16 @@ var BuildingManager = function() {
 		// trace('TradeRoute/addInventory, tradeRoute = ', this.config, '\tplant = ', plant);
 		if(this.config.inventory.length < this.capacity) {
 			var modelId = this.config.modelId;
-			while(plant.inventory[modelId].length > 0 && this.config.inventory.length < this.capacity) {
-				// trace('\ttransferring inventory to tradeRoute');
-				this.config.inventory.push(plant.inventory[modelId].pop());
-				plant.totalInventory--;
+			if(typeof(plant.inventory[modelId] !== 'undefined')) {
+				try {
+					while(plant.inventory[modelId].length > 0 && this.config.inventory.length < this.capacity) {
+						// trace('\ttransferring inventory to tradeRoute');
+						this.config.inventory.push(plant.inventory[modelId].pop());
+						plant.totalInventory--;
+					}
+					TurnManager.updateBuilding(this.config);
+				} catch(e) {}
 			}
-			TurnManager.updateBuilding(this.config);
 		}
 	};
 	TradeRoute.prototype.update = function() {

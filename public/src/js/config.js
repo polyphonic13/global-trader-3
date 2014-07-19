@@ -192,16 +192,16 @@ var GameConfig = function() {
 					content: 'Great! Your Plant will now\nbegin manufacturing. Once it has\nmade 3, Dealerships will begin\n offering to sell your equipment.\nLook for the envelope in the\nUS Sector screen.'
 				},
 				supplier: {
-					content: ''
+					content: 'Suppliers will now begin\nto offer you parts as discount\nfor bulk orders.\nLook for the engine icon in\nthe bottom, left corner.'
 				},
-				traderoute: {
-					content: ''
+				tradeRoute: {
+					content: 'Now you\'ll want to start establishing\nInternational Trade Routes.\nBe sure to create some new\nTractors and Skid Steers\nas you will need inventory to export.'
 				},
 				outOfWholesaleParts: {
 					content: ''
 				},
 				allCompleted: {
-					content: 'CONGRATULATIONS!\nYou\'ve become an expert\nGlobal Trader!\n\nWant to play more?\nTry to beat your previous score'
+					content: 'CONGRATULATIONS!\nYou\'ve become an expert\nGlobal Trader!\n\nWant to play more?\nTry to beat your previous score.'
 				}
 			},
 			notEnoughMoney: {
@@ -267,7 +267,7 @@ var GameConfig = function() {
 				}
 			},
 			middleEast: {
-				img: 'tradeRoutePacificNorth',
+				img: 'tradeRouteMiddleEast',
 				x: (gameUnit * 1.8),
 				y: (gameUnit * 6.75),
 				attrs: {
@@ -1866,50 +1866,6 @@ var GameConfig = function() {
 			},
 			optionalPartsMenu: {
 			},
-			supplierPrompt: {
-				type: 'group',
-				name: 'supplierPrompt',
-				views: {
-					menuBg: {
-						type: 'sprite',
-						name: 'menuBg',
-						img: 'submenuBg',
-						x: (gameW/2) - (gameUnit * 3),
-						y: (gameUnit * 12.5),
-						attrs: {
-							width: (gameUnit * 6),
-							height: (gameUnit * 6) * 0.34
-						}
-					},
-					title: {
-						type: 'text',
-						name: 'menuItemTitle',
-						text: '',
-						x: 0,
-						y: gameUnit * 13,
-						style: {
-						    font: (fontSizes.sm + 'px Trebuchet MS'),
-					        fill: palette.orange3,
-							align: 'center'
-						},
-						position: {
-							centerX: true
-						}
-					},
-					invisButton: {
-						type: 'sprite',
-						name: 'supplierPromptButton',
-						img: 'blockClear',
-						x: (gameW/2) - (gameUnit * 3),
-						y: (gameUnit * 12.5),
-						attrs: {
-							width: (gameUnit * 6),
-							height: (gameUnit * 6) * 0.34
-						},
-						input: gameLogic.input.supplierPrompt
-					}
-				}
-			},
 			supplierNotification: {
 				type: 'group',
 				name: 'supplierNotification',
@@ -1934,6 +1890,32 @@ var GameConfig = function() {
 						style: {
 						    font: (fontSizes.sm + 'px Trebuchet MS'),
 					        fill: palette.white
+						}
+					},
+					menuBg: {
+						type: 'sprite',
+						name: 'menuBg',
+						img: 'submenuBg',
+						x: (gameW/2) - (gameUnit * 3),
+						y: (gameUnit * 12.5),
+						attrs: {
+							width: (gameUnit * 6),
+							height: (gameUnit * 6) * 0.34
+						}
+					},
+					menuTitle: {
+						type: 'text',
+						name: 'menuTitle',
+						text: '',
+						x: 0,
+						y: gameUnit * 13,
+						style: {
+						    font: (fontSizes.sm + 'px Trebuchet MS'),
+					        fill: palette.orange3,
+							align: 'center'
+						},
+						position: {
+							centerX: true
 						}
 					}
 				}
@@ -3159,6 +3141,19 @@ var GameConfig = function() {
 								height: (gameUnit * 1.5) * 0.6
 							},
 							input: gameLogic.input.notificationEnvelope
+						},
+						supplierPrompt: {
+							type: 'sprite',
+							name: 'supplierPrompt',
+							img: 'engineBasicStandard',
+							x: gameUnit * 0.1,
+							y: gameUnit * 13,
+							attrs: {
+								width: (gameUnit * 3),
+								height: (gameUnit * 3)
+							},
+							input: gameLogic.input.supplierPrompt
+							
 						},
 						tradeRouteAlertIcon: {
 							type: 'sprite',

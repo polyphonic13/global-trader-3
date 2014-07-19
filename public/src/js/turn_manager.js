@@ -5,6 +5,7 @@ var TurnManager = function() {
 		bonuses: 0,
 		newPlants: 0,
 		newDealerships: 0,
+		newTradeRoutes: 0,
 		newTractorModels: 0,
 		newSkidsteerModels: 0,
 		newTractors: 0,

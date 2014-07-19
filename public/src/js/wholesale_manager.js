@@ -23,7 +23,7 @@ var WholesaleManager = function() {
 	module.parts = {};
 	
 	module.init = function() {
-		trace('WholesaleManager/init');
+		// trace('WholesaleManager/init');
 		module.suppliersAdded = 0;
 		module.notificationActive = false;
 		// establish 
@@ -49,7 +49,7 @@ var WholesaleManager = function() {
 		PWG.Utils.each(
 			TurnManager.playerData.suppliers,
 			function(supplier) {
-				trace('\t\tsuppliers['+supplier.id+'] = ', supplier);
+				// trace('\t\tsuppliers['+supplier.id+'] = ', supplier);
 				module.suppliers[supplier.id] = new Supplier(supplier);
 				// only add this supplier to the available parts if it still has inventory
 				// if(supplier.quantity > 0) {
@@ -102,7 +102,7 @@ var WholesaleManager = function() {
 	};
 	
 	module.createSupplier = function(config) {
-		trace('WholesaleManager/createSupplier, confg = ', config);
+		// trace('WholesaleManager/createSupplier, confg = ', config);
 		var type = BuildingTypes.SUPPLIER;
 		var count = TurnManager.tempSupplierCount;
 
@@ -145,7 +145,7 @@ var WholesaleManager = function() {
 	};
 	
 	module.usePart = function(type, size, supplierId) {
-		trace('WholesaleManager/usePart: ' + type + '.' + size + ', supplierId = ' + supplierId);
+		// trace('WholesaleManager/usePart: ' + type + '.' + size + ', supplierId = ' + supplierId);
 		var supplier = module.parts[type][size][supplierId];
 		if(supplier) {
 			if(supplier.quantity > 0) {
