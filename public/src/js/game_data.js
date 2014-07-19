@@ -874,7 +874,7 @@ var gameData = {
 		goals: [
 		{
 			type: 'newTradeRoutes',
-			value: 2,
+			value: 1,
 			calculation: 'number'
 		}
 		]

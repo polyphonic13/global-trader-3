@@ -1,0 +1,11 @@
+2014-07-19 13:01:07.945 Global Trader 3.0[25032:70b] Multi-tasking -> Device: YES, App: YES
+2014-07-19 13:01:07.953 Global Trader 3.0[25032:70b] Unlimited access to network resources
+2014-07-19 13:01:07.955 Global Trader 3.0[25032:70b] 
+
+Started backup to iCloud! Please be careful.
+Your application might rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines"
+You could find it at the following address https://developer.apple.com/icloud/documentation/data-storage/ .
+
+2014-07-19 13:01:08.340 Global Trader 3.0[25032:70b] Resetting plugins due to page load.
+2014-07-19 13:01:08.381 Global Trader 3.0[25032:70b] Finished load of: file:///Users/paulhoover/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/41422F42-636F-47C1-887E-E9A523002FC9/Global%20Trader%203.0.app/www/index.html

@@ -3,6 +3,7 @@ module.exports = function(grunt) {
 	var srcDir = 'public/src';
 	var buildDir = 'public/build';
 	var polyworksjsDir = 'polyworksjs/public/build';
+	var cordovaDir = 'global_trader_3_0/platforms/ios/www';
 	
 	grunt.log.writeln('Starting Grunt Processing');
 
@@ -14,6 +15,7 @@ module.exports = function(grunt) {
 		srcDir: srcDir,
 		buildDir: buildDir,
 		polyworksjsDir: polyworksjsDir,
+		cordovaDir: cordovaDir,
 		
 		// CLEAN
 		// docs: https://github.com/gruntjs/grunt-contrib-clean
@@ -116,8 +118,47 @@ module.exports = function(grunt) {
 					flatten: true,
 					filter: 'isFile'
 				}]
-			}
+			},
+			
+			cordovaJs: {
+				files: [
+				{
+					expand: true,
+					cwd: '<%= buildDir %>/js/',
+					src: [ '**/*' ],
+					dest: '<%= cordovaDir %>/js/'
+				}]
+			},
+			
+			cordovaCss: {
+				files: [
+				{
+					expand: true,
+					cwd: '<%= buildDir %>/css/',
+					src: [ '**/*' ],
+					dest: '<%= cordovaDir %>/css/'
+				}]
+			},
 
+			cordovaImg: {
+				files: [
+				{
+					expand: true,
+					cwd: '<%= buildDir %>/img/',
+					src: [ '**/*' ],
+					dest: '<%= cordovaDir %>/img/'
+				}]
+			},
+
+			cordovaHtml: {
+				files: [
+				{
+					expand: true,
+					cwd: '<%= buildDir %>/',
+					src: [ '**/*.html' ],
+					dest: '<%= cordovaDir %>/'
+				}]
+			}
 		},
 		// SCP
 		// docs: https://www.npmjs.org/package/grunt-scp
@@ -166,7 +207,8 @@ module.exports = function(grunt) {
 			'concat:project', 
 			// 'stripTraceStatements', 
 			'uglify', 
-			'copy',
+			'copy:project',
+			'copy:polyworksjs',
 			'createProjectHtml'
 		]
 	);
@@ -177,5 +219,16 @@ module.exports = function(grunt) {
 			'default',
 			'scp:game'
 		]
-	)
+	);
+	
+	grunt.registerTask(
+		'cordova',
+		[
+			'default',
+			'copy:cordovaJs',
+			'copy:cordovaCss',
+			'copy:cordovaImg',
+			'copy:cordovaHtml'
+		]
+	);
 };

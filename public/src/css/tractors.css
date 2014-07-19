@@ -14,7 +14,7 @@ body {
 	left: 0px;
 	top: 0px;
 
-	background: #000000 url("../images/loading_black.gif") no-repeat center;
+	background: #000000 url("../img/loading_black.gif") no-repeat center;
 	background-size: 50px;
 	z-index: 10;
 }
