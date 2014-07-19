@@ -1714,7 +1714,7 @@ var gameLogic = {
 		},
 		openPartsMenu: {
 			inputDown: function() {
-				// trace('show part menu, partValue = ', this.controller.config.partValue);
+				trace('show part menu, partValue = ', this.controller.config.partValue);
 				if(PhaserGame.tutorialOpen) {
 					PhaserGame.removeTutorialGuy();
 				}
@@ -2273,7 +2273,7 @@ var gameLogic = {
 			{
 				event: Events.OPEN_BUILDINGS_MENU,
 				handler: function(event) {
-					// trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + this.partsMenuOpen + ', partsMenuType = ' + this.partsMenuType);
+					// trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + PhaserGame.partsMenuOpen + ', partsMenuType = ' + this.partsMenuType);
 					if(!this.buildingCreatePromptOpen) {
 						PhaserGame.addBuildingCreatePrompt();
 						this.buildingCreatePromptOpen = true;
@@ -2731,10 +2731,12 @@ var gameLogic = {
 			{
 				event: Events.OPEN_PARTS_MENU,
 				handler: function(event) {
-					// trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + this.partsMenuOpen + ', partsMenuType = ' + this.partsMenuType);
+					trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + PhaserGame.partsMenuOpen + ', partsMenuType = ' + this.partsMenuType);
 					if(!PhaserGame.partsMenuOpen && !PhaserGame.optionalPartsMenuOpen) {
+						trace('\t')
 						if(this.partsMenuType !== event.value) {
 							// update piece navigator
+							trace('\tthe parts menu type is not the same, resetting sprite frames and rebuilding menu');
 							PhaserGame.resetAllMachinePieceSpriteFrames();
 
 							PWG.ViewManager.hideView(PhaserGame.getCurrentMachinePiecePath());
@@ -2759,12 +2761,13 @@ var gameLogic = {
 			{
 				event: Events.CLOSE_PARTS_MENU,
 				handler: function(event) {
-					// trace('close overlay handler, overlay open = ' + this.partsMenuOpen);
+					// trace('close overlay handler, overlay open = ' + PhaserGame.partsMenuOpen);
 					if(PhaserGame.partsMenuOpen) {
 						// trace('\toverlay-menu = ', (this.views['overlay-menu']));
 						// PWG.ViewManager.hideView('partsMenu');
 						PhaserGame.hidePartsMenu();
 						PhaserGame.partsMenuOpen = false;
+						PhaserGame.activePartType = '';
 					}
 					if(PhaserGame.wholesalePromptAdded) {
 						PhaserGame.removeWholesalePartPrompt();
@@ -2941,7 +2944,7 @@ var gameLogic = {
 				PWG.ViewManager.showView('global:backButton');
 				PhaserGame.cancelAction = null;
 				this.partsMenuType = '';
-				this.partsMenuOpen = false;
+				PhaserGame.partsMenuOpen = false;
 				PhaserGame.machineDirty = false;
 			}
 		},
