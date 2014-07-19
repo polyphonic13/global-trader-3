@@ -9,3 +9,30 @@ You could find it at the following address https://developer.apple.com/icloud/do
 
 2014-07-19 13:01:08.340 Global Trader 3.0[25032:70b] Resetting plugins due to page load.
 2014-07-19 13:01:08.381 Global Trader 3.0[25032:70b] Finished load of: file:///Users/paulhoover/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/41422F42-636F-47C1-887E-E9A523002FC9/Global%20Trader%203.0.app/www/index.html
+2014-07-19 14:59:47.667 Global Trader 3.0[27781:70b] Multi-tasking -> Device: YES, App: YES
+2014-07-19 14:59:47.677 Global Trader 3.0[27781:70b] Unlimited access to network resources
+2014-07-19 14:59:47.692 Global Trader 3.0[27781:70b] 
+
+Started backup to iCloud! Please be careful.
+Your application might rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines"
+You could find it at the following address https://developer.apple.com/icloud/documentation/data-storage/ .
+
+2014-07-19 14:59:47.886 Global Trader 3.0[27781:70b] Resetting plugins due to page load.
+2014-07-19 14:59:48.002 Global Trader 3.0[27781:70b] Finished load of: file:///Users/paulhoover/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/41422F42-636F-47C1-887E-E9A523002FC9/Global%20Trader%203.0.app/www/index.html
+>>>> frameSizeChanged = 4096
+>>>> frameSizeChanged = 4096
+Terminating in response to SpringBoard's termination.
+2014-07-19 15:02:51.415 Global Trader 3.0[28169:70b] Multi-tasking -> Device: YES, App: YES
+2014-07-19 15:02:51.426 Global Trader 3.0[28169:70b] Unlimited access to network resources
+2014-07-19 15:02:51.430 Global Trader 3.0[28169:70b] 
+
+Started backup to iCloud! Please be careful.
+Your application might rejected by Apple if you store too much data.
+For more information please read "iOS Data Storage Guidelines"
+You could find it at the following address https://developer.apple.com/icloud/documentation/data-storage/ .
+
+2014-07-19 15:02:51.560 Global Trader 3.0[28169:70b] Resetting plugins due to page load.
+>>>> frameSizeChanged = 4096
+>>>> frameSizeChanged = 4096
+2014-07-19 15:02:51.773 Global Trader 3.0[28169:70b] Finished load of: file:///Users/paulhoover/Library/Application%20Support/iPhone%20Simulator/7.1/Applications/41422F42-636F-47C1-887E-E9A523002FC9/Global%20Trader%203.0.app/www/index.html

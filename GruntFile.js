@@ -3,7 +3,8 @@ module.exports = function(grunt) {
 	var srcDir = 'public/src';
 	var buildDir = 'public/build';
 	var polyworksjsDir = 'polyworksjs/public/build';
-	var cordovaDir = 'global_trader_3_0/platforms/ios/www';
+	// var cordovaDir = 'global_trader_3_0/platforms/ios/www';
+	var cordovaDir = 'global_trader_3_0/www';
 	
 	grunt.log.writeln('Starting Grunt Processing');
 
