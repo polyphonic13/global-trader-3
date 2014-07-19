@@ -2040,485 +2040,485 @@ var GameConfig = function() {
 			assets: {
 				images: {
 					// generic
-					blockWhite: 'images/block_white.png',
-					blockClear: 'images/block_clear.png',
+					blockWhite: 'img/block_white.png',
+					blockClear: 'img/block_clear.png',
 					// global
-					gameBg: 'images/screens/metal_background.gif',
-					dashboardBottom: 'images/dashboard_bottom.png',
-					dashboardTop: 'images/dashboard_top.png',
-					submenuBg: 'images/submenu_bg.png',
-					smallEnvelope: 'images/icons/small_envelope.png',
+					gameBg: 'img/screens/metal_background.gif',
+					dashboardBottom: 'img/dashboard_bottom.png',
+					dashboardTop: 'img/dashboard_top.png',
+					submenuBg: 'img/submenu_bg.png',
+					smallEnvelope: 'img/icons/small_envelope.png',
 					// home
-					homeBg: 'images/screens/start/start.png',
+					homeBg: 'img/screens/start/start.png',
 					// manual
-					manualBg: 'images/screens/manual/manual_background.png',
-					manualPage: 'images/screens/manual/manual_page.png',
-					ssIgnition: 'images/screens/manual/ss_ignition.png',
-					ssGoals: 'images/screens/manual/ss_goals.png',
-					ssYearIndicators: 'images/screens/manual/ss_year_indicators.png',
-					ssUsSector: 'images/screens/manual/ss_us_sector.png',
-					ssGrid: 'images/screens/manual/ss_grid.png',
-					ssPlant: 'images/screens/manual/ss_plant.png',
-					ssPlantDetails: 'images/screens/manual/ss_plant_details.png',
-					ssEmptySlot: 'images/screens/manual/ss_empty_slot.png',
-					ssTractorMedium: 'images/screens/manual/ss_tractor_medium.png',
-					ssPartsNavigator: 'images/screens/manual/ss_parts_navigator.png',
-					ssPartsMenu: 'images/screens/manual/ss_parts_menu.png',
-					ssStars: 'images/screens/manual/ss_stars.png',
-					ssDealershipGirl: 'images/screens/manual/ss_dealership_girl.png',
-					ssDashboardTop: 'images/screens/manual/ss_dashboard_top.png',
-					ssYearEnd: 'images/screens/manual/ss_year_end.png',
-					ssDealershipEnvelope: 'images/screens/manual/ss_dealership_envelope.png',
-					ssFactoryProduction: 'images/screens/manual/ss_plant_production.png',
-					ssTradeRoutes: 'images/screens/manual/ss_trade_routes.png',
+					manualBg: 'img/screens/manual/manual_background.png',
+					manualPage: 'img/screens/manual/manual_page.png',
+					ssIgnition: 'img/screens/manual/ss_ignition.png',
+					ssGoals: 'img/screens/manual/ss_goals.png',
+					ssYearIndicators: 'img/screens/manual/ss_year_indicators.png',
+					ssUsSector: 'img/screens/manual/ss_us_sector.png',
+					ssGrid: 'img/screens/manual/ss_grid.png',
+					ssPlant: 'img/screens/manual/ss_plant.png',
+					ssPlantDetails: 'img/screens/manual/ss_plant_details.png',
+					ssEmptySlot: 'img/screens/manual/ss_empty_slot.png',
+					ssTractorMedium: 'img/screens/manual/ss_tractor_medium.png',
+					ssPartsNavigator: 'img/screens/manual/ss_parts_navigator.png',
+					ssPartsMenu: 'img/screens/manual/ss_parts_menu.png',
+					ssStars: 'img/screens/manual/ss_stars.png',
+					ssDealershipGirl: 'img/screens/manual/ss_dealership_girl.png',
+					ssDashboardTop: 'img/screens/manual/ss_dashboard_top.png',
+					ssYearEnd: 'img/screens/manual/ss_year_end.png',
+					ssDealershipEnvelope: 'img/screens/manual/ss_dealership_envelope.png',
+					ssFactoryProduction: 'img/screens/manual/ss_plant_production.png',
+					ssTradeRoutes: 'img/screens/manual/ss_trade_routes.png',
 					// mission brief
-					briefBg01: 'images/screens/brief/mission_brief01.png',
-					briefBg02: 'images/screens/brief/mission_brief02.png',
-					briefBg03: 'images/screens/brief/mission_brief03.png',
-					briefBg04: 'images/screens/brief/mission_brief04.png',
-					briefBg05: 'images/screens/brief/mission_brief05.png',
-					goalsText: 'images/screens/brief/goals_text_img.png',
-					windshieldWiper: 'images/screens/brief/windshield_wiper.png',
-					windshieldWiperMask: 'images/screens/brief/windshield_wiper_mask.png',
-					windowFrame: 'images/screens/brief/window_frame.png',
+					briefBg01: 'img/screens/brief/mission_brief01.png',
+					briefBg02: 'img/screens/brief/mission_brief02.png',
+					briefBg03: 'img/screens/brief/mission_brief03.png',
+					briefBg04: 'img/screens/brief/mission_brief04.png',
+					briefBg05: 'img/screens/brief/mission_brief05.png',
+					goalsText: 'img/screens/brief/goals_text_img.png',
+					windshieldWiper: 'img/screens/brief/windshield_wiper.png',
+					windshieldWiperMask: 'img/screens/brief/windshield_wiper_mask.png',
+					windowFrame: 'img/screens/brief/window_frame.png',
 					// world
-					mapOcean: 'images/screens/world/map_ocean2.png',
-					mapWorld: 'images/screens/world/map_world4.png',
-					mapUS: 'images/screens/world/map_us.png',
-					endTurnPrompt: 'images/screens/world/end_turn_prompt.png',
-					pinPlant: 'images/screens/world/pin_plant.png',
-					pinDealership: 'images/screens/world/pin_dealership.png',
-					pinTradeRoute: 'images/screens/world/pin_trade_route.png',
-					exclamationAlert: 'images/icons/exclamation5.png',
-					tradeRouteAlertIcon: 'images/icons/little_trade_route_alert.png',
-					tradeRouteIcon: 'images/screens/world/trade_route_icon.png',
-					tradeRouteAfrica: 'images/screens/world/trade_route_africa.png',
-					tradeRouteAsia: 'images/screens/world/trade_route_asia.png',
-					tradeRouteEurope: 'images/screens/world/trade_route_europe.png',
-					tradeRouteMiddleEast: 'images/screens/world/trade_route_middle_east.png',
-					tradeRoutePacificSouth: 'images/screens/world/trade_route_south_pacific.png',
-					tradeRouteSouthAmerica: 'images/screens/world/trade_route_south_america.png',
+					mapOcean: 'img/screens/world/map_ocean2.png',
+					mapWorld: 'img/screens/world/map_world4.png',
+					mapUS: 'img/screens/world/map_us.png',
+					endTurnPrompt: 'img/screens/world/end_turn_prompt.png',
+					pinPlant: 'img/screens/world/pin_plant.png',
+					pinDealership: 'img/screens/world/pin_dealership.png',
+					pinTradeRoute: 'img/screens/world/pin_trade_route.png',
+					exclamationAlert: 'img/icons/exclamation5.png',
+					tradeRouteAlertIcon: 'img/icons/little_trade_route_alert.png',
+					tradeRouteIcon: 'img/screens/world/trade_route_icon.png',
+					tradeRouteAfrica: 'img/screens/world/trade_route_africa.png',
+					tradeRouteAsia: 'img/screens/world/trade_route_asia.png',
+					tradeRouteEurope: 'img/screens/world/trade_route_europe.png',
+					tradeRouteMiddleEast: 'img/screens/world/trade_route_middle_east.png',
+					tradeRoutePacificSouth: 'img/screens/world/trade_route_south_pacific.png',
+					tradeRouteSouthAmerica: 'img/screens/world/trade_route_south_america.png',
 					// us detail
-					sectorGridNE: 'images/screens/us_detail/sector_grid_ne.png',
-					sectorGridSE: 'images/screens/us_detail/sector_grid_se.png',
-					sectorGridMW: 'images/screens/us_detail/sector_grid_mw.png',
-					sectorGridNW: 'images/screens/us_detail/sector_grid_nw.png',
-					sectorGridSW: 'images/screens/us_detail/sector_grid_sw.png',
-					addNewPlantPrompt: 'images/screens/us_detail/add_new_plant_prompt.png',
-					dealershipRepresentativePrompt: 'images/screens/us_detail/dealership_representative_prompt.png',
+					sectorGridNE: 'img/screens/us_detail/sector_grid_ne.png',
+					sectorGridSE: 'img/screens/us_detail/sector_grid_se.png',
+					sectorGridMW: 'img/screens/us_detail/sector_grid_mw.png',
+					sectorGridNW: 'img/screens/us_detail/sector_grid_nw.png',
+					sectorGridSW: 'img/screens/us_detail/sector_grid_sw.png',
+					addNewPlantPrompt: 'img/screens/us_detail/add_new_plant_prompt.png',
+					dealershipRepresentativePrompt: 'img/screens/us_detail/dealership_representative_prompt.png',
 					// building detail
-					plantDetailBg: 'images/screens/building_edit/plant_detail.png',
-					dealershipDetailBg: 'images/screens/building_edit/dealership_detail.png',
+					plantDetailBg: 'img/screens/building_edit/plant_detail.png',
+					dealershipDetailBg: 'img/screens/building_edit/dealership_detail.png',
 					// equipment list
-					machineListIcon: 'images/screens/equipment_list/machine_list_icon.png',
-					skidsteerBasicIcon: 'images/screens/equipment_list/skidsteer_basic_icon.png',
-					skidsteerMediumIcon: 'images/screens/equipment_list/skidsteer_medium_icon.png',
-					skidsteerHeavyIcon: 'images/screens/equipment_list/skidsteer_heavy_icon.png',
-					tractorBasicIcon: 'images/screens/equipment_list/tractor_basic_icon.png',
-					tractorMediumIcon: 'images/screens/equipment_list/tractor_medium_icon.png',
-					tractorHeavyIcon: 'images/screens/equipment_list/tractor_heavy_icon.png',
-					emptyIcon: 'images/screens/equipment_list/empty_icon2.png',
+					machineListIcon: 'img/screens/equipment_list/machine_list_icon.png',
+					skidsteerBasicIcon: 'img/screens/equipment_list/skidsteer_basic_icon.png',
+					skidsteerMediumIcon: 'img/screens/equipment_list/skidsteer_medium_icon.png',
+					skidsteerHeavyIcon: 'img/screens/equipment_list/skidsteer_heavy_icon.png',
+					tractorBasicIcon: 'img/screens/equipment_list/tractor_basic_icon.png',
+					tractorMediumIcon: 'img/screens/equipment_list/tractor_medium_icon.png',
+					tractorHeavyIcon: 'img/screens/equipment_list/tractor_heavy_icon.png',
+					emptyIcon: 'img/screens/equipment_list/empty_icon2.png',
 					// equipment create
-					equipmentCreateBg: 'images/screens/equipment_add/equipment_add_bg.png',
+					equipmentCreateBg: 'img/screens/equipment_add/equipment_add_bg.png',
 					// equipment edit
-					tractorBasicBg: 'images/screens/equipment_edit/tractor_basic.png',
-					tractorMediumBg: 'images/screens/equipment_edit/tractor_medium.png',
-					tractorHeavyBg: 'images/screens/equipment_edit/tractor_heavy.png',
-					skidsteerBasicBg: 'images/screens/equipment_edit/skid_steer_basic.png',
-					skidsteerMediumBg: 'images/screens/equipment_edit/skid_steer_medium.png',
-					skidsteerHeavyBg: 'images/screens/equipment_edit/skid_steer_heavy.png',
-					optionalPartsPlus: 'images/screens/equipment_edit/optional_parts_plus.png',
-					partsNavigator: 'images/screens/equipment_edit/what_to_buy_menu.png',
+					tractorBasicBg: 'img/screens/equipment_edit/tractor_basic.png',
+					tractorMediumBg: 'img/screens/equipment_edit/tractor_medium.png',
+					tractorHeavyBg: 'img/screens/equipment_edit/tractor_heavy.png',
+					skidsteerBasicBg: 'img/screens/equipment_edit/skid_steer_basic.png',
+					skidsteerMediumBg: 'img/screens/equipment_edit/skid_steer_medium.png',
+					skidsteerHeavyBg: 'img/screens/equipment_edit/skid_steer_heavy.png',
+					optionalPartsPlus: 'img/screens/equipment_edit/optional_parts_plus.png',
+					partsNavigator: 'img/screens/equipment_edit/what_to_buy_menu.png',
 					// parts icons
 					// frame
-					partsFrame: 'images/screens/equipment_edit/parts_frame.png',
+					partsFrame: 'img/screens/equipment_edit/parts_frame.png',
 					// engine
-					engineBasicStandard: 'images/screens/equipment_edit/parts_icons/engine/basic_standard.png',
-					engineBasicPremium: 'images/screens/equipment_edit/parts_icons/engine/basic_premium.png',
-					engineBasicDeluxe: 'images/screens/equipment_edit/parts_icons/engine/basic_deluxe.png',
-					engineMediumStandard: 'images/screens/equipment_edit/parts_icons/engine/medium_standard.png',
-					engineMediumPremium: 'images/screens/equipment_edit/parts_icons/engine/medium_premium.png',
-					engineMediumDeluxe: 'images/screens/equipment_edit/parts_icons/engine/medium_deluxe.png',
-					engineHeavyStandard: 'images/screens/equipment_edit/parts_icons/engine/heavy_standard.png',
-					engineHeavyPremium: 'images/screens/equipment_edit/parts_icons/engine/heavy_premium.png',
-					engineHeavyDeluxe: 'images/screens/equipment_edit/parts_icons/engine/heavy_deluxe.png',
+					engineBasicStandard: 'img/screens/equipment_edit/parts_icons/engine/basic_standard.png',
+					engineBasicPremium: 'img/screens/equipment_edit/parts_icons/engine/basic_premium.png',
+					engineBasicDeluxe: 'img/screens/equipment_edit/parts_icons/engine/basic_deluxe.png',
+					engineMediumStandard: 'img/screens/equipment_edit/parts_icons/engine/medium_standard.png',
+					engineMediumPremium: 'img/screens/equipment_edit/parts_icons/engine/medium_premium.png',
+					engineMediumDeluxe: 'img/screens/equipment_edit/parts_icons/engine/medium_deluxe.png',
+					engineHeavyStandard: 'img/screens/equipment_edit/parts_icons/engine/heavy_standard.png',
+					engineHeavyPremium: 'img/screens/equipment_edit/parts_icons/engine/heavy_premium.png',
+					engineHeavyDeluxe: 'img/screens/equipment_edit/parts_icons/engine/heavy_deluxe.png',
 					// transmission
-					transmissionBasicStandard: 'images/screens/equipment_edit/parts_icons/transmission/basic_standard.png',
-					transmissionBasicPremium: 'images/screens/equipment_edit/parts_icons/transmission/basic_premium.png',
-					transmissionBasicDeluxe: 'images/screens/equipment_edit/parts_icons/transmission/basic_deluxe.png',
-					transmissionMediumStandard: 'images/screens/equipment_edit/parts_icons/transmission/medium_standard.png',
-					transmissionMediumPremium: 'images/screens/equipment_edit/parts_icons/transmission/medium_premium.png',
-					transmissionMediumDeluxe: 'images/screens/equipment_edit/parts_icons/transmission/medium_deluxe.png',
-					transmissionHeavyStandard: 'images/screens/equipment_edit/parts_icons/transmission/heavy_standard.png',
-					transmissionHeavyPremium: 'images/screens/equipment_edit/parts_icons/transmission/heavy_premium.png',
-					transmissionHeavyDeluxe: 'images/screens/equipment_edit/parts_icons/transmission/heavy_deluxe.png',
+					transmissionBasicStandard: 'img/screens/equipment_edit/parts_icons/transmission/basic_standard.png',
+					transmissionBasicPremium: 'img/screens/equipment_edit/parts_icons/transmission/basic_premium.png',
+					transmissionBasicDeluxe: 'img/screens/equipment_edit/parts_icons/transmission/basic_deluxe.png',
+					transmissionMediumStandard: 'img/screens/equipment_edit/parts_icons/transmission/medium_standard.png',
+					transmissionMediumPremium: 'img/screens/equipment_edit/parts_icons/transmission/medium_premium.png',
+					transmissionMediumDeluxe: 'img/screens/equipment_edit/parts_icons/transmission/medium_deluxe.png',
+					transmissionHeavyStandard: 'img/screens/equipment_edit/parts_icons/transmission/heavy_standard.png',
+					transmissionHeavyPremium: 'img/screens/equipment_edit/parts_icons/transmission/heavy_premium.png',
+					transmissionHeavyDeluxe: 'img/screens/equipment_edit/parts_icons/transmission/heavy_deluxe.png',
 					// tires
-					tiresBasicStandard: 'images/screens/equipment_edit/parts_icons/tires/basic_standard.png',
-					tiresBasicPremium: 'images/screens/equipment_edit/parts_icons/tires/basic_premium.png',
-					tiresBasicDeluxe: 'images/screens/equipment_edit/parts_icons/tires/basic_deluxe.png',
-					tiresMediumStandard: 'images/screens/equipment_edit/parts_icons/tires/medium_standard.png',
-					tiresMediumPremium: 'images/screens/equipment_edit/parts_icons/tires/medium_premium.png',
-					tiresMediumDeluxe: 'images/screens/equipment_edit/parts_icons/tires/medium_deluxe.png',
+					tiresBasicStandard: 'img/screens/equipment_edit/parts_icons/tires/basic_standard.png',
+					tiresBasicPremium: 'img/screens/equipment_edit/parts_icons/tires/basic_premium.png',
+					tiresBasicDeluxe: 'img/screens/equipment_edit/parts_icons/tires/basic_deluxe.png',
+					tiresMediumStandard: 'img/screens/equipment_edit/parts_icons/tires/medium_standard.png',
+					tiresMediumPremium: 'img/screens/equipment_edit/parts_icons/tires/medium_premium.png',
+					tiresMediumDeluxe: 'img/screens/equipment_edit/parts_icons/tires/medium_deluxe.png',
 					// tracks
-					tracksHeavyStandard: 'images/screens/equipment_edit/parts_icons/tracks/heavy_standard.png',
-					tracksHeavyPremium: 'images/screens/equipment_edit/parts_icons/tracks/heavy_premium.png',
-					tracksHeavyDeluxe: 'images/screens/equipment_edit/parts_icons/tracks/heavy_deluxe.png',
+					tracksHeavyStandard: 'img/screens/equipment_edit/parts_icons/tracks/heavy_standard.png',
+					tracksHeavyPremium: 'img/screens/equipment_edit/parts_icons/tracks/heavy_premium.png',
+					tracksHeavyDeluxe: 'img/screens/equipment_edit/parts_icons/tracks/heavy_deluxe.png',
 					// bucket
-					bucketBasicStandard: 'images/screens/equipment_edit/parts_icons/bucket/basic_standard.png',
-					bucketBasicPremium: 'images/screens/equipment_edit/parts_icons/bucket/basic_premium.png',
-					bucketBasicDeluxe: 'images/screens/equipment_edit/parts_icons/bucket/basic_deluxe.png',
-					bucketMediumStandard: 'images/screens/equipment_edit/parts_icons/bucket/medium_standard.png',
-					bucketMediumPremium: 'images/screens/equipment_edit/parts_icons/bucket/medium_premium.png',
-					bucketMediumDeluxe: 'images/screens/equipment_edit/parts_icons/bucket/medium_deluxe.png',
-					bucketHeavyStandard: 'images/screens/equipment_edit/parts_icons/bucket/heavy_standard.png',
-					bucketHeavyPremium: 'images/screens/equipment_edit/parts_icons/bucket/heavy_premium.png',
-					bucketHeavyDeluxe: 'images/screens/equipment_edit/parts_icons/bucket/heavy_deluxe.png',
+					bucketBasicStandard: 'img/screens/equipment_edit/parts_icons/bucket/basic_standard.png',
+					bucketBasicPremium: 'img/screens/equipment_edit/parts_icons/bucket/basic_premium.png',
+					bucketBasicDeluxe: 'img/screens/equipment_edit/parts_icons/bucket/basic_deluxe.png',
+					bucketMediumStandard: 'img/screens/equipment_edit/parts_icons/bucket/medium_standard.png',
+					bucketMediumPremium: 'img/screens/equipment_edit/parts_icons/bucket/medium_premium.png',
+					bucketMediumDeluxe: 'img/screens/equipment_edit/parts_icons/bucket/medium_deluxe.png',
+					bucketHeavyStandard: 'img/screens/equipment_edit/parts_icons/bucket/heavy_standard.png',
+					bucketHeavyPremium: 'img/screens/equipment_edit/parts_icons/bucket/heavy_premium.png',
+					bucketHeavyDeluxe: 'img/screens/equipment_edit/parts_icons/bucket/heavy_deluxe.png',
 					// headlights
-					headlightsMediumStandard: 'images/screens/equipment_edit/parts_icons/headlights/medium_standard.png',
-					headlightsMediumPremium: 'images/screens/equipment_edit/parts_icons/headlights/medium_premium.png',
-					headlightsMediumDeluxe: 'images/screens/equipment_edit/parts_icons/headlights/medium_deluxe.png',
-					headlightsHeavyStandard: 'images/screens/equipment_edit/parts_icons/headlights/heavy_standard.png',
-					headlightsHeavyPremium: 'images/screens/equipment_edit/parts_icons/headlights/heavy_premium.png',
-					headlightsHeavyDeluxe: 'images/screens/equipment_edit/parts_icons/headlights/heavy_deluxe.png',
+					headlightsMediumStandard: 'img/screens/equipment_edit/parts_icons/headlights/medium_standard.png',
+					headlightsMediumPremium: 'img/screens/equipment_edit/parts_icons/headlights/medium_premium.png',
+					headlightsMediumDeluxe: 'img/screens/equipment_edit/parts_icons/headlights/medium_deluxe.png',
+					headlightsHeavyStandard: 'img/screens/equipment_edit/parts_icons/headlights/heavy_standard.png',
+					headlightsHeavyPremium: 'img/screens/equipment_edit/parts_icons/headlights/heavy_premium.png',
+					headlightsHeavyDeluxe: 'img/screens/equipment_edit/parts_icons/headlights/heavy_deluxe.png',
 					// threePointHitch
-					threePointHitchHeavyStandard: 'images/screens/equipment_edit/parts_icons/threePointHitch/heavy_standard.png',
-					threePointHitchHeavyPremium: 'images/screens/equipment_edit/parts_icons/threePointHitch/heavy_premium.png',
-					threePointHitchHeavyDeluxe: 'images/screens/equipment_edit/parts_icons/threePointHitch/heavy_deluxe.png',
+					threePointHitchHeavyStandard: 'img/screens/equipment_edit/parts_icons/threePointHitch/heavy_standard.png',
+					threePointHitchHeavyPremium: 'img/screens/equipment_edit/parts_icons/threePointHitch/heavy_premium.png',
+					threePointHitchHeavyDeluxe: 'img/screens/equipment_edit/parts_icons/threePointHitch/heavy_deluxe.png',
 					// powerTakeoff
-					powerTakeoffHeavyStandard: 'images/screens/equipment_edit/parts_icons/powerTakeoff/heavy_standard.png',
-					powerTakeoffHeavyPremium: 'images/screens/equipment_edit/parts_icons/powerTakeoff/heavy_premium.png',
-					powerTakeoffHeavyDeluxe: 'images/screens/equipment_edit/parts_icons/powerTakeoff/heavy_deluxe.png',
+					powerTakeoffHeavyStandard: 'img/screens/equipment_edit/parts_icons/powerTakeoff/heavy_standard.png',
+					powerTakeoffHeavyPremium: 'img/screens/equipment_edit/parts_icons/powerTakeoff/heavy_premium.png',
+					powerTakeoffHeavyDeluxe: 'img/screens/equipment_edit/parts_icons/powerTakeoff/heavy_deluxe.png',
 					// quickCoupler
-					quickCouplerMediumStandard: 'images/screens/equipment_edit/parts_icons/quickCoupler/medium_standard.png',
-					quickCouplerMediumPremium: 'images/screens/equipment_edit/parts_icons/quickCoupler/medium_premium.png',
-					quickCouplerMediumDeluxe: 'images/screens/equipment_edit/parts_icons/quickCoupler/medium_deluxe.png',
-					quickCouplerHeavyStandard: 'images/screens/equipment_edit/parts_icons/quickCoupler/heavy_standard.png',
-					quickCouplerHeavyPremium: 'images/screens/equipment_edit/parts_icons/quickCoupler/heavy_premium.png',
-					quickCouplerHeavyDeluxe: 'images/screens/equipment_edit/parts_icons/quickCoupler/heavy_deluxe.png',
+					quickCouplerMediumStandard: 'img/screens/equipment_edit/parts_icons/quickCoupler/medium_standard.png',
+					quickCouplerMediumPremium: 'img/screens/equipment_edit/parts_icons/quickCoupler/medium_premium.png',
+					quickCouplerMediumDeluxe: 'img/screens/equipment_edit/parts_icons/quickCoupler/medium_deluxe.png',
+					quickCouplerHeavyStandard: 'img/screens/equipment_edit/parts_icons/quickCoupler/heavy_standard.png',
+					quickCouplerHeavyPremium: 'img/screens/equipment_edit/parts_icons/quickCoupler/heavy_premium.png',
+					quickCouplerHeavyDeluxe: 'img/screens/equipment_edit/parts_icons/quickCoupler/heavy_deluxe.png',
 					// heater
-					heaterStandard: 'images/screens/equipment_edit/parts_icons/heater/standard.png',
-					heaterPremium: 'images/screens/equipment_edit/parts_icons/heater/premium.png',
-					heaterDeluxe: 'images/screens/equipment_edit/parts_icons/heater/deluxe.png',
+					heaterStandard: 'img/screens/equipment_edit/parts_icons/heater/standard.png',
+					heaterPremium: 'img/screens/equipment_edit/parts_icons/heater/premium.png',
+					heaterDeluxe: 'img/screens/equipment_edit/parts_icons/heater/deluxe.png',
 					// extras
-					flameDecal: 'images/screens/equipment_edit/parts_icons/extras/flame_decal.png',
-					autoPilot: 'images/screens/equipment_edit/parts_icons/extras/auto_pilot.png',
-					stainlessExhaust: 'images/screens/equipment_edit/parts_icons/extras/stainless_exhaust.png',
-					gps: 'images/screens/equipment_edit/parts_icons/extras/gps.png',
+					flameDecal: 'img/screens/equipment_edit/parts_icons/extras/flame_decal.png',
+					autoPilot: 'img/screens/equipment_edit/parts_icons/extras/auto_pilot.png',
+					stainlessExhaust: 'img/screens/equipment_edit/parts_icons/extras/stainless_exhaust.png',
+					gps: 'img/screens/equipment_edit/parts_icons/extras/gps.png',
 
 					// NOTIFICATIONS
-					tutorialGuy: 'images/notifications/tutorial_guy.png',
-					dealershipGirl: 'images/notifications/dealership_girl.png',
-					supplierGuy: 'images/notifications/supplier_guy.png',
-					tradeRouteAfricaNotification: 'images/notifications/trade_route_africa.png',
-					tradeRouteAsiaNotification: 'images/notifications/trade_route_asia.png',
-					tradeRouteEuropeNotification: 'images/notifications/trade_route_europe.png',
-					tradeRouteMiddleEastNotification: 'images/notifications/trade_route_middle_east.png',
-					tradeRouteSouthPacificNotification: 'images/notifications/trade_route_south_pacific.png',
-					tradeRouteSouthAmericaNotification: 'images/notifications/trade_route_south_america.png',
+					tutorialGuy: 'img/notifications/tutorial_guy.png',
+					dealershipGirl: 'img/notifications/dealership_girl.png',
+					supplierGuy: 'img/notifications/supplier_guy.png',
+					tradeRouteAfricaNotification: 'img/notifications/trade_route_africa.png',
+					tradeRouteAsiaNotification: 'img/notifications/trade_route_asia.png',
+					tradeRouteEuropeNotification: 'img/notifications/trade_route_europe.png',
+					tradeRouteMiddleEastNotification: 'img/notifications/trade_route_middle_east.png',
+					tradeRouteSouthPacificNotification: 'img/notifications/trade_route_south_pacific.png',
+					tradeRouteSouthAmericaNotification: 'img/notifications/trade_route_south_america.png',
 
 					// TURN END
-					turnEnd01: 'images/screens/turn_end/turn_end01.png',
-					turnEnd02: 'images/screens/turn_end/turn_end02.png'
+					turnEnd01: 'img/screens/turn_end/turn_end01.png',
+					turnEnd02: 'img/screens/turn_end/turn_end02.png'
 				},
 				sprites: {
 					buttonManual: {
-						url: 'images/icons/settings.png',
+						url: 'img/icons/settings.png',
 						width: 175,
 						height: 150,
 						frames: 2
 					},
 					buttonShare: {
-						url: 'images/icons/share.png',
+						url: 'img/icons/share.png',
 						width: 175,
 						height: 150,
 						frames: 2
 					},
 					buttonCancel: {
-						url: 'images/icons/cancel.png',
+						url: 'img/icons/cancel.png',
 						width: 175,
 						height: 150,
 						frames: 2
 					},
 					buttonConfirm: {
-						url: 'images/icons/confirm.png',
+						url: 'img/icons/confirm.png',
 						width: 175,
 						height: 150,
 						frames: 2
 					},
 					buttonBack: {
-						url: 'images/icons/back.png',
+						url: 'img/icons/back.png',
 						width: 175,
 						height: 150,
 						frames: 2
 					},
 					buttonUndo: {
-						url: 'images/icons/undo.png',
+						url: 'img/icons/undo.png',
 						width: 175,
 						height: 150,
 						frames: 2
 					},
 					buttonEquipment: {
-						url: 'images/icons/equipment.png',
+						url: 'img/icons/equipment.png',
 						width: 175,
 						height: 150,
 						frames: 2
 					},
 					// buttonEquipmentAdd: {
-					// 	url: 'images/icons/equipment_add.png',
+					// 	url: 'img/icons/equipment_add.png',
 					// 	width: 175,
 					// 	height: 150,
 					// 	frames: 2
 					// },
 					buttonInventory: {
-						url: 'images/icons/inventory.png',
+						url: 'img/icons/inventory.png',
 						width: 175,
 						height: 150,
 						frames: 2
 					},
 					ignitionKey: {
-						url: 'images/screens/start/key_spritesheet.png',
+						url: 'img/screens/start/key_spritesheet.png',
 						width: 320,
 						height: 573,
 						frames: 3
 					},
 					buttonHome: {
-						url: 'images/icons/home.png',
+						url: 'img/icons/home.png',
 						width: 150,
 						height: 50,
 						frames: 2
 					},
 					buttonPlus: {
-						url: 'images/icons/plus.png',
+						url: 'img/icons/plus.png',
 						width: 150,
 						height: 50,
 						frames: 2
 					},
 					buttonMinus: {
-						url: 'images/icons/minus.png',
+						url: 'img/icons/minus.png',
 						width: 150,
 						height: 50,
 						frames: 2
 					},
 					turnIndicators: {
-						url: 'images/turn_spritesheet.png',
+						url: 'img/turn_spritesheet.png',
 						width: 300,
 						height: 100,
 						frames: 10
 					},
 					usDetailTiles: {
-						url: 'images/screens/us_detail/us_detail_grid_icon.png',
+						url: 'img/screens/us_detail/us_detail_grid_icon.png',
 						width: 110,
 						height: 110,
 						frames: 5
 					},
 					animatedDollarIcon: {
-						url: 'images/screens/us_detail/animated_dollar_sign_white.png',
+						url: 'img/screens/us_detail/animated_dollar_sign_white.png',
 						width: 65,
 						height: 100,
 						frames: 6
 					},
 					animatedPlusIcon: {
-						url: 'images/screens/us_detail/animated_plus_sign.png',
+						url: 'img/screens/us_detail/animated_plus_sign.png',
 						width: 65,
 						height: 100,
 						frames: 6
 					},
 					// equipment create 
 					createTractorBasic: {
-						url: 'images/screens/equipment_add/tractor_basic.png',
+						url: 'img/screens/equipment_add/tractor_basic.png',
 						width: 310,
 						height: 218,
 						frames: 2
 					},
 					createSkidsteerBasic: {
-						url: 'images/screens/equipment_add/skid_steer_basic.png',
+						url: 'img/screens/equipment_add/skid_steer_basic.png',
 						width: 310,
 						height: 218,
 						frames: 2
 					},
 					createTractorMedium: {
-						url: 'images/screens/equipment_add/tractor_medium.png',
+						url: 'img/screens/equipment_add/tractor_medium.png',
 						width: 310,
 						height: 218,
 						frames: 2
 					},
 					createSkidsteerMedium: {
-						url: 'images/screens/equipment_add/skid_steer_medium.png',
+						url: 'img/screens/equipment_add/skid_steer_medium.png',
 						width: 310,
 						height: 218,
 						frames: 2
 					},
 					createTractorHeavy: {
-						url: 'images/screens/equipment_add/tractor_heavy.png',
+						url: 'img/screens/equipment_add/tractor_heavy.png',
 						width: 310,
 						height: 218,
 						frames: 2
 					},
 					createSkidsteerHeavy: {
-						url: 'images/screens/equipment_add/skid_steer_heavy.png',
+						url: 'img/screens/equipment_add/skid_steer_heavy.png',
 						width: 310,
 						height: 218,
 						frames: 2
 					},
  					// equipment edit
 					starsThree: {
-						url: 'images/screens/equipment_edit/stars/stars_three_spritesheet.png', 
+						url: 'img/screens/equipment_edit/stars/stars_three_spritesheet.png', 
 						width: 126,
 						height: 26,
 						frames: 4
 					},
 					starsFour: {
-						url: 'images/screens/equipment_edit/stars/stars_four_spritesheet.png', 
+						url: 'img/screens/equipment_edit/stars/stars_four_spritesheet.png', 
 						width: 176,
 						height: 26,
 						frames: 5
 					},
 					starsFive: {
-						url: 'images/screens/equipment_edit/stars/stars_five_spritesheet.png', 
+						url: 'img/screens/equipment_edit/stars/stars_five_spritesheet.png', 
 						width: 224,
 						height: 26,
 						frames: 6
 					},
 					starsSix: {
-						url: 'images/screens/equipment_edit/stars/stars_six_spritesheet.png', 
+						url: 'img/screens/equipment_edit/stars/stars_six_spritesheet.png', 
 						width: 274,
 						height: 26,
 						frames: 7
 					},
 					starsSeven: {
-						url: 'images/screens/equipment_edit/stars/stars_seven_spritesheet.png', 
+						url: 'img/screens/equipment_edit/stars/stars_seven_spritesheet.png', 
 						width: 323,
 						height: 26,
 						frames: 8
 					},
 					// tractor basic
 					editTractorBasicCab: {
-						url: 'images/screens/equipment_edit/machine_parts/tractor/basic/tractor_basic_cab_spritesheet.png',
+						url: 'img/screens/equipment_edit/machine_parts/tractor/basic/tractor_basic_cab_spritesheet.png',
 						width: 105,
 						height: 154,
 						frames: 2
 					},
 					editTractorBasicEngine: {
-						url: 'images/screens/equipment_edit/machine_parts/tractor/basic/tractor_basic_engine_spritesheet.png',
+						url: 'img/screens/equipment_edit/machine_parts/tractor/basic/tractor_basic_engine_spritesheet.png',
 						width: 167,
 						height: 189,
 						frames: 2
 					},
 					editTractorBasicTires: {
-						url: 'images/screens/equipment_edit/machine_parts/tractor/basic/tractor_basic_tires_spritesheet.png',
+						url: 'img/screens/equipment_edit/machine_parts/tractor/basic/tractor_basic_tires_spritesheet.png',
 						width: 308,
 						height: 196,
 						frames: 2
 					},
 					// tractor medium
 					editTractorMediumCab: {
-						url: 'images/screens/equipment_edit/machine_parts/tractor/medium/tractor_medium_cab_spritesheet.png',
+						url: 'img/screens/equipment_edit/machine_parts/tractor/medium/tractor_medium_cab_spritesheet.png',
 						width: 83,
 						height: 177,
 						frames: 2
 					},
 					editTractorMediumEngine: {
-						url: 'images/screens/equipment_edit/machine_parts/tractor/medium/tractor_medium_engine_spritesheet.png',
+						url: 'img/screens/equipment_edit/machine_parts/tractor/medium/tractor_medium_engine_spritesheet.png',
 						width: 143,
 						height: 149,
 						frames: 2
 					},
 					editTractorMediumTransmission: {
-						url: 'images/screens/equipment_edit/machine_parts/tractor/medium/tractor_medium_transmission_spritesheet.png',
+						url: 'img/screens/equipment_edit/machine_parts/tractor/medium/tractor_medium_transmission_spritesheet.png',
 						width: 26,
 						height: 83,
 						frames: 2
 					},
 					editTractorMediumTires: {
-						url: 'images/screens/equipment_edit/machine_parts/tractor/medium/tractor_medium_tires_spritesheet.png',
+						url: 'img/screens/equipment_edit/machine_parts/tractor/medium/tractor_medium_tires_spritesheet.png',
 						width: 288,
 						height: 255,
 						frames: 2
 					},
 					// tractor heavy
 					editTractorHeavyCab: {
-						url: 'images/screens/equipment_edit/machine_parts/tractor/heavy/tractor_heavy_cab_spritesheet.png',
+						url: 'img/screens/equipment_edit/machine_parts/tractor/heavy/tractor_heavy_cab_spritesheet.png',
 						width: 166,
 						height: 222,
 						frames: 2
 					},
 					editTractorHeavyEngine: {
-						url: 'images/screens/equipment_edit/machine_parts/tractor/heavy/tractor_heavy_engine_spritesheet.png',
+						url: 'img/screens/equipment_edit/machine_parts/tractor/heavy/tractor_heavy_engine_spritesheet.png',
 						width: 165,
 						height: 172,
 						frames: 2
 					},
 					editTractorHeavyTransmission: {
-						url: 'images/screens/equipment_edit/machine_parts/tractor/heavy/tractor_heavy_transmission_spritesheet.png',
+						url: 'img/screens/equipment_edit/machine_parts/tractor/heavy/tractor_heavy_transmission_spritesheet.png',
 						width: 43,
 						height: 155,
 						frames: 2
 					},
 					editTractorHeavyTracks: {
-						url: 'images/screens/equipment_edit/machine_parts/tractor/heavy/tractor_heavy_tracks_spritesheet.png',
+						url: 'img/screens/equipment_edit/machine_parts/tractor/heavy/tractor_heavy_tracks_spritesheet.png',
 						width: 300,
 						height: 170,
 						frames: 2
 					},
 					// skidsteer basic
 					editSkidsteerBasicCab: {
-						url: 'images/screens/equipment_edit/machine_parts/skidsteer/basic/skidsteer_basic_cab_spritesheet.png',
+						url: 'img/screens/equipment_edit/machine_parts/skidsteer/basic/skidsteer_basic_cab_spritesheet.png',
 						width: 115,
 						height: 126,
 						frames: 2
 					},
 					editSkidsteerBasicBucket: {
-						url: 'images/screens/equipment_edit/machine_parts/skidsteer/basic/skidsteer_basic_bucket_spritesheet.png',
+						url: 'img/screens/equipment_edit/machine_parts/skidsteer/basic/skidsteer_basic_bucket_spritesheet.png',
 						width: 207,
 						height: 145,
 						frames: 2
 					},
 					editSkidsteerBasicTires: {
-						url: 'images/screens/equipment_edit/machine_parts/skidsteer/basic/skidsteer_basic_tires_spritesheet.png',
+						url: 'img/screens/equipment_edit/machine_parts/skidsteer/basic/skidsteer_basic_tires_spritesheet.png',
 						width: 159,
 						height: 101,
 						frames: 2
 					},
 					// // skidsteer medium
 					editSkidsteerMediumCab: {
-						url: 'images/screens/equipment_edit/machine_parts/skidsteer/medium/skidsteer_medium_cab_spritesheet.png',
+						url: 'img/screens/equipment_edit/machine_parts/skidsteer/medium/skidsteer_medium_cab_spritesheet.png',
 						width: 142,
 						height: 129,
 						frames: 2
 					},
 					editSkidsteerMediumBucket: {
-						url: 'images/screens/equipment_edit/machine_parts/skidsteer/medium/skidsteer_medium_bucket_spritesheet.png',
+						url: 'img/screens/equipment_edit/machine_parts/skidsteer/medium/skidsteer_medium_bucket_spritesheet.png',
 						width: 179,
 						height: 167,
 						frames: 2
 					},
 					editSkidsteerMediumTires: {
-						url: 'images/screens/equipment_edit/machine_parts/skidsteer/medium/skidsteer_medium_tires_spritesheet.png',
+						url: 'img/screens/equipment_edit/machine_parts/skidsteer/medium/skidsteer_medium_tires_spritesheet.png',
 						width: 78,
 						height: 86,
 						frames: 2
 					},
 					// skidsteer heavy
 					editSkidsteerHeavyCab: {
-						url: 'images/screens/equipment_edit/machine_parts/skidsteer/heavy/skidsteer_heavy_cab_spritesheet.png',
+						url: 'img/screens/equipment_edit/machine_parts/skidsteer/heavy/skidsteer_heavy_cab_spritesheet.png',
 						width: 156,
 						height: 108,
 						frames: 2
 					},
 					editSkidsteerHeavyEngine: {
-						url: 'images/screens/equipment_edit/machine_parts/skidsteer/heavy/skidsteer_heavy_engine_spritesheet.png',
+						url: 'img/screens/equipment_edit/machine_parts/skidsteer/heavy/skidsteer_heavy_engine_spritesheet.png',
 						width: 83,
 						height: 57,
 						frames: 2
 					},
 					editSkidsteerHeavyBucket: {
-						url: 'images/screens/equipment_edit/machine_parts/skidsteer/heavy/skidsteer_heavy_bucket_spritesheet.png',
+						url: 'img/screens/equipment_edit/machine_parts/skidsteer/heavy/skidsteer_heavy_bucket_spritesheet.png',
 						width: 249,
 						height: 244,
 						frames: 2
 					},
 					editSkidsteerHeavyTracks: {
-						url: 'images/screens/equipment_edit/machine_parts/skidsteer/heavy/skidsteer_heavy_tracks_spritesheet.png',
+						url: 'img/screens/equipment_edit/machine_parts/skidsteer/heavy/skidsteer_heavy_tracks_spritesheet.png',
 						width: 239,
 						height: 127,
 						frames: 2
