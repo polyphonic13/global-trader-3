@@ -1,4 +1,4 @@
-(function(){(typeof console === 'undefined' || typeof console.log === 'undefined')?console={log:function(){}}:console.log('----- Global Trader 3.0 created: 2014-07-19T14:57:15')})();
+(function(){(typeof console === 'undefined' || typeof console.log === 'undefined')?console={log:function(){}}:console.log('----- Global Trader 3.0 created: 2014-07-19T15:43:00')})();
 var Events = {
 	CHANGE_SCREEN: 'changeScreen',
 	CHANGE_STATE: 'changeState',

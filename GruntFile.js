@@ -11,7 +11,7 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 
 		pkg: grunt.file.readJSON('package.json'),
-		meta: grunt.file.readJSON('grunt/data/meta.json'),
+		// meta: grunt.file.readJSON('grunt/data/meta.json'),
 		
 		srcDir: srcDir,
 		buildDir: buildDir,
