@@ -74,6 +74,7 @@ var OptionalPartTypes = {
 
 var PartDescriptions = {
 	tires: 'Tires',
+	tracks: 'Tracks',
 	engine: 'Engine',
 	transmission: 'Transmission',
 	cab: 'Cab',

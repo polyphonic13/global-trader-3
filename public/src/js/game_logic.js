@@ -2,7 +2,7 @@ var ASPECT_RATIO = [9, 16];
 var GAME_NAME = 'global_trader_3_0';
 var FACEBOOK_URL = 'https://www.facebook.com/cnhitrade';
 var TIME_PER_TURN = 52;
-var TURN_TIME_INTERVAL = 3000;
+var TURN_TIME_INTERVAL = 1500;
 var US_DETAIL_GRID_CELLS = 6;
 var MACHINE_LIST_COLUMNS = 2; 
 var MACHINE_LIST_ICONS = 6;
@@ -405,6 +405,7 @@ var gameLogic = {
 				PWG.EventCenter.trigger({ type: Events.CLOSE_WHOLESALE_PARTS_MENU });
 				PWG.EventCenter.trigger({ type: Events.CLOSE_OPTIONAL_PARTS_MENU });
 				
+				PhaserGame.removeSupplierPrompt();
 				PhaserGame.removeNotification();
 				PhaserGame.hideNotificationEnvelope();
 				PhaserGame.hideTradeRouteAlert();
@@ -906,35 +907,41 @@ var gameLogic = {
 				supplierPrompt.views.title.text = notificationText.supplierPrompt.content.toUpperCase();
 				var global = PWG.ViewManager.getControllerFromPath('global');
 				PWG.ViewManager.addView(supplierPrompt, global, true);
+				PhaserGame.supplierPromptOpen = true;
 			},
 			removeSupplierPrompt: function() {
-				PWG.ViewManager.removeView('supplierPrompt', 'global');
+				if(PhaserGame.supplierPromptOpen) {
+					PWG.ViewManager.removeView('supplierPrompt', 'global');
+					PhaserGame.supplierPromptOpen = false;
+				}
 			},
 			showSupplierNotification: function() {
-				var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
-				var supplierNotification = PhaserGame.supplierNotifications.pop();
-				PWG.ViewManager.addView(supplierNotification, notifications, true);
-				PWG.ViewManager.hideView('global:backButton');
-				PWG.ViewManager.showView('global:cancelButton');
-				PWG.ViewManager.showView('global:confirmButton');
-				
-				if(PWG.ScreenManager.currentId === 'buildingEdit') {
-					PWG.ViewManager.hideView('global:plantDetailGroup:equipmentButton');
-				}
-				PhaserGame.confirmAction = {
-					method: function() {
-						PhaserGame.addSupplier(PhaserGame.activeSupplier);
-					},
-					params: {}
-				};
+				if(PhaserGame.turnActive) {
+					PhaserGame.supplierPromptClicked = false;
+					var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
+					var supplierNotification = PhaserGame.supplierNotifications.pop();
+					PWG.ViewManager.addView(supplierNotification, notifications, true);
+					PWG.ViewManager.hideView('global:backButton');
+					PWG.ViewManager.showView('global:cancelButton');
+					PWG.ViewManager.showView('global:confirmButton');
 
-				PhaserGame.cancelAction = {
-					method: function() {
-						PhaserGame.resetSupplier(PhaserGame.activeSupplier);
-					},
-					params: {}
-				};
-				PhaserGame.supplierPromptClicked = false;
+					if(PWG.ScreenManager.currentId === 'buildingEdit') {
+						PWG.ViewManager.hideView('global:plantDetailGroup:equipmentButton');
+					}
+					PhaserGame.confirmAction = {
+						method: function() {
+							PhaserGame.addSupplier(PhaserGame.activeSupplier);
+						},
+						params: {}
+					};
+
+					PhaserGame.cancelAction = {
+						method: function() {
+							PhaserGame.resetSupplier(PhaserGame.activeSupplier);
+						},
+						params: {}
+					};
+				}
 			},
 			hideSupplierNotification: function() {
 				PhaserGame.activeSupplier = null;
@@ -947,6 +954,7 @@ var gameLogic = {
 				}
 				PhaserGame.cancelAction = null;
 				PhaserGame.confirmAction = null;
+				PhaserGame.supplierPromptClicked = false;
 			},
 			addSupplier: function(supplier) {
 				trace('addSupplier, supplier = ', supplier);
@@ -1539,7 +1547,7 @@ var gameLogic = {
 					}
 				} else {
 					// if failed, reset turn manager to pre-level playerData
-					// trace('\tfailed to pass level, playerData is: ', PhaserGame.playerData);
+					trace('\tfailed to pass level, playerData is: ', PhaserGame.playerData);
 					var sectors = TurnManager.playerData.sectors;
 					PWG.Utils.each(
 						sectors,
@@ -1732,6 +1740,7 @@ var gameLogic = {
 				if(PhaserGame.tutorialOpen) {
 					PhaserGame.removeTutorialGuy();
 				}
+				trace('supplier prompt input down, clicked = ' + PhaserGame.supplierPromptClicked);
 				if(!PhaserGame.supplierPromptClicked) {
 					PhaserGame.showSupplierNotification();
 					PhaserGame.supplierPromptClicked = true;
@@ -2784,13 +2793,6 @@ var gameLogic = {
 						PWG.ViewManager.hideView('optionalPartsMenu');
 						PhaserGame.optionalPartsMenuOpen = false;
 					}
-				}
-			},
-			// add supplier notification
-			{
-				event: Events.ADD_SUPPLIER_NOTIFICATION,
-				handler: function(event) {
-					PhaserGame.addSupplierNotification();
 				}
 			},
 			// machine complete

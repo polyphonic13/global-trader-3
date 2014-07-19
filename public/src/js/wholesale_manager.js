@@ -12,7 +12,7 @@ var WholesaleManager = function() {
 	module.PARTS_QUANTITY_MULTIPLIER = 100;			// base part quantity multiplier
 	
 	function Supplier(config) {
-		trace('Supplier/constructor, config = ', config);
+		// trace('Supplier/constructor, config = ', config);
 		this.config = config;
 
 		this.config.quantity = config.quantity || module.calculateQuantity();
@@ -28,7 +28,7 @@ var WholesaleManager = function() {
 		module.notificationActive = false;
 		// establish 
 		module.turnMax = (Math.floor(Math.random() * (module.SUPPLIERS_PER_TURN_MULTIPLIER - 1) + 1)) + TurnManager.playerData.level;
-		trace('\tturnMax = ' + module.turnMax);
+		// trace('\tturnMax = ' + module.turnMax);
 		module.weekLag = 0;
 
 		PWG.Utils.each(
@@ -52,9 +52,9 @@ var WholesaleManager = function() {
 				trace('\t\tsuppliers['+supplier.id+'] = ', supplier);
 				module.suppliers[supplier.id] = new Supplier(supplier);
 				// only add this supplier to the available parts if it still has inventory
-				if(supplier.quantity > 0) {
+				// if(supplier.quantity > 0) {
 					module.parts[supplier.partType][supplier.partSize][supplier.id] = supplier;
-				}
+				// }
 			},
 			this
 		);
@@ -63,17 +63,17 @@ var WholesaleManager = function() {
 	module.update = function() {
 		// there isn't a current notification pending
 		if(!module.notificationActive) {
-			trace('WholesaleManager/update\n');
+			// trace('WholesaleManager/update\n');
 			// haven't made max number of suppliers for this turn
 			if(module.suppliersAdded < module.turnMax) { 
 				module.weekLag++;
 				// waited long enough since last new supplier
 				if(module.weekLag > module.WEEK_LAG_AMOUNT) {
-					trace('\tadded = ' + module.suppliersAdded + ' / ' + module.turnMax + '\n\tweekLag = ' + module.weekLag + ' / ' + module.WEEK_LAG_AMOUNT);
+					// trace('\tadded = ' + module.suppliersAdded + ' / ' + module.turnMax + '\n\tweekLag = ' + module.weekLag + ' / ' + module.WEEK_LAG_AMOUNT);
 					module.weekLag = 0;
 
 					var diceRoll = PWG.Utils.diceRoll(); 
-					trace('\tdiceRoll = ' + diceRoll + ', chance = ' + module.POSSIBILE_SUPPLIER_CHANCE);
+					// trace('\tdiceRoll = ' + diceRoll + ', chance = ' + module.POSSIBILE_SUPPLIER_CHANCE);
 					// beat add probability test
 					if(diceRoll >= module.POSSIBILE_SUPPLIER_CHANCE) {
 
@@ -81,11 +81,11 @@ var WholesaleManager = function() {
 						var parts = gameData.parts;
 						var type = PWG.Utils.randomProperty(PartTypes);
 						// var size = PWG.Utils.randomProperty(EquipmentSizes);
-						trace('\ttype = ' + type);
+						// trace('\ttype = ' + type);
 						var size = PWG.Utils.randomKey(gameData.parts[type]);
-						trace('\tsize = ' + size);
+						// trace('\tsize = ' + size);
 						var quality = (Math.floor(Math.random() * (gameData.parts[type][size].length - 1)));
-						trace('\tquality = ' + quality);
+						// trace('\tquality = ' + quality);
 						// don't already have max suppliers for this part type
 						if(PWG.Utils.objLength(module.parts[type][size]) < module.SUPPLIERS_PER_PART_MAX) {
 							config.part = gameData.parts[type][size][quality];
@@ -116,13 +116,13 @@ var WholesaleManager = function() {
 	};
 
 	module.addSupplier = function(supplier) {
-		trace('WhoelsaleManager/addSupplier');
+		// trace('WhoelsaleManager/addSupplier');
 		module.notificationActive = false;
 		module.suppliersAdded++;
 		module.suppliers[supplier.config.id] = supplier;
-		trace('\tadding supplier to parts['+supplier.config.partType+']['+supplier.config.partSize+']['+supplier.config.id+']');
+		// trace('\tadding supplier to parts['+supplier.config.partType+']['+supplier.config.partSize+']['+supplier.config.id+']');
 		module.parts[supplier.config.partType][supplier.config.partSize][supplier.config.id] = supplier.config;
-		trace('\tparts now = ', module.parts);
+		// trace('\tparts now = ', module.parts);
 		TurnManager.addSupplier(supplier.config);
 	};
 	
@@ -140,25 +140,31 @@ var WholesaleManager = function() {
 				);
 			}
 		}
-		trace('WholesaleManager/hasPart: ' + type + '.' + size + ' = ' + partCount);
+		// trace('WholesaleManager/hasPart: ' + type + '.' + size + ' = ' + partCount);
 		return partCount;
 	};
 	
 	module.usePart = function(type, size, supplierId) {
-		trace('WholesaleManager/usePart: ' + type + '.' + size + ', quantity = ' + module.parts[type][size][supplierId].quantity);
+		trace('WholesaleManager/usePart: ' + type + '.' + size + ', supplierId = ' + supplierId);
 		var supplier = module.parts[type][size][supplierId];
-		if(supplier.quantity > 0) {
-			supplier.quantity--;
-			TurnManager.wholesalePartUsed();
-
-			if(supplier.quantity <= 0) {
-				module.removeSupplierFromParts(supplier);
+		if(supplier) {
+			if(supplier.quantity > 0) {
+				supplier.quantity--;
+				TurnManager.wholesalePartUsed();
+				return true;
+				// if(supplier.quantity <= 0) {
+					// module.removeSupplierFromParts(supplier);
+				// }
+			} else {
+				return false;
 			}
+		} else {
+			return false;
 		}
 	};
 	
 	module.removeSupplierFromParts = function(supplier) {
-		trace('WholesaleManager/removeSupplierFromParts');
+		// trace('WholesaleManager/removeSupplierFromParts');
 		delete module.parts[supplier.partType][supplier.partSize][supplier.id];
 		TurnManager.wholesaleInventoryEmptied(supplier);
 	};
@@ -168,13 +174,13 @@ var WholesaleManager = function() {
 	};
 	
 	module.calculateCostModifier = function(config) {
-		trace('WholesaleManager/calculateCostModifier, config = ', config);
+		// trace('WholesaleManager/calculateCostModifier, config = ', config);
 		var baseCost = config.part.cost;
-		trace('baseCost = ' + baseCost);
+		// trace('baseCost = ' + baseCost);
 		var rand = (Math.floor(Math.random() * (module.PARTS_COST_MODIFIER_MAX - module.PARTS_COST_MODIFIER_MIN) + module.PARTS_COST_MODIFIER_MIN));
-		trace('\trand = ' + rand)
+		// trace('\trand = ' + rand)
 		var costModifier = rand / 100;
-		trace('\tcostModifier = ' + costModifier);
+		// trace('\tcostModifier = ' + costModifier);
 		return (baseCost * costModifier) * config.quantity;
 	};
 

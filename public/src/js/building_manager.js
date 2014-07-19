@@ -18,7 +18,7 @@ var BuildingManager = function() {
 	
 	module.TIME_TO_BUILD_MACHINE = 2;
 	module.TIME_TO_SELL_MACHINES = 3;
-	module.MACHINE_PRODUCTION_COST = 20000;
+	module.MACHINE_PRODUCTION_COST = 1000;
 	
 	// BUILDING BASE CLASS
 	function Building(config) {
@@ -109,13 +109,18 @@ var BuildingManager = function() {
 
 										var allPartsAdded = true;
 										if(PWG.Utils.objLength(machine.wholesaleParts) > 0) {
-											trace('THIS MACHINE ' + machine.id + ' USES WHOLESALE PARTS');
+											// trace('THIS MACHINE ' + machine.id + ' USES WHOLESALE PARTS');
 											PWG.Utils.each(
 												machine.wholesaleParts,
 												function(supplierId, part) {
+													trace('\tsupplierId = ' + supplierId + ', part = ' + part + ', supplier = ', WholesaleManager.suppliers[supplierId]);
 													var supplier = WholesaleManager.suppliers[supplierId];
-													if(supplier.quantity > 0) {
-														WholesaleManager.usePart(part, size, supplierId);
+													if(supplier.config.quantity > 0) {
+														var partUsed = WholesaleManager.usePart(part, machine.size, supplierId);
+														if(!partUsed) {
+															trace('\tfailed to add part, deactivating machine');
+															this.config.equipment[machine.id].active = false;
+														}
 													} else {
 														trace('\tand there are none left. :(');
 														this.config.equipment[machine.id].active = false;
@@ -139,9 +144,9 @@ var BuildingManager = function() {
 
 											// TRADE ROUTES
 											if(this.config.inventory[machine.id].length > module.PLANT_MIN_EXPORT_INVENTORY && TurnManager.get('level') >= MIN_TRADE_ROUTE_LEVEL) {
-												// trace('trade route check for ' + machine.id);
+												trace('trade route check for ' + machine.id);
 												if(!this.config.tradeRoutes.hasOwnProperty(machine.id)) {
-													// trace('\tplant['+this.config.id+'].tradeRouteNotifications['+machine.id+'] = ' + this.tradeRouteNotifications[machine.id]);
+													trace('\tplant['+this.config.id+'].tradeRouteNotifications['+machine.id+'] = ' + this.tradeRouteNotifications[machine.id]);
 													if(!this.tradeRouteNotifications[machine.id]) {
 														module.createTradeRoute(this, machine.id);
 														this.tradeRouteNotifications[machine.id] = true;
