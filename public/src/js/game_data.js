@@ -6,9 +6,9 @@ var gameData = {
 			description: 'Build your machines',
 			cost: 500000
 		},
-		dealership: {
-			id: BuildingTypes.DEALERSHIP,
-			img: 'iconDealership',
+		dealer: {
+			id: BuildingTypes.DEALER,
+			img: 'iconDealer',
 			description: 'Sell your machines',
 			cost: 500000
 		}
@@ -834,7 +834,7 @@ var gameData = {
 		brief: {
 			background: 'briefBg04',
 			text: [
-				'Establish 3 Dealerships',
+				'Establish 3 Dealers',
 				'Create 5 Machine Models',
 				'Produce 100 Machines'
 			]
@@ -846,7 +846,7 @@ var gameData = {
 			calculation: 'money'
 		},
 		{
-			type: 'newDealerships',
+			type: 'newDealers',
 			value: 3,
 			calculation: 'number'
 		},
@@ -1027,7 +1027,7 @@ var gameData = {
 	bonuses: {
 		buildings: {
 			plant: 500,
-			dealership: 1000,
+			dealer: 1000,
 			tradeRoute: 10000
 		},
 		suppliers: {

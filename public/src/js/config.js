@@ -135,14 +135,14 @@ var GameConfig = function() {
 				x: gameUnit * 0,
 				y: gameUnit * 0
 			},
-			dealership: {
+			dealer: {
 				x: gameUnit * 0.76,
 				y: gameUnit * 0
 			}
 		};
 		var pinImages = {
 			plant: 'pinPlant',
-			dealership: 'pinDealership',
+			dealer: 'pinDealer',
 			tradeRoute: 'pinTradeRoute'
 		};
 		var pinFills = {
@@ -153,7 +153,7 @@ var GameConfig = function() {
 				palette.black,
 				palette.white
 			],
-			dealership: [
+			dealer: [
 				palette.black,
 				palette.white,
 				palette.white,
@@ -188,8 +188,8 @@ var GameConfig = function() {
 				equipmentEdit: {
 					content: 'Click the part name to\nsee the parts you can buy.\nThe machine behind me will cycle\nthrough parts to be added.'
 				},
-				dealership: {
-					content: 'Great! Your Plant will now\nbegin manufacturing. Once it has\nmade 3, Dealerships will begin\n offering to sell your equipment.\nLook for the envelope in the\nUS Sector screen.'
+				dealer: {
+					content: 'Great! Your Plant will now\nbegin manufacturing. Once it has\nmade 3, Dealers will begin\n offering to sell your equipment.\nLook for the envelope in the\nUS Sector screen.'
 				},
 				supplier: {
 					content: 'Suppliers will now begin\nto offer you parts as discount\nfor bulk orders.\nLook for the engine icon in\nthe bottom, left corner.'
@@ -210,7 +210,7 @@ var GameConfig = function() {
 			buildingCreate: {
 				content: 'Add new Plant?'
 			},
-			dealership: {
+			dealer: {
 				content: 'We would like to sell ~{quantity}~\nper year of your\n~{plant}~ ~{model}~\ninventory at $~{resell}~ each.'
 			},
 			supplierPrompt: {
@@ -227,7 +227,7 @@ var GameConfig = function() {
 			}
 		};
 		var notificationPeopleImages = {
-			dealership: 'dealershipGirl',
+			dealer: 'dealerGirl',
 			supplier: 'supplierGuy',
 			tradeRoutes: {
 				africa: 'tradeRouteAfricaNotification',
@@ -1263,10 +1263,10 @@ var GameConfig = function() {
 					}
 				}
 			},
-			dealershipPrompt: { 
+			dealerPrompt: { 
 				type: 'sprite',
-				name: 'dealershipPrompt',
-				img: 'dealershipRepresentativePrompt',
+				name: 'dealerPrompt',
+				img: 'dealerRepresentativePrompt',
 				x: (gameW/2) - (gameUnit * 3),
 				y: (gameUnit * 12.5),
 				attrs: {
@@ -1355,9 +1355,9 @@ var GameConfig = function() {
 							centerX: true
 						}
 					},
-					dealerships: {
+					dealers: {
 						type: 'text',
-						name: 'dealerships',
+						name: 'dealers',
 						text: '',
 						x: gameUnit * 1.5,
 						y: gameUnit * 11.75,
@@ -1370,9 +1370,9 @@ var GameConfig = function() {
 						}
 					}
 				},
-				dealership: {
+				dealer: {
 					bg: {
-						img: 'dealershipDetailBg'
+						img: 'dealerDetailBg'
 					},
 					plantMachine: {
 						type: 'text',
@@ -2066,10 +2066,10 @@ var GameConfig = function() {
 					ssPartsNavigator: 'img/screens/manual/ss_parts_navigator.png',
 					ssPartsMenu: 'img/screens/manual/ss_parts_menu.png',
 					ssStars: 'img/screens/manual/ss_stars.png',
-					ssDealershipGirl: 'img/screens/manual/ss_dealership_girl.png',
+					ssDealerGirl: 'img/screens/manual/ss_dealer_girl.png',
 					ssDashboardTop: 'img/screens/manual/ss_dashboard_top.png',
 					ssYearEnd: 'img/screens/manual/ss_year_end.png',
-					ssDealershipEnvelope: 'img/screens/manual/ss_dealership_envelope.png',
+					ssDealerEnvelope: 'img/screens/manual/ss_dealer_envelope.png',
 					ssFactoryProduction: 'img/screens/manual/ss_plant_production.png',
 					ssTradeRoutes: 'img/screens/manual/ss_trade_routes.png',
 					// mission brief
@@ -2088,7 +2088,7 @@ var GameConfig = function() {
 					mapUS: 'img/screens/world/map_us.png',
 					endTurnPrompt: 'img/screens/world/end_turn_prompt.png',
 					pinPlant: 'img/screens/world/pin_plant.png',
-					pinDealership: 'img/screens/world/pin_dealership.png',
+					pinDealer: 'img/screens/world/pin_dealer.png',
 					pinTradeRoute: 'img/screens/world/pin_trade_route.png',
 					exclamationAlert: 'img/icons/exclamation5.png',
 					tradeRouteAlertIcon: 'img/icons/little_trade_route_alert.png',
@@ -2106,10 +2106,10 @@ var GameConfig = function() {
 					sectorGridNW: 'img/screens/us_detail/sector_grid_nw.png',
 					sectorGridSW: 'img/screens/us_detail/sector_grid_sw.png',
 					addNewPlantPrompt: 'img/screens/us_detail/add_new_plant_prompt.png',
-					dealershipRepresentativePrompt: 'img/screens/us_detail/dealership_representative_prompt.png',
+					dealerRepresentativePrompt: 'img/screens/us_detail/dealer_representative_prompt.png',
 					// building detail
 					plantDetailBg: 'img/screens/building_edit/plant_detail.png',
-					dealershipDetailBg: 'img/screens/building_edit/dealership_detail.png',
+					dealerDetailBg: 'img/screens/building_edit/dealer_detail.png',
 					// equipment list
 					machineListIcon: 'img/screens/equipment_list/machine_list_icon.png',
 					skidsteerBasicIcon: 'img/screens/equipment_list/skidsteer_basic_icon.png',
@@ -2208,7 +2208,7 @@ var GameConfig = function() {
 
 					// NOTIFICATIONS
 					tutorialGuy: 'img/notifications/tutorial_guy.png',
-					dealershipGirl: 'img/notifications/dealership_girl.png',
+					dealerGirl: 'img/notifications/dealer_girl.png',
 					supplierGuy: 'img/notifications/supplier_guy.png',
 					tradeRouteAfricaNotification: 'img/notifications/trade_route_africa.png',
 					tradeRouteAsiaNotification: 'img/notifications/trade_route_asia.png',
@@ -2554,7 +2554,7 @@ var GameConfig = function() {
 				types: {
 					profit: 'Profits: ',
 					newPlants: 'Plants built: ',
-					newDealerships: 'Dealerships established: ',
+					newDealers: 'Dealers established: ',
 					newSuppliers: 'Partnered Suppliers: ',
 					newTradeRoutes: 'Trade Routes established: ',
 					newMachineModels: 'Machine models created: ',
@@ -2564,7 +2564,7 @@ var GameConfig = function() {
 			},
 			bonusesText: {
 				newPlant: 'New Plant built created 1000 jobs',
-				newDealership: 'New Dealership established',
+				newDealer: 'New Dealer established',
 				newSupplier: 'New Supplier relationship',
 				newTradeRoutes: 'New Trade Route established',
 				machineManufacturing: '~{machines}~ Machines built'
@@ -3623,19 +3623,19 @@ var GameConfig = function() {
 						y: (gameUnit * 3)
 					},
 					{
-						text: 'After a Plant has manufactured 3 machines,\nRegional Representatives will prompt\nyou to sell through their Dealership.',
+						text: 'After a Plant has manufactured 3 machines,\nRegional Representatives will prompt\nyou to sell through their Dealer.',
 						x: (gameUnit * 2),
 						y: (gameUnit * 5.5)
 					},
 					{
-						text: 'Not all Dealerships offer the same resale.\nThe first is not always the best.',
+						text: 'Not all Dealers offer the same resale.\nThe first is not always the best.',
 						x: (gameUnit * 2),
 						y: (gameUnit * 11)
 					}
 					],
 					images: [
 					{
-						img: 'ssDealershipGirl',
+						img: 'ssDealerGirl',
 						x: (gameUnit * 2),
 						y: (gameUnit * 7),
 						width: (gameUnit * 2),

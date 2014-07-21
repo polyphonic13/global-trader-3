@@ -7,14 +7,14 @@ var TutorialTypes = {
 	EQUIPMENT_LIST: 'equipmentList',
 	EQUIPMENT_CREATE: 'equipmentCreate',
 	EQUIPMENT_EDIT: 'equipmentEdit',
-	DEALERSHIP: 'dealership',
+	DEALER: 'dealer',
 	SUPPLIER: 'supplier',
 	TRADE_ROUTE: 'tradeRoute',
 	ALL_COMPLETED: 'allCompleted'
 };
 var BuildingTypes = {
 	PLANT: 'plant',
-	DEALERSHIP: 'dealership',
+	DEALER: 'dealer',
 	SUPPLIER: 'supplier',
 	TRADE_ROUTE: 'tradeRoute'
 };
@@ -31,9 +31,9 @@ var TileCellFrames = {
 	PLANT_CONSTRUCTION: 1,
 	PLANT_ACTIVE: 2,
 	PLANT_PAUSED: 1,
-	DEALERSHIP_CONSTRUCTION: 3,
-	DEALERSHIP_ACTIVE: 4,
-	DEALERSHIP_PAUSED: 3
+	DEALER_CONSTRUCTION: 3,
+	DEALER_ACTIVE: 4,
+	DEALER_PAUSED: 3
 };
 
 var EquipmentActions = {

@@ -8,7 +8,7 @@ var playerData = {
 		equipmentList: true,
 		equipmentCreate: true,
 		equipmentEdit: true,
-		dealership: true,
+		dealer: true,
 		supplier: true,
 		tradeRoute: true,
 		outOfWholesaleParts: true
@@ -41,7 +41,7 @@ var playerData = {
 	],
 	buildingCount: {
 		plant: 0,
-		dealership: 0,
+		dealer: 0,
 		tradeRoute: 0,
 		total: 0
 	},

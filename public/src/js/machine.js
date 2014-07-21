@@ -8,7 +8,7 @@ var Machine = function() {
 		size: '',
 		cost: 0,
 		plantId: '',
-		dealershipId: '',
+		dealerId: '',
 		tradeRouteId: '',
 		active: true,
 		parts: {},

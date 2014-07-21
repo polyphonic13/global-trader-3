@@ -118,12 +118,12 @@ var gameLogic = {
 				GridManager.updateBuildingState(config.sector, config.cell, config.type, config.state);
 			}
 		},
-		// add dealership notification
+		// add dealer notification
 		{
-			event: Events.ADD_DEALERSHIP_NOTIFICATION,
+			event: Events.ADD_DEALER_NOTIFICATION,
 			handler: function(event) {
-				// trace('dealership add notification handler, event = ', event);
-				PhaserGame.addDealershipOpportunityNotification(event);
+				// trace('dealer add notification handler, event = ', event);
+				PhaserGame.addDealerOpportunityNotification(event);
 			}
 		},
 		// add supplier notification
@@ -137,7 +137,7 @@ var gameLogic = {
 		{
 			event: Events.ADD_TRADE_ROUTE_NOTIFICATION,
 			handler: function(event) {
-				// trace('dealership add notification handler, event = ', event);
+				// trace('dealer add notification handler, event = ', event);
 				PhaserGame.addTradeRouteOpportunityNotification(event);
 			}
 		},
@@ -145,7 +145,7 @@ var gameLogic = {
 		{
 			event: Events.MACHINE_SOLD,
 			handler: function(event) {
-				// if(event.building.type === BuildingTypes.DEALERSHIP) {
+				// if(event.building.type === BuildingTypes.DEALER) {
 					// PhaserGame.machineSold(event.building, 'usDetail:usDetailGrid');
 					PhaserGame.machineSold(event.building);
 				// }
@@ -736,12 +736,12 @@ var gameLogic = {
 						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'buildingEdit' });
 						break;
 
-						case TileCellFrames.DEALERSHIP_CONSTRUCTION: 
-						// trace('dealership construction'); 
+						case TileCellFrames.DEALER_CONSTRUCTION: 
+						// trace('dealer construction'); 
 						break;
 						
-						case TileCellFrames.DEALERSHIP_ACTIVE: 
-						// trace('dealership active'); 
+						case TileCellFrames.DEALER_ACTIVE: 
+						// trace('dealer active'); 
 						PhaserGame.activeBuilding = BuildingManager.getBuilding(PhaserGame.activeSector, PhaserGame.activeTile.cell);
 						// trace('active plant = ', PhaserGame.activeBuilding);
 						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'buildingEdit' });
@@ -799,44 +799,44 @@ var gameLogic = {
 					if(buildingType === BuildingTypes.PLANT) {
 						frame = TileCellFrames.PLANT_CONSTRUCTION;
 					} else {
-						frame = TileCellFrames.DEALERSHIP_ACTIVE;
+						frame = TileCellFrames.DEALER_ACTIVE;
 					}
 					tile.attrs.frame = frame;
 					PWG.ViewManager.setFrame('usDetail:usDetailGrid:'+tile.name, frame);
 				}
 			},
-			// DEALERSHIPS
-			addDealershipOpportunityNotification: function(event) {
+			// DEALERS
+			addDealerOpportunityNotification: function(event) {
 				var notification = PWG.Utils.clone(PhaserGame.config.dynamicViews.notification);
-				var dealershipPrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.dealershipPrompt);
+				var dealerPrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.dealerPrompt);
 				
-				var notificationText = PhaserGame.config.notificationText['dealership'];
+				var notificationText = PhaserGame.config.notificationText['dealer'];
 				
-				var modelName = event.plant.equipment[event.dealership.config.modelId].name;
-				var resell = PWG.Utils.formatMoney(event.dealership.config.resell, 0);
-				// trace('addDealershipOppurtunity, dealership = ', event.dealership);
+				var modelName = event.plant.equipment[event.dealer.config.modelId].name;
+				var resell = PWG.Utils.formatMoney(event.dealer.config.resell, 0);
+				// trace('addDealerOppurtunity, dealer = ', event.dealer);
 				var statementText = PWG.Utils.parseMarkup(notificationText.content, {
 					plant: event.plant.name,
-					quantity: event.dealership.config.maxPerYear,
+					quantity: event.dealer.config.maxPerYear,
 					model: modelName,
 					resell: resell
 				});
 
-				notification.views.person.img = PhaserGame.config.notificationPeopleImages['dealership'];
+				notification.views.person.img = PhaserGame.config.notificationPeopleImages['dealer'];
 				// notification.views.title.text = config.title;
 				notification.views.content.text = statementText.toUpperCase();
 				// trace('notification = ', notification);
 				
-				notification.views[dealershipPrompt.name] = dealershipPrompt;
+				notification.views[dealerPrompt.name] = dealerPrompt;
 				
 				notification.confirmAction = {
-					method: PhaserGame.addDealership,
-					params: event.dealership
+					method: PhaserGame.addDealer,
+					params: event.dealer
 				};
 				
 				notification.cancelAction = {
-					method: PhaserGame.resetDealership,
-					params: event.dealership
+					method: PhaserGame.resetDealer,
+					params: event.dealer
 				};
 				// PWG.ViewManager.hideView('global:backButton');
 				PhaserGame.notifications[event.plant.sector].push(notification);
@@ -844,13 +844,13 @@ var gameLogic = {
 					PhaserGame.showNotificationEnvelope();
 				}
 			},
-			addDealership: function(dealership) {
-				// trace('addDealership, dealership = ', dealership);
-				var config = dealership.config;
+			addDealer: function(dealer) {
+				// trace('addDealer, dealer = ', dealer);
+				var config = dealer.config;
 				PhaserGame.removeNotification();
 				config.cell = GridManager.getRandomEmptyCellIndex(config.sector);
 				GridManager.addBuilding(config, config.sector);
-				BuildingManager.addDealership(dealership);
+				BuildingManager.addDealer(dealer);
 
 				var viewPath = 'usDetail:usDetailGrid:usDetailGridItem'+config.cell;
 				var view = PWG.ViewManager.getControllerFromPath(viewPath);
@@ -861,11 +861,11 @@ var gameLogic = {
 				PWG.ViewManager.setFrame(viewPath, frame);
 				view.config.attrs.frame = frame;
 			},
-			resetDealership: function(dealership) {
+			resetDealer: function(dealer) {
 				PhaserGame.removeNotification();
-				// trace('resetDealership, dealership = ', dealership);
-				var plant = BuildingManager.findBuilding(dealership.config.plantId);
-				plant.dealershipNotifications[dealership.config.modelId] = false;
+				// trace('resetDealer, dealer = ', dealer);
+				var plant = BuildingManager.findBuilding(dealer.config.plantId);
+				plant.dealerNotifications[dealer.config.modelId] = false;
 			},
 			// SUPPLIERS
 			addSupplierOpportunityNotification: function(event) {
@@ -973,7 +973,7 @@ var gameLogic = {
 			resetSupplier: function(supplier) {
 				PhaserGame.hideSupplierNotification();
 				PhaserGame.hideSupplierPrompt();
-				// trace('resetDealership, dealership = ', dealership);
+				// trace('resetDealer, dealer = ', dealer);
 			},
 			// TRADE_ROUTES
 			showTradeRouteNotification: function(id) {
@@ -1088,8 +1088,8 @@ var gameLogic = {
 				}
 			},
 			machineSold: function(building) {
-				// trace('PhaserGame/machineSold, dealership = ', dealership);
-				if(building.type === BuildingTypes.DEALERSHIP) {
+				// trace('PhaserGame/machineSold, dealer = ', dealer);
+				if(building.type === BuildingTypes.DEALER) {
 					if(PWG.ScreenManager.currentId === 'usDetail' && building.sector === PhaserGame.activeSector) {
 						PhaserGame.addUsDetailIconAnimation(IconAnimations.DOLLAR_SIGN, building, 'usDetail:usDetailGrid');
 					}
@@ -2218,7 +2218,7 @@ var gameLogic = {
 							
 							var typeCounts = {
 								plant: 0,
-								dealership: 0,
+								dealer: 0,
 								tradeRoute: 0
 							};
 							
@@ -2234,8 +2234,8 @@ var gameLogic = {
 								var buildingPin = PhaserGame.formatBuildingPin(BuildingTypes.PLANT, idx, typeCounts[BuildingTypes.PLANT]);
 								buildingPins.views[buildingPin.name] = buildingPin;
 							}
-							if(typeCounts.dealership > 0) {
-								var buildingPin = PhaserGame.formatBuildingPin(BuildingTypes.DEALERSHIP, idx, typeCounts[BuildingTypes.DEALERSHIP]);
+							if(typeCounts.dealer > 0) {
+								var buildingPin = PhaserGame.formatBuildingPin(BuildingTypes.DEALER, idx, typeCounts[BuildingTypes.DEALER]);
 								buildingPins.views[buildingPin.name] = buildingPin;
 							}
 						}
@@ -2411,7 +2411,7 @@ var gameLogic = {
 							PWG.ViewManager.callMethod('buildingEdit:editDetails:inventory', 'setText', [inventoryUpdate], this);
 							break;
 
-							case BuildingTypes.DEALERSHIP:
+							case BuildingTypes.DEALER:
 							var salesUpdate = buildingEditDetails.sales.text = '$' + PWG.Utils.formatMoney(config.totalSales, 0);
 							PWG.ViewManager.callMethod('buildingEdit:editDetails:sales', 'setText', [salesUpdate], this);
 							break;
@@ -2443,12 +2443,12 @@ var gameLogic = {
 					// trace('\tit is a plant');
 					buildingEditDetails.equipment.text += PWG.Utils.objLength(building.equipment) + ' / ' + BuildingManager.PLANT_MAX_MODELS;
 					buildingEditDetails.inventory.text += building.totalInventory + ' / ' + BuildingManager.PLANT_MAX_INVENTORY;
-					buildingEditDetails.dealerships.text += PWG.Utils.objLength(building.dealerships) + ' / ' + BuildingManager.PLANT_MAX_DEALERSHIPS;
+					buildingEditDetails.dealers.text += PWG.Utils.objLength(building.dealers) + ' / ' + BuildingManager.PLANT_MAX_DEALERS;
 					break;
 
-					case BuildingTypes.DEALERSHIP:
+					case BuildingTypes.DEALER:
 					var plant = BuildingManager.sectors[PhaserGame.activeSector][building.plantId].config;
-					// trace('\tdealership plant = ', plant);
+					// trace('\tdealer plant = ', plant);
 					buildingEditDetails.plantMachine.text += plant.name + ' / ' + plant.equipment[building.modelId].name;
 					buildingEditDetails.resell.text += '$' + PWG.Utils.formatMoney(building.resell, 0);
 					buildingEditDetails.sales.text += '$' + PWG.Utils.formatMoney(building.totalSales, 0);;
@@ -2932,8 +2932,8 @@ var gameLogic = {
 				PhaserGame.machineDirty = true;
 			},
 			shutdown: function() {
-				if(TurnManager.playerData.firstPlay[TutorialTypes.DEALERSHIP]) {
-					PhaserGame.activeTutorial = TutorialTypes.DEALERSHIP;
+				if(TurnManager.playerData.firstPlay[TutorialTypes.DEALER]) {
+					PhaserGame.activeTutorial = TutorialTypes.DEALER;
 					PhaserGame.addTutorialGuy();
 				}
 				PhaserGame.machinePieces = null;

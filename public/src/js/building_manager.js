@@ -5,12 +5,12 @@ var BuildingManager = function() {
 	module.PLANT_MIN_SELL_INVENTORY = 3;
 	module.PLANT_MIN_EXPORT_INVENTORY = 5;
 	module.PLANT_MAX_INVENTORY = 100;
-	module.PLANT_MAX_DEALERSHIPS = 6;
+	module.PLANT_MAX_DEALERS = 6;
 
-	module.DEALERSHIP_MAX_INVENTORY = 50;
-	module.DEALERSHIP_MAX_SALE_QUANTITY = 5;
-	module.DEALERSHIP_MAX_SALES_PER_YEAR = 25;
-	module.DEALERSHIP_MIN_SALES_PER_YEAR = 10;
+	module.DEALER_MAX_INVENTORY = 50;
+	module.DEALER_MAX_SALE_QUANTITY = 5;
+	module.DEALER_MAX_SALES_PER_YEAR = 25;
+	module.DEALER_MIN_SALES_PER_YEAR = 10;
 	
 	module.TRADE_ROUTE_MAX_SALE_QUANTITY = 10;
 	module.TRADE_ROUTE_MAX_SALES_PER_YEAR = 25;
@@ -48,17 +48,17 @@ var BuildingManager = function() {
 		Building.call(this, config);
 		this.config.equipment = config.equipment || {};
 		this.config.inventory = config.inventory || {};
-		this.config.dealerships = config.dealerships || {};
+		this.config.dealers = config.dealers || {};
 		this.config.tradeRoutes = config.tradeRoutes || {};
 		
-		this.dealershipNotifications = {};
+		this.dealerNotifications = {};
 		this.tradeRouteNotifications = {};
 		
 		if(PWG.Utils.objLength(this.config.equipment) > 0) {
 			PWG.Utils.each(
 				this.config.equipment,
 				function(model) {
-					this.dealershipNotifications[model.id] = false;
+					this.dealerNotifications[model.id] = false;
 					this.tradeRouteNotifications[model.id] = false;
 				},
 				this
@@ -86,7 +86,7 @@ var BuildingManager = function() {
  	Plant.prototype.addMachineModel = function(machine) {
 		this.config.equipment[machine.id] = machine; 
 		this.config.inventory[machine.id] = [];
-		this.dealershipNotifications[machine.id] = false;
+		this.dealerNotifications[machine.id] = false;
 		this.tradeRouteNotifications[machine.id] = false;
 	};
 	Plant.prototype.associateBuilding = function(building, property) {
@@ -132,7 +132,7 @@ var BuildingManager = function() {
 										}
 
 										if(allPartsAdded) {
-											// trace('manufactured machine: ' +  machine.id + ', dealerships: ', this.config.dealerships);
+											// trace('manufactured machine: ' +  machine.id + ', dealers: ', this.config.dealers);
 											PWG.EventCenter.trigger({ type: Events.UPDATE_BANK, value: (-productionCost) });
 											PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
 											PWG.EventCenter.trigger({ type: Events.INVENTORY_ADDED, plant: this.config, machine: machine.id });
@@ -162,21 +162,21 @@ var BuildingManager = function() {
 												}
 											}
 
-											// DEALERSHIPS
-											// if there is enough inventory of this machine to sell and it doesn't already have a dealership...
+											// DEALERS
+											// if there is enough inventory of this machine to sell and it doesn't already have a dealer...
 											if(this.config.inventory[machine.id].length > module.PLANT_MIN_SELL_INVENTORY) {
-												if(!this.config.dealerships.hasOwnProperty(machine.id)) {
-													// trace('\tplant['+this.config.id+'].dealershipNotifications['+machine.id+'] = ' + this.dealershipNotifications[machine.id]);
-													if(!this.dealershipNotifications[machine.id]) {
-														module.createDealership(this, machine.id);
-														this.dealershipNotifications[machine.id] = true;
+												if(!this.config.dealers.hasOwnProperty(machine.id)) {
+													// trace('\tplant['+this.config.id+'].dealerNotifications['+machine.id+'] = ' + this.dealerNotifications[machine.id]);
+													if(!this.dealerNotifications[machine.id]) {
+														module.createDealer(this, machine.id);
+														this.dealerNotifications[machine.id] = true;
 													}
 												} else {
-													var dealershipId = this.config.dealerships[machine.id];
-													var dealership = module.findBuilding(dealershipId);
-													if(dealership.config.state === BuildingStates.ACTIVE) {
+													var dealerId = this.config.dealers[machine.id];
+													var dealer = module.findBuilding(dealerId);
+													if(dealer.config.state === BuildingStates.ACTIVE) {
 														var inventory = this.config.inventory[machine.id];
-														dealership.addInventory(this.config);
+														dealer.addInventory(this.config);
 													}
 												}
 											} 
@@ -217,36 +217,36 @@ var BuildingManager = function() {
 		}
 	};
 	
-	// DEALERSHIP
-	function Dealership(config) {
-		config.type = BuildingTypes.DEALERSHIP;
+	// DEALER
+	function Dealer(config) {
+		config.type = BuildingTypes.DEALER;
 		var plant = module.findBuilding(config.plantId);
 		var model = plant.config.equipment[config.modelId];
 		var resellMultiplier = Math.floor(Math.random() * (this.resellMaxMultiplier - 1) + 2);
 		// trace('resellMultilplier = ' + resellMultiplier);
 		Building.call(this, config);
 		this.config.resell = config.resell || (resellMultiplier * model.cost) + module.MACHINE_PRODUCTION_COST;
-		this.config.maxPerYear = config.maxPerYear || Math.floor(Math.random() * (module.DEALERSHIP_MAX_SALES_PER_YEAR - module.DEALERSHIP_MIN_SALES_PER_YEAR) + module.DEALERSHIP_MIN_SALES_PER_YEAR);
+		this.config.maxPerYear = config.maxPerYear || Math.floor(Math.random() * (module.DEALER_MAX_SALES_PER_YEAR - module.DEALER_MIN_SALES_PER_YEAR) + module.DEALER_MIN_SALES_PER_YEAR);
 		this.config.inventory = config.inventory || [];
 		this.config.totalSales = config.totalSales || 0;
 		this.numberSold = 0;
 	}
-	PWG.Utils.inherit(Dealership, Building);
+	PWG.Utils.inherit(Dealer, Building);
 
-	Dealership.prototype.constructionTime = 1;
-	Dealership.prototype.sellTime = 0;
-	Dealership.prototype.capacity = 50;
-	Dealership.prototype.resellMaxMultiplier = 6;
-	Dealership.prototype.quantityPerYear = 25;
-	Dealership.prototype.addInventory = function(plant) {
-		// trace('Dealership/addInventory, dealership = ', this.config, '\tplant = ', plant);
+	Dealer.prototype.constructionTime = 1;
+	Dealer.prototype.sellTime = 0;
+	Dealer.prototype.capacity = 50;
+	Dealer.prototype.resellMaxMultiplier = 6;
+	Dealer.prototype.quantityPerYear = 25;
+	Dealer.prototype.addInventory = function(plant) {
+		// trace('Dealer/addInventory, dealer = ', this.config, '\tplant = ', plant);
 		// if(this.config.inventory.length < this.capacity) {
 		if(this.numberSold < this.config.maxPerYear) {	
 			var modelId = this.config.modelId;
 			if(typeof(plant.inventory[modelId] !== 'undefined')) {
 				try {
 					while(plant.inventory[modelId].length > 0 && this.config.inventory.length < this.capacity) {
-						// trace('\ttransferring inventory to dealership');
+						// trace('\ttransferring inventory to dealer');
 						this.config.inventory.push(plant.inventory[modelId].pop());
 						plant.totalInventory--;
 						this.numberSold++;
@@ -256,20 +256,20 @@ var BuildingManager = function() {
 			}
 		}
 	};
-	Dealership.prototype.update = function() {
-		// trace('dealership/update: ', this);
-		Dealership._super.update.apply(this, arguments);
+	Dealer.prototype.update = function() {
+		// trace('dealer/update: ', this);
+		Dealer._super.update.apply(this, arguments);
 		if(this.config.state === BuildingStates.ACTIVE) {
 			if(this.config.inventory.length > 0) {
 				if(this.sellTime >= module.TIME_TO_SELL_MACHINES) {
-					var numToSell = Math.floor(Math.random() * (module.DEALERSHIP_MAX_SALE_QUANTITY - 1) + 1);
+					var numToSell = Math.floor(Math.random() * (module.DEALER_MAX_SALE_QUANTITY - 1) + 1);
 					if(numToSell > this.config.inventory.length) {
 						numToSell = this.config.inventory.length;
 					}
 					// trace('numToSell = ' + numToSell + ', inventory = ' + this.config.inventory.length);
 					while(numToSell > 0) {
 						TurnManager.sellMachine(this.config.inventory.pop(), this.config.resell);
-						// trace('------- Dealership about to sell a machine:', this);
+						// trace('------- Dealer about to sell a machine:', this);
 						PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
 						PWG.EventCenter.trigger({ type: Events.MACHINE_SOLD, building: this.config });
 						this.config.totalSales += this.config.resell;
@@ -300,7 +300,7 @@ var BuildingManager = function() {
 		var resellMultiplier = Math.floor(Math.random() * (this.resellMaxMultiplier - 1) + 3);
 		Building.call(this, config);
 		this.config.resell = config.resell || (resellMultiplier * model.cost) + module.MACHINE_PRODUCTION_COST;
-		this.config.maxPerYear = config.maxPerYear || Math.floor(Math.random() * (module.TRADE_ROUTE_MAX_SALES_PER_YEAR - module.TRADE_ROUTE_MIN_SALES_PER_YEAR) + module.DEALERSHIP_MIN_SALES_PER_YEAR);
+		this.config.maxPerYear = config.maxPerYear || Math.floor(Math.random() * (module.TRADE_ROUTE_MAX_SALES_PER_YEAR - module.TRADE_ROUTE_MIN_SALES_PER_YEAR) + module.DEALER_MIN_SALES_PER_YEAR);
 		this.config.inventory = config.inventory || [];
 		this.config.totalSales = config.totalSales || 0;
 		// trace('TradeRoute/constructor: ', this);
@@ -334,7 +334,7 @@ var BuildingManager = function() {
 		if(this.config.state === BuildingStates.ACTIVE) {
 			if(this.config.inventory.length > 0) {
 				if(this.sellTime >= module.TIME_TO_SELL_MACHINES) {
-					var numToSell = Math.floor(Math.random() * (module.DEALERSHIP_MAX_SALE_QUANTITY - 1) + 1);
+					var numToSell = Math.floor(Math.random() * (module.DEALER_MAX_SALE_QUANTITY - 1) + 1);
 					if(numToSell > this.config.inventory.length) {
 						numToSell = this.config.inventory.length;
 					}
@@ -365,7 +365,7 @@ var BuildingManager = function() {
 	};
 
 	module.sectors = [ {}, {}, {}, {}, {} ];
-	module.dealerships = [];
+	module.dealers = [];
 	module.tradeRoutes = [];
 	
 	module.init = function() {
@@ -380,8 +380,8 @@ var BuildingManager = function() {
 						// trace('\t\tbuildings['+id+'] = ', building);
 						if(building.type === BuildingTypes.PLANT) {
 							module.sectors[s][building.id] = new Plant(building);
-						} else if(building.type === BuildingTypes.DEALERSHIP) {
-							module.sectors[s][building.id] = new Dealership(building);
+						} else if(building.type === BuildingTypes.DEALER) {
+							module.sectors[s][building.id] = new Dealer(building);
 						} else if(building.type === BuildingTypes.TRADE_ROUTE) {
 							module.sectors[s][building.id] = new TradeRoute(building);
 						}
@@ -392,9 +392,9 @@ var BuildingManager = function() {
 			this
 		);
 		// PWG.Utils.each(
-		// 	TurnManager.playerData.dealerships,
-		// 	function(dealership) {
-		// 		module.dealerships.push(new Dealership(dealership));
+		// 	TurnManager.playerData.dealers,
+		// 	function(dealer) {
+		// 		module.dealers.push(new Dealer(dealer));
 		// 	},
 		// 	this
 		// );
@@ -434,52 +434,52 @@ var BuildingManager = function() {
 		module.sectors[sector][plantId].addMachineModel(machine);
 	};
 	
-	// create dealership instance to store for later use if user chooses to add
-	module.createDealership = function(plant, modelId) {
+	// create dealer instance to store for later use if user chooses to add
+	module.createDealer = function(plant, modelId) {
 		var model;
 		var count = PWG.Utils.objLength(plant.config.equipment);
 		var index = 0;
 
-		// var buildingCount = TurnManager.playerData.buildingCount[BuildingTypes.DEALERSHIP];
-		var type = BuildingTypes.DEALERSHIP;
-		var dealershipId = type + ((TurnManager.tempDealershipCount) + 1);
-		var dealershipName = type.toUpperCase() + ' ' + TurnManager.tempDealershipCount;
-		TurnManager.tempDealershipCount++;
+		// var buildingCount = TurnManager.playerData.buildingCount[BuildingTypes.DEALER];
+		var type = BuildingTypes.DEALER;
+		var dealerId = type + ((TurnManager.tempDealerCount) + 1);
+		var dealerName = type.toUpperCase() + ' ' + TurnManager.tempDealerCount;
+		TurnManager.tempDealerCount++;
 		
 		// trace('\tmodelId = ' + modelId + ', count = ' + count);
 		model = plant.config.equipment[modelId];
 
 		// trace('model now = ', model);
-		if(!plant.config.dealerships.hasOwnProperty(model.id)) {
-			var dealership = new Dealership({
-				id: dealershipId,
-				name: dealershipName,
+		if(!plant.config.dealers.hasOwnProperty(model.id)) {
+			var dealer = new Dealer({
+				id: dealerId,
+				name: dealerName,
 				modelId: model.id,
 				plantId: plant.config.id,
 				// plant: plant.config,
 				sector: plant.config.sector
 			});
 
-			PWG.EventCenter.trigger({ type: Events.ADD_DEALERSHIP_NOTIFICATION, plant: plant.config, dealership: dealership });
+			PWG.EventCenter.trigger({ type: Events.ADD_DEALER_NOTIFICATION, plant: plant.config, dealer: dealer });
 		}
 	};
 	
-	module.addDealership = function(dealership) {
-		var plant = module.findBuilding(dealership.config.plantId);
-		plant.associateBuilding(dealership, 'dealerships');
-		module.dealerships.push(dealership);
-		module.updateBuildings(dealership);
+	module.addDealer = function(dealer) {
+		var plant = module.findBuilding(dealer.config.plantId);
+		plant.associateBuilding(dealer, 'dealers');
+		module.dealers.push(dealer);
+		module.updateBuildings(dealer);
 	};
 	
-	module.addInventoryToDealership = function(plantId, dealershipIdx) {
+	module.addInventoryToDealer = function(plantId, dealerIdx) {
 		var equipment = module.sectors.factories[plantId].equipment;
-		var dealership = module.sectors.dealerships[dealershipIdx];
+		var dealer = module.sectors.dealers[dealerIdx];
 
 		if(equipment.length > 0) {
 			PWG.Utils.each(
 				equipment,
 				function(machine) {
-					dealership.inventory.push(machine);
+					dealer.inventory.push(machine);
 				},
 				this
 			);
@@ -566,11 +566,11 @@ var BuildingManager = function() {
 			},
 			module
 		);
-		// update dealerships
+		// update dealers
 		PWG.Utils.each(
-			module.dealerships,
-			function(dealership) {
-				dealership.update();
+			module.dealers,
+			function(dealer) {
+				dealer.update();
 			},
 			this
 		);

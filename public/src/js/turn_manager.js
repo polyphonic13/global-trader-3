@@ -4,7 +4,7 @@ var TurnManager = function() {
 		profit: 0,
 		bonuses: 0,
 		newPlants: 0,
-		newDealerships: 0,
+		newDealers: 0,
 		newTradeRoutes: 0,
 		newTractorModels: 0,
 		newSkidsteerModels: 0,
@@ -37,7 +37,7 @@ var TurnManager = function() {
 		trace('\tpre initiative, bank ' + module.playerData.bank);
 		module.playerData.bank += gameData.levels[module.playerData.level].startingBank;
 		trace('\tpost initiative, bank = ' + module.playerData.bank);
-		module.tempDealershipCount = (module.playerData.buildingCount.dealership);
+		module.tempDealerCount = (module.playerData.buildingCount.dealer);
 		// TurnManager.tempTradeRouteCount = (module.playerData.buildingCount.tradeRoute);
 		module.tempSupplierCount = (module.playerData.suppliers.length) || 0;
 
@@ -90,8 +90,8 @@ var TurnManager = function() {
 			module.currentData.newPlants++;
 			break;
 			
-			case BuildingTypes.DEALERSHIP: 
-			module.currentData.newDealerships++;
+			case BuildingTypes.DEALER: 
+			module.currentData.newDealers++;
 			break;
 			
 			case BuildingTypes.TRADE_ROUTE:

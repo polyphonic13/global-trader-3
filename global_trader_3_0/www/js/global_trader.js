@@ -26,9 +26,9 @@ var Events = {
 	BUILDING_AGE_UPDATED: 'buildingAgeUpdated',
 	BUILDING_STATE_UPDATED: 'buildingStateUpdated',
 
-	ADD_DEALERSHIP_NOTIFICATION: 'addDealershipNotification',
-	CLOSE_DEALERSHIP_NOTIFICATION: 'closeDealershipNotification',
-	ADD_DEALERSHIP: 'addDealership',
+	ADD_DEALER_NOTIFICATION: 'addDealerNotification',
+	CLOSE_DEALER_NOTIFICATION: 'closeDealerNotification',
+	ADD_DEALER: 'addDealer',
 
 	ADD_SUPPLIER_NOTIFICATION: 'addSupplierNotification',
 	CLOSE_SUPPLIER_NOTIFICATION: 'closeSupplierNotification',
@@ -71,14 +71,14 @@ var TutorialTypes = {
 	EQUIPMENT_LIST: 'equipmentList',
 	EQUIPMENT_CREATE: 'equipmentCreate',
 	EQUIPMENT_EDIT: 'equipmentEdit',
-	DEALERSHIP: 'dealership',
+	DEALER: 'dealer',
 	SUPPLIER: 'supplier',
 	TRADE_ROUTE: 'tradeRoute',
 	ALL_COMPLETED: 'allCompleted'
 };
 var BuildingTypes = {
 	PLANT: 'plant',
-	DEALERSHIP: 'dealership',
+	DEALER: 'dealer',
 	SUPPLIER: 'supplier',
 	TRADE_ROUTE: 'tradeRoute'
 };
@@ -95,9 +95,9 @@ var TileCellFrames = {
 	PLANT_CONSTRUCTION: 1,
 	PLANT_ACTIVE: 2,
 	PLANT_PAUSED: 1,
-	DEALERSHIP_CONSTRUCTION: 3,
-	DEALERSHIP_ACTIVE: 4,
-	DEALERSHIP_PAUSED: 3
+	DEALER_CONSTRUCTION: 3,
+	DEALER_ACTIVE: 4,
+	DEALER_PAUSED: 3
 };
 
 var EquipmentActions = {
@@ -258,9 +258,9 @@ var gameData = {
 			description: 'Build your machines',
 			cost: 500000
 		},
-		dealership: {
-			id: BuildingTypes.DEALERSHIP,
-			img: 'iconDealership',
+		dealer: {
+			id: BuildingTypes.DEALER,
+			img: 'iconDealer',
 			description: 'Sell your machines',
 			cost: 500000
 		}
@@ -1086,7 +1086,7 @@ var gameData = {
 		brief: {
 			background: 'briefBg04',
 			text: [
-				'Establish 3 Dealerships',
+				'Establish 3 Dealers',
 				'Create 5 Machine Models',
 				'Produce 100 Machines'
 			]
@@ -1098,7 +1098,7 @@ var gameData = {
 			calculation: 'money'
 		},
 		{
-			type: 'newDealerships',
+			type: 'newDealers',
 			value: 3,
 			calculation: 'number'
 		},
@@ -1279,7 +1279,7 @@ var gameData = {
 	bonuses: {
 		buildings: {
 			plant: 500,
-			dealership: 1000,
+			dealer: 1000,
 			tradeRoute: 10000
 		},
 		suppliers: {
@@ -1311,7 +1311,7 @@ var playerData = {
 		equipmentList: true,
 		equipmentCreate: true,
 		equipmentEdit: true,
-		dealership: true,
+		dealer: true,
 		supplier: true,
 		tradeRoute: true,
 		outOfWholesaleParts: true
@@ -1344,7 +1344,7 @@ var playerData = {
 	],
 	buildingCount: {
 		plant: 0,
-		dealership: 0,
+		dealer: 0,
 		tradeRoute: 0,
 		total: 0
 	},
@@ -1371,7 +1371,7 @@ var Machine = function() {
 		size: '',
 		cost: 0,
 		plantId: '',
-		dealershipId: '',
+		dealerId: '',
 		tradeRouteId: '',
 		active: true,
 		parts: {},
@@ -1602,12 +1602,12 @@ var gameLogic = {
 				GridManager.updateBuildingState(config.sector, config.cell, config.type, config.state);
 			}
 		},
-		// add dealership notification
+		// add dealer notification
 		{
-			event: Events.ADD_DEALERSHIP_NOTIFICATION,
+			event: Events.ADD_DEALER_NOTIFICATION,
 			handler: function(event) {
-				// trace('dealership add notification handler, event = ', event);
-				PhaserGame.addDealershipOpportunityNotification(event);
+				// trace('dealer add notification handler, event = ', event);
+				PhaserGame.addDealerOpportunityNotification(event);
 			}
 		},
 		// add supplier notification
@@ -1621,7 +1621,7 @@ var gameLogic = {
 		{
 			event: Events.ADD_TRADE_ROUTE_NOTIFICATION,
 			handler: function(event) {
-				// trace('dealership add notification handler, event = ', event);
+				// trace('dealer add notification handler, event = ', event);
 				PhaserGame.addTradeRouteOpportunityNotification(event);
 			}
 		},
@@ -1629,7 +1629,7 @@ var gameLogic = {
 		{
 			event: Events.MACHINE_SOLD,
 			handler: function(event) {
-				// if(event.building.type === BuildingTypes.DEALERSHIP) {
+				// if(event.building.type === BuildingTypes.DEALER) {
 					// PhaserGame.machineSold(event.building, 'usDetail:usDetailGrid');
 					PhaserGame.machineSold(event.building);
 				// }
@@ -2220,12 +2220,12 @@ var gameLogic = {
 						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'buildingEdit' });
 						break;
 
-						case TileCellFrames.DEALERSHIP_CONSTRUCTION: 
-						// trace('dealership construction'); 
+						case TileCellFrames.DEALER_CONSTRUCTION: 
+						// trace('dealer construction'); 
 						break;
 						
-						case TileCellFrames.DEALERSHIP_ACTIVE: 
-						// trace('dealership active'); 
+						case TileCellFrames.DEALER_ACTIVE: 
+						// trace('dealer active'); 
 						PhaserGame.activeBuilding = BuildingManager.getBuilding(PhaserGame.activeSector, PhaserGame.activeTile.cell);
 						// trace('active plant = ', PhaserGame.activeBuilding);
 						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'buildingEdit' });
@@ -2283,44 +2283,44 @@ var gameLogic = {
 					if(buildingType === BuildingTypes.PLANT) {
 						frame = TileCellFrames.PLANT_CONSTRUCTION;
 					} else {
-						frame = TileCellFrames.DEALERSHIP_ACTIVE;
+						frame = TileCellFrames.DEALER_ACTIVE;
 					}
 					tile.attrs.frame = frame;
 					PWG.ViewManager.setFrame('usDetail:usDetailGrid:'+tile.name, frame);
 				}
 			},
-			// DEALERSHIPS
-			addDealershipOpportunityNotification: function(event) {
+			// DEALERS
+			addDealerOpportunityNotification: function(event) {
 				var notification = PWG.Utils.clone(PhaserGame.config.dynamicViews.notification);
-				var dealershipPrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.dealershipPrompt);
+				var dealerPrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.dealerPrompt);
 				
-				var notificationText = PhaserGame.config.notificationText['dealership'];
+				var notificationText = PhaserGame.config.notificationText['dealer'];
 				
-				var modelName = event.plant.equipment[event.dealership.config.modelId].name;
-				var resell = PWG.Utils.formatMoney(event.dealership.config.resell, 0);
-				// trace('addDealershipOppurtunity, dealership = ', event.dealership);
+				var modelName = event.plant.equipment[event.dealer.config.modelId].name;
+				var resell = PWG.Utils.formatMoney(event.dealer.config.resell, 0);
+				// trace('addDealerOppurtunity, dealer = ', event.dealer);
 				var statementText = PWG.Utils.parseMarkup(notificationText.content, {
 					plant: event.plant.name,
-					quantity: event.dealership.config.maxPerYear,
+					quantity: event.dealer.config.maxPerYear,
 					model: modelName,
 					resell: resell
 				});
 
-				notification.views.person.img = PhaserGame.config.notificationPeopleImages['dealership'];
+				notification.views.person.img = PhaserGame.config.notificationPeopleImages['dealer'];
 				// notification.views.title.text = config.title;
 				notification.views.content.text = statementText.toUpperCase();
 				// trace('notification = ', notification);
 				
-				notification.views[dealershipPrompt.name] = dealershipPrompt;
+				notification.views[dealerPrompt.name] = dealerPrompt;
 				
 				notification.confirmAction = {
-					method: PhaserGame.addDealership,
-					params: event.dealership
+					method: PhaserGame.addDealer,
+					params: event.dealer
 				};
 				
 				notification.cancelAction = {
-					method: PhaserGame.resetDealership,
-					params: event.dealership
+					method: PhaserGame.resetDealer,
+					params: event.dealer
 				};
 				// PWG.ViewManager.hideView('global:backButton');
 				PhaserGame.notifications[event.plant.sector].push(notification);
@@ -2328,13 +2328,13 @@ var gameLogic = {
 					PhaserGame.showNotificationEnvelope();
 				}
 			},
-			addDealership: function(dealership) {
-				// trace('addDealership, dealership = ', dealership);
-				var config = dealership.config;
+			addDealer: function(dealer) {
+				// trace('addDealer, dealer = ', dealer);
+				var config = dealer.config;
 				PhaserGame.removeNotification();
 				config.cell = GridManager.getRandomEmptyCellIndex(config.sector);
 				GridManager.addBuilding(config, config.sector);
-				BuildingManager.addDealership(dealership);
+				BuildingManager.addDealer(dealer);
 
 				var viewPath = 'usDetail:usDetailGrid:usDetailGridItem'+config.cell;
 				var view = PWG.ViewManager.getControllerFromPath(viewPath);
@@ -2345,11 +2345,11 @@ var gameLogic = {
 				PWG.ViewManager.setFrame(viewPath, frame);
 				view.config.attrs.frame = frame;
 			},
-			resetDealership: function(dealership) {
+			resetDealer: function(dealer) {
 				PhaserGame.removeNotification();
-				// trace('resetDealership, dealership = ', dealership);
-				var plant = BuildingManager.findBuilding(dealership.config.plantId);
-				plant.dealershipNotifications[dealership.config.modelId] = false;
+				// trace('resetDealer, dealer = ', dealer);
+				var plant = BuildingManager.findBuilding(dealer.config.plantId);
+				plant.dealerNotifications[dealer.config.modelId] = false;
 			},
 			// SUPPLIERS
 			addSupplierOpportunityNotification: function(event) {
@@ -2457,7 +2457,7 @@ var gameLogic = {
 			resetSupplier: function(supplier) {
 				PhaserGame.hideSupplierNotification();
 				PhaserGame.hideSupplierPrompt();
-				// trace('resetDealership, dealership = ', dealership);
+				// trace('resetDealer, dealer = ', dealer);
 			},
 			// TRADE_ROUTES
 			showTradeRouteNotification: function(id) {
@@ -2572,8 +2572,8 @@ var gameLogic = {
 				}
 			},
 			machineSold: function(building) {
-				// trace('PhaserGame/machineSold, dealership = ', dealership);
-				if(building.type === BuildingTypes.DEALERSHIP) {
+				// trace('PhaserGame/machineSold, dealer = ', dealer);
+				if(building.type === BuildingTypes.DEALER) {
 					if(PWG.ScreenManager.currentId === 'usDetail' && building.sector === PhaserGame.activeSector) {
 						PhaserGame.addUsDetailIconAnimation(IconAnimations.DOLLAR_SIGN, building, 'usDetail:usDetailGrid');
 					}
@@ -3702,7 +3702,7 @@ var gameLogic = {
 							
 							var typeCounts = {
 								plant: 0,
-								dealership: 0,
+								dealer: 0,
 								tradeRoute: 0
 							};
 							
@@ -3718,8 +3718,8 @@ var gameLogic = {
 								var buildingPin = PhaserGame.formatBuildingPin(BuildingTypes.PLANT, idx, typeCounts[BuildingTypes.PLANT]);
 								buildingPins.views[buildingPin.name] = buildingPin;
 							}
-							if(typeCounts.dealership > 0) {
-								var buildingPin = PhaserGame.formatBuildingPin(BuildingTypes.DEALERSHIP, idx, typeCounts[BuildingTypes.DEALERSHIP]);
+							if(typeCounts.dealer > 0) {
+								var buildingPin = PhaserGame.formatBuildingPin(BuildingTypes.DEALER, idx, typeCounts[BuildingTypes.DEALER]);
 								buildingPins.views[buildingPin.name] = buildingPin;
 							}
 						}
@@ -3895,7 +3895,7 @@ var gameLogic = {
 							PWG.ViewManager.callMethod('buildingEdit:editDetails:inventory', 'setText', [inventoryUpdate], this);
 							break;
 
-							case BuildingTypes.DEALERSHIP:
+							case BuildingTypes.DEALER:
 							var salesUpdate = buildingEditDetails.sales.text = '$' + PWG.Utils.formatMoney(config.totalSales, 0);
 							PWG.ViewManager.callMethod('buildingEdit:editDetails:sales', 'setText', [salesUpdate], this);
 							break;
@@ -3927,12 +3927,12 @@ var gameLogic = {
 					// trace('\tit is a plant');
 					buildingEditDetails.equipment.text += PWG.Utils.objLength(building.equipment) + ' / ' + BuildingManager.PLANT_MAX_MODELS;
 					buildingEditDetails.inventory.text += building.totalInventory + ' / ' + BuildingManager.PLANT_MAX_INVENTORY;
-					buildingEditDetails.dealerships.text += PWG.Utils.objLength(building.dealerships) + ' / ' + BuildingManager.PLANT_MAX_DEALERSHIPS;
+					buildingEditDetails.dealers.text += PWG.Utils.objLength(building.dealers) + ' / ' + BuildingManager.PLANT_MAX_DEALERS;
 					break;
 
-					case BuildingTypes.DEALERSHIP:
+					case BuildingTypes.DEALER:
 					var plant = BuildingManager.sectors[PhaserGame.activeSector][building.plantId].config;
-					// trace('\tdealership plant = ', plant);
+					// trace('\tdealer plant = ', plant);
 					buildingEditDetails.plantMachine.text += plant.name + ' / ' + plant.equipment[building.modelId].name;
 					buildingEditDetails.resell.text += '$' + PWG.Utils.formatMoney(building.resell, 0);
 					buildingEditDetails.sales.text += '$' + PWG.Utils.formatMoney(building.totalSales, 0);;
@@ -4416,8 +4416,8 @@ var gameLogic = {
 				PhaserGame.machineDirty = true;
 			},
 			shutdown: function() {
-				if(TurnManager.playerData.firstPlay[TutorialTypes.DEALERSHIP]) {
-					PhaserGame.activeTutorial = TutorialTypes.DEALERSHIP;
+				if(TurnManager.playerData.firstPlay[TutorialTypes.DEALER]) {
+					PhaserGame.activeTutorial = TutorialTypes.DEALER;
 					PhaserGame.addTutorialGuy();
 				}
 				PhaserGame.machinePieces = null;
@@ -4550,7 +4550,7 @@ var TurnManager = function() {
 		profit: 0,
 		bonuses: 0,
 		newPlants: 0,
-		newDealerships: 0,
+		newDealers: 0,
 		newTradeRoutes: 0,
 		newTractorModels: 0,
 		newSkidsteerModels: 0,
@@ -4583,7 +4583,7 @@ var TurnManager = function() {
 		trace('\tpre initiative, bank ' + module.playerData.bank);
 		module.playerData.bank += gameData.levels[module.playerData.level].startingBank;
 		trace('\tpost initiative, bank = ' + module.playerData.bank);
-		module.tempDealershipCount = (module.playerData.buildingCount.dealership);
+		module.tempDealerCount = (module.playerData.buildingCount.dealer);
 		// TurnManager.tempTradeRouteCount = (module.playerData.buildingCount.tradeRoute);
 		module.tempSupplierCount = (module.playerData.suppliers.length) || 0;
 
@@ -4636,8 +4636,8 @@ var TurnManager = function() {
 			module.currentData.newPlants++;
 			break;
 			
-			case BuildingTypes.DEALERSHIP: 
-			module.currentData.newDealerships++;
+			case BuildingTypes.DEALER: 
+			module.currentData.newDealers++;
 			break;
 			
 			case BuildingTypes.TRADE_ROUTE:
@@ -4751,12 +4751,12 @@ var BuildingManager = function() {
 	module.PLANT_MIN_SELL_INVENTORY = 3;
 	module.PLANT_MIN_EXPORT_INVENTORY = 5;
 	module.PLANT_MAX_INVENTORY = 100;
-	module.PLANT_MAX_DEALERSHIPS = 6;
+	module.PLANT_MAX_DEALERS = 6;
 
-	module.DEALERSHIP_MAX_INVENTORY = 50;
-	module.DEALERSHIP_MAX_SALE_QUANTITY = 5;
-	module.DEALERSHIP_MAX_SALES_PER_YEAR = 25;
-	module.DEALERSHIP_MIN_SALES_PER_YEAR = 10;
+	module.DEALER_MAX_INVENTORY = 50;
+	module.DEALER_MAX_SALE_QUANTITY = 5;
+	module.DEALER_MAX_SALES_PER_YEAR = 25;
+	module.DEALER_MIN_SALES_PER_YEAR = 10;
 	
 	module.TRADE_ROUTE_MAX_SALE_QUANTITY = 10;
 	module.TRADE_ROUTE_MAX_SALES_PER_YEAR = 25;
@@ -4794,17 +4794,17 @@ var BuildingManager = function() {
 		Building.call(this, config);
 		this.config.equipment = config.equipment || {};
 		this.config.inventory = config.inventory || {};
-		this.config.dealerships = config.dealerships || {};
+		this.config.dealers = config.dealers || {};
 		this.config.tradeRoutes = config.tradeRoutes || {};
 		
-		this.dealershipNotifications = {};
+		this.dealerNotifications = {};
 		this.tradeRouteNotifications = {};
 		
 		if(PWG.Utils.objLength(this.config.equipment) > 0) {
 			PWG.Utils.each(
 				this.config.equipment,
 				function(model) {
-					this.dealershipNotifications[model.id] = false;
+					this.dealerNotifications[model.id] = false;
 					this.tradeRouteNotifications[model.id] = false;
 				},
 				this
@@ -4832,7 +4832,7 @@ var BuildingManager = function() {
  	Plant.prototype.addMachineModel = function(machine) {
 		this.config.equipment[machine.id] = machine; 
 		this.config.inventory[machine.id] = [];
-		this.dealershipNotifications[machine.id] = false;
+		this.dealerNotifications[machine.id] = false;
 		this.tradeRouteNotifications[machine.id] = false;
 	};
 	Plant.prototype.associateBuilding = function(building, property) {
@@ -4878,7 +4878,7 @@ var BuildingManager = function() {
 										}
 
 										if(allPartsAdded) {
-											// trace('manufactured machine: ' +  machine.id + ', dealerships: ', this.config.dealerships);
+											// trace('manufactured machine: ' +  machine.id + ', dealers: ', this.config.dealers);
 											PWG.EventCenter.trigger({ type: Events.UPDATE_BANK, value: (-productionCost) });
 											PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
 											PWG.EventCenter.trigger({ type: Events.INVENTORY_ADDED, plant: this.config, machine: machine.id });
@@ -4908,21 +4908,21 @@ var BuildingManager = function() {
 												}
 											}
 
-											// DEALERSHIPS
-											// if there is enough inventory of this machine to sell and it doesn't already have a dealership...
+											// DEALERS
+											// if there is enough inventory of this machine to sell and it doesn't already have a dealer...
 											if(this.config.inventory[machine.id].length > module.PLANT_MIN_SELL_INVENTORY) {
-												if(!this.config.dealerships.hasOwnProperty(machine.id)) {
-													// trace('\tplant['+this.config.id+'].dealershipNotifications['+machine.id+'] = ' + this.dealershipNotifications[machine.id]);
-													if(!this.dealershipNotifications[machine.id]) {
-														module.createDealership(this, machine.id);
-														this.dealershipNotifications[machine.id] = true;
+												if(!this.config.dealers.hasOwnProperty(machine.id)) {
+													// trace('\tplant['+this.config.id+'].dealerNotifications['+machine.id+'] = ' + this.dealerNotifications[machine.id]);
+													if(!this.dealerNotifications[machine.id]) {
+														module.createDealer(this, machine.id);
+														this.dealerNotifications[machine.id] = true;
 													}
 												} else {
-													var dealershipId = this.config.dealerships[machine.id];
-													var dealership = module.findBuilding(dealershipId);
-													if(dealership.config.state === BuildingStates.ACTIVE) {
+													var dealerId = this.config.dealers[machine.id];
+													var dealer = module.findBuilding(dealerId);
+													if(dealer.config.state === BuildingStates.ACTIVE) {
 														var inventory = this.config.inventory[machine.id];
-														dealership.addInventory(this.config);
+														dealer.addInventory(this.config);
 													}
 												}
 											} 
@@ -4963,36 +4963,36 @@ var BuildingManager = function() {
 		}
 	};
 	
-	// DEALERSHIP
-	function Dealership(config) {
-		config.type = BuildingTypes.DEALERSHIP;
+	// DEALER
+	function Dealer(config) {
+		config.type = BuildingTypes.DEALER;
 		var plant = module.findBuilding(config.plantId);
 		var model = plant.config.equipment[config.modelId];
 		var resellMultiplier = Math.floor(Math.random() * (this.resellMaxMultiplier - 1) + 2);
 		// trace('resellMultilplier = ' + resellMultiplier);
 		Building.call(this, config);
 		this.config.resell = config.resell || (resellMultiplier * model.cost) + module.MACHINE_PRODUCTION_COST;
-		this.config.maxPerYear = config.maxPerYear || Math.floor(Math.random() * (module.DEALERSHIP_MAX_SALES_PER_YEAR - module.DEALERSHIP_MIN_SALES_PER_YEAR) + module.DEALERSHIP_MIN_SALES_PER_YEAR);
+		this.config.maxPerYear = config.maxPerYear || Math.floor(Math.random() * (module.DEALER_MAX_SALES_PER_YEAR - module.DEALER_MIN_SALES_PER_YEAR) + module.DEALER_MIN_SALES_PER_YEAR);
 		this.config.inventory = config.inventory || [];
 		this.config.totalSales = config.totalSales || 0;
 		this.numberSold = 0;
 	}
-	PWG.Utils.inherit(Dealership, Building);
+	PWG.Utils.inherit(Dealer, Building);
 
-	Dealership.prototype.constructionTime = 1;
-	Dealership.prototype.sellTime = 0;
-	Dealership.prototype.capacity = 50;
-	Dealership.prototype.resellMaxMultiplier = 6;
-	Dealership.prototype.quantityPerYear = 25;
-	Dealership.prototype.addInventory = function(plant) {
-		// trace('Dealership/addInventory, dealership = ', this.config, '\tplant = ', plant);
+	Dealer.prototype.constructionTime = 1;
+	Dealer.prototype.sellTime = 0;
+	Dealer.prototype.capacity = 50;
+	Dealer.prototype.resellMaxMultiplier = 6;
+	Dealer.prototype.quantityPerYear = 25;
+	Dealer.prototype.addInventory = function(plant) {
+		// trace('Dealer/addInventory, dealer = ', this.config, '\tplant = ', plant);
 		// if(this.config.inventory.length < this.capacity) {
 		if(this.numberSold < this.config.maxPerYear) {	
 			var modelId = this.config.modelId;
 			if(typeof(plant.inventory[modelId] !== 'undefined')) {
 				try {
 					while(plant.inventory[modelId].length > 0 && this.config.inventory.length < this.capacity) {
-						// trace('\ttransferring inventory to dealership');
+						// trace('\ttransferring inventory to dealer');
 						this.config.inventory.push(plant.inventory[modelId].pop());
 						plant.totalInventory--;
 						this.numberSold++;
@@ -5002,20 +5002,20 @@ var BuildingManager = function() {
 			}
 		}
 	};
-	Dealership.prototype.update = function() {
-		// trace('dealership/update: ', this);
-		Dealership._super.update.apply(this, arguments);
+	Dealer.prototype.update = function() {
+		// trace('dealer/update: ', this);
+		Dealer._super.update.apply(this, arguments);
 		if(this.config.state === BuildingStates.ACTIVE) {
 			if(this.config.inventory.length > 0) {
 				if(this.sellTime >= module.TIME_TO_SELL_MACHINES) {
-					var numToSell = Math.floor(Math.random() * (module.DEALERSHIP_MAX_SALE_QUANTITY - 1) + 1);
+					var numToSell = Math.floor(Math.random() * (module.DEALER_MAX_SALE_QUANTITY - 1) + 1);
 					if(numToSell > this.config.inventory.length) {
 						numToSell = this.config.inventory.length;
 					}
 					// trace('numToSell = ' + numToSell + ', inventory = ' + this.config.inventory.length);
 					while(numToSell > 0) {
 						TurnManager.sellMachine(this.config.inventory.pop(), this.config.resell);
-						// trace('------- Dealership about to sell a machine:', this);
+						// trace('------- Dealer about to sell a machine:', this);
 						PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
 						PWG.EventCenter.trigger({ type: Events.MACHINE_SOLD, building: this.config });
 						this.config.totalSales += this.config.resell;
@@ -5046,7 +5046,7 @@ var BuildingManager = function() {
 		var resellMultiplier = Math.floor(Math.random() * (this.resellMaxMultiplier - 1) + 3);
 		Building.call(this, config);
 		this.config.resell = config.resell || (resellMultiplier * model.cost) + module.MACHINE_PRODUCTION_COST;
-		this.config.maxPerYear = config.maxPerYear || Math.floor(Math.random() * (module.TRADE_ROUTE_MAX_SALES_PER_YEAR - module.TRADE_ROUTE_MIN_SALES_PER_YEAR) + module.DEALERSHIP_MIN_SALES_PER_YEAR);
+		this.config.maxPerYear = config.maxPerYear || Math.floor(Math.random() * (module.TRADE_ROUTE_MAX_SALES_PER_YEAR - module.TRADE_ROUTE_MIN_SALES_PER_YEAR) + module.DEALER_MIN_SALES_PER_YEAR);
 		this.config.inventory = config.inventory || [];
 		this.config.totalSales = config.totalSales || 0;
 		// trace('TradeRoute/constructor: ', this);
@@ -5080,7 +5080,7 @@ var BuildingManager = function() {
 		if(this.config.state === BuildingStates.ACTIVE) {
 			if(this.config.inventory.length > 0) {
 				if(this.sellTime >= module.TIME_TO_SELL_MACHINES) {
-					var numToSell = Math.floor(Math.random() * (module.DEALERSHIP_MAX_SALE_QUANTITY - 1) + 1);
+					var numToSell = Math.floor(Math.random() * (module.DEALER_MAX_SALE_QUANTITY - 1) + 1);
 					if(numToSell > this.config.inventory.length) {
 						numToSell = this.config.inventory.length;
 					}
@@ -5111,7 +5111,7 @@ var BuildingManager = function() {
 	};
 
 	module.sectors = [ {}, {}, {}, {}, {} ];
-	module.dealerships = [];
+	module.dealers = [];
 	module.tradeRoutes = [];
 	
 	module.init = function() {
@@ -5126,8 +5126,8 @@ var BuildingManager = function() {
 						// trace('\t\tbuildings['+id+'] = ', building);
 						if(building.type === BuildingTypes.PLANT) {
 							module.sectors[s][building.id] = new Plant(building);
-						} else if(building.type === BuildingTypes.DEALERSHIP) {
-							module.sectors[s][building.id] = new Dealership(building);
+						} else if(building.type === BuildingTypes.DEALER) {
+							module.sectors[s][building.id] = new Dealer(building);
 						} else if(building.type === BuildingTypes.TRADE_ROUTE) {
 							module.sectors[s][building.id] = new TradeRoute(building);
 						}
@@ -5138,9 +5138,9 @@ var BuildingManager = function() {
 			this
 		);
 		// PWG.Utils.each(
-		// 	TurnManager.playerData.dealerships,
-		// 	function(dealership) {
-		// 		module.dealerships.push(new Dealership(dealership));
+		// 	TurnManager.playerData.dealers,
+		// 	function(dealer) {
+		// 		module.dealers.push(new Dealer(dealer));
 		// 	},
 		// 	this
 		// );
@@ -5180,52 +5180,52 @@ var BuildingManager = function() {
 		module.sectors[sector][plantId].addMachineModel(machine);
 	};
 	
-	// create dealership instance to store for later use if user chooses to add
-	module.createDealership = function(plant, modelId) {
+	// create dealer instance to store for later use if user chooses to add
+	module.createDealer = function(plant, modelId) {
 		var model;
 		var count = PWG.Utils.objLength(plant.config.equipment);
 		var index = 0;
 
-		// var buildingCount = TurnManager.playerData.buildingCount[BuildingTypes.DEALERSHIP];
-		var type = BuildingTypes.DEALERSHIP;
-		var dealershipId = type + ((TurnManager.tempDealershipCount) + 1);
-		var dealershipName = type.toUpperCase() + ' ' + TurnManager.tempDealershipCount;
-		TurnManager.tempDealershipCount++;
+		// var buildingCount = TurnManager.playerData.buildingCount[BuildingTypes.DEALER];
+		var type = BuildingTypes.DEALER;
+		var dealerId = type + ((TurnManager.tempDealerCount) + 1);
+		var dealerName = type.toUpperCase() + ' ' + TurnManager.tempDealerCount;
+		TurnManager.tempDealerCount++;
 		
 		// trace('\tmodelId = ' + modelId + ', count = ' + count);
 		model = plant.config.equipment[modelId];
 
 		// trace('model now = ', model);
-		if(!plant.config.dealerships.hasOwnProperty(model.id)) {
-			var dealership = new Dealership({
-				id: dealershipId,
-				name: dealershipName,
+		if(!plant.config.dealers.hasOwnProperty(model.id)) {
+			var dealer = new Dealer({
+				id: dealerId,
+				name: dealerName,
 				modelId: model.id,
 				plantId: plant.config.id,
 				// plant: plant.config,
 				sector: plant.config.sector
 			});
 
-			PWG.EventCenter.trigger({ type: Events.ADD_DEALERSHIP_NOTIFICATION, plant: plant.config, dealership: dealership });
+			PWG.EventCenter.trigger({ type: Events.ADD_DEALER_NOTIFICATION, plant: plant.config, dealer: dealer });
 		}
 	};
 	
-	module.addDealership = function(dealership) {
-		var plant = module.findBuilding(dealership.config.plantId);
-		plant.associateBuilding(dealership, 'dealerships');
-		module.dealerships.push(dealership);
-		module.updateBuildings(dealership);
+	module.addDealer = function(dealer) {
+		var plant = module.findBuilding(dealer.config.plantId);
+		plant.associateBuilding(dealer, 'dealers');
+		module.dealers.push(dealer);
+		module.updateBuildings(dealer);
 	};
 	
-	module.addInventoryToDealership = function(plantId, dealershipIdx) {
+	module.addInventoryToDealer = function(plantId, dealerIdx) {
 		var equipment = module.sectors.factories[plantId].equipment;
-		var dealership = module.sectors.dealerships[dealershipIdx];
+		var dealer = module.sectors.dealers[dealerIdx];
 
 		if(equipment.length > 0) {
 			PWG.Utils.each(
 				equipment,
 				function(machine) {
-					dealership.inventory.push(machine);
+					dealer.inventory.push(machine);
 				},
 				this
 			);
@@ -5312,11 +5312,11 @@ var BuildingManager = function() {
 			},
 			module
 		);
-		// update dealerships
+		// update dealers
 		PWG.Utils.each(
-			module.dealerships,
-			function(dealership) {
-				dealership.update();
+			module.dealers,
+			function(dealer) {
+				dealer.update();
 			},
 			this
 		);
@@ -5874,14 +5874,14 @@ var GameConfig = function() {
 				x: gameUnit * 0,
 				y: gameUnit * 0
 			},
-			dealership: {
+			dealer: {
 				x: gameUnit * 0.76,
 				y: gameUnit * 0
 			}
 		};
 		var pinImages = {
 			plant: 'pinPlant',
-			dealership: 'pinDealership',
+			dealer: 'pinDealer',
 			tradeRoute: 'pinTradeRoute'
 		};
 		var pinFills = {
@@ -5892,7 +5892,7 @@ var GameConfig = function() {
 				palette.black,
 				palette.white
 			],
-			dealership: [
+			dealer: [
 				palette.black,
 				palette.white,
 				palette.white,
@@ -5927,8 +5927,8 @@ var GameConfig = function() {
 				equipmentEdit: {
 					content: 'Click the part name to\nsee the parts you can buy.\nThe machine behind me will cycle\nthrough parts to be added.'
 				},
-				dealership: {
-					content: 'Great! Your Plant will now\nbegin manufacturing. Once it has\nmade 3, Dealerships will begin\n offering to sell your equipment.\nLook for the envelope in the\nUS Sector screen.'
+				dealer: {
+					content: 'Great! Your Plant will now\nbegin manufacturing. Once it has\nmade 3, Dealers will begin\n offering to sell your equipment.\nLook for the envelope in the\nUS Sector screen.'
 				},
 				supplier: {
 					content: 'Suppliers will now begin\nto offer you parts as discount\nfor bulk orders.\nLook for the engine icon in\nthe bottom, left corner.'
@@ -5949,7 +5949,7 @@ var GameConfig = function() {
 			buildingCreate: {
 				content: 'Add new Plant?'
 			},
-			dealership: {
+			dealer: {
 				content: 'We would like to sell ~{quantity}~\nper year of your\n~{plant}~ ~{model}~\ninventory at $~{resell}~ each.'
 			},
 			supplierPrompt: {
@@ -5966,7 +5966,7 @@ var GameConfig = function() {
 			}
 		};
 		var notificationPeopleImages = {
-			dealership: 'dealershipGirl',
+			dealer: 'dealerGirl',
 			supplier: 'supplierGuy',
 			tradeRoutes: {
 				africa: 'tradeRouteAfricaNotification',
@@ -7002,10 +7002,10 @@ var GameConfig = function() {
 					}
 				}
 			},
-			dealershipPrompt: { 
+			dealerPrompt: { 
 				type: 'sprite',
-				name: 'dealershipPrompt',
-				img: 'dealershipRepresentativePrompt',
+				name: 'dealerPrompt',
+				img: 'dealerRepresentativePrompt',
 				x: (gameW/2) - (gameUnit * 3),
 				y: (gameUnit * 12.5),
 				attrs: {
@@ -7094,9 +7094,9 @@ var GameConfig = function() {
 							centerX: true
 						}
 					},
-					dealerships: {
+					dealers: {
 						type: 'text',
-						name: 'dealerships',
+						name: 'dealers',
 						text: '',
 						x: gameUnit * 1.5,
 						y: gameUnit * 11.75,
@@ -7109,9 +7109,9 @@ var GameConfig = function() {
 						}
 					}
 				},
-				dealership: {
+				dealer: {
 					bg: {
-						img: 'dealershipDetailBg'
+						img: 'dealerDetailBg'
 					},
 					plantMachine: {
 						type: 'text',
@@ -7805,10 +7805,10 @@ var GameConfig = function() {
 					ssPartsNavigator: 'img/screens/manual/ss_parts_navigator.png',
 					ssPartsMenu: 'img/screens/manual/ss_parts_menu.png',
 					ssStars: 'img/screens/manual/ss_stars.png',
-					ssDealershipGirl: 'img/screens/manual/ss_dealership_girl.png',
+					ssDealerGirl: 'img/screens/manual/ss_dealer_girl.png',
 					ssDashboardTop: 'img/screens/manual/ss_dashboard_top.png',
 					ssYearEnd: 'img/screens/manual/ss_year_end.png',
-					ssDealershipEnvelope: 'img/screens/manual/ss_dealership_envelope.png',
+					ssDealerEnvelope: 'img/screens/manual/ss_dealer_envelope.png',
 					ssFactoryProduction: 'img/screens/manual/ss_plant_production.png',
 					ssTradeRoutes: 'img/screens/manual/ss_trade_routes.png',
 					// mission brief
@@ -7827,7 +7827,7 @@ var GameConfig = function() {
 					mapUS: 'img/screens/world/map_us.png',
 					endTurnPrompt: 'img/screens/world/end_turn_prompt.png',
 					pinPlant: 'img/screens/world/pin_plant.png',
-					pinDealership: 'img/screens/world/pin_dealership.png',
+					pinDealer: 'img/screens/world/pin_dealer.png',
 					pinTradeRoute: 'img/screens/world/pin_trade_route.png',
 					exclamationAlert: 'img/icons/exclamation5.png',
 					tradeRouteAlertIcon: 'img/icons/little_trade_route_alert.png',
@@ -7845,10 +7845,10 @@ var GameConfig = function() {
 					sectorGridNW: 'img/screens/us_detail/sector_grid_nw.png',
 					sectorGridSW: 'img/screens/us_detail/sector_grid_sw.png',
 					addNewPlantPrompt: 'img/screens/us_detail/add_new_plant_prompt.png',
-					dealershipRepresentativePrompt: 'img/screens/us_detail/dealership_representative_prompt.png',
+					dealerRepresentativePrompt: 'img/screens/us_detail/dealer_representative_prompt.png',
 					// building detail
 					plantDetailBg: 'img/screens/building_edit/plant_detail.png',
-					dealershipDetailBg: 'img/screens/building_edit/dealership_detail.png',
+					dealerDetailBg: 'img/screens/building_edit/dealer_detail.png',
 					// equipment list
 					machineListIcon: 'img/screens/equipment_list/machine_list_icon.png',
 					skidsteerBasicIcon: 'img/screens/equipment_list/skidsteer_basic_icon.png',
@@ -7947,7 +7947,7 @@ var GameConfig = function() {
 
 					// NOTIFICATIONS
 					tutorialGuy: 'img/notifications/tutorial_guy.png',
-					dealershipGirl: 'img/notifications/dealership_girl.png',
+					dealerGirl: 'img/notifications/dealer_girl.png',
 					supplierGuy: 'img/notifications/supplier_guy.png',
 					tradeRouteAfricaNotification: 'img/notifications/trade_route_africa.png',
 					tradeRouteAsiaNotification: 'img/notifications/trade_route_asia.png',
@@ -8293,7 +8293,7 @@ var GameConfig = function() {
 				types: {
 					profit: 'Profits: ',
 					newPlants: 'Plants built: ',
-					newDealerships: 'Dealerships established: ',
+					newDealers: 'Dealers established: ',
 					newSuppliers: 'Partnered Suppliers: ',
 					newTradeRoutes: 'Trade Routes established: ',
 					newMachineModels: 'Machine models created: ',
@@ -8303,7 +8303,7 @@ var GameConfig = function() {
 			},
 			bonusesText: {
 				newPlant: 'New Plant built created 1000 jobs',
-				newDealership: 'New Dealership established',
+				newDealer: 'New Dealer established',
 				newSupplier: 'New Supplier relationship',
 				newTradeRoutes: 'New Trade Route established',
 				machineManufacturing: '~{machines}~ Machines built'
@@ -9362,19 +9362,19 @@ var GameConfig = function() {
 						y: (gameUnit * 3)
 					},
 					{
-						text: 'After a Plant has manufactured 3 machines,\nRegional Representatives will prompt\nyou to sell through their Dealership.',
+						text: 'After a Plant has manufactured 3 machines,\nRegional Representatives will prompt\nyou to sell through their Dealer.',
 						x: (gameUnit * 2),
 						y: (gameUnit * 5.5)
 					},
 					{
-						text: 'Not all Dealerships offer the same resale.\nThe first is not always the best.',
+						text: 'Not all Dealers offer the same resale.\nThe first is not always the best.',
 						x: (gameUnit * 2),
 						y: (gameUnit * 11)
 					}
 					],
 					images: [
 					{
-						img: 'ssDealershipGirl',
+						img: 'ssDealerGirl',
 						x: (gameUnit * 2),
 						y: (gameUnit * 7),
 						width: (gameUnit * 2),
