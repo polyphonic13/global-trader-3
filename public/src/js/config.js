@@ -1264,14 +1264,35 @@ var GameConfig = function() {
 				}
 			},
 			dealerPrompt: { 
-				type: 'sprite',
+				type: 'group',
 				name: 'dealerPrompt',
-				img: 'dealerRepresentativePrompt',
-				x: (gameW/2) - (gameUnit * 3),
-				y: (gameUnit * 12.5),
-				attrs: {
-					width: (gameUnit * 6),
-					height: (gameUnit * 6) * 0.34
+				views: {
+					menuBg: {
+						type: 'sprite',
+						name: 'menuBg',
+						img: 'submenuBg',
+						x: (gameW/2) - (gameUnit * 3),
+						y: (gameUnit * 12.5),
+						attrs: {
+							width: (gameUnit * 6),
+							height: (gameUnit * 6) * 0.34
+						}
+					},
+					title: {
+						type: 'text',
+						name: 'menuItemTitle',
+						text: 'DEALER\nREPRESENTATIVE',
+						x: 0,
+						y: gameUnit * 13,
+						style: {
+						    font: (fontSizes.sm + 'px Trebuchet MS'),
+					        fill: palette.orange3,
+							align: 'center'
+						},
+						position: {
+							centerX: true
+						}
+					}
 				}
 			},
 			// building edit
