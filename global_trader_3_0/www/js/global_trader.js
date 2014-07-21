@@ -1,4 +1,4 @@
-(function(){(typeof console === 'undefined' || typeof console.log === 'undefined')?console={log:function(){}}:console.log('----- Global Trader 3.0 created: 2014-07-19T15:43:00')})();
+(function(){(typeof console === 'undefined' || typeof console.log === 'undefined')?console={log:function(){}}:console.log('----- Global Trader 3.0 created: 2014-07-21T19:21:20')})();
 var Events = {
 	CHANGE_SCREEN: 'changeScreen',
 	CHANGE_STATE: 'changeState',
@@ -7003,14 +7003,35 @@ var GameConfig = function() {
 				}
 			},
 			dealerPrompt: { 
-				type: 'sprite',
+				type: 'group',
 				name: 'dealerPrompt',
-				img: 'dealerRepresentativePrompt',
-				x: (gameW/2) - (gameUnit * 3),
-				y: (gameUnit * 12.5),
-				attrs: {
-					width: (gameUnit * 6),
-					height: (gameUnit * 6) * 0.34
+				views: {
+					menuBg: {
+						type: 'sprite',
+						name: 'menuBg',
+						img: 'submenuBg',
+						x: (gameW/2) - (gameUnit * 3),
+						y: (gameUnit * 12.5),
+						attrs: {
+							width: (gameUnit * 6),
+							height: (gameUnit * 6) * 0.34
+						}
+					},
+					title: {
+						type: 'text',
+						name: 'menuItemTitle',
+						text: 'DEALER\nREPRESENTATIVE',
+						x: 0,
+						y: gameUnit * 13,
+						style: {
+						    font: (fontSizes.sm + 'px Trebuchet MS'),
+					        fill: palette.orange3,
+							align: 'center'
+						},
+						position: {
+							centerX: true
+						}
+					}
 				}
 			},
 			// building edit
