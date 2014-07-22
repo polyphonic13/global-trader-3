@@ -2069,7 +2069,7 @@ var GameConfig = function() {
 					dashboardTop: 'img/dashboard_top.png',
 					submenuBg: 'img/submenu_bg.png',
 					smallEnvelope: 'img/icons/small_envelope.png',
-					smallEngineIcon: 'img/icons/small_engine_icon.png',
+					smallEngineIcon: 'img/icons/small_tire_icon.png',
 					// home
 					homeBg: 'img/screens/start/start.png',
 					// manual

@@ -955,16 +955,23 @@ var gameLogic = {
 			},
 			hideSupplierNotification: function() {
 				PhaserGame.activeSupplier = null;
+				PhaserGame.cancelAction = null;
+				PhaserGame.confirmAction = null;
+				PhaserGame.supplierPromptClicked = false;
+				WholesaleManager.notificationActive = false;
+				
 				PWG.ViewManager.showView('global:backButton');
 				PWG.ViewManager.hideView('global:cancelButton');
-				PWG.ViewManager.hideView('global:confirmButton');
 				PWG.ViewManager.removeView('notification', 'global:notifications');
 				if(PWG.ScreenManager.currentId === 'buildingEdit') {
 					PWG.ViewManager.showView('global:plantDetailGroup:equipmentButton');
 				}
-				PhaserGame.cancelAction = null;
-				PhaserGame.confirmAction = null;
-				PhaserGame.supplierPromptClicked = false;
+				
+				if(PWG.ScreenManager.currentId === 'equipmentEdit' && PhaserGame.machinePartsComplete) {
+					PWG.ViewManager.showView('global:confirmButton');
+				} else {
+					PWG.ViewManager.hideView('global:confirmButton');
+				}
 			},
 			addSupplier: function(supplier) {
 				// trace('addSupplier, supplier = ', supplier);
@@ -2827,6 +2834,7 @@ var gameLogic = {
 					// trace('machine complete, event = ', event);
 					PhaserGame.hideAllMachinePieceSprites();
 					PhaserGame.confirmAction = null;
+					PhaserGame.machinePartsComplete = true;
 					PWG.ViewManager.showView('global:confirmButton');
 				}
 			},
@@ -2931,6 +2939,7 @@ var gameLogic = {
 				};
 
 				PhaserGame.spriteTranslations = gameData.machines[type][size].spriteTranslations;
+				PhaserGame.machinePartsComplete = false;
 				PhaserGame.machineDirty = true;
 			},
 			shutdown: function() {
@@ -2946,6 +2955,7 @@ var gameLogic = {
 				PWG.ViewManager.showView('global:backButton');
 				PhaserGame.cancelAction = null;
 				this.partsMenuType = '';
+				PhaserGame.machinePartsComplete = false;
 				PhaserGame.partsMenuOpen = false;
 				PhaserGame.machineDirty = false;
 			}
