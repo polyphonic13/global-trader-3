@@ -488,7 +488,7 @@ var gameData = {
 			},
 			{
 				description: 'Deluxe',
-				img: 'bucketHeavyPremium',
+				img: 'bucketMediumDeluxe',
 				cost: 2000,
 				build: 500,
 				sell: 1000
@@ -504,7 +504,7 @@ var gameData = {
 			},
 			{
 				description: 'Premium',
-				img: 'bucketMediumDeluxe',
+				img: 'bucketMediumPremium',
 				cost: 1200,
 				build: 225,
 				sell: 4500

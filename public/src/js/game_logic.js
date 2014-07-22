@@ -1,4 +1,6 @@
 var ASPECT_RATIO = [9, 16];
+var OFFSET_X = 0;
+var OFFSET_Y = 15;
 var GAME_NAME = 'global_trader_3_0';
 var FACEBOOK_URL = 'https://www.facebook.com/cnhitrade';
 var TIME_PER_TURN = 52;
@@ -11,7 +13,7 @@ var MIN_TRADE_ROUTE_LEVEL = 4;
 var NUM_PART_QUALITIES = 3;
 
 function startGame() {
-	PhaserGame.init(ASPECT_RATIO, document.documentElement.clientHeight);
+	PhaserGame.init(ASPECT_RATIO, document.documentElement.clientHeight, OFFSET_X, OFFSET_Y);
 }
 
 var gameLogic = {

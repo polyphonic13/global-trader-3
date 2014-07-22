@@ -3560,7 +3560,7 @@ var GameConfig = function() {
 				{
 					blurbs: [
 					{
-						text: 'Click on the active plant\nto see its details.\nThe wrench takes\nyou a list of the\nplant\'s\nTractor and\nSkid Steer models.',
+						text: 'Click on the active plant\nto see its details.\nThe wrench takes\nyou to a list of the\nplant\'s\nTractor and\nSkid Steer models.',
 						x: (gameUnit * 2),
 						y: (gameUnit * 3)
 					},
