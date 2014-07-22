@@ -2069,7 +2069,7 @@ var GameConfig = function() {
 					dashboardTop: 'img/dashboard_top.png',
 					submenuBg: 'img/submenu_bg.png',
 					smallEnvelope: 'img/icons/small_envelope.png',
-					smallEngineIcon: 'img/icons/small_tire_icon.png',
+					smallTireIcon: 'img/icons/small_tire_icon.png',
 					// home
 					homeBg: 'img/screens/start/start.png',
 					// manual
@@ -3167,12 +3167,12 @@ var GameConfig = function() {
 						supplierPrompt: {
 							type: 'sprite',
 							name: 'supplierPrompt',
-							img: 'smallEngineIcon',
+							img: 'smallTireIcon',
 							x: gameUnit * 0.1,
-							y: gameUnit * 12.5,
+							y: gameUnit * 12,
 							attrs: {
-								width: (gameUnit * 1.5) * 0.6,
-								height: (gameUnit * 1.5) * 0.6
+								width: (gameUnit * 1.5),
+								height: (gameUnit * 1.5)
 							},
 							input: gameLogic.input.supplierPrompt
 							

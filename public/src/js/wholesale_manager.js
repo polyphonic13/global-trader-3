@@ -25,7 +25,7 @@ var WholesaleManager = function() {
 	module.init = function() {
 		// trace('WholesaleManager/init');
 		module.suppliersAdded = 0;
-		module.notificationActive = false;
+		module.supplierPending = false;
 		// establish 
 		module.turnMax = (Math.floor(Math.random() * (module.SUPPLIERS_PER_TURN_MULTIPLIER - 1) + 1)) + TurnManager.playerData.level;
 		// trace('\tturnMax = ' + module.turnMax);
@@ -62,7 +62,7 @@ var WholesaleManager = function() {
 	
 	module.update = function() {
 		// there isn't a current notification pending
-		if(!module.notificationActive) {
+		if(!module.supplierPending) {
 			// trace('WholesaleManager/update\n');
 			// haven't made max number of suppliers for this turn
 			if(module.suppliersAdded < module.turnMax) { 
@@ -92,7 +92,7 @@ var WholesaleManager = function() {
 							config.partType = type;
 							config.partSize = size;
 							config.partDescription = PartDescriptions[type];
-							module.notificationActive = true;
+							module.supplierPending = true;
 							module.createSupplier(config);
 						}
 					}
@@ -117,7 +117,7 @@ var WholesaleManager = function() {
 
 	module.addSupplier = function(supplier) {
 		// trace('WhoelsaleManager/addSupplier');
-		module.notificationActive = false;
+		module.supplierPending = false;
 		module.suppliersAdded++;
 		module.suppliers[supplier.config.id] = supplier;
 		// trace('\tadding supplier to parts['+supplier.config.partType+']['+supplier.config.partSize+']['+supplier.config.id+']');

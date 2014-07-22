@@ -250,6 +250,7 @@ var gameLogic = {
 				PWG.ViewManager.hideView('global:confirmButton');
 				PWG.ViewManager.removeView('notification', 'global:notifications');
 				PhaserGame.cancelAction = null;
+				PhaserGame.notificationActive = false;
 			},
 			showNotificationEnvelope: function() {
 				PWG.ViewManager.showView('global:notificationEnvelope');
@@ -809,41 +810,44 @@ var gameLogic = {
 			},
 			// DEALERS
 			addDealerOpportunityNotification: function(event) {
-				var notification = PWG.Utils.clone(PhaserGame.config.dynamicViews.notification);
-				var dealerPrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.dealerPrompt);
-				
-				var notificationText = PhaserGame.config.notificationText['dealer'];
-				
-				var modelName = event.plant.equipment[event.dealer.config.modelId].name;
-				var resell = PWG.Utils.formatMoney(event.dealer.config.resell, 0);
-				// trace('addDealerOppurtunity, dealer = ', event.dealer);
-				var statementText = PWG.Utils.parseMarkup(notificationText.content, {
-					plant: event.plant.name,
-					quantity: event.dealer.config.maxPerYear,
-					model: modelName,
-					resell: resell
-				});
+				if(PhaserGame.turnActive && !PhaserGame.notificationActive) {
+					PhaserGame.notificationActive = true;
+					var notification = PWG.Utils.clone(PhaserGame.config.dynamicViews.notification);
+					var dealerPrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.dealerPrompt);
 
-				notification.views.person.img = PhaserGame.config.notificationPeopleImages['dealer'];
-				// notification.views.title.text = config.title;
-				notification.views.content.text = statementText.toUpperCase();
-				// trace('notification = ', notification);
-				
-				notification.views[dealerPrompt.name] = dealerPrompt;
-				
-				notification.confirmAction = {
-					method: PhaserGame.addDealer,
-					params: event.dealer
-				};
-				
-				notification.cancelAction = {
-					method: PhaserGame.resetDealer,
-					params: event.dealer
-				};
-				// PWG.ViewManager.hideView('global:backButton');
-				PhaserGame.notifications[event.plant.sector].push(notification);
-				if(PWG.ScreenManager.currentId === 'usDetail' && PhaserGame.activeSector === event.plant.sector) {
-					PhaserGame.showNotificationEnvelope();
+					var notificationText = PhaserGame.config.notificationText['dealer'];
+
+					var modelName = event.plant.equipment[event.dealer.config.modelId].name;
+					var resell = PWG.Utils.formatMoney(event.dealer.config.resell, 0);
+					// trace('addDealerOppurtunity, dealer = ', event.dealer);
+					var statementText = PWG.Utils.parseMarkup(notificationText.content, {
+						plant: event.plant.name,
+						quantity: event.dealer.config.maxPerYear,
+						model: modelName,
+						resell: resell
+					});
+
+					notification.views.person.img = PhaserGame.config.notificationPeopleImages['dealer'];
+					// notification.views.title.text = config.title;
+					notification.views.content.text = statementText.toUpperCase();
+					// trace('notification = ', notification);
+
+					notification.views[dealerPrompt.name] = dealerPrompt;
+
+					notification.confirmAction = {
+						method: PhaserGame.addDealer,
+						params: event.dealer
+					};
+
+					notification.cancelAction = {
+						method: PhaserGame.resetDealer,
+						params: event.dealer
+					};
+					// PWG.ViewManager.hideView('global:backButton');
+					PhaserGame.notifications[event.plant.sector].push(notification);
+					if(PWG.ScreenManager.currentId === 'usDetail' && PhaserGame.activeSector === event.plant.sector) {
+						PhaserGame.showNotificationEnvelope();
+					}
 				}
 			},
 			addDealer: function(dealer) {
@@ -862,10 +866,12 @@ var gameLogic = {
 
 				PWG.ViewManager.setFrame(viewPath, frame);
 				view.config.attrs.frame = frame;
+				PhaserGame.notificationActive = false;
 			},
 			resetDealer: function(dealer) {
 				PhaserGame.removeNotification();
 				// trace('resetDealer, dealer = ', dealer);
+				PhaserGame.notificationActive = false;
 				var plant = BuildingManager.findBuilding(dealer.config.plantId);
 				plant.dealerNotifications[dealer.config.modelId] = false;
 			},
@@ -926,7 +932,9 @@ var gameLogic = {
 				// }
 			},
 			showSupplierNotification: function() {
-				if(PhaserGame.turnActive) {
+				trace('showSupplierNotification, turnActive = ' + PhaserGame.turnActive + ', notificationActive = ' + PhaserGame.notificationActive);
+				if(PhaserGame.turnActive && !PhaserGame.notificationActive) {
+					PhaserGame.notificationActive = true;
 					PhaserGame.supplierPromptClicked = false;
 					var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
 					var supplierNotification = PhaserGame.supplierNotifications.pop();
@@ -958,7 +966,8 @@ var gameLogic = {
 				PhaserGame.cancelAction = null;
 				PhaserGame.confirmAction = null;
 				PhaserGame.supplierPromptClicked = false;
-				WholesaleManager.notificationActive = false;
+				PhaserGame.notificationActive = false;
+				WholesaleManager.supplierPending = false;
 				
 				PWG.ViewManager.showView('global:backButton');
 				PWG.ViewManager.hideView('global:cancelButton');
@@ -987,27 +996,31 @@ var gameLogic = {
 			// TRADE_ROUTES
 			showTradeRouteNotification: function(id) {
 				// trace('showTradeRouteNotification: ', id, ', tradeRouteNotifications = ', PhaserGame.tradeRouteNofication);
-				if(PhaserGame.tradeRouteNotifications.hasOwnProperty(id)) {
-					var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
-					var notification = PhaserGame.tradeRouteNotifications[id];
-					delete PhaserGame.tradeRouteNotifications[id];
-					
-					if(notification.confirmAction) {
-						PhaserGame.confirmAction = notification.confirmAction;
-						PWG.ViewManager.showView('global:confirmButton');
+				if(PhaserGame.turnActive && !PhaserGame.notificationActive) {
+					if(PhaserGame.tradeRouteNotifications.hasOwnProperty(id)) {
+						PhaserGame.notificationActive = true;
+						var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
+						var notification = PhaserGame.tradeRouteNotifications[id];
+						delete PhaserGame.tradeRouteNotifications[id];
+
+						if(notification.confirmAction) {
+							PhaserGame.confirmAction = notification.confirmAction;
+							PWG.ViewManager.showView('global:confirmButton');
+						}
+						if(notification.cancelAction) {
+							PhaserGame.cancelAction = notification.cancelAction;
+						} else {
+							PhaserGame.cancelAction = PhaserGame.removeTradeRouteNotification;
+						}
+						PhaserGame.activeTradeRouteNotification = id; 
+
+						PWG.ViewManager.hideView('global:backButton');
+						PWG.ViewManager.showView('global:cancelButton');
+						PWG.ViewManager.addView(notification, notifications, true);
+						PhaserGame.tradeRouteNotificationOpen = true;
 					}
-					if(notification.cancelAction) {
-						PhaserGame.cancelAction = notification.cancelAction;
-					} else {
-						PhaserGame.cancelAction = PhaserGame.removeTradeRouteNotification;
-					}
-					PhaserGame.activeTradeRouteNotification = id; 
-					
-					PWG.ViewManager.hideView('global:backButton');
-					PWG.ViewManager.showView('global:cancelButton');
-					PWG.ViewManager.addView(notification, notifications, true);
-					PhaserGame.tradeRouteNotificationOpen = true;
 				}
+				
 			},
 			removeTradeRouteNotification: function(tradeRoute) {
 				// trace('removeTradeRouteNotification, id = ' + PhaserGame.activeTradeRouteNotification);
@@ -1022,6 +1035,7 @@ var gameLogic = {
 					PhaserGame.removeTradeRouteViews();
 					PhaserGame.addTradeRouteViews();
 					
+					PhaserGame.notificationActive = false;
 					PhaserGame.tradeRouteNotificationOpen = false;
 				}
 			},
