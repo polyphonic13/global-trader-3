@@ -213,7 +213,7 @@ var GameConfig = function() {
 			dealer: {
 				content: 'We would like to sell ~{quantity}~\nper year of your\n~{plant}~ ~{model}~\ninventory at $~{resell}~ each.'
 			},
-			supplierPrompt: {
+			supplierNotificationIcon: {
 				content: 'Build Supplier\nRelationship',
 			},
 			supplierNotification: {
@@ -2018,6 +2018,41 @@ var GameConfig = function() {
 					}
 				}
 			},
+			// bonuses
+			// bonuses
+			bonusesNotification: {
+				type: 'group',
+				name: 'bonusesNotification',
+				attrs: {
+					visible: false
+				},
+				views: {
+					openedSuitcase: {
+						type: 'sprite',
+						name: 'openedSuitcase',
+						img: 'openedSuitecase',
+						x: 0,
+						y: 0,
+						attrs: {
+							width: gameW,
+							height: gameH
+						},
+						input: gameLogic.input.openedSuitcase
+					},
+					closedSuitcase: {
+						type: 'sprite',
+						name: 'closedSuitcase',
+						img: 'closedSuitecase',
+						x: 0,
+						y: 0,
+						attrs: {
+							width: gameW,
+							height: gameH
+						},
+						input: gameLogic.input.closedSuitcase
+					}
+				}
+			},
 			// year end
 			yearSummary: {
 				type: 'group',
@@ -2068,8 +2103,9 @@ var GameConfig = function() {
 					dashboardBottom: 'img/dashboard_bottom.png',
 					dashboardTop: 'img/dashboard_top.png',
 					submenuBg: 'img/submenu_bg.png',
-					smallEnvelope: 'img/icons/small_envelope.png',
+					smallEnvelopeIcon: 'img/icons/small_envelope_icon.png',
 					smallTireIcon: 'img/icons/small_tire_icon.png',
+					smallSuitcaseIcon: 'img/icons/small_suitcase_icon.png',
 					// home
 					homeBg: 'img/screens/start/start.png',
 					// manual
@@ -2238,6 +2274,10 @@ var GameConfig = function() {
 					tradeRouteSouthPacificNotification: 'img/notifications/trade_route_south_pacific.png',
 					tradeRouteSouthAmericaNotification: 'img/notifications/trade_route_south_america.png',
 
+					// BONUSES
+					closedSuitcase: 'img/screens/bonuses/closed_suitcase.png',
+					openedSuitcase: 'img/screens/bonuses/opened_suitcase.png',
+					
 					// TURN END
 					turnEnd01: 'img/screens/turn_end/turn_end01.png',
 					turnEnd02: 'img/screens/turn_end/turn_end02.png'
@@ -3152,21 +3192,21 @@ var GameConfig = function() {
 						visible: true
 					},
 					views: {
-						notificationEnvelope: {
+						notificationIcon: {
 							type: 'sprite',
-							name: 'notificationEnvelope',
-							img: 'smallEnvelope',
+							name: 'notificationIcon',
+							img: 'smallEnvelopeIcon',
 							x: gameUnit * 0.1,
 							y: gameUnit * 1.6,
 							attrs: {
 								width: gameUnit * 1.5,
 								height: (gameUnit * 1.5) * 0.6
 							},
-							input: gameLogic.input.notificationEnvelope
+							input: gameLogic.input.notificationIcon
 						},
-						supplierPrompt: {
+						supplierNotificationIcon: {
 							type: 'sprite',
-							name: 'supplierPrompt',
+							name: 'supplierNotificationIcon',
 							img: 'smallTireIcon',
 							x: gameUnit * 0.1,
 							y: gameUnit * 12,
@@ -3174,7 +3214,20 @@ var GameConfig = function() {
 								width: (gameUnit * 1.5),
 								height: (gameUnit * 1.5)
 							},
-							input: gameLogic.input.supplierPrompt
+							input: gameLogic.input.supplierNotificationIcon
+							
+						},
+						bonusNotificationIcon: {
+							type: 'sprite',
+							name: 'bonusNotificationIcon',
+							img: 'smallSuitcaseIcon',
+							x: (gameW) - gameUnit * 1.6,
+							y: gameUnit * 12,
+							attrs: {
+								width: (gameUnit * 1.5),
+								height: (gameUnit * 1.5) * 0.73
+							},
+							input: gameLogic.input.bonusNotificationIcon
 							
 						},
 						tradeRouteAlertIcon: {
