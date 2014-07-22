@@ -297,7 +297,8 @@ var gameLogic = {
 				TurnManager.startTurn();
 				BuildingManager.init();
 				WholesaleManager.init();
-				PhaserGame.notifications = [[], [], [], [], []];
+				PhaserGame.dealerNotifications = [[], [], [], [], []];
+				PhaserGame.bonusNotifications = [];
 				PhaserGame.supplierNotifications = [];
 				PhaserGame.tradeRouteNotifications = {};
 				PhaserGame.availableTradeRoutes = {};
@@ -383,7 +384,7 @@ var gameLogic = {
 				PhaserGame.hideNotificationEnvelope();
 				PhaserGame.removeTradeRouteNotification();
 				PhaserGame.hideTradeRouteAlert();
-				PhaserGame.notifications = null;
+				PhaserGame.dealerNotifications = null;
 				PhaserGame.supplierNotifications = null;
 				PhaserGame.availableTradeRoutes = null;
 				PhaserGame.cancelAction = null;
@@ -810,7 +811,7 @@ var gameLogic = {
 						params: event.dealer
 					};
 					// PWG.ViewManager.hideView('global:backButton');
-					PhaserGame.notifications[event.plant.sector].push(notification);
+					PhaserGame.dealerNotifications[event.plant.sector].push(notification);
 					if(PWG.ScreenManager.currentId === 'usDetail' && PhaserGame.activeSector === event.plant.sector) {
 						PhaserGame.showNotificationEnvelope();
 					}
@@ -818,10 +819,10 @@ var gameLogic = {
 			},
 			addDealerNotification: function() {
 				var sector = PhaserGame.activeSector;
-				// trace('showNotification, notifications = ', PhaserGame.notifications[sector]);
-				if(PhaserGame.notifications[sector].length > 0) {
+				// trace('showNotification, notifications = ', PhaserGame.dealerNotifications[sector]);
+				if(PhaserGame.dealerNotifications[sector].length > 0) {
 					var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
-					var notification = PhaserGame.notifications[sector].pop();
+					var notification = PhaserGame.dealerNotifications[sector].pop();
 
 					if(notification.confirmAction) {
 						PhaserGame.confirmAction = notification.confirmAction;
@@ -836,7 +837,7 @@ var gameLogic = {
 					PWG.ViewManager.showView('global:cancelButton');
 					PWG.ViewManager.addView(notification, notifications, true);
 
-					if(PhaserGame.notifications[sector].length === 0) {
+					if(PhaserGame.dealerNotifications[sector].length === 0) {
 						PhaserGame.hideNotificationEnvelope();
 					}
 				}
@@ -1025,38 +1026,6 @@ var gameLogic = {
 				PhaserGame.hideSupplierNotification();
 				PhaserGame.hideSupplierPrompt();
 				// trace('resetDealer, dealer = ', dealer);
-			},
-			// BONUSES
-			showBonusNofitication: function() {
-				trace('showBonusNofitication, turnActive = ' + PhaserGame.turnActive + ', notificationActive = ' + PhaserGame.notificationActive);
-				if(PhaserGame.turnActive && !PhaserGame.notificationActive) {
-					PhaserGame.notificationActive = true;
-
-					var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
-					var bonusNotification = PhaserGame.bonusNotifications.pop();
-
-					PWG.ViewManager.addView(supplierNotification, notifications, true);
-					PWG.ViewManager.hideView('global:backButton');
-					PWG.ViewManager.showView('global:cancelButton');
-					PWG.ViewManager.showView('global:confirmButton');
-
-					if(PWG.ScreenManager.currentId === 'buildingEdit') {
-						PWG.ViewManager.hideView('global:plantDetailGroup:equipmentButton');
-					}
-					PhaserGame.confirmAction = {
-						method: function() {
-							PhaserGame.addSupplier(PhaserGame.activeSupplier);
-						},
-						params: {}
-					};
-
-					PhaserGame.cancelAction = {
-						method: function() {
-							PhaserGame.resetSupplier(PhaserGame.activeSupplier);
-						},
-						params: {}
-					};
-				}
 			},
 			// TRADE_ROUTES
 			showTradeRouteNotification: function(id) {
@@ -1532,9 +1501,40 @@ var gameLogic = {
 			hideBonusPrompt: function() {
 				PWG.ViewManager.hideView('global:bonusNotificationIcon');
 			},
+			showBonusNofitication: function() {
+				trace('showBonusNofitication, turnActive = ' + PhaserGame.turnActive + ', notificationActive = ' + PhaserGame.notificationActive);
+				if(PhaserGame.turnActive && !PhaserGame.notificationActive) {
+					PhaserGame.notificationActive = true;
+
+					var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
+					var bonusNotification = PhaserGame.bonusNotifications.pop();
+
+					PWG.ViewManager.addView(supplierNotification, notifications, true);
+					PWG.ViewManager.hideView('global:backButton');
+					PWG.ViewManager.showView('global:cancelButton');
+					PWG.ViewManager.showView('global:confirmButton');
+
+					if(PWG.ScreenManager.currentId === 'buildingEdit') {
+						PWG.ViewManager.hideView('global:plantDetailGroup:equipmentButton');
+					}
+					PhaserGame.confirmAction = {
+						method: function() {
+							PhaserGame.addSupplier(PhaserGame.activeSupplier);
+						},
+						params: {}
+					};
+
+					PhaserGame.cancelAction = {
+						method: function() {
+							PhaserGame.resetSupplier(PhaserGame.activeSupplier);
+						},
+						params: {}
+					};
+				}
+			},
  			addBonusNotification: function() {
 				var sector = PhaserGame.activeSector;
-				// trace('showNotification, notifications = ', PhaserGame.notifications[sector]);
+				// trace('showNotification, notifications = ', PhaserGame.dealerNotifications[sector]);
 				if(PhaserGame.bonusNotifications.length > 0) {
 					var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
 					var notification = PhaserGame.bonusNotifications.pop();
@@ -2495,7 +2495,7 @@ var gameLogic = {
 				PWG.ViewManager.addView(sectorBg, usDetail, true);
 				PWG.ViewManager.addView(usDetailGrid, usDetail, true);
 				
-				if(PhaserGame.notifications[PhaserGame.activeSector].length > 0) {
+				if(PhaserGame.dealerNotifications[PhaserGame.activeSector].length > 0) {
 					PhaserGame.showNotificationEnvelope();
 				}
 			},

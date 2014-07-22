@@ -2275,8 +2275,9 @@ var GameConfig = function() {
 					tradeRouteSouthAmericaNotification: 'img/notifications/trade_route_south_america.png',
 
 					// BONUSES
-					closedSuitcase: 'img/screens/bonuses/closed_suitcase.png',
-					openedSuitcase: 'img/screens/bonuses/opened_suitcase.png',
+					closedSuitcase: 'img/closed_suitcase.png',
+					openedSuitcase: 'img/opened_suitcase.png',
+					bonusPoof: 'img/bonus_poof.png',
 					
 					// TURN END
 					turnEnd01: 'img/screens/turn_end/turn_end01.png',
