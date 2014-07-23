@@ -162,6 +162,10 @@ var gameLogic = {
 			},
 			preload: function() {
 				PWG.PhaserLoader.load(PhaserGame.config.assets);
+				// HACK: temporarily adding sound directly; need to implement via pwg.
+				var tractorStartup = PhaserGame.config.assets.audio.tractorStartup;
+				trace('loading audio: '+tractorStartup);
+				PhaserGame.phaser.load.audio('tractorStartup', tractorStartup);
 				// PWG.ScreenManager.preload();
 			},
 			create: function() {
@@ -1959,13 +1963,16 @@ var gameLogic = {
 			}
 			PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'manual' });
 		},
-		worldStart: function() {
+		gameStart: function() {
 			if(PhaserGame.tutorialOpen) {
 				PhaserGame.removeTutorialGuy();
 			}
 			var ignitionKey = PWG.ViewManager.getControllerFromPath('home:ignitionKey');
 			ignitionKey.view.events.onAnimationComplete.add(PhaserGame.ignitionAnimationCompleted, this);
 			PWG.PhaserAnimation.play(ignitionKey.name, 'turnOn');
+			// HACK: temporarily adding sound directly; need to implement via pwg.
+			var sfx = PhaserGame.phaser.add.audio('tractorStartup');
+			sfx.play();
 		},
 		worldReturnButton: function() {
 			// trace('worldReturnButton callback');
@@ -2866,7 +2873,7 @@ var gameLogic = {
 				handler: function(event) {
 					trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + PhaserGame.partsMenuOpen + ', partsMenuType = ' + this.partsMenuType);
 					if(!PhaserGame.partsMenuOpen && !PhaserGame.optionalPartsMenuOpen) {
-						trace('\t')
+						trace('\t');
 						if(this.partsMenuType !== event.value) {
 							// update piece navigator
 							trace('\tthe parts menu type is not the same, resetting sprite frames and rebuilding menu');

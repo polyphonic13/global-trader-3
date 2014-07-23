@@ -2116,6 +2116,9 @@ var GameConfig = function() {
 			gameType: 'phaser',
 			// assets
 			assets: {
+				audio: {
+					tractorStartup: 'audio/tractor_startup.mp3'
+				},
 				images: {
 					// generic
 					blockWhite: 'img/block_white.png',
@@ -2746,7 +2749,7 @@ var GameConfig = function() {
 								height: (gameUnit * 5),
 								alpha: 0
 							},
-							callback: gameLogic.buttonCallbacks.worldStart,
+							callback: gameLogic.buttonCallbacks.gameStart,
 							context: this,
 							frames: [0, 1, 1, 0]
 						},
