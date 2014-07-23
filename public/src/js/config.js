@@ -168,25 +168,25 @@ var GameConfig = function() {
 					content: 'Hello! Let\'s get started.\nClick the gear below to\ncheck out the game manual.\nOtherwise, click the ignition to\nstart the game.'
 				},
 				world: {
-					content: 'This is the world map.\nClick on a US Sector icon.\nto see to a detailed\nview of the area.'
+					content: '\nThis is the world map.\nClick on a US Sector icon.\nto see to a detailed\nview of the area.'
 				},
 				usDetail: {
-					content: 'This is a grid of locations\nin this area.\nClick an empty cell\nto create a new Plant.'
+					content: '\nThis is a grid of locations\nin this area.\nClick an empty cell\nto create a new Plant.'
 				},
 				plant: {
-					content: 'Your Plant has finished\nconstruction!\nClick on the Plant\nto see details.'
+					content: '\nYour Plant has finished\nconstruction!\nClick on the Plant\nto see details.'
 				},
 				plantDetails: {
-					content: 'Here are the details\nof your new Plant.\nNot much going on yet.\nClick the wrench.'
+					content: '\nHere are the details\nof your new Plant.\nNot much going on yet.\nClick the wrench.'
 				},
 				equipmentList: {
-					content: 'This is a list of your Plant\'s\nTractors and Skid Steers.\nClick an empty slot\nto add a new model.'
+					content: '\nThis is a list of your Plant\'s\nTractors and Skid Steers.\nClick an empty slot\nto add a new model.'
 				},
 				equipmentCreate: {
 					content: 'Click on a crate to choose\na new Tractor or Skid Steer\nmodel and its size.'
 				},
 				equipmentEdit: {
-					content: 'Click the part name to\nsee the parts you can buy.\nThe machine behind me will cycle\nthrough parts to be added.'
+					content: '\nClick the part name to\nsee the parts you can buy.\nThe machine behind me will cycle\nthrough parts to be added.'
 				},
 				dealer: {
 					content: 'Great! Your Plant will now\nbegin manufacturing. Once it has\nmade 3, Dealers will begin\n offering to sell your equipment.\nLook for the envelope in the\nUS Sector screen.'
@@ -195,7 +195,9 @@ var GameConfig = function() {
 					content: 'Suppliers will now begin\nto offer you parts as discount\nfor bulk orders.\nLook for the engine icon in\nthe bottom, left corner.'
 				},
 				tradeRoute: {
-					content: 'Now you\'ll want to start establishing\nInternational Trade Routes.\nBe sure to create some new\nTractors and Skid Steers\nas you will need inventory to export.'
+					// content: 'Now you\'ll want to start establishing\nInternational Trade Routes.\nBe sure to create some new\nTractors and Skid Steers\nas you will need inventory to export.'
+					content: '\nThe Transatlantic Trade\nand Investment Partnership (TTIP)\nOpens trade to the European Union.',
+					// content: '\nI have watched your progress in Asia\nand would like to offer you a\nTrans-Pacific Partnership (TPP),\nso that you can trade with several\ncountries on both sides of\nthe Pacific Ocean.'
 				},
 				outOfWholesaleParts: {
 					content: ''
@@ -224,9 +226,16 @@ var GameConfig = function() {
 			},
 			tradeRoute: {
 				content: 'We would like to import ~{quantity}~\nper year of your ~{plant}~\n~{model}~ inventory\nat $~{resell}~ each.'
+			},
+			transatlantic: { 
+				content: '\nThe Transatlantic Trade\nand Investment Partnership (TTIP)\nhas opened trade to the European Union.',
+			},
+			transpacific: {
+				content: 'I have watched your progress in Asia\nand would like to offer you a\nTrans-Pacific Partnership (TPP),\nso that you can trade with several\ncountries on both sides of\nthe Pacific Ocean.'
 			}
 		};
 		var notificationPeopleImages = {
+			tutorial: 'tutorialGuy',
 			dealer: 'dealerGirl',
 			supplier: 'supplierGuy',
 			tradeRoutes: {
@@ -710,7 +719,7 @@ var GameConfig = function() {
 					bg: {
 						type: 'sprite',
 						name: 'bg',
-						img: 'tutorialGuy',
+						img: '',
 						x: 0,
 						y: 0,
 						attrs: {
@@ -825,14 +834,27 @@ var GameConfig = function() {
 						type: 'sprite',
 						name: 'invisButton',
 						img: 'blockWhite',
-						x: 0,
-						y: 0,
+						x: gameW - (gameUnit * 2),
+						y: gameH - (gameUnit * 4.5),
 						attrs: {
-							width: gameW,
-							height: gameH,
+							width: gameUnit * 2,
+							height: gameUnit * 2,
 							alpha: 0
 						},
-						input: gameLogic.input.manualPage
+						input: gameLogic.input.manualPageForward
+					},
+					backPage: {
+						type: 'sprite',
+						name: 'backPage',
+						img: 'buttonBack',
+						x: gameW - (gameUnit * 5),
+						y: gameH - (gameUnit * 4.5),
+						attrs: {
+							width: controlButtons.width,
+							height: controlButtons.height,
+							visible: false
+						},
+						input: gameLogic.input.manualPageBackward
 					}
 				}
 			},
@@ -2754,7 +2776,7 @@ var GameConfig = function() {
 						visible: false
 					},
 					views: {
-						stateBg: {
+						manualBg: {
 							type: 'sprite',
 							name: 'manualBg',
 							img: 'manualBg',
@@ -3346,8 +3368,8 @@ var GameConfig = function() {
 									    font: (fontSizes.md + 'px Trebuchet MS'),
 								        fill: palette.orange1
 									},
-									x: (gameUnit * 6.33),
-									y: (gameUnit * 0.38)
+									x: (gameUnit * 6.5),
+									y: (gameUnit * 0.4)
 								},
 								turnIndicator: {
 									type: 'sprite',

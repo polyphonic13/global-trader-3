@@ -166,6 +166,7 @@ var gameLogic = {
 			},
 			create: function() {
 				PWG.ViewManager.hideView('global:notificationIcon');
+				PWG.ViewManager.hideView('global:bonusNotificationIcon');
 				PWG.ViewManager.hideView('global:supplierNotificationIcon');
 				PWG.ViewManager.hideView('global:tradeRouteAlertIcon');
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: PhaserGame.config.defaultScreen });
@@ -207,6 +208,11 @@ var gameLogic = {
 					var tutorialGuy = PWG.Utils.clone(PhaserGame.config.dynamicViews.tutorialGuy);
 					var notificationText = PhaserGame.config.notificationText;
 					// trace('\ttext = ' + notificationText.tutorial[PhaserGame.activeTutorial].content);
+					if(PhaserGame.activeTutorial !== TutorialTypes.TRADE_ROUTE) {
+						tutorialGuy.views.bg.img = PhaserGame.config.notificationPeopleImages['tutorial'];
+					} else {
+						tutorialGuy.views.bg.img = PhaserGame.config.notificationPeopleImages['tradeRoutes'].europe;
+					}
 					tutorialGuy.views.content.text = notificationText.tutorial[PhaserGame.activeTutorial].content;
 					PWG.ViewManager.addView(tutorialGuy, notifications, true);
 				}
@@ -279,17 +285,26 @@ var gameLogic = {
 					this
 				);
 
-				
+				if(idx > 0) {
+					manualPage.views['backPage'].attrs.visible = true;
+				}
 				PWG.ViewManager.addView(manualPage, manualPages, true);
 			},
 			nextManualPage: function() {
-				// trace('PhaserGame/nextManualPage, idx = ' + PhaserGame.manualPage);
+				trace('PhaserGame/nextManualPage, idx = ' + PhaserGame.manualPage);
 				if(PhaserGame.manualPage < PhaserGame.config.tutorial.pages.length -1) {
 					PhaserGame.manualPage++;
 				} else {
 					PhaserGame.manualPage = 0;
 				}
 				PhaserGame.addManualPage(PhaserGame.manualPage);
+			},
+			prevManualPage: function() {
+				// trace('PhaserGame/nextManualPage, idx = ' + PhaserGame.manualPage);
+				if(PhaserGame.manualPage > 0) {
+					PhaserGame.manualPage--;
+					PhaserGame.addManualPage(PhaserGame.manualPage);
+				}
 			},
 			// TURN
 			startTurn: function() {
@@ -380,7 +395,7 @@ var gameLogic = {
 				PWG.EventCenter.trigger({ type: Events.CLOSE_OPTIONAL_PARTS_MENU });
 				
 				PhaserGame.hideSupplierPrompt();
-				PhaserGame.removeNotification();
+				PhaserGame.removeDealerNotification();
 				PhaserGame.hideNotificationEnvelope();
 				PhaserGame.removeTradeRouteNotification();
 				PhaserGame.hideTradeRouteAlert();
@@ -831,7 +846,7 @@ var gameLogic = {
 					if(notification.cancelAction) {
 						PhaserGame.cancelAction = notification.cancelAction;
 					} else {
-						PhaserGame.cancelAction = PhaserGame.removeNotification;
+						PhaserGame.cancelAction = PhaserGame.removeDealerNotification;
 					}
 					PWG.ViewManager.hideView('global:backButton');
 					PWG.ViewManager.showView('global:cancelButton');
@@ -842,8 +857,8 @@ var gameLogic = {
 					}
 				}
 			},
-			removeDealerNofitication: function() {
-				// trace('removeNotification');
+			removeDealerNotification: function() {
+				// trace('removeDealerNotification');
 				PWG.ViewManager.showView('global:backButton');
 				PWG.ViewManager.hideView('global:cancelButton');
 				PWG.ViewManager.hideView('global:confirmButton');
@@ -854,7 +869,7 @@ var gameLogic = {
 			addDealer: function(dealer) {
 				// trace('addDealer, dealer = ', dealer);
 				var config = dealer.config;
-				PhaserGame.removeNotification();
+				PhaserGame.removeDealerNotification();
 				config.cell = GridManager.getRandomEmptyCellIndex(config.sector);
 				GridManager.addBuilding(config, config.sector);
 				BuildingManager.addDealer(dealer);
@@ -870,7 +885,7 @@ var gameLogic = {
 				PhaserGame.notificationActive = false;
 			},
 			resetDealer: function(dealer) {
-				PhaserGame.removeNotification();
+				PhaserGame.removeDealerNotification();
 				// trace('resetDealer, dealer = ', dealer);
 				PhaserGame.notificationActive = false;
 				var plant = BuildingManager.findBuilding(dealer.config.plantId);
@@ -1546,7 +1561,7 @@ var gameLogic = {
 					if(notification.cancelAction) {
 						PhaserGame.cancelAction = notification.cancelAction;
 					} else {
-						PhaserGame.cancelAction = PhaserGame.removeNotification;
+						PhaserGame.cancelAction = PhaserGame.removeDealerNotification;
 					}
 					PWG.ViewManager.hideView('global:backButton');
 					PWG.ViewManager.showView('global:cancelButton');
@@ -1558,7 +1573,7 @@ var gameLogic = {
 				}
 			},
 			removeBonusNofitication: function() {
-				// trace('removeNotification');
+				// trace('removeDealerNotification');
 				PWG.ViewManager.showView('global:backButton');
 				PWG.ViewManager.hideView('global:cancelButton');
 				PWG.ViewManager.hideView('global:confirmButton');
@@ -1730,9 +1745,15 @@ var gameLogic = {
 				}
 			}
 		},
-		manualPage: {
+		manualPageForward: {
 			inputDown: function() {
+				trace('manualPageForward');
 				PhaserGame.nextManualPage();
+			}
+		},
+		manualPageBackward: {
+			inputDown: function() {
+				PhaserGame.prevManualPage();
 			}
 		},
 		notificationIcon: {
@@ -2139,22 +2160,14 @@ var gameLogic = {
 				PhaserGame.cancelAction.method.call(this, PhaserGame.cancelAction.params);
 				PhaserGame.cancelAction = null;
 			} else {
-				// switch(PWG.ScreenManager.currentId) {
-				// 	case 'brief':
-				// 	PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
-				// 	break;
-				// 	
-				// 	case 'equipmentEdit':
-				// 	PWG.EventCenter.trigger({ type: Events.SAVE_MACHINE });
-				// 	break;
-				// 	
-				// 	case 'turnEnd':
-				// 	PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'brief' });
-				// 	break;
-				// 	
-				// 	default:
-				// 	break;
-				// }
+				switch(PWG.ScreenManager.currentId) {
+					case 'manual':
+					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'home' });
+					break;
+					
+					default:
+					break;
+				}
 			}
 		},
 		backButton: function() {
@@ -2233,9 +2246,7 @@ var gameLogic = {
 		manual: {
 			create: function() {
 				PWG.ViewManager.hideView('global:homeGroup');
-				PWG.ViewManager.showView('global:backButton');
-				
-				
+				PWG.ViewManager.showView('global:cancelButton');
 			},
 			shutdown: function() {
 				PWG.ViewManager.removeView('manualPages', 'manual');
