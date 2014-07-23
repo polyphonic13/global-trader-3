@@ -489,6 +489,9 @@ var BuildingManager = function() {
 	};
 	
 	module.createTradeRoute = function(plant, modelId) {
+		// for testing, to trigger in console: 
+		// var plant1 = BuildingManager.findBuilding('plant1')
+		// BuildingManager.createTradeRoute(plant1, [ a model id from plant1.config.equipement ])
 		var model;
 		var count = PWG.Utils.objLength(plant.config.equipment);
 		var index = 0;

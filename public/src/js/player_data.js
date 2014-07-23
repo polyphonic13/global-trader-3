@@ -13,6 +13,11 @@ var playerData = {
 		tradeRoute: true,
 		outOfWholesaleParts: true
 	},
+	firstRoutes: {
+		africa: false, 
+		asia: false,
+		europe: false
+	},
 	level: 0,
 	allCompleted: false,
 	bank: 0,

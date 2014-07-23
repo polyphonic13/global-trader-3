@@ -227,11 +227,14 @@ var GameConfig = function() {
 			tradeRoute: {
 				content: 'We would like to import ~{quantity}~\nper year of your ~{plant}~\n~{model}~ inventory\nat $~{resell}~ each.'
 			},
-			transatlantic: { 
-				content: '\nThe Transatlantic Trade\nand Investment Partnership (TTIP)\nhas opened trade to the European Union.',
+			transAtlantic: { 
+				content: 'Transatlantic Trade and\nInvestment Partnership (TTIP)\nopens new trade opportunities\nwith the European Union',
 			},
-			transpacific: {
-				content: 'I have watched your progress in Asia\nand would like to offer you a\nTrans-Pacific Partnership (TPP),\nso that you can trade with several\ncountries on both sides of\nthe Pacific Ocean.'
+			transPacific: {
+				content: 'Trans-Pacific Partnership (TPP)\nopens trade to several countries\non both sides of the Pacific.'
+			},
+			impExpBank: {
+				content: 'Reauthorization of the\nExport-Import Bank of the US\nprovides funding to facilitate\ntrading around the world.'
 			}
 		};
 		var notificationPeopleImages = {

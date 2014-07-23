@@ -1105,24 +1105,40 @@ var gameLogic = {
 				}
 			},
 			addTradeRouteOpportunityNotification: function(event) {
+				trace('addTradeRouteOpportunityNotification, event = ', event);
 				var notification = PWG.Utils.clone(PhaserGame.config.dynamicViews.notification);
 				var tradeRoutePrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.tradeRoutePrompt);
 
-				var notificationText = PhaserGame.config.notificationText['tradeRoute'];
+				var notificationText = PhaserGame.config.notificationText;
+				var location = TradeRouteLocations[event.tradeRoute.config.worldLocation];
 
 				var modelName = event.plant.equipment[event.tradeRoute.config.modelId].name;
 				var resell = PWG.Utils.formatMoney(event.tradeRoute.config.resell, 0);
 
-				var statementText = PWG.Utils.parseMarkup(notificationText.content, {
-					plant: event.plant.name,
-					quantity: event.tradeRoute.quantityPerYear,
-					model: modelName,
-					resell: resell
-				});
+				var statementText;
+
+				trace('checking ' + location + ' for first timers');
+				if(location === 'africa' && !TurnManager.playerData.firstAfricanRoute) {
+					statementText = notificationText['impExpBank'].content;
+					TurnManager.playerData.firstAfricanRoute = true;
+				} else if(location === 'asia' && !TurnManager.playerData.firstAsianRoute) {
+					statementText = notificationText['transPacific'].content;
+					TurnManager.playerData.firstAsianRoute = true;
+				} else if(location === 'europe' && !TurnManager.playerData.firstEuropeanRoute) {
+					statementText = notificationText['transAtlantic'].content;
+					TurnManager.playerData.firstEuropeanRoute = true;
+				} else {
+					statementText = PWG.Utils.parseMarkup(notificationText['tradeRoute'].content, {
+						plant: event.plant.name,
+						quantity: event.tradeRoute.quantityPerYear,
+						model: modelName,
+						resell: resell
+					});
+				}
 
 				notification.name = event.tradeRoute.config.id;
 				// notification.views.person.img = 'tradeRouteGirl';
-				notification.views.person.img = PhaserGame.config.notificationPeopleImages.tradeRoutes[TradeRouteLocations[event.tradeRoute.config.worldLocation]];
+				notification.views.person.img = PhaserGame.config.notificationPeopleImages.tradeRoutes[location];
 				
 				notification.views.content.text = statementText.toUpperCase();
 				// trace('------ notification = ', notification);
