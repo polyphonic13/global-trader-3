@@ -499,7 +499,7 @@ var BuildingManager = function() {
 		var area = TradeRouteLocations[worldLocation];
 
 		var tradeRouteId = type + '_' + area + ((TurnManager.tempTradeRouteCount[area]) + 1);
-		var tradeRouteName = TradeRouteNames[area].toUpperCase() + '\n' + type.toUpperCase() + ' ' + ((TurnManager.tempTradeRouteCount[area]) + 1);
+		var tradeRouteName = TradeRouteNames[area].toUpperCase() + '\n' + TradeRouteNames.global.toUpperCase() + ' ' + ((TurnManager.tempTradeRouteCount[area]) + 1);
 		
 		TurnManager.tempTradeRouteCount[area]++;
 

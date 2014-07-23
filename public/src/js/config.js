@@ -165,10 +165,10 @@ var GameConfig = function() {
 		var notificationText = {
 			tutorial: {
 				init: {
-					content: 'Hello! Let\'s get started.\nClick the gear below to\ncheck out the game manual.\nOtherwise, click the ignition to\nstart the game.'
+					content: 'Hello! Let\'s get started.\nClick the gear below to\ncheck out the game manual.\nOtherwise, click the ignition\nto start the game.'
 				},
 				world: {
-					content: '\nThis is the world map.\nClick on a US Sector icon.\nto see to a detailed\nview of the area.'
+					content: '\nThis is the world map.\nClick on a US Sector icon\nto see a detailed\nview of the area.'
 				},
 				usDetail: {
 					content: '\nThis is a grid of locations\nin this area.\nClick an empty cell\nto create a new Plant.'
@@ -192,7 +192,7 @@ var GameConfig = function() {
 					content: 'Great! Your Plant will now\nbegin manufacturing. Once it has\nmade 3, Dealers will begin\n offering to sell your equipment.\nLook for the envelope in the\nUS Sector screen.'
 				},
 				supplier: {
-					content: 'Suppliers will now begin\nto offer you parts as discount\nfor bulk orders.\nLook for the engine icon in\nthe bottom, left corner.'
+					content: 'Suppliers will now begin\nto offer you parts at a\ndiscount for bulk orders.\nLook for the engine icon in\nthe bottom, left corner.'
 				},
 				tradeRoute: {
 					// content: 'Now you\'ll want to start establishing\nInternational Trade Routes.\nBe sure to create some new\nTractors and Skid Steers\nas you will need inventory to export.'
@@ -3689,7 +3689,7 @@ var GameConfig = function() {
 						y: (gameUnit * 6)
 					},
 					{
-						text: 'There may be Parts Supplier oppurtunities.\nBuy in bulk to save on manufacturing\ncosts later.',
+						text: 'There may be Parts Supplier opportunities.\nBuy in bulk to save on manufacturing\ncosts later.',
 						x: (gameUnit * 2),
 						y: (gameUnit * 10)
 					}
@@ -3720,12 +3720,12 @@ var GameConfig = function() {
 						y: (gameUnit * 3)
 					},
 					{
-						text: 'After a Plant has manufactured 3 machines,\nRegional Representatives will prompt\nyou to sell through their Dealer.',
+						text: 'After a Plant has manufactured 3 or more\nmachines, envelopes will begin appearing\non the US Sector Grids.\nYou will be prompted to\nsell through a Dealer.',
 						x: (gameUnit * 2),
 						y: (gameUnit * 5.5)
 					},
 					{
-						text: 'Not all Dealers offer the same resale.\nThe first is not always the best.',
+						text: 'Not all Dealers offer the same resale.\nThe first offer is not always the best.',
 						x: (gameUnit * 2),
 						y: (gameUnit * 11)
 					}
@@ -3751,12 +3751,12 @@ var GameConfig = function() {
 				{
 					blurbs: [
 					{
-						text: 'After you sell domestically you,\nmay receive trade opportunities\nleading to increased revenue\nand bonus points.',
+						text: 'After you sell domestically, you\nmay receive trade opportunities\nleading to increased revenue\nand bonus points.',
 						x: (gameUnit * 2),
 						y: (gameUnit * 3)
 					},
 					{
-						text: 'Clicking the prompt returns to\nthe world map and displays\nthe potential trade route.',
+						text: 'Clicking the prompt returns you to\nthe world map and displays\nthe potential trade route.',
 						x: (gameUnit * 2),
 						y: (gameUnit * 5)
 					},
@@ -3793,7 +3793,7 @@ var GameConfig = function() {
 					blurbs:
 					[ 
 					{
-						text: 'Keep track of your bank\nthe turn time,\nand the Bonus Points\nin the top dashboard.',
+						text: 'Keep track of your bank,\nthe turn time,\nand the Bonus Points\nin the top dashboard.',
 						x: (gameUnit * 2),
 						y: (gameUnit * 3)
 					},

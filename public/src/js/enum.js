@@ -122,7 +122,8 @@ var TradeRouteNames = {
 	middleEast: 'Middle Eastern',
 	// northPacific: 'North Pacific',
 	southPacific: 'South Pacific',
-	southAmerica: 'South American'
+	southAmerica: 'South American',
+	global: 'Trade Route'
 };
 
 var USSectors = {
