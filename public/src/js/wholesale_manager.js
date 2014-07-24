@@ -112,7 +112,7 @@ var WholesaleManager = function() {
 		TurnManager.tempSupplierCount++;
 
 		var supplier = new Supplier(config);
-		PWG.EventCenter.trigger({ type: Events.ADD_SUPPLIER_NOTIFICATION, supplier: supplier });
+		PWG.EventCenter.trigger({ type: Events.ADD_SUPPLIER_OPPORTUNITY, supplier: supplier });
 	};
 
 	module.addSupplier = function(supplier) {

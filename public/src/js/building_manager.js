@@ -460,7 +460,7 @@ var BuildingManager = function() {
 				sector: plant.config.sector
 			});
 
-			PWG.EventCenter.trigger({ type: Events.ADD_DEALER_NOTIFICATION, plant: plant.config, dealer: dealer });
+			PWG.EventCenter.trigger({ type: Events.ADD_DEALER_OPPORTUNITY, plant: plant.config, dealer: dealer });
 		}
 	};
 	
@@ -521,7 +521,7 @@ var BuildingManager = function() {
 				sector: plant.config.sector
 			});
 
-			PWG.EventCenter.trigger({ type: Events.ADD_TRADE_ROUTE_NOTIFICATION, plant: plant.config, tradeRoute: tradeRoute });
+			PWG.EventCenter.trigger({ type: Events.ADD_TRADE_ROUTE_OPPORTUNITY, plant: plant.config, tradeRoute: tradeRoute });
 		}
 	};
 

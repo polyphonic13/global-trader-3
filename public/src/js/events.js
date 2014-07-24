@@ -25,16 +25,13 @@ var Events = {
 	BUILDING_AGE_UPDATED: 'buildingAgeUpdated',
 	BUILDING_STATE_UPDATED: 'buildingStateUpdated',
 
-	ADD_DEALER_NOTIFICATION: 'addDealerNotification',
-	CLOSE_DEALER_NOTIFICATION: 'closeDealerNotification',
+	ADD_DEALER_OPPORTUNITY: 'addDealerOpportunity',
 	ADD_DEALER: 'addDealer',
 
-	ADD_SUPPLIER_NOTIFICATION: 'addSupplierNotification',
-	CLOSE_SUPPLIER_NOTIFICATION: 'closeSupplierNotification',
+	ADD_SUPPLIER_OPPORTUNITY: 'addSupplierOpportunity',
 	ADD_SUPPLIER: 'addSupplier',
 
-	ADD_TRADE_ROUTE_NOTIFICATION: 'addTradeRouteNotification',
-	CLOSE_TRADE_ROUTE_NOTIFICATION: 'closeTradeRouteNotification',
+	ADD_TRADE_ROUTE_OPPORTUNITY: 'addTradeRouteOpportunity',
 	ADD_TRADE_ROUTE: 'addTradeRoute',
 
 	INVENTORY_ADDED: 'inventoryAdded',
@@ -58,5 +55,4 @@ var Events = {
 	EDIT_MACHINE: 'editMachine',
 	
 	ADD_SUPPLIER_PROMPT: 'addSupplierPrompt',
-	ADD_SUPPLIER_NOTIFICATION: 'addSupplierNotification'
 };

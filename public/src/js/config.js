@@ -183,21 +183,19 @@ var GameConfig = function() {
 					content: '\nThis is a list of your Plant\'s\nTractors and Skid Steers.\nClick an empty slot\nto add a new model.'
 				},
 				equipmentCreate: {
-					content: 'Click on a crate to choose\na new Tractor or Skid Steer\nmodel and its size.'
+					content: '\nClick on a crate to choose\na new Tractor or Skid Steer\nmodel and its size.'
 				},
 				equipmentEdit: {
 					content: '\nClick the part name to\nsee the parts you can buy.\nThe machine behind me will cycle\nthrough parts to be added.'
 				},
 				dealer: {
-					content: 'Great! Your Plant will now\nbegin manufacturing. Once it has\nmade 3, Dealers will begin\n offering to sell your equipment.\nLook for the envelope in the\nUS Sector screen.'
+					content: 'Great! Your Plant will now\nbegin manufacturing. Once it has\nmade 3, Dealers will begin\noffering to sell your equipment.\nLook for the envelope in the top,\nleft corner of US Sector screen.'
 				},
 				supplier: {
 					content: 'Suppliers will now begin\nto offer you parts at a\ndiscount for bulk orders.\nLook for the engine icon in\nthe bottom, left corner.'
 				},
 				tradeRoute: {
-					// content: 'Now you\'ll want to start establishing\nInternational Trade Routes.\nBe sure to create some new\nTractors and Skid Steers\nas you will need inventory to export.'
-					content: '\nThe Transatlantic Trade\nand Investment Partnership (TTIP)\nOpens trade to the European Union.',
-					// content: '\nI have watched your progress in Asia\nand would like to offer you a\nTrans-Pacific Partnership (TPP),\nso that you can trade with several\ncountries on both sides of\nthe Pacific Ocean.'
+					content: 'Now you\'ll want to start establishing\nInternational Trade Routes.\nBe sure to create some new\nTractors and Skid Steers\nas you will need inventory to export.'
 				},
 				outOfWholesaleParts: {
 					content: ''
@@ -215,7 +213,7 @@ var GameConfig = function() {
 			dealer: {
 				content: 'We would like to sell ~{quantity}~\nper year of your\n~{plant}~ ~{model}~\ninventory at $~{resell}~ each.'
 			},
-			supplierNotificationIcon: {
+			supplierAvailableIcon: {
 				content: 'Build Supplier\nRelationship',
 			},
 			supplierNotification: {
@@ -3233,9 +3231,9 @@ var GameConfig = function() {
 							},
 							input: gameLogic.input.notificationIcon
 						},
-						supplierNotificationIcon: {
+						supplierAvailableIcon: {
 							type: 'sprite',
-							name: 'supplierNotificationIcon',
+							name: 'supplierAvailableIcon',
 							img: 'smallTireIcon',
 							x: gameUnit * 0.1,
 							y: gameUnit * 12,
@@ -3243,7 +3241,7 @@ var GameConfig = function() {
 								width: (gameUnit * 1.5),
 								height: (gameUnit * 1.5)
 							},
-							input: gameLogic.input.supplierNotificationIcon
+							input: gameLogic.input.supplierAvailableIcon
 							
 						},
 						bonusNotificationIcon: {
