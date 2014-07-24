@@ -1026,7 +1026,7 @@ var gameData = {
 	],
 	bonuses: {
 		buildings: {
-			plant: 500,
+			plant: 5000,
 			dealer: 1000,
 			tradeRoute: 10000
 		},
@@ -1036,7 +1036,6 @@ var gameData = {
 			allPartsUsed: 10000
 		},
 		manufacturing: {
-			machine10: 10,
 			machine50: 50,
 			machine100: 100,
 			machine500: 500,
@@ -1044,6 +1043,11 @@ var gameData = {
 			machine5000: 5000,
 			machine10000: 10000,
 			machine50000: 50000
+		},
+		jobs: {
+			plant: 500,
+			dealer: 100,
+			tradeRoute: 1000
 		}
 	}
 };

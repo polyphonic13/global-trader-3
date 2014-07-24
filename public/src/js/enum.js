@@ -26,6 +26,12 @@ var BuildingStates = {
 	INACTIVE: 'inactive'
 };
 
+var BuildingNames = {
+	plant: 'Plant',
+	dealer: 'Dealer',
+	tradeRoute: 'Trade Route'
+};
+
 var TileCellFrames = {
 	EMPTY: 0,
 	PLANT_CONSTRUCTION: 1,

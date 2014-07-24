@@ -2041,41 +2041,6 @@ var GameConfig = function() {
 					}
 				}
 			},
-			// bonuses
-			// bonuses
-			bonusesNotification: {
-				type: 'group',
-				name: 'bonusesNotification',
-				attrs: {
-					visible: false
-				},
-				views: {
-					openedSuitcase: {
-						type: 'sprite',
-						name: 'openedSuitcase',
-						img: 'openedSuitecase',
-						x: 0,
-						y: 0,
-						attrs: {
-							width: gameW,
-							height: gameH
-						},
-						input: gameLogic.input.openedSuitcase
-					},
-					closedSuitcase: {
-						type: 'sprite',
-						name: 'closedSuitcase',
-						img: 'closedSuitecase',
-						x: 0,
-						y: 0,
-						attrs: {
-							width: gameW,
-							height: gameH
-						},
-						input: gameLogic.input.closedSuitcase
-					}
-				}
-			},
 			// year end
 			yearSummary: {
 				type: 'group',
@@ -2109,7 +2074,81 @@ var GameConfig = function() {
 			        fill: ''
 				}
 			},
-			
+			// bonuses
+			bonusesNotification: {
+				type: 'group',
+				name: 'bonusesNotification',
+				attrs: {
+					// visible: false
+				},
+				views: {
+					openedSuitcase: {
+						type: 'sprite',
+						name: 'openedSuitcase',
+						img: 'openedSuitcase',
+						x: 0,
+						y: (gameUnit * 1.5),
+						attrs: {
+							width: gameW,
+							height: gameH
+						},
+						input: gameLogic.input.openedSuitcase
+					},
+					closedSuitcase: {
+						type: 'sprite',
+						name: 'closedSuitcase',
+						img: 'closedSuitcase',
+						x: 0,
+						y: (gameUnit * 1.5),
+						attrs: {
+							width: gameW,
+							height: gameH
+						},
+						input: gameLogic.input.closedSuitcase
+					}
+				}
+			},
+			summaryBonusesText: {
+				type: 'group',
+				name: 'summaryBonusesText',
+				attrs: {
+					visisble: false
+				},
+				views: {
+					title: {
+						type: 'text',
+						name: 'summaryBonusText',
+						text: 'Bonuses',
+						x: 0,
+						y: gameUnit * 3,
+						style: {
+						    font: (fontSizes.lg + 'px Trebuchet MS'),
+					        fill: palette.black
+						},
+						position: {
+							centerX: true
+						}
+					}
+				}
+			},
+			summaryBonusText: {
+				type: 'text',
+				name: 'summaryBonusText',
+				text: '',
+				offsetX: 0,
+				offsetY: (gameUnit * 1.5),
+				x: gameUnit * 2.25,
+				// x: 0,
+				y: gameUnit * 4.5,
+				style: {
+				    font: (fontSizes.sm + 'px Trebuchet MS'),
+			        fill: palette.black//,
+					// 'text-align': 'center'
+				// },
+				// position: {
+				// 	centerX: true
+				}
+			}
 		};
 
 		var config = {
@@ -2302,7 +2341,7 @@ var GameConfig = function() {
 
 					// BONUSES
 					closedSuitcase: 'img/closed_suitcase.png',
-					openedSuitcase: 'img/opened_suitcase.png',
+					openedSuitcase: 'img/opened_suitcase2.png',
 					bonusPoof: 'img/bonus_poof.png',
 					
 					// TURN END
@@ -2651,11 +2690,8 @@ var GameConfig = function() {
 				}
 			},
 			bonusesText: {
-				newPlant: 'New Plant built created 1000 jobs',
-				newDealer: 'New Dealer established',
-				newSupplier: 'New Supplier relationship',
-				newTradeRoutes: 'New Trade Route established',
-				machineManufacturing: '~{machines}~ Machines built'
+				buildings: '~{count}~ new ~{name}~:\n~{bonus}~ jobs created',
+				manufacturing: ''
 			},
 			machineIcons: {
 				tractor: {
@@ -3208,6 +3244,19 @@ var GameConfig = function() {
 								height: gameH
 							},
 							input: gameLogic.input.closedEnvelope
+						},
+						smallSuitcaseIcon: {
+							type: 'sprite',
+							name: 'smallSuitcaseIcon',
+							img: 'smallSuitcaseIcon',
+							x: gameW - (gameUnit * 1.6),
+							y: gameUnit * 2,
+							attrs: {
+								width: gameUnit * 1.5,
+								height: (gameUnit * 1.5) * 0.73,
+								visible: false
+							},
+							input: gameLogic.input.smallSuitcaseIcon
 						}
 					}
 				},
@@ -3242,19 +3291,6 @@ var GameConfig = function() {
 								height: (gameUnit * 1.5)
 							},
 							input: gameLogic.input.supplierAvailableIcon
-							
-						},
-						bonusNotificationIcon: {
-							type: 'sprite',
-							name: 'bonusNotificationIcon',
-							img: 'smallSuitcaseIcon',
-							x: (gameW) - gameUnit * 1.6,
-							y: gameUnit * 12,
-							attrs: {
-								width: (gameUnit * 1.5),
-								height: (gameUnit * 1.5) * 0.73
-							},
-							input: gameLogic.input.bonusNotificationIcon
 							
 						},
 						tradeRouteAlertIcon: {

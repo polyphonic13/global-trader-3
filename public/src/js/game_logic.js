@@ -172,7 +172,6 @@ var gameLogic = {
 			},
 			create: function() {
 				PWG.ViewManager.hideView('global:notificationIcon');
-				PWG.ViewManager.hideView('global:bonusNotificationIcon');
 				PWG.ViewManager.hideView('global:supplierAvailableIcon');
 				PWG.ViewManager.hideView('global:tradeRouteAlertIcon');
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: PhaserGame.config.defaultScreen });
@@ -1121,7 +1120,7 @@ var gameLogic = {
 			removeTradeRoutePrompt: function(tradeRoute) {
 				// trace('removeTradeRoutePrompt, id = ' + PhaserGame.activeTradeRouteNotification);
 				if(PhaserGame.tradeRouteNotificationOpen) {
-					PWG.ViewManager.removeView(tradeRoute.config.id, 'world:tradeRouteAlertIcons');
+					// PWG.ViewManager.removeView(tradeRoute.config.id, 'world:tradeRouteAlertIcons');
 					PWG.ViewManager.removeView(PhaserGame.activeTradeRouteNotification, 'global:notifications');
 					delete PhaserGame.availableTradeRoutes[PhaserGame.activeTradeRouteNotification];
 					PhaserGame.activeTradeRouteNotification = '';
@@ -1636,6 +1635,14 @@ var gameLogic = {
 					},
 					this
 				);
+			
+				// there are bonuses for job creation
+				if(currentData.newBuildings.length > 0) {
+					PWG.ViewManager.showView('turnEnd:smallSuitcaseIcon');
+					// PhaserGame.buildBonusReport(currentData);
+				} else {
+					PWG.ViewManager.hideView('turnEnd:smallSuitcaseIcon');
+				}
 				
 				item = PWG.Utils.clone(summaryText);
 
@@ -1690,6 +1697,79 @@ var gameLogic = {
 				var turnEnd = PWG.ViewManager.getControllerFromPath('turnEnd');
 				PWG.ViewManager.addView(PhaserGame.yearSummary, turnEnd, true);
 				PhaserGame.yearSummary = {};
+			},
+			addBonusReport: function() {
+				var currentData = TurnManager.currentData;
+				var bonusTextViews = [];
+				var bonusesText = PhaserGame.config.bonusesText;
+				var bonusesNotification = PWG.Utils.clone(PhaserGame.config.dynamicViews.bonusesNotification);
+				var summaryBonusesText = PWG.Utils.clone(PhaserGame.config.dynamicViews.summaryBonusesText);
+				var summaryBonusText = PhaserGame.config.dynamicViews.summaryBonusText;
+				var typeCount = 0;
+				
+				var buildingTypes = {};
+				PWG.Utils.each(
+					BuildingTypes,
+					function(type) {
+						trace('\ttype = ' + type);
+						if(type !== BuildingTypes.SUPPLIER) {
+							buildingTypes[type] = {
+								count: 0,
+								name: BuildingNames[type]
+							};
+						}
+					},
+					this
+				);
+
+				PWG.Utils.each(
+					currentData.newBuildings,
+					function(newBuilding) {
+						buildingTypes[newBuilding.type].count++;
+					},
+					this
+				);
+
+				trace('buildingTypes = ', buildingTypes);
+				
+				PWG.Utils.each(
+					buildingTypes,
+					function(building, type) {
+						if(building.count > 0) {
+							if(building.count > 1) {
+								building.name += 's'
+							}
+							var text = bonusesText.buildings;
+							trace('bonusesText['+type+'] = ', text);
+							var bonusText = PWG.Utils.parseMarkup(text, 
+							{
+								count: building.count,
+								name: building.name,
+								bonus: (gameData.bonuses.jobs[type] * building.count)
+							});
+
+							var item = PWG.Utils.clone(summaryBonusText);
+							item.text = bonusText;
+
+							item.y += (typeCount * item.offsetY);
+							
+							item.name += '_' + type; 
+							
+							summaryBonusesText.views[type] = item;
+							summaryBonusesText.attrs.visible = false;
+							typeCount++;
+						}
+					},
+					this
+				);
+				trace('summaryBonusesText = ', summaryBonusesText);
+				var turnEnd = PWG.ViewManager.getControllerFromPath('turnEnd');
+				PWG.ViewManager.addView(bonusesNotification, turnEnd, true);
+				PWG.ViewManager.addView(summaryBonusesText, turnEnd, true);
+			},
+			removeBonuses: function() {
+				PWG.ViewManager.removeView('bonusesNotification', 'turnEnd');
+				PWG.ViewManager.removeView('summaryBonusesText', 'turnEnd');
 			},
 			gameCompleted: function() {
 				// all levels completed. when user clicks confirm, display
@@ -1919,25 +1999,20 @@ var gameLogic = {
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'brief' });
 			}
 		},
+		smallSuitcaseIcon: {
+			inputDown: function(event) {
+				PhaserGame.addBonusReport();
+			}
+		},
 		closedSuitcase: {
 			inputDown: function(event) {
-				if(PhaserGame.tutorialOpen) {
-					PhaserGame.removeTutorialGuy();
-				}
-				PWG.ViewManager.hideView('turnEnd:closedEnvelope');
-				PWG.ViewManager.showView('global:confirmButton');
+				PWG.ViewManager.hideView('turnEnd:bonusesNotification:closedSuitcase');
+				PWG.ViewManager.showView('turnEnd:summaryBonusesText');
 			}
 		},
 		openedSuitcase: {
 			inputDown: function(event) {
-				if(PhaserGame.tutorialOpen) {
-					PhaserGame.removeTutorialGuy();
-				}
-				if(!PhaserGame.turnActive) {
-					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'brief' });
-				} else {
-					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'home' });
-				}
+				PhaserGame.removeBonuses();
 			}
 		}
 	},
@@ -1972,7 +2047,7 @@ var gameLogic = {
 			PWG.PhaserAnimation.play(ignitionKey.name, 'turnOn');
 			// HACK: temporarily adding sound directly; need to implement via pwg.
 			var sfx = PhaserGame.phaser.add.audio('tractorStartup');
-			// sfx.play();
+			sfx.play();
 		},
 		worldReturnButton: function() {
 			// trace('worldReturnButton callback');
@@ -2154,6 +2229,9 @@ var gameLogic = {
 					break;
 
 					case 'turnEnd':
+					if(PhaserGame.bonusesNotification) {
+						PhaserGame.removeBonuses();
+					}
 					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'brief' });
 					break;
 
