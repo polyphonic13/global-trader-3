@@ -2030,7 +2030,7 @@ var gameLogic = {
 			if(PhaserGame.tutorialOpen) {
 				PhaserGame.removeTutorialGuy();
 			}
-			window.open(FACEBOOK_URL, '_system');
+			window.open(FACEBOOK_URL, '_system', 'location=yes');
 		},
 		manualStart: function() {
 			if(PhaserGame.tutorialOpen) {

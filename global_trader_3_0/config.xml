@@ -1,7 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="io.cordova.globaltrader_3_0" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-	<plugin name="InAppBrowser" value="CDVInAppBrowser" />
-	<gap:plugin name="org.apache.cordova.inappbrowser" />
+	<feature name="InAppBrowser"> 
+	<param name="ios-package" value="CDVInAppBrowser" /> 
+	</feature>
+
 	<preference name="deployment-target" value="7.0" />
     <name>Global Trader 3.0</name>
     <description>
