@@ -2050,6 +2050,16 @@ var gameLogic = {
 			// HACK: temporarily adding sound directly; need to implement via pwg.
 			var sfx = PhaserGame.phaser.add.audio('tractorStartup');
 			sfx.play();
+			// using phonegap media plugin
+			/*
+			var url = PhaserGame.config.assets.audio.tractorStartup;
+			alert('url = ' + url);
+			alert('media = ' + Media);
+			var media = new Media(url);
+			alert('media = ' + media);
+			media.play();
+			alert('post media play call');
+			*/
 		},
 		worldReturnButton: function() {
 			// trace('worldReturnButton callback');

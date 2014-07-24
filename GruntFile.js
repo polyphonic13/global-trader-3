@@ -101,6 +101,12 @@ module.exports = function(grunt) {
 					dest: '<%= buildDir %>/img/'
 				},
 				{
+					expand: true,
+					cwd: '<%= srcDir %>/audio/',
+					src: [ '**/*' ],
+					dest: '<%= buildDir %>/audio/'
+				},
+				{
 					expand: true, 
 					cwd: '<%= srcDir %>/css/',
 					src: [ '**/*' ],
@@ -148,6 +154,16 @@ module.exports = function(grunt) {
 					cwd: '<%= buildDir %>/img/',
 					src: [ '**/*' ],
 					dest: '<%= cordovaDir %>/img/'
+				}]
+			},
+
+			cordovaAudio: {
+				files: [
+				{
+					expand: true,
+					cwd: '<%= buildDir %>/audio/',
+					src: [ '**/*' ],
+					dest: '<%= cordovaDir %>/audio/'
 				}]
 			},
 
@@ -229,6 +245,7 @@ module.exports = function(grunt) {
 			'copy:cordovaJs',
 			'copy:cordovaCss',
 			'copy:cordovaImg',
+			'copy:cordovaAudio',
 			'copy:cordovaHtml'
 		]
 	);
