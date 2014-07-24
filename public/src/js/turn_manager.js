@@ -104,6 +104,7 @@ var TurnManager = function() {
 		}
 		// trace('adding bonus points for new ' + building.type + ': ' + gameData.bonuses.buildings[building.type]);
 		module.playerData.bonusPoints += gameData.bonuses.buildings[building.type];
+
 		PWG.EventCenter.trigger({ type: Events.BONUSES_UPDATED });
 	};
 	

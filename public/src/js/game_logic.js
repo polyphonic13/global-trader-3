@@ -951,41 +951,6 @@ var gameLogic = {
 			hideSupplierAvailableIcon: function() {
 				PWG.ViewManager.hideView('global:supplierAvailableIcon');
 			},
-
-			// addSupplierNotification: function() {
-			// 	var supplierNotification = PWG.Utils.clone(PhaserGame.config.dynamicViews.supplierNotifcation);
-			// 	var global = PWG.ViewManager.getControllerFromPath('global');
-			// 	// trace('addSuplierNotification, supplierNotification = ', supplierNotification, '\tglobal = ', global);
-			// 	PWG.ViewManager.addView(supplierNotification, global, true);
-			// 
-			// 	PhaserGame.confirmAction = {
-			// 		method: function() {
-			// 			PhaserGame.removeSupplierNotification();
-			// 			PhaserGame.addSupplier();
-			// 		},
-			// 		params: {}
-			// 	};
-			// 
-			// 	PhaserGame.cancelAction = {
-			// 		method: function() {
-			// 			PhaserGame.removeSupplierNotification();
-			// 		},
-			// 		params: {}
-			// 	};
-			// 
-			// 	PhaserGame.confirmAction = null;
-			// 
-			// 	PWG.ViewManager.hideView('global:confirmButton');
-			// 	PWG.ViewManager.hideView('global:cancelButton');
-			// },
-			// removeSupplierNotification: function() {
-			// 	PWG.ViewManager.removeView('supplierNotification', 'global');
-			// 	PWG.ViewManager.hideView('global:confirmButton');
-			// 	PWG.ViewManager.hideView('global:cancelButton');
-			// 	PhaserGame.cancelAction = null;
-			// 	PhaserGame.confirmAction = null;
-			// },
-
 			addSupplierPrompt: function() {
 				trace('addSupplierPrompt, turnActive = ' + PhaserGame.turnActive + ', userPromptActive = ' + PhaserGame.userPromptActive);
 				if(PhaserGame.turnActive) {
