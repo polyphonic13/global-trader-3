@@ -1,4 +1,4 @@
-(function(){(typeof console === 'undefined' || typeof console.log === 'undefined')?console={log:function(){}}:console.log('----- Global Trader 3.0 created: 2014-07-24T10:33:48')})();
+(function(){(typeof console === 'undefined' || typeof console.log === 'undefined')?console={log:function(){}}:console.log('----- Global Trader 3.0 created: 2014-07-24T14:00:23')})();
 var Events = {
 	CHANGE_SCREEN: 'changeScreen',
 	CHANGE_STATE: 'changeState',
@@ -3526,6 +3526,12 @@ var gameLogic = {
 			if(PhaserGame.tutorialOpen) {
 				PhaserGame.removeTutorialGuy();
 			}
+			// window.open(FACEBOOK_URL, '_system', 'location=yes');
+			// var ref = window.open('http://www.seemaflatiron.com/pwg/', '_blank', 'location=yes', 'closebuttoncaption=Back');
+			// ref.addEventListener('loadstart', function() { alert(event.url); });
+			// navigator.app.loadUrl(FACEBOOK_URL, {openExternal: true });
+			// note: inappbrowser plugin does not work. had to use hack from here: 
+			// http://www.excellentwebworld.com/phonegap-open-a-link-in-safari-or-external-browser/
 			window.open(FACEBOOK_URL, '_system');
 		},
 		manualStart: function() {

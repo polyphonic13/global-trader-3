@@ -2030,7 +2030,9 @@ var gameLogic = {
 			if(PhaserGame.tutorialOpen) {
 				PhaserGame.removeTutorialGuy();
 			}
-			window.open(FACEBOOK_URL, '_system', 'location=yes');
+			// note: inappbrowser plugin does not work. had to use hack from here: 
+			// http://www.excellentwebworld.com/phonegap-open-a-link-in-safari-or-external-browser/
+			window.open(FACEBOOK_URL, '_system');
 		},
 		manualStart: function() {
 			if(PhaserGame.tutorialOpen) {
