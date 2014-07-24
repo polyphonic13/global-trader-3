@@ -1,4 +1,4 @@
-(function(){(typeof console === 'undefined' || typeof console.log === 'undefined')?console={log:function(){}}:console.log('----- Global Trader 3.0 created: 2014-07-21T19:21:20')})();
+(function(){(typeof console === 'undefined' || typeof console.log === 'undefined')?console={log:function(){}}:console.log('----- Global Trader 3.0 created: 2014-07-24T10:33:48')})();
 var Events = {
 	CHANGE_SCREEN: 'changeScreen',
 	CHANGE_STATE: 'changeState',
@@ -26,16 +26,13 @@ var Events = {
 	BUILDING_AGE_UPDATED: 'buildingAgeUpdated',
 	BUILDING_STATE_UPDATED: 'buildingStateUpdated',
 
-	ADD_DEALER_NOTIFICATION: 'addDealerNotification',
-	CLOSE_DEALER_NOTIFICATION: 'closeDealerNotification',
+	ADD_DEALER_OPPORTUNITY: 'addDealerOpportunity',
 	ADD_DEALER: 'addDealer',
 
-	ADD_SUPPLIER_NOTIFICATION: 'addSupplierNotification',
-	CLOSE_SUPPLIER_NOTIFICATION: 'closeSupplierNotification',
+	ADD_SUPPLIER_OPPORTUNITY: 'addSupplierOpportunity',
 	ADD_SUPPLIER: 'addSupplier',
 
-	ADD_TRADE_ROUTE_NOTIFICATION: 'addTradeRouteNotification',
-	CLOSE_TRADE_ROUTE_NOTIFICATION: 'closeTradeRouteNotification',
+	ADD_TRADE_ROUTE_OPPORTUNITY: 'addTradeRouteOpportunity',
 	ADD_TRADE_ROUTE: 'addTradeRoute',
 
 	INVENTORY_ADDED: 'inventoryAdded',
@@ -59,7 +56,6 @@ var Events = {
 	EDIT_MACHINE: 'editMachine',
 	
 	ADD_SUPPLIER_PROMPT: 'addSupplierPrompt',
-	ADD_SUPPLIER_NOTIFICATION: 'addSupplierNotification'
 };
 
 var TutorialTypes = {
@@ -88,6 +84,12 @@ var BuildingStates = {
 	ACTIVE: 'active',
 	PAUSED: 'paused',
 	INACTIVE: 'inactive'
+};
+
+var BuildingNames = {
+	plant: 'Plant',
+	dealer: 'Dealer',
+	tradeRoute: 'Trade Route'
 };
 
 var TileCellFrames = {
@@ -186,7 +188,8 @@ var TradeRouteNames = {
 	middleEast: 'Middle Eastern',
 	// northPacific: 'North Pacific',
 	southPacific: 'South Pacific',
-	southAmerica: 'South American'
+	southAmerica: 'South American',
+	global: 'Trade Route'
 };
 
 var USSectors = {
@@ -740,7 +743,7 @@ var gameData = {
 			},
 			{
 				description: 'Deluxe',
-				img: 'bucketHeavyPremium',
+				img: 'bucketMediumDeluxe',
 				cost: 2000,
 				build: 500,
 				sell: 1000
@@ -756,7 +759,7 @@ var gameData = {
 			},
 			{
 				description: 'Premium',
-				img: 'bucketMediumDeluxe',
+				img: 'bucketMediumPremium',
 				cost: 1200,
 				build: 225,
 				sell: 4500
@@ -1278,7 +1281,7 @@ var gameData = {
 	],
 	bonuses: {
 		buildings: {
-			plant: 500,
+			plant: 5000,
 			dealer: 1000,
 			tradeRoute: 10000
 		},
@@ -1288,7 +1291,6 @@ var gameData = {
 			allPartsUsed: 10000
 		},
 		manufacturing: {
-			machine10: 10,
 			machine50: 50,
 			machine100: 100,
 			machine500: 500,
@@ -1296,6 +1298,11 @@ var gameData = {
 			machine5000: 5000,
 			machine10000: 10000,
 			machine50000: 50000
+		},
+		jobs: {
+			plant: 500,
+			dealer: 100,
+			tradeRoute: 1000
 		}
 	}
 };
@@ -1315,6 +1322,11 @@ var playerData = {
 		supplier: true,
 		tradeRoute: true,
 		outOfWholesaleParts: true
+	},
+	firstRoutes: {
+		africa: false, 
+		asia: false,
+		europe: false
 	},
 	level: 0,
 	allCompleted: false,
@@ -1382,7 +1394,7 @@ var Machine = function() {
 	function Machine(config) {
 		this.config = PWG.Utils.extend(PWG.Utils.clone(defaults), config);
 
-		// trace('Machine/constructor, config = ', config, '\tthis.config = ', this.config);
+		// 
 		var requiredParts = gameData.machines[config.type][config.size].requiredParts;
 
 		this.requiredParts = {};
@@ -1428,7 +1440,7 @@ var Machine = function() {
 	};
 	
 	Machine.prototype.setPart = function(part, val, wholesale) {
-		trace('Machine/setPart, part = ' + part + ', val = ', val, ', wholesale = ' + wholesale);
+		
 		if(wholesale) {
 			this.config.wholesaleParts[part] = val;
 		} else {
@@ -1436,12 +1448,12 @@ var Machine = function() {
 		}
 
 		if(!this.isComplete) {
-			// trace('\trequiredParts = ', this.requiredParts);
+			// 
 			if(this.requiredParts.hasOwnProperty(part) && !this.requiredParts[part]) {
 				this.requiredParts[part] = true;
 				this.requiredPartsCount++;
 				PWG.EventCenter.trigger({ type: Events.REQUIRED_PART_ADDED });
-				trace('\trequiredPartsCount now: ' + this.requiredPartsCount + '/' + this.requiredPartsTotal);
+				
 			}
 
 			if(this.requiredPartsCount >= this.requiredPartsTotal) {
@@ -1456,11 +1468,11 @@ var Machine = function() {
 	};
 	
 	Machine.prototype.calculateCostAndPoints = function() {
-		trace('Machine['+this.config.id+']/calculateCost, this = ', this);
+		
 		PWG.Utils.each(
 			this.config.parts,
 			function(val, key) {
-				trace('\tval = ' + val + ', key = ' + key);
+				
 				this.config.cost += gameData.parts[key][this.config.size][val].cost;
 			},
 			this
@@ -1472,7 +1484,7 @@ var Machine = function() {
 			},
 			this
 		);
-		// trace('post calculate cost, cost = ' + this.config.cost);
+		// 
 	};
 	
 	Machine.prototype.reset = function(part) {
@@ -1483,6 +1495,8 @@ var Machine = function() {
 }();
 
 var ASPECT_RATIO = [9, 16];
+var OFFSET_X = 0;
+var OFFSET_Y = 15;
 var GAME_NAME = 'global_trader_3_0';
 var FACEBOOK_URL = 'https://www.facebook.com/cnhitrade';
 var TIME_PER_TURN = 52;
@@ -1495,11 +1509,12 @@ var MIN_TRADE_ROUTE_LEVEL = 4;
 var NUM_PART_QUALITIES = 3;
 
 function startGame() {
-	PhaserGame.init(ASPECT_RATIO, document.documentElement.clientHeight);
+	PhaserGame.init(ASPECT_RATIO, document.documentElement.clientHeight, OFFSET_X, OFFSET_Y);
 }
 
 var gameLogic = {
 	global: {
+		// global event listeners/handlers
 		listeners: 
 		[
 		// change state
@@ -1510,13 +1525,13 @@ var gameLogic = {
 				PWG.ScreenManager.changeScreen(event.value);
 
 				if(PhaserGame.config.turnScreens.indexOf(event.value) > -1) {
-					// trace('this is a turn group!');
+					// 
 					if(!PhaserGame.turnActive) {
 						PhaserGame.startTurn();
 					}
 				} else {
 					if(PhaserGame.turnActive) {
-						// trace('deactivating turn');
+						// 
 						PhaserGame.stopTurn();
 					}
 				}
@@ -1527,7 +1542,7 @@ var gameLogic = {
 			event: Events.OPEN_NOTIFICATION,
 			handler: function(event) 
 			{
-				// trace('add notification event handlers, notification = ', (this.views['notification']));
+				// 
 				var notification = this.views['notification'];
 				var notificationView = notification.children['notification-text'].view;
 
@@ -1551,7 +1566,7 @@ var gameLogic = {
 			handler: function(event) {
 				PhaserGame.turnTime = event.value;
 				var text = (event.value >= 10) ? event.value : '0' + event.value;
-				// trace('turn time = ' + event.value);
+				// 
 				PWG.ViewManager.callMethod('global:turnGroup:timerText', 'setText', [text], this);
 			}
 		},
@@ -1574,7 +1589,7 @@ var gameLogic = {
 		{
 			event: Events.BONUSES_UPDATED,
 			handler: function(event) {
-				// trace('bonuses updated handler, bonuses now = ' + TurnManager.get('bonusPoints'));
+				// 
 				PWG.ViewManager.callMethod('global:turnGroup:bonusText', 'setText', [TurnManager.get('bonusPoints')], this);
 			}
 		},
@@ -1583,7 +1598,7 @@ var gameLogic = {
 			event: Events.TURN_COMPLETED,
 			handler: function(event) {
 				PhaserGame.stopTurn();
-				trace('turn ended');
+				
 				PWG.ViewManager.callMethod('global:turnGroup:timerText', 'setText', [''], this);
 
 				PhaserGame.buildYearEndReport();
@@ -1594,7 +1609,7 @@ var gameLogic = {
 			event: Events.BUILDING_STATE_UPDATED,
 			handler: function(event) {
 				var config = event.building.config;
-				// trace('BUILDING_STATE_UPDATED, config = ', config);
+				// 
 				if(TurnManager.playerData.firstPlay[TutorialTypes.PLANT]) {
 					PhaserGame.activeTutorial = TutorialTypes.PLANT;
 					PhaserGame.addTutorialGuy();
@@ -1604,25 +1619,25 @@ var gameLogic = {
 		},
 		// add dealer notification
 		{
-			event: Events.ADD_DEALER_NOTIFICATION,
+			event: Events.ADD_DEALER_OPPORTUNITY,
 			handler: function(event) {
-				// trace('dealer add notification handler, event = ', event);
-				PhaserGame.addDealerOpportunityNotification(event);
+				// 
+				PhaserGame.createDealerOpportunity(event);
 			}
 		},
 		// add supplier notification
 		{
-			event: Events.ADD_SUPPLIER_NOTIFICATION,
+			event: Events.ADD_SUPPLIER_OPPORTUNITY,
 			handler: function(event) {
-				PhaserGame.addSupplierOpportunityNotification(event);
+				PhaserGame.createSupplierOpportunity(event);
 			}
 		},
 		// add trade route notification
 		{
-			event: Events.ADD_TRADE_ROUTE_NOTIFICATION,
+			event: Events.ADD_TRADE_ROUTE_OPPORTUNITY,
 			handler: function(event) {
-				// trace('dealer add notification handler, event = ', event);
-				PhaserGame.addTradeRouteOpportunityNotification(event);
+				// 
+				PhaserGame.createTradeRouteOpportunity(event);
 			}
 		},
 		// machine sold
@@ -1636,6 +1651,7 @@ var gameLogic = {
 			}
 		}
 		],
+		// global methods attached to PhaserGame
 		methods: {
 			// INITIAIZATION
 			init: function() {
@@ -1644,11 +1660,15 @@ var gameLogic = {
 			},
 			preload: function() {
 				PWG.PhaserLoader.load(PhaserGame.config.assets);
+				// HACK: temporarily adding sound directly; need to implement via pwg.
+				var tractorStartup = PhaserGame.config.assets.audio.tractorStartup;
+				
+				PhaserGame.phaser.load.audio('tractorStartup', tractorStartup);
 				// PWG.ScreenManager.preload();
 			},
 			create: function() {
-				PWG.ViewManager.hideView('global:notificationEnvelope');
-				PWG.ViewManager.hideView('global:supplierPrompt');
+				PWG.ViewManager.hideView('global:notificationIcon');
+				PWG.ViewManager.hideView('global:supplierAvailableIcon');
 				PWG.ViewManager.hideView('global:tradeRouteAlertIcon');
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: PhaserGame.config.defaultScreen });
 			},
@@ -1658,11 +1678,11 @@ var gameLogic = {
 			getSavedData: function() {
 				var savedData = PWG.Storage.get(GAME_NAME);
 				if(!savedData) {
-					// trace('there was not saved data, using: ', playerData);
+					// 
 					savedData = playerData;
 				}
 				PhaserGame.playerData = savedData;
-				// trace('============ post get saved data, playerData = ', PhaserGame.playerData);
+				// 
 			},
 			setSavedData: function() {
 				var params = {};
@@ -1670,7 +1690,7 @@ var gameLogic = {
 				PWG.Storage.set(params);
 			},
 			ignitionAnimationCompleted: function() {
-				// trace('PhaserGame/ignitionAnimationCompleted');
+				// 
 				var ignitionKey = PWG.ViewManager.getControllerFromPath('home:ignitionKey');
 				ignitionKey.view.events.onAnimationComplete.remove(PhaserGame.ignitionAnimationCompleted, this);
 				// if(PhaserGame.isFirstPlay) {
@@ -1682,68 +1702,25 @@ var gameLogic = {
 			},
 			// GLOBAL / NOTIFICATIONS
 			addTutorialGuy: function() {
-				// trace('PhaserGame/addTutorialGuy, tutorialOpen = ' + PhaserGame.tutorialOpen + ', activeTutorial = ' + PhaserGame.activeTutorial);
+				// 
 				if(!PhaserGame.tutorialOpen) {
 					PhaserGame.tutorialOpen = true;
 					var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
 					var tutorialGuy = PWG.Utils.clone(PhaserGame.config.dynamicViews.tutorialGuy);
 					var notificationText = PhaserGame.config.notificationText;
-					// trace('\ttext = ' + notificationText.tutorial[PhaserGame.activeTutorial].content);
+					// 
+
+					tutorialGuy.views.bg.img = PhaserGame.config.notificationPeopleImages['tutorial'];
 					tutorialGuy.views.content.text = notificationText.tutorial[PhaserGame.activeTutorial].content;
 					PWG.ViewManager.addView(tutorialGuy, notifications, true);
 				}
 			},
 			removeTutorialGuy: function() {
-				// trace('remove tutorial guy');
+				// 
 				PWG.ViewManager.removeView('tutorialGuy', 'global:notifications');
 				TurnManager.playerData.firstPlay[PhaserGame.activeTutorial] = false;
 				PhaserGame.tutorialOpen = false;
 				PhaserGame.activeTutorial = false;
-			},
-			showNotification: function() {
-				var sector = PhaserGame.activeSector;
-				// trace('showNotification, notifications = ', PhaserGame.notifications[sector]);
-				if(PhaserGame.notifications[sector].length > 0) {
-					var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
-					var notification = PhaserGame.notifications[sector].pop();
-
-					if(notification.confirmAction) {
-						PhaserGame.confirmAction = notification.confirmAction;
-						PWG.ViewManager.showView('global:confirmButton');
-					}
-					if(notification.cancelAction) {
-						PhaserGame.cancelAction = notification.cancelAction;
-					} else {
-						PhaserGame.cancelAction = PhaserGame.removeNotification;
-					}
-					PWG.ViewManager.hideView('global:backButton');
-					PWG.ViewManager.showView('global:cancelButton');
-					PWG.ViewManager.addView(notification, notifications, true);
-
-					if(PhaserGame.notifications[sector].length === 0) {
-						PhaserGame.hideNotificationEnvelope();
-					}
-				}
-			},
-			removeNotification: function() {
-				// trace('removeNotification');
-				PWG.ViewManager.showView('global:backButton');
-				PWG.ViewManager.hideView('global:cancelButton');
-				PWG.ViewManager.hideView('global:confirmButton');
-				PWG.ViewManager.removeView('notification', 'global:notifications');
-				PhaserGame.cancelAction = null;
-			},
-			showNotificationEnvelope: function() {
-				PWG.ViewManager.showView('global:notificationEnvelope');
-			},
-			hideNotificationEnvelope: function() {
-				PWG.ViewManager.hideView('global:notificationEnvelope');
-			},
-			showTradeRouteAlert: function() {
-				PWG.ViewManager.showView('global:tradeRouteAlertIcon');
-			},
-			hideTradeRouteAlert: function() {
-				PWG.ViewManager.hideView('global:tradeRouteAlertIcon');
 			},
 			// TUTORIAL / MANUAL
 			addManualPage: function(idx) {
@@ -1753,7 +1730,7 @@ var gameLogic = {
 				var manualPageText = PhaserGame.config.dynamicViews.manualPageText;
 				var manualPageImage = PhaserGame.config.dynamicViews.manualPageImage;
 				var pageConfig = PhaserGame.config.tutorial.pages[idx];
-				// trace('making manual page: '+ idx + ', with: ', pageConfig, '\tpages = ', manualPages);
+				// 
 				manualPage.name += idx;
 				manualPage.views.title.text = PhaserGame.config.tutorial.title;
 				// manualPage.views.subtitle.text = PhaserGame.config.tutorial.subtitle;
@@ -1766,7 +1743,7 @@ var gameLogic = {
 				PWG.Utils.each(
 					pageConfig.blurbs,
 					function(blurb, idx) {
-						// trace('blurb['+idx+'] = ', blurb);
+						// 
 						var pageText = PWG.Utils.clone(manualPageText);
 						pageText.name += idx;
 						pageText.text = blurb.text;
@@ -1794,11 +1771,13 @@ var gameLogic = {
 					this
 				);
 
-				
+				if(idx > 0) {
+					manualPage.views['backPage'].attrs.visible = true;
+				}
 				PWG.ViewManager.addView(manualPage, manualPages, true);
 			},
 			nextManualPage: function() {
-				// trace('PhaserGame/nextManualPage, idx = ' + PhaserGame.manualPage);
+				
 				if(PhaserGame.manualPage < PhaserGame.config.tutorial.pages.length -1) {
 					PhaserGame.manualPage++;
 				} else {
@@ -1806,25 +1785,34 @@ var gameLogic = {
 				}
 				PhaserGame.addManualPage(PhaserGame.manualPage);
 			},
+			prevManualPage: function() {
+				// 
+				if(PhaserGame.manualPage > 0) {
+					PhaserGame.manualPage--;
+					PhaserGame.addManualPage(PhaserGame.manualPage);
+				}
+			},
 			// TURN
 			startTurn: function() {
-				// trace('START TURN');
+				// 
 				TurnManager.startTurn();
 				BuildingManager.init();
 				WholesaleManager.init();
-				PhaserGame.notifications = [[], [], [], [], []];
+				PhaserGame.dealerNotifications = [[], [], [], [], []];
+				PhaserGame.bonusNotifications = [];
 				PhaserGame.supplierNotifications = [];
 				PhaserGame.tradeRouteNotifications = {};
 				PhaserGame.availableTradeRoutes = {};
 				PhaserGame.zoomedIn = false;
-
+				PhaserGame.userPromptActive = false
+				
 				GridManager.init(USSectors, US_DETAIL_GRID_CELLS, US_DETAIL_GRID_CELLS, PWG.Stage.gameW/6);
 
 				PhaserGame.turnActive = true;
 				PhaserGame.timePerTurn = TIME_PER_TURN;
 				PhaserGame.turnTimer = new PWG.PhaserTime.Controller('turnTime');
 				PhaserGame.turnTimer.loop(TURN_TIME_INTERVAL, function() {
-						// trace('\ttimePerTurn = ' + PhaserGame.timePerTurn + ', views = ', this.views);
+						// 
 						PhaserGame.incrementTurnTime();
 					},
 					this
@@ -1873,6 +1861,7 @@ var gameLogic = {
 				};
 				PhaserGame.cancelAction = {
 					method: function() {
+						PhaserGame.userPromptActive = false;
 						PWG.ViewManager.showView('global:backButton');
 						PWG.ViewManager.hideView('global:confirmButton');
 						PWG.ViewManager.hideView('global:cancelButton');
@@ -1893,12 +1882,12 @@ var gameLogic = {
 				PWG.EventCenter.trigger({ type: Events.CLOSE_WHOLESALE_PARTS_MENU });
 				PWG.EventCenter.trigger({ type: Events.CLOSE_OPTIONAL_PARTS_MENU });
 				
-				PhaserGame.hideSupplierPrompt();
-				PhaserGame.removeNotification();
-				PhaserGame.hideNotificationEnvelope();
-				PhaserGame.removeTradeRouteNotification();
-				PhaserGame.hideTradeRouteAlert();
-				PhaserGame.notifications = null;
+				PhaserGame.hideSupplierAvailableIcon();
+				PhaserGame.removeDealerPrompt();
+				PhaserGame.hideDealerAvailableIcon();
+				PhaserGame.removeTradeRoutePrompt();
+				PhaserGame.hideTradeRouteAvailableIcon();
+				PhaserGame.dealerNotifications = null;
 				PhaserGame.supplierNotifications = null;
 				PhaserGame.availableTradeRoutes = null;
 				PhaserGame.cancelAction = null;
@@ -1973,12 +1962,12 @@ var gameLogic = {
 						y: (-buildingPins.y) * 0.25
 					}
 				};
-				// trace('world zoom initialized as: ', PhaserGame.worldZoom, '\npin zooom: ', PhaserGame.pinZoom);
+				// 
 				PhaserGame.worldZoomInitialized = true;
 			},
 			worldZoomOutFull: function() {
 				if(PWG.ScreenManager.currentId === 'world') {
-					// trace('set w/h: ' + newWidth + '/' + newHeight + ', x/y: ' + newX + '/' + newY);
+					// 
 					PhaserGame.removeTradeRouteViews();
 
 					var max = PhaserGame.worldZoom.max;
@@ -1993,15 +1982,26 @@ var gameLogic = {
 			},
 			worldZoomOut: function() {
 				if(PWG.ScreenManager.currentId === 'world') {
-					// trace('plusButton callback: PhaserGame.worldView.width = ' + PhaserGame.worldView.width);
+					// 
 					if(PhaserGame.zoomedIn) {
-						// trace('worldZoomOut: PhaserGame.zoomed = ' + PhaserGame.zoomedIn);
+						// 
 						PhaserGame.removeTradeRouteViews();
 
 						var max = PhaserGame.worldZoom.max;
+						PhaserGame.worldView.x = max.x;
+						PhaserGame.worldView.y = max.y;
+						PhaserGame.worldView.width = max.width;
+						PhaserGame.worldView.height = max.height;
+						
+						PWG.ViewManager.showView('world:usMap');
+						PWG.ViewManager.showView('world:buildingPins');
+						PWG.EventCenter.trigger({ type: Events.WORLD_ZOOMED_OUT });
+
+// removed tween due to reports of game freezing:
+/*
 						var tween = PhaserGame.phaser.add.tween(PhaserGame.worldView);
 						tween.onComplete.add(function() {
-							// trace('zoom tween complete');
+							// 
 								PWG.ViewManager.showView('world:usMap');
 								PWG.ViewManager.showView('world:buildingPins');
 								PWG.EventCenter.trigger({ type: Events.WORLD_ZOOMED_OUT });
@@ -2018,7 +2018,7 @@ var gameLogic = {
 							Math.random() * 500
 						);
 						tween.start();
-
+*/
 						PhaserGame.zoomedIn = false;
 						PhaserGame.zoomedInTriggered = false;
 					}
@@ -2026,16 +2026,23 @@ var gameLogic = {
 			},
 			worldZoomIn: function() {
 				if(PWG.ScreenManager.currentId === 'world') {
-					// trace('worldZoomIn: PhaserGame.zoomedIn = ' + PhaserGame.zoomedIn);
+					// 
 					if(!PhaserGame.zoomedIn) {
 						PhaserGame.zoomedIn = true;
 						PWG.ViewManager.hideView('world:usMap');
 						PWG.ViewManager.hideView('world:buildingPins');
 
 						var min = PhaserGame.worldZoom.min;
+						PhaserGame.worldView.x = min.x;
+						PhaserGame.worldView.y = min.y;
+						PhaserGame.worldView.width = min.width;
+						PhaserGame.worldView.height = min.height;
+
+// removed tween due to reports of game freezing:
+/*
 						var tween = PhaserGame.phaser.add.tween(PhaserGame.worldView);
 						tween.onComplete.add(function() {
-							// trace('zoom tween complete, zoom in triggered = ' + PhaserGame.zoomedInTriggered);
+							// 
 							if(!PhaserGame.zoomedInTriggered) {
 								PhaserGame.zoomedInTriggered = true;
 								PWG.EventCenter.trigger({ type: Events.WORLD_ZOOMED_IN });
@@ -2053,6 +2060,8 @@ var gameLogic = {
 							Math.random() * 500
 						);
 						tween.start();
+*/
+						PhaserGame.addTradeRouteViews();
 
 					}
 				}
@@ -2073,7 +2082,7 @@ var gameLogic = {
 				
 				var availableTradeRoutes = PhaserGame.availableTradeRoutes;
 				var existingTradeRoutes = BuildingManager.getExistingTradeRoutes();
-				// trace('EXISTING TRADE ROUTES = ', existingTradeRoutes);
+				// 
 				var arrowsAdded = {
 					africa: false,
 					asia: false,
@@ -2088,7 +2097,7 @@ var gameLogic = {
 					existingTradeRoutes,
 					// tradeRouteArrowConfig,
 					function(tradeRoute, tr) {
-						// trace('tradeRoute['+tr+'] = ', tradeRoute);
+						// 
 						var area = TradeRouteLocations[tradeRoute.worldLocation];
 						
 						var arrow = PWG.Utils.clone(tradeRouteArrow);
@@ -2099,12 +2108,12 @@ var gameLogic = {
 								// tradeRoute,
 								tradeRouteArrowConfig[area],
 								function(arrowProp, ap) {
-									// trace('\tadding arrowProp['+ap+']: ' + arrowProp);
+									// 
 									arrow[ap] = arrowProp;
 								},
 								this
 							);
-							// trace('\tadding existing arrow: ' + arrow.name);
+							// 
 							tradeRouteArrows.views[arrow.name] = arrow;
 							arrowsAdded[area] = true;
 						}
@@ -2130,15 +2139,15 @@ var gameLogic = {
 					this
 				);
 
-				// trace('available trade routes opportunities = ', availableTradeRoutes);
+				// 
 				PWG.Utils.each(
 					availableTradeRoutes,
 					function(tradeRoute, tr) {
-						// trace('\ttradeRoute['+tr+'] = ', tradeRoute);
+						// 
 						var area = TradeRouteLocations[tradeRoute.config.worldLocation];
 				
 						if(!arrowsAdded[area]) {
-							// trace('ADDING OPPORTUNITY ARROW FOR: ' + area);
+							// 
 							var arrow = PWG.Utils.clone(tradeRouteArrow);
 							var config = tradeRouteArrowConfig[area];
 							arrow.name += tr;
@@ -2170,35 +2179,30 @@ var gameLogic = {
 					this
 				);
 
-				// trace('tradeRouteArrows now = ', tradeRouteArrows, ', tradeRoutePins = ', tradeRoutePins);
+				// 
 				PWG.ViewManager.addView(tradeRouteArrows, world, true);
 				PWG.ViewManager.addView(tradeRoutePins, world, true);
 				PWG.ViewManager.addView(tradeRouteAlertIcons, world, true);
 			},
 			removeTradeRouteViews: function() {
-				// trace('removeTradeRouteViews');
+				// 
 				PWG.ViewManager.removeView('tradeRouteArrows', 'world');
 				PWG.ViewManager.removeView('tradeRoutePins', 'world');
 				PWG.ViewManager.removeView('tradeRouteAlertIcons', 'world');
-			},
-			removeTradeRouteArrows: function() {
-				// trace('removeTradeRouteArrows');
-				PWG.ViewManager.removeView('tradeRoutePins', 'world');
-				PWG.ViewManager.removeView('tradeRouteArrows', 'world');
 			},
 			// US DETAIL
 			tileClicked: function(tile) {
 				if(PhaserGame.tutorialOpen) {
 					PhaserGame.removeTutorialGuy();
 				}
-				if(PhaserGame.turnActive) {
+				if(PhaserGame.turnActive && !PhaserGame.userPromptActive) {
 					var view = PWG.ViewManager.getControllerFromPath('usDetail:usDetailGrid:'+tile.name);
-					// trace('tile click: ' + tile.cell + ' in ' + tile.sector, tile, '\tview = ', view);
+					// 
 					var frame = tile.attrs.frame;
 					PhaserGame.activeTile = tile;
 					switch(frame) {
 						case TileCellFrames.EMPTY:
-							// trace('\topen buildings menu');
+							// 
 							PWG.EventCenter.trigger({ type: Events.OPEN_BUILDINGS_MENU });
 						break;
 
@@ -2209,25 +2213,25 @@ var gameLogic = {
 						break; 
 
 						case TileCellFrames.PLANT_CONSTRUCTION:
-						// trace('plant construction'); 
+						//  
 						break;
 
 						case TileCellFrames.PLANT_ACTIVE:
-						// trace('plant active'); 
+						//  
 						// show plant detail
 						PhaserGame.activeBuilding = BuildingManager.getBuilding(PhaserGame.activeSector, PhaserGame.activeTile.cell);
-						// trace('active plant = ', PhaserGame.activeBuilding);
+						// 
 						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'buildingEdit' });
 						break;
 
 						case TileCellFrames.DEALER_CONSTRUCTION: 
-						// trace('dealer construction'); 
+						//  
 						break;
 						
 						case TileCellFrames.DEALER_ACTIVE: 
-						// trace('dealer active'); 
+						//  
 						PhaserGame.activeBuilding = BuildingManager.getBuilding(PhaserGame.activeSector, PhaserGame.activeTile.cell);
-						// trace('active plant = ', PhaserGame.activeBuilding);
+						// 
 						PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'buildingEdit' });
 						break;
 
@@ -2244,8 +2248,8 @@ var gameLogic = {
 				var global = PWG.ViewManager.getControllerFromPath('global');
 				var buildingCreatePrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingCreatePrompt);
 				var notificationText = PhaserGame.config.notificationText;
-				// trace('addBuildingCreatePrompt, buildingCreatePrompt = ', buildingCreatePrompt);
-				// trace('plant = ' + gameData.buildings.plant.cost);
+				// 
+				// 
 
 				if(TurnManager.playerData.bank > gameData.buildings.plant.cost) {
 					buildingCreatePrompt.views.title.text = notificationText.buildingCreate.content.toUpperCase();
@@ -2271,7 +2275,6 @@ var gameLogic = {
 				PWG.ViewManager.showView('global:cancelButton');
 				PWG.ViewManager.hideView('global:backButton');
 				PWG.ViewManager.addView(buildingCreatePrompt, global, true);
-				this.buildingCreatePromptOpen = true;
 			},
 			addBuilding: function(buildingType) {
 				PWG.EventCenter.trigger({ type: Events.CLOSE_BUILDINGS_MENU });
@@ -2290,48 +2293,93 @@ var gameLogic = {
 				}
 			},
 			// DEALERS
-			addDealerOpportunityNotification: function(event) {
-				var notification = PWG.Utils.clone(PhaserGame.config.dynamicViews.notification);
-				var dealerPrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.dealerPrompt);
-				
-				var notificationText = PhaserGame.config.notificationText['dealer'];
-				
-				var modelName = event.plant.equipment[event.dealer.config.modelId].name;
-				var resell = PWG.Utils.formatMoney(event.dealer.config.resell, 0);
-				// trace('addDealerOppurtunity, dealer = ', event.dealer);
-				var statementText = PWG.Utils.parseMarkup(notificationText.content, {
-					plant: event.plant.name,
-					quantity: event.dealer.config.maxPerYear,
-					model: modelName,
-					resell: resell
-				});
+			createDealerOpportunity: function(event) {
+				if(PhaserGame.turnActive) {
+					var notification = PWG.Utils.clone(PhaserGame.config.dynamicViews.notification);
+					var dealerPrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.dealerPrompt);
 
-				notification.views.person.img = PhaserGame.config.notificationPeopleImages['dealer'];
-				// notification.views.title.text = config.title;
-				notification.views.content.text = statementText.toUpperCase();
-				// trace('notification = ', notification);
-				
-				notification.views[dealerPrompt.name] = dealerPrompt;
-				
-				notification.confirmAction = {
-					method: PhaserGame.addDealer,
-					params: event.dealer
-				};
-				
-				notification.cancelAction = {
-					method: PhaserGame.resetDealer,
-					params: event.dealer
-				};
-				// PWG.ViewManager.hideView('global:backButton');
-				PhaserGame.notifications[event.plant.sector].push(notification);
-				if(PWG.ScreenManager.currentId === 'usDetail' && PhaserGame.activeSector === event.plant.sector) {
-					PhaserGame.showNotificationEnvelope();
+					var notificationText = PhaserGame.config.notificationText['dealer'];
+
+					var modelName = event.plant.equipment[event.dealer.config.modelId].name;
+					var resell = PWG.Utils.formatMoney(event.dealer.config.resell, 0);
+					// 
+					var statementText = PWG.Utils.parseMarkup(notificationText.content, {
+						plant: event.plant.name,
+						quantity: event.dealer.config.maxPerYear,
+						model: modelName,
+						resell: resell
+					});
+
+					notification.views.person.img = PhaserGame.config.notificationPeopleImages['dealer'];
+					// notification.views.title.text = config.title;
+					notification.views.content.text = statementText.toUpperCase();
+					// 
+
+					notification.views[dealerPrompt.name] = dealerPrompt;
+
+					notification.confirmAction = {
+						method: PhaserGame.addDealer,
+						params: event.dealer
+					};
+
+					notification.cancelAction = {
+						method: PhaserGame.resetDealer,
+						params: event.dealer
+					};
+					// PWG.ViewManager.hideView('global:backButton');
+					PhaserGame.dealerNotifications[event.plant.sector].push(notification);
+					if(PWG.ScreenManager.currentId === 'usDetail' && PhaserGame.activeSector === event.plant.sector) {
+						PhaserGame.showDealerAvailableIcon();
+					}
 				}
 			},
+			showDealerAvailableIcon: function() {
+				PWG.ViewManager.showView('global:notificationIcon');
+			},
+			hideDealerAvailableIcon: function() {
+				PWG.ViewManager.hideView('global:notificationIcon');
+			},
+			addDealerPrompt: function() {
+				var sector = PhaserGame.activeSector;
+				// 
+				if(PhaserGame.dealerNotifications[sector].length > 0) {
+					PhaserGame.userPromptActive = true;
+					var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
+					var notification = PhaserGame.dealerNotifications[sector].pop();
+
+					if(notification.confirmAction) {
+						PhaserGame.confirmAction = notification.confirmAction;
+						PWG.ViewManager.showView('global:confirmButton');
+					}
+					if(notification.cancelAction) {
+						PhaserGame.cancelAction = notification.cancelAction;
+					} else {
+						PhaserGame.cancelAction = PhaserGame.removeDealerPrompt;
+					}
+					PWG.ViewManager.hideView('global:backButton');
+					PWG.ViewManager.showView('global:cancelButton');
+					PWG.ViewManager.addView(notification, notifications, true);
+
+					if(PhaserGame.dealerNotifications[sector].length === 0) {
+						PhaserGame.hideDealerAvailableIcon();
+					}
+				}
+			},
+			removeDealerPrompt: function() {
+				// 
+				PWG.ViewManager.showView('global:backButton');
+				PWG.ViewManager.hideView('global:cancelButton');
+				PWG.ViewManager.hideView('global:confirmButton');
+				PWG.ViewManager.removeView('notification', 'global:notifications');
+				PhaserGame.cancelAction = null;
+				PhaserGame.confirmAction = null;
+				PhaserGame.userPromptActive = false;
+			},
 			addDealer: function(dealer) {
-				// trace('addDealer, dealer = ', dealer);
+				// 
+				PhaserGame.userPromptActive = false;
 				var config = dealer.config;
-				PhaserGame.removeNotification();
+				PhaserGame.removeDealerPrompt();
 				config.cell = GridManager.getRandomEmptyCellIndex(config.sector);
 				GridManager.addBuilding(config, config.sector);
 				BuildingManager.addDealer(dealer);
@@ -2340,27 +2388,28 @@ var gameLogic = {
 				var view = PWG.ViewManager.getControllerFromPath(viewPath);
 				var frameKey = config.type.toUpperCase() + '_' + config.state.toUpperCase();
 				var frame = TileCellFrames[frameKey];
-				// trace('\tviewPath = ' + viewPath + ', view = ', view);
+				// 
 
 				PWG.ViewManager.setFrame(viewPath, frame);
 				view.config.attrs.frame = frame;
 			},
 			resetDealer: function(dealer) {
-				PhaserGame.removeNotification();
-				// trace('resetDealer, dealer = ', dealer);
+				PhaserGame.removeDealerPrompt();
+				// 
+				PhaserGame.userPromptActive = false;
 				var plant = BuildingManager.findBuilding(dealer.config.plantId);
 				plant.dealerNotifications[dealer.config.modelId] = false;
 			},
 			// SUPPLIERS
-			addSupplierOpportunityNotification: function(event) {
-				// trace('addSupplierOpportunityNotification, event = ', event);
+			createSupplierOpportunity: function(event) {
+				// 
 				var supplier = event.supplier;
 				var notification = PWG.Utils.clone(PhaserGame.config.dynamicViews.notification);
 				var supplierNotification = PWG.Utils.clone(PhaserGame.config.dynamicViews.supplierNotification);
 
 				var notificationText = PhaserGame.config.notificationText['supplierNotification'];
 
-				// trace('addSupplierOppurtunity, supplier = ', event.supplier);
+				// 
 				var partType = supplier.config.partType;
 				var typeText;
 				
@@ -2385,31 +2434,21 @@ var gameLogic = {
 				// notification.views.title.text = config.title;
 				notification.views.content.text = statementText.toUpperCase();
 				supplierNotification.views.menuTitle.text = 'PARTS SUPPLIER\n' + supplier.config.location.toUpperCase();
-				// trace('notification = ', notification);
+				// 
 				PhaserGame.activeSupplier = supplier;
 				notification.views[supplierNotification.name] = supplierNotification;
 				PhaserGame.supplierNotifications.push(notification);
-				PhaserGame.showSupplierPrompt();
+				PhaserGame.showSupplierAvailableIcon();
 			},
-			showSupplierPrompt: function() {
-				PWG.ViewManager.showView('global:supplierPrompt');
-				// var supplierPrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.supplierPrompt);
-				// var notificationText = PhaserGame.config.notificationText;
-				// supplierPrompt.views.title.text = notificationText.supplierPrompt.content.toUpperCase();
-				// var global = PWG.ViewManager.getControllerFromPath('global');
-				// PWG.ViewManager.addView(supplierPrompt, global, true);
-				// PhaserGame.supplierPromptOpen = true;
+			showSupplierAvailableIcon: function() {
+				PWG.ViewManager.showView('global:supplierAvailableIcon');
 			},
-			hideSupplierPrompt: function() {
-				PWG.ViewManager.hideView('global:supplierPrompt');
-				// if(PhaserGame.supplierPromptOpen) {
-				// 	PWG.ViewManager.removeView('supplierPrompt', 'global');
-				// 	PhaserGame.supplierPromptOpen = false;
-				// }
+			hideSupplierAvailableIcon: function() {
+				PWG.ViewManager.hideView('global:supplierAvailableIcon');
 			},
-			showSupplierNotification: function() {
+			addSupplierPrompt: function() {
+				
 				if(PhaserGame.turnActive) {
-					PhaserGame.supplierPromptClicked = false;
 					var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
 					var supplierNotification = PhaserGame.supplierNotifications.pop();
 					PWG.ViewManager.addView(supplierNotification, notifications, true);
@@ -2433,107 +2472,82 @@ var gameLogic = {
 						},
 						params: {}
 					};
+
+					if(PhaserGame.supplierNotifications.length === 0) {
+						PhaserGame.hideSupplierAvailableIcon();
+					}
 				}
 			},
-			hideSupplierNotification: function() {
+			removeSupplierPrompt: function() {
 				PhaserGame.activeSupplier = null;
+				PhaserGame.cancelAction = null;
+				PhaserGame.confirmAction = null;
+				PhaserGame.userPromptActive = false;
+				WholesaleManager.supplierPending = false;
+				
 				PWG.ViewManager.showView('global:backButton');
 				PWG.ViewManager.hideView('global:cancelButton');
-				PWG.ViewManager.hideView('global:confirmButton');
 				PWG.ViewManager.removeView('notification', 'global:notifications');
 				if(PWG.ScreenManager.currentId === 'buildingEdit') {
 					PWG.ViewManager.showView('global:plantDetailGroup:equipmentButton');
 				}
-				PhaserGame.cancelAction = null;
-				PhaserGame.confirmAction = null;
-				PhaserGame.supplierPromptClicked = false;
+				
+				if(PWG.ScreenManager.currentId === 'equipmentEdit' && PhaserGame.machinePartsComplete) {
+					PWG.ViewManager.showView('global:confirmButton');
+				} else {
+					PWG.ViewManager.hideView('global:confirmButton');
+				}
 			},
 			addSupplier: function(supplier) {
-				// trace('addSupplier, supplier = ', supplier);
-				PhaserGame.hideSupplierNotification();
-				PhaserGame.hideSupplierPrompt();
+				// 
+				PhaserGame.removeSupplierPrompt();
+				PhaserGame.hideSupplierAvailableIcon();
 				WholesaleManager.addSupplier(supplier);
 			},
 			resetSupplier: function(supplier) {
-				PhaserGame.hideSupplierNotification();
-				PhaserGame.hideSupplierPrompt();
-				// trace('resetDealer, dealer = ', dealer);
+				PhaserGame.removeSupplierPrompt();
+				PhaserGame.hideSupplierAvailableIcon();
+				// 
 			},
 			// TRADE_ROUTES
-			showTradeRouteNotification: function(id) {
-				// trace('showTradeRouteNotification: ', id, ', tradeRouteNotifications = ', PhaserGame.tradeRouteNofication);
-				if(PhaserGame.tradeRouteNotifications.hasOwnProperty(id)) {
-					var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
-					var notification = PhaserGame.tradeRouteNotifications[id];
-					delete PhaserGame.tradeRouteNotifications[id];
-					
-					if(notification.confirmAction) {
-						PhaserGame.confirmAction = notification.confirmAction;
-						PWG.ViewManager.showView('global:confirmButton');
-					}
-					if(notification.cancelAction) {
-						PhaserGame.cancelAction = notification.cancelAction;
-					} else {
-						PhaserGame.cancelAction = PhaserGame.removeTradeRouteNotification;
-					}
-					PhaserGame.activeTradeRouteNotification = id; 
-					
-					PWG.ViewManager.hideView('global:backButton');
-					PWG.ViewManager.showView('global:cancelButton');
-					PWG.ViewManager.addView(notification, notifications, true);
-					PhaserGame.tradeRouteNotificationOpen = true;
-				}
-			},
-			removeTradeRouteNotification: function(tradeRoute) {
-				// trace('removeTradeRouteNotification, id = ' + PhaserGame.activeTradeRouteNotification);
-				if(PhaserGame.tradeRouteNotificationOpen) {
-					PWG.ViewManager.removeView(tradeRoute.config.id, 'world:tradeRouteAlertIcons');
-					PWG.ViewManager.removeView(PhaserGame.activeTradeRouteNotification, 'global:notifications');
-					delete PhaserGame.availableTradeRoutes[PhaserGame.activeTradeRouteNotification];
-					PhaserGame.activeTradeRouteNotification = '';
-					PWG.ViewManager.hideView('global:confirmButton');
-					PWG.ViewManager.hideView('global:cancelButton');
-					PWG.ViewManager.showView('global:backButton');
-					PhaserGame.removeTradeRouteViews();
-					PhaserGame.addTradeRouteViews();
-					
-					PhaserGame.tradeRouteNotificationOpen = false;
-				}
-			},
-			showAvailableTradeRouteArrowsAndIcons: function() {
-				PhaserGame.hideTradeRouteAlert();
-				if(PWG.ScreenManager.currentId !== 'world') {
-					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
-					PhaserGame.worldZoomIn();
-				} else if(!PhaserGame.zoomedIn) {
-					PhaserGame.worldZoomIn();
-				} else {
-					PhaserGame.removeTradeRouteViews();
-					PhaserGame.addTradeRouteViews();
-				}
-			},
-			addTradeRouteOpportunityNotification: function(event) {
+			createTradeRouteOpportunity: function(event) {
+				
 				var notification = PWG.Utils.clone(PhaserGame.config.dynamicViews.notification);
 				var tradeRoutePrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.tradeRoutePrompt);
 
-				var notificationText = PhaserGame.config.notificationText['tradeRoute'];
+				var notificationText = PhaserGame.config.notificationText;
+				var location = TradeRouteLocations[event.tradeRoute.config.worldLocation];
 
 				var modelName = event.plant.equipment[event.tradeRoute.config.modelId].name;
 				var resell = PWG.Utils.formatMoney(event.tradeRoute.config.resell, 0);
 
-				var statementText = PWG.Utils.parseMarkup(notificationText.content, {
-					plant: event.plant.name,
-					quantity: event.tradeRoute.quantityPerYear,
-					model: modelName,
-					resell: resell
-				});
+				var statementText;
+
+				
+				if(location === 'africa' && !TurnManager.playerData.firstAfricanRoute) {
+					statementText = notificationText['impExpBank'].content;
+					TurnManager.playerData.firstAfricanRoute = true;
+				} else if(location === 'asia' && !TurnManager.playerData.firstAsianRoute) {
+					statementText = notificationText['transPacific'].content;
+					TurnManager.playerData.firstAsianRoute = true;
+				} else if(location === 'europe' && !TurnManager.playerData.firstEuropeanRoute) {
+					statementText = notificationText['transAtlantic'].content;
+					TurnManager.playerData.firstEuropeanRoute = true;
+				} else {
+					statementText = PWG.Utils.parseMarkup(notificationText['tradeRoute'].content, {
+						plant: event.plant.name,
+						quantity: event.tradeRoute.quantityPerYear,
+						model: modelName,
+						resell: resell
+					});
+				}
 
 				notification.name = event.tradeRoute.config.id;
 				// notification.views.person.img = 'tradeRouteGirl';
-				notification.views.person.img = PhaserGame.config.notificationPeopleImages.tradeRoutes[TradeRouteLocations[event.tradeRoute.config.worldLocation]];
+				notification.views.person.img = PhaserGame.config.notificationPeopleImages.tradeRoutes[location];
 				
 				notification.views.content.text = statementText.toUpperCase();
-				// trace('------ notification = ', notification);
+				// 
 
 				tradeRoutePrompt.views.title.text = event.tradeRoute.config.name;
 				notification.views[tradeRoutePrompt.name] = tradeRoutePrompt;
@@ -2549,30 +2563,95 @@ var gameLogic = {
 				};
 				PhaserGame.availableTradeRoutes[event.tradeRoute.config.id] = event.tradeRoute;
 				PhaserGame.tradeRouteNotifications[notification.name] = notification;
-				PhaserGame.showTradeRouteAlert();
+				PhaserGame.showTradeRouteAvailableIcon();
 
 			},
+			showTradeRouteAvailableIcon: function() {
+				PWG.ViewManager.showView('global:tradeRouteAlertIcon');
+			},
+			hideTradeRouteAvailableIcon: function() {
+				PWG.ViewManager.hideView('global:tradeRouteAlertIcon');
+			},
+			showAvailableTradeRouteArrowsAndIcons: function() {
+				PhaserGame.hideTradeRouteAvailableIcon();
+				// reset user prompt active from game-level trade route alert icon
+				PhaserGame.userPromptActive = false; 
+				if(PWG.ScreenManager.currentId !== 'world') {
+					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
+					PhaserGame.worldZoomIn();
+				} else if(!PhaserGame.zoomedIn) {
+					PhaserGame.worldZoomIn();
+				} else {
+					PhaserGame.removeTradeRouteViews();
+					PhaserGame.addTradeRouteViews();
+				}
+			},
+			addTradeRoutePrompt: function(id) {
+				// 
+				if(PhaserGame.turnActive) {
+					if(PhaserGame.tradeRouteNotifications.hasOwnProperty(id)) {
+						var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
+						var notification = PhaserGame.tradeRouteNotifications[id];
+						delete PhaserGame.tradeRouteNotifications[id];
+
+						if(notification.confirmAction) {
+							PhaserGame.confirmAction = notification.confirmAction;
+							PWG.ViewManager.showView('global:confirmButton');
+						}
+						if(notification.cancelAction) {
+							PhaserGame.cancelAction = notification.cancelAction;
+						} else {
+							PhaserGame.cancelAction = PhaserGame.removeTradeRoutePrompt;
+						}
+						PhaserGame.activeTradeRouteNotification = id; 
+
+						PWG.ViewManager.hideView('global:backButton');
+						PWG.ViewManager.showView('global:cancelButton');
+						PWG.ViewManager.addView(notification, notifications, true);
+						PhaserGame.tradeRouteNotificationOpen = true;
+					}
+				}
+				
+			},
+			removeTradeRoutePrompt: function(tradeRoute) {
+				// 
+				if(PhaserGame.tradeRouteNotificationOpen) {
+					// PWG.ViewManager.removeView(tradeRoute.config.id, 'world:tradeRouteAlertIcons');
+					PWG.ViewManager.removeView(PhaserGame.activeTradeRouteNotification, 'global:notifications');
+					delete PhaserGame.availableTradeRoutes[PhaserGame.activeTradeRouteNotification];
+					PhaserGame.activeTradeRouteNotification = '';
+					PWG.ViewManager.hideView('global:confirmButton');
+					PWG.ViewManager.hideView('global:cancelButton');
+					PWG.ViewManager.showView('global:backButton');
+					PhaserGame.removeTradeRouteViews();
+					PhaserGame.addTradeRouteViews();
+					
+					PhaserGame.userPromptActive = false;
+					PhaserGame.tradeRouteNotificationOpen = false;
+				}
+			},
+			// intermediate step for trade routes between available icon click and user prompt
 			addTradeRoute: function(tradeRoute) {
-				// trace('addTradeRoute, tradeRoute = ', tradeRoute);
+				// 
 				var config = tradeRoute.config;
 				BuildingManager.addTradeRoute(tradeRoute);
-				PhaserGame.removeTradeRouteNotification(tradeRoute);
+				PhaserGame.removeTradeRoutePrompt(tradeRoute);
 			},
 			resetTradeRoute: function(tradeRoute) {
-				PhaserGame.removeTradeRouteNotification(tradeRoute);
-				// trace('resetTradeRoute, tradeRoute = ', tradeRoute);
+				PhaserGame.removeTradeRoutePrompt(tradeRoute);
+				// 
 				var plant = BuildingManager.findBuilding(tradeRoute.config.plantId);
 				plant.tradeRouteNotifications[tradeRoute.config.modelId] = false;
 			},
 			// INVENTORY
 			inventoryAdded: function(plant, parentPath) {
-				// trace('PhaserGame/inventoryAdded, plant = ', plant);
+				// 
 				if(plant.sector === PhaserGame.activeSector) {
 					PhaserGame.addUsDetailIconAnimation(IconAnimations.PLUS_SIGN, plant, parentPath);
 				}
 			},
 			machineSold: function(building) {
-				// trace('PhaserGame/machineSold, dealer = ', dealer);
+				// 
 				if(building.type === BuildingTypes.DEALER) {
 					if(PWG.ScreenManager.currentId === 'usDetail' && building.sector === PhaserGame.activeSector) {
 						PhaserGame.addUsDetailIconAnimation(IconAnimations.DOLLAR_SIGN, building, 'usDetail:usDetailGrid');
@@ -2584,7 +2663,7 @@ var gameLogic = {
 				}
 			},
 			addUsDetailIconAnimation: function(icon, building, parentPath) {
-				// trace('PhaserGame/addIconAnimation, building = ', building);
+				// 
 				// var cell = GridManager.grids[building.sector][building.cell];
 				var position = PWG.ViewManager.getControllerFromPath(parentPath+':usDetailGridItem'+building.cell).view.position;
 				var key = icon + '_' + building.sector + '_' + building.cell;
@@ -2601,15 +2680,15 @@ var gameLogic = {
 				AnimationManager.add(config);
 			},
 			addWorldIconAnimation: function(icon, building, parentPath) {
-				trace('PhaserGame/addWorldIconAnimation: parentPath = ' + parentPath + ' building = ', building);
+				
 				var path = parentPath+building.id;
-				trace('\tpath = ' + path);
+				
 				if(PWG.ViewManager.collection.world.children.tradeRoutePins) {
 					var parent = PWG.ViewManager.getControllerFromPath(path);
-					// trace('\tparent = ', parent);
+					// 
 					if(typeof(parent) !== 'undefined') {
 						var position = parent.children.pin.view.position;
-						// trace('\tposition = ', position);
+						// 
 						var key = icon + '_' + building.worldLocation;
 						var name = icon + AnimationManager.getNextIndex(key);
 						var config = {
@@ -2668,7 +2747,7 @@ var gameLogic = {
 			setSelectedMachinePieceSprite: function() {
 				PhaserGame.resetAllMachinePieceSpriteFrames();
 				var piece = PhaserGame.spriteTranslations[PhaserGame.machinePieces[PhaserGame.currentMachinePiece]];
-				// trace('setSelectedMachinePieceSprite, piece = ' + piece + ', currentMachinePiece = ' + PhaserGame.currentMachinePiece + ', machinePieces = ', PhaserGame.machinePieces);
+				// 
 				PhaserGame.setMachinePieceSpriteFrame(piece, 1);
 			},
 			resetAllMachinePieceSpriteFrames: function() {
@@ -2692,7 +2771,7 @@ var gameLogic = {
 				var size = PhaserGame.activeMachineSize;
 				var partsMenu = PWG.ViewManager.getControllerFromPath('equipmentEdit:machineEdit:partsMenu');
 				var partsData = gameData.parts[type][size];
-				// trace('populatePartsMenu, type = ' + type + '\tparts data = ', partsData);
+				// 
 				var partIconsConfig = PWG.Utils.clone(PhaserGame.config.dynamicViews.partIcons);
 				var itemConfig = PhaserGame.config.dynamicViews.partIcon;
 				var offset = itemConfig.offset;
@@ -2703,7 +2782,7 @@ var gameLogic = {
 				PWG.Utils.each(
 					partsData,
 					function(part, idx) {
-						// trace('\tadding part[' + idx + '] info to views, part = ', part);
+						// 
 						var item = PWG.Utils.clone(itemConfig);
 						item.name = type + idx;
 						item.views.icon.img = part.img;
@@ -2726,9 +2805,7 @@ var gameLogic = {
 					},
 					this
 				);
-				// trace('partIconsConfig = ', partIconsConfig);
-				// partIconsConfig.views.title.text = PartDescriptions[type];
-				// partIconsConfig.views.closeButton.callback = gameLogic.buttonCallbacks.partsMenuClose;
+				// 
 				partIconsConfig.name = 'partIconsConfig';
 
 				PWG.ViewManager.addView(partIconsConfig, partsMenu, true);
@@ -2736,10 +2813,10 @@ var gameLogic = {
 				if(WholesaleManager.getTotalPartTypeCount(PhaserGame.activePartType, PhaserGame.activeMachineSize) > 0) {
 					PhaserGame.addWholesalePartPrompt();
 				}
-				// trace('\tcreated partsMenu from: ', partIconsConfig, '\tcollection now = ', collection);
+				// 
 			},
 			addWholesalePartsMenu: function() {
-				// trace('PhaserGame/addWholesalePartsMenu');
+				// 
 				PWG.ViewManager.removeView('partIconsConfig', 'equipmentEdit:machineEdit:partsMenu', true);
 
 
@@ -2759,7 +2836,7 @@ var gameLogic = {
 				PWG.Utils.each(
 					suppliers,
 					function(supplier, id) {
-						// trace('supplier['+id+'] = ', supplier);
+						// 
 						var item = PWG.Utils.clone(itemConfig);
 						item.name = id + '_' + type;
 						item.views.icon.img = supplier.part.img;
@@ -2785,7 +2862,7 @@ var gameLogic = {
 
 				partIconsConfig.name = 'wholesalePartsMenu';
 				// partIconsConfig.attrs.visible = true;
-				// trace('\tpartsIconsConfig now = ', partIconsConfig);
+				// 
 				PhaserGame.cancelAction = {
 					method: function() {
 						PhaserGame.removeWholesalePartsMenu();
@@ -2821,7 +2898,7 @@ var gameLogic = {
 					optionalParts,
 					function(optionalPart, idx) {
 						var part = gameData.optionalParts[optionalPart];
-						// trace('\tadding optional part[' + idx + '] info to views: ', part);
+						// 
 						var item = PWG.Utils.clone(itemConfig);
 						item.name = part.id + idx;
 						item.views.icon.img = part.img;
@@ -2845,7 +2922,6 @@ var gameLogic = {
 					this
 				);
 				partIconsConfig.views.title.text = 'OPTIONAL PARTS';
-				partIconsConfig.views.closeButton.callback = gameLogic.buttonCallbacks.optionalPartsMenuClose;
 				partIconsConfig.name = 'optionalPartsMenu';
 
 				PWG.ViewManager.addView(partIconsConfig, partsMenu, true);
@@ -2874,7 +2950,7 @@ var gameLogic = {
 				
 				var tween = PhaserGame.phaser.add.tween(partsMenu.view);
 				tween.onComplete.add(function() {
-					// trace('wiper tween complete');
+					// 
 				})
 				tween.to({y: 0}, 500, Phaser.Easing.Linear.None, true, Math.random() * 500);
 				tween.start();
@@ -2886,19 +2962,14 @@ var gameLogic = {
 				// partsMenu.view.y = -(PWG.Stage.gameH);
 			},
 			addMachineDiscardPrompt: function() {
-				PhaserGame.cancelAction = null;
+				
+				// PhaserGame.cancelAction = null;
 
-				if(PhaserGame.newMachine) {
+				// if(PhaserGame.newMachine) {
 
 					var equipmentEdit = PWG.ViewManager.getControllerFromPath('equipmentEdit');
 					var discardMachinePrompt = PWG.Utils.clone(PhaserGame.config.dynamicViews.discardMachinePrompt);
-
-					PhaserGame.cancelAction = {
-						method: function() {
-							PhaserGame.removeMachineDiscardPrompt();
-						},
-						params: {}
-					};
+					PhaserGame.promptToCancelMachineEdit = true;
 					PhaserGame.confirmAction = {
 						method: function() {
 							PhaserGame.removeMachineDiscardPrompt();
@@ -2909,57 +2980,97 @@ var gameLogic = {
 
 					PWG.ViewManager.showView('global:confirmButton');
 					PWG.ViewManager.addView(discardMachinePrompt, equipmentEdit, true);
-				} else {
-					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentList' });
-				}
+				// } else {
+				// 	PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentList' });
+				// }
 			},
 			removeMachineDiscardPrompt: function() {
+				
 				PWG.ViewManager.removeView('discardMachinePrompt', 'equipmentEdit');
 				PhaserGame.confirmAction = null;
-				PhaserGame.cancelAction = null;
+				PhaserGame.userPromptActive = false;
 				if(!PhaserGame.activeMachine.isComplete) {
 					PWG.ViewManager.hideView('global:confirmButton');
 				}
 			},
-			addSupplierNotification: function() {
-				var supplierNotification = PWG.Utils.clone(PhaserGame.config.dynamicViews.supplierNotifcation);
-				var global = PWG.ViewManager.getControllerFromPath('global');
-				// trace('addSuplierNotification, supplierNotification = ', supplierNotification, '\tglobal = ', global);
-				PWG.ViewManager.addView(supplierNotification, global, true);
-
-				PhaserGame.confirmAction = {
-					method: function() {
-						PhaserGame.removeSupplierNotification();
-						PhaserGame.addSupplier();
-					},
-					params: {}
-				};
-
-				PhaserGame.cancelAction = {
-					method: function() {
-						PhaserGame.removeSupplierNotification();
-					},
-					params: {}
-				};
-
-				PhaserGame.confirmAction = null;
-
-				PWG.ViewManager.hideView('global:confirmButton');
-				PWG.ViewManager.hideView('global:cancelButton');
+			// BONUSES
+			showBonusPrompt: function() {
+				PWG.ViewManager.show('global:bonusNotificationIcon');
 			},
-			removeSupplierNotification: function() {
-				PWG.ViewManager.removeView('supplierNotification', 'global');
-				PWG.ViewManager.hideView('global:confirmButton');
+			hideBonusPrompt: function() {
+				PWG.ViewManager.hideView('global:bonusNotificationIcon');
+			},
+			showBonusNofitication: function() {
+				
+				if(PhaserGame.turnActive && !PhaserGame.userPromptActive) {
+					PhaserGame.userPromptActive = true;
+
+					var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
+					var bonusNotification = PhaserGame.bonusNotifications.pop();
+
+					PWG.ViewManager.addView(supplierNotification, notifications, true);
+					PWG.ViewManager.hideView('global:backButton');
+					PWG.ViewManager.showView('global:cancelButton');
+					PWG.ViewManager.showView('global:confirmButton');
+
+					if(PWG.ScreenManager.currentId === 'buildingEdit') {
+						PWG.ViewManager.hideView('global:plantDetailGroup:equipmentButton');
+					}
+					PhaserGame.confirmAction = {
+						method: function() {
+							PhaserGame.addSupplier(PhaserGame.activeSupplier);
+						},
+						params: {}
+					};
+
+					PhaserGame.cancelAction = {
+						method: function() {
+							PhaserGame.resetSupplier(PhaserGame.activeSupplier);
+						},
+						params: {}
+					};
+				}
+			},
+ 			addBonusNotification: function() {
+				var sector = PhaserGame.activeSector;
+				// 
+				if(PhaserGame.bonusNotifications.length > 0) {
+					var notifications = PWG.ViewManager.getControllerFromPath('global:notifications');
+					var notification = PhaserGame.bonusNotifications.pop();
+
+					if(notification.confirmAction) {
+						PhaserGame.confirmAction = notification.confirmAction;
+						PWG.ViewManager.showView('global:confirmButton');
+					}
+					if(notification.cancelAction) {
+						PhaserGame.cancelAction = notification.cancelAction;
+					} else {
+						PhaserGame.cancelAction = PhaserGame.removeDealerPrompt;
+					}
+					PWG.ViewManager.hideView('global:backButton');
+					PWG.ViewManager.showView('global:cancelButton');
+					PWG.ViewManager.addView(notification, notifications, true);
+
+					if(PhaserGame.bonusNotifications.length === 0) {
+						PhaserGame.hideDealerPrompt();
+					}
+				}
+			},
+			removeBonusNofitication: function() {
+				// 
+				PWG.ViewManager.showView('global:backButton');
 				PWG.ViewManager.hideView('global:cancelButton');
+				PWG.ViewManager.hideView('global:confirmButton');
+				PWG.ViewManager.removeView('notification', 'global:notifications');
 				PhaserGame.cancelAction = null;
-				PhaserGame.confirmAction = null;
+				PhaserGame.userPromptActive = false;
 			},
 			// YEAR END
 			buildYearEndReport: function() {
 				var levelGoals = gameData.levels[TurnManager.playerData.level].goals;
 				var currentData = TurnManager.currentData;
 				PhaserGame.levelPassed = true;
-				// trace('PhaserGame/buildYearEndReport, levelGoals = ', levelGoals);
+				// 
 				
 				var yearSummary = PWG.Utils.clone(PhaserGame.config.dynamicViews.yearSummary);
 				var summaryGoalText = PhaserGame.config.dynamicViews.summaryGoalText;
@@ -2972,12 +3083,12 @@ var gameLogic = {
 					function(goal, idx) {
 						var textValue;
 						var goalPassed = true;
-						// trace('\tgoal['+idx+'] = ', goal);
+						// 
 						switch(goal.calculation) {
 							case 'money':
 							textValue = '$' + PWG.Utils.formatMoney(currentData[goal.type], 0) + ' / ' + '$' + PWG.Utils.formatMoney(goal.value, 0);
 							if(currentData[goal.type] < goal.value) {
-								// trace('\tcurrentData['+goal.type+']: ' + currentData[goal.type] + ' is less than goal: ' + goal.value);
+								// 
 								PhaserGame.levelPassed = false;
 								goalPassed = false;
 							}
@@ -2986,7 +3097,7 @@ var gameLogic = {
 							case 'number':
 							textValue = currentData[goal.type] + ' / ' + goal.value;
 							if(currentData[goal.type] < goal.value) {
-								// trace('\tcurrentData['+goal.type+']: ' + currentData[goal.type] + ' is less than goal: ' + goal.value);
+								// 
 								PhaserGame.levelPassed = false;
 								goalPassed = false;
 							}
@@ -2995,7 +3106,7 @@ var gameLogic = {
 							case 'length':
 							textValue = currentData[goal.type].length + ' / ' + goal.value;
 							if(currentData[goal.type].length < goal.value) {
-								// trace('\tcurrentData['+goal.type+'].length: ' + currentData[goal.type].length + ' is less than goal: ' + goal.value);
+								// 
 								PhaserGame.levelPassed = false;
 								goalPassed = false;
 							}
@@ -3020,6 +3131,14 @@ var gameLogic = {
 					},
 					this
 				);
+			
+				// there are bonuses for job creation
+				if(currentData.newBuildings.length > 0) {
+					PWG.ViewManager.showView('turnEnd:smallSuitcaseIcon');
+					// PhaserGame.buildBonusReport(currentData);
+				} else {
+					PWG.ViewManager.hideView('turnEnd:smallSuitcaseIcon');
+				}
 				
 				item = PWG.Utils.clone(summaryText);
 
@@ -3036,7 +3155,7 @@ var gameLogic = {
 				yearSummary.views[item.name] = item;
 
 				PhaserGame.yearSummary = yearSummary;
-				// trace('\tlevel PhaserGame.levelPassed = ' + PhaserGame.levelPassed + '\n\tyearSummary = ', yearSummary);
+				// 
 				if(PhaserGame.levelPassed) {
 					// only save the player data if the user passed the level. 
 					PhaserGame.playerData = TurnManager.playerData;
@@ -3050,7 +3169,7 @@ var gameLogic = {
 					}
 				} else {
 					// if failed, reset turn manager to pre-level playerData
-					// trace('\tfailed to pass level, playerData is: ', PhaserGame.playerData);
+					// 
 					var sectors = TurnManager.playerData.sectors;
 					PWG.Utils.each(
 						sectors,
@@ -3074,6 +3193,79 @@ var gameLogic = {
 				var turnEnd = PWG.ViewManager.getControllerFromPath('turnEnd');
 				PWG.ViewManager.addView(PhaserGame.yearSummary, turnEnd, true);
 				PhaserGame.yearSummary = {};
+			},
+			addBonusReport: function() {
+				var currentData = TurnManager.currentData;
+				var bonusTextViews = [];
+				var bonusesText = PhaserGame.config.bonusesText;
+				var bonusesNotification = PWG.Utils.clone(PhaserGame.config.dynamicViews.bonusesNotification);
+				var summaryBonusesText = PWG.Utils.clone(PhaserGame.config.dynamicViews.summaryBonusesText);
+				var summaryBonusText = PhaserGame.config.dynamicViews.summaryBonusText;
+				var typeCount = 0;
+				
+				var buildingTypes = {};
+				PWG.Utils.each(
+					BuildingTypes,
+					function(type) {
+						
+						if(type !== BuildingTypes.SUPPLIER) {
+							buildingTypes[type] = {
+								count: 0,
+								name: BuildingNames[type]
+							};
+						}
+					},
+					this
+				);
+
+				PWG.Utils.each(
+					currentData.newBuildings,
+					function(newBuilding) {
+						buildingTypes[newBuilding.type].count++;
+					},
+					this
+				);
+
+				
+				
+				PWG.Utils.each(
+					buildingTypes,
+					function(building, type) {
+						if(building.count > 0) {
+							if(building.count > 1) {
+								building.name += 's'
+							}
+							var text = bonusesText.buildings;
+							
+							var bonusText = PWG.Utils.parseMarkup(text, 
+							{
+								count: building.count,
+								name: building.name,
+								bonus: (gameData.bonuses.jobs[type] * building.count)
+							});
+
+							var item = PWG.Utils.clone(summaryBonusText);
+							item.text = bonusText;
+
+							item.y += (typeCount * item.offsetY);
+							
+							item.name += '_' + type; 
+							
+							summaryBonusesText.views[type] = item;
+							summaryBonusesText.attrs.visible = false;
+							typeCount++;
+						}
+					},
+					this
+				);
+				
+				var turnEnd = PWG.ViewManager.getControllerFromPath('turnEnd');
+				PWG.ViewManager.addView(bonusesNotification, turnEnd, true);
+				PWG.ViewManager.addView(summaryBonusesText, turnEnd, true);
+			},
+			removeBonuses: function() {
+				PWG.ViewManager.removeView('bonusesNotification', 'turnEnd');
+				PWG.ViewManager.removeView('summaryBonusesText', 'turnEnd');
 			},
 			gameCompleted: function() {
 				// all levels completed. when user clicks confirm, display
@@ -3102,10 +3294,11 @@ var gameLogic = {
 			}
 		}
 	},
+	// sprite click handlers
 	input: {
 		dismissTutorial: {
 			inputDown: function() {
-				// trace('remove tutorial guy');
+				// 
 				PhaserGame.removeTutorialGuy();
 			}
 		},
@@ -3118,29 +3311,61 @@ var gameLogic = {
 				}
 			}
 		},
-		manualPage: {
+		manualPageForward: {
 			inputDown: function() {
+				
 				PhaserGame.nextManualPage();
 			}
 		},
-		notificationEnvelope: {
+		manualPageBackward: {
 			inputDown: function() {
-				PhaserGame.showNotification();
+				PhaserGame.prevManualPage();
+			}
+		},
+		notificationIcon: {
+			inputDown: function() {
+				if(!PhaserGame.userPromptActive) {
+					PhaserGame.userPromptActive = true;
+					PhaserGame.addDealerPrompt();
+				}
+			}
+		},
+		bonusNotificationIcon: {
+			inputDown: function(event) {
+				PhaserGame.addBonusNotification();
+			}
+		},
+		supplierAvailableIcon: {
+			inputDown: function(event) {
+				if(PhaserGame.tutorialOpen) {
+					PhaserGame.removeTutorialGuy();
+				}
+				
+				if(!PhaserGame.userPromptActive) {
+					PhaserGame.userPromptActive = true;
+					PhaserGame.addSupplierPrompt();
+				}
 			}
 		},
 		tradeRouteAlertIcon: {
 			inputDown: function() {
-				PhaserGame.showAvailableTradeRouteArrowsAndIcons();
+				if(!PhaserGame.userPromptActive) {
+					PhaserGame.userPromptActive = true;
+					PhaserGame.showAvailableTradeRouteArrowsAndIcons();
+				}
 			}
 		},
 		tradeRouteAvailableIcon: {
 			inputDown: function() {
-				PhaserGame.showTradeRouteNotification(this.controller.config.tradeRouteId);
+				if(!PhaserGame.userPromptActive) {
+					PhaserGame.userPromptActive = true;
+					PhaserGame.addTradeRoutePrompt(this.controller.config.tradeRouteId);
+				}
 			}
 		},
 		newPlant: {
 			inputDown: function() {
-				// trace('plantIcon/inputDown, this = ', this);
+				// 
 				if(this.selected) {
 					PhaserGame.selectedIcon = '';
 					this.selected = false;
@@ -3156,7 +3381,7 @@ var gameLogic = {
 			},
 			onDragStop: function() {
 				var view = this.controller.view;
-				// trace('config on drag stop, view x/y = ' + view.x + '/' + view.y + ', max = ' + (PWG.Stage.unit * 10.5) + ', min = ' + (PWG.Stage.unit * 3.5));
+				// 
 				if(view.y < (PWG.Stage.unit * 3.5)) {
 					view.y = PWG.Stage.unit * 3.5;
 				} else if(view.y > (PWG.Stage.unit * 10.5)) {
@@ -3169,7 +3394,7 @@ var gameLogic = {
 				} else if(view.x < 0) {
 					view.x = 0;
 				}
-				// trace('view x/y is now: ' + view.x + '/' + view.y);
+				// 
 			}
 		},
 		editMachine: {
@@ -3198,11 +3423,13 @@ var gameLogic = {
 		},
 		openPartsMenu: {
 			inputDown: function() {
-				trace('show part menu, partValue = ', this.controller.config.partValue);
+				
 				if(PhaserGame.tutorialOpen) {
 					PhaserGame.removeTutorialGuy();
 				}
-				PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: this.controller.config.partValue });
+				if(!PhaserGame.userPromptActive) {
+					PWG.EventCenter.trigger({ type: Events.OPEN_PARTS_MENU, value: this.controller.config.partValue });
+				}
 			}
 		},
 		openOptionalPartsMenu: {
@@ -3210,12 +3437,14 @@ var gameLogic = {
 				if(PhaserGame.tutorialOpen) {
 					PhaserGame.removeTutorialGuy();
 				}
-				PWG.EventCenter.trigger({ type: Events.OPEN_OPTIONAL_PARTS_MENU });
+				if(!PhaserGame.userPromptActive) {
+					PWG.EventCenter.trigger({ type: Events.OPEN_OPTIONAL_PARTS_MENU });
+				}
 			}
 		},
 		partIcon: {
 			inputDown: function(event) {
-				trace('part icon inputDown, add part: ' + this.controller.config.partIdx);
+				
 				if(PhaserGame.tutorialOpen) {
 					PhaserGame.removeTutorialGuy();
 				}
@@ -3232,28 +3461,16 @@ var gameLogic = {
 		},
 		optionalPartIcon: {
 			inputDown: function(event) {
-				// trace('optionalPartIcon inputDown, this = ', this);
+				// 
 				if(PhaserGame.tutorialOpen) {
 					PhaserGame.removeTutorialGuy();
 				}
 				PWG.EventCenter.trigger({ type: Events.ADD_OPTIONAL_PART, value: this.controller.config.part });
 			}
 		},
-		supplierPrompt: {
-			inputDown: function(event) {
-				if(PhaserGame.tutorialOpen) {
-					PhaserGame.removeTutorialGuy();
-				}
-				// trace('supplier prompt input down, clicked = ' + PhaserGame.supplierPromptClicked);
-				if(!PhaserGame.supplierPromptClicked) {
-					PhaserGame.showSupplierNotification();
-					PhaserGame.supplierPromptClicked = true;
-				}
-			}
-		},
 		wholesalePartPrompt: {
 			inputDown: function(event) {
-				// trace('wholesalePartPrompt/inputDown');
+				// 
 				if(PhaserGame.tutorialOpen) {
 					PhaserGame.removeTutorialGuy();
 				}
@@ -3277,22 +3494,39 @@ var gameLogic = {
 				}
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'brief' });
 			}
+		},
+		smallSuitcaseIcon: {
+			inputDown: function(event) {
+				PhaserGame.addBonusReport();
+			}
+		},
+		closedSuitcase: {
+			inputDown: function(event) {
+				PWG.ViewManager.hideView('turnEnd:bonusesNotification:closedSuitcase');
+				PWG.ViewManager.showView('turnEnd:summaryBonusesText');
+			}
+		},
+		openedSuitcase: {
+			inputDown: function(event) {
+				PhaserGame.removeBonuses();
+			}
 		}
 	},
+	// button click handlers
 	buttonCallbacks: {
 		openManual: function() {
-			// trace('settings click');
+			// 
 			if(PhaserGame.tutorialOpen) {
 				PhaserGame.removeTutorialGuy();
 			}
 			PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'manual' });
 		},
 		share: function() {
-			// trace('share click');
+			// 
 			if(PhaserGame.tutorialOpen) {
 				PhaserGame.removeTutorialGuy();
 			}
-			window.open(FACEBOOK_URL);
+			window.open(FACEBOOK_URL, '_system');
 		},
 		manualStart: function() {
 			if(PhaserGame.tutorialOpen) {
@@ -3300,46 +3534,55 @@ var gameLogic = {
 			}
 			PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'manual' });
 		},
-		worldStart: function() {
+		gameStart: function() {
 			if(PhaserGame.tutorialOpen) {
 				PhaserGame.removeTutorialGuy();
 			}
 			var ignitionKey = PWG.ViewManager.getControllerFromPath('home:ignitionKey');
 			ignitionKey.view.events.onAnimationComplete.add(PhaserGame.ignitionAnimationCompleted, this);
 			PWG.PhaserAnimation.play(ignitionKey.name, 'turnOn');
+			// HACK: temporarily adding sound directly; need to implement via pwg.
+			var sfx = PhaserGame.phaser.add.audio('tractorStartup');
+			sfx.play();
 		},
 		worldReturnButton: function() {
-			// trace('worldReturnButton callback');
+			// 
 			if(PhaserGame.tutorialOpen) {
 				PhaserGame.removeTutorialGuy();
 			}
-			if(PWG.ScreenManager.currentId !== 'world') {
-				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
-			} else if(PhaserGame.zoomedIn) {
-				PhaserGame.worldZoomOut();
+			if(!PhaserGame.userPromptActive) {
+				if(PWG.ScreenManager.currentId !== 'world') {
+					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
+				} else if(PhaserGame.zoomedIn) {
+					PhaserGame.worldZoomOut();
+				}
 			}
 		},
 		plusButton: function() {
 			if(PhaserGame.tutorialOpen) {
 				PhaserGame.removeTutorialGuy();
 			}
-			PhaserGame.worldZoomOut();
+			if(!PhaserGame.userPromptActive) {
+				PhaserGame.worldZoomOut();
+			}
 		},
 		minusButton: function() {
 			if(PhaserGame.tutorialOpen) {
 				PhaserGame.removeTutorialGuy();
 			}
-			PhaserGame.worldZoomIn();
+			if(!PhaserGame.userPromptActive) {
+				PhaserGame.worldZoomIn();
+			}
 		},
 		// us detail
 		usDetailStart: function(param) {
-			// trace('usDetailStart callback, this = ', this, '\tparam = ', param);
+			// 
 		}, 
 		northeastDetail: function() {
 			if(PhaserGame.tutorialOpen) {
 				PhaserGame.removeTutorialGuy();
 			}
-			if(!PhaserGame.zoomedIn) {
+			if(!PhaserGame.zoomedIn && !PhaserGame.userPromptActive) {
 				PhaserGame.activeSector = USSectors.NORTH_EAST;
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'usDetail' });
 			}
@@ -3348,7 +3591,7 @@ var gameLogic = {
 			if(PhaserGame.tutorialOpen) {
 				PhaserGame.removeTutorialGuy();
 			}
-			if(!PhaserGame.zoomedIn) {
+			if(!PhaserGame.zoomedIn && !PhaserGame.userPromptActive) {
 				PhaserGame.activeSector = USSectors.SOUTH_EAST;
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'usDetail' });
 			}
@@ -3357,7 +3600,7 @@ var gameLogic = {
 			if(PhaserGame.tutorialOpen) {
 				PhaserGame.removeTutorialGuy();
 			}
-			if(!PhaserGame.zoomedIn) {
+			if(!PhaserGame.zoomedIn && !PhaserGame.userPromptActive) {
 				PhaserGame.activeSector = USSectors.MID_WEST;
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'usDetail' });
 			}
@@ -3366,7 +3609,7 @@ var gameLogic = {
 			if(PhaserGame.tutorialOpen) {
 				PhaserGame.removeTutorialGuy();
 			}
-			if(!PhaserGame.zoomedIn) {
+			if(!PhaserGame.zoomedIn && !PhaserGame.userPromptActive) {
 				PhaserGame.activeSector = USSectors.NORTH_WEST;
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'usDetail' });
 			}
@@ -3375,7 +3618,7 @@ var gameLogic = {
 			if(PhaserGame.tutorialOpen) {
 				PhaserGame.removeTutorialGuy();
 			}
-			if(!PhaserGame.zoomedIn) {
+			if(!PhaserGame.zoomedIn && !PhaserGame.userPromptActive) {
 				PhaserGame.activeSector = USSectors.SOUTH_WEST;
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'usDetail' });
 			}
@@ -3397,77 +3640,74 @@ var gameLogic = {
 			if(PhaserGame.tutorialOpen) {
 				PhaserGame.removeTutorialGuy();
 			}
-			PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentList' });
+			if(!PhaserGame.userPromptActive) {
+				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentList' });
+			}
 		},
 		// add equipment
 		addEquipment: function() {
-			// trace('add equipment button clicked');
+			// 
 			if(PhaserGame.tutorialOpen) {
 				PhaserGame.removeTutorialGuy();
 			}
-			PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentCreate' });
+			if(!PhaserGame.userPromptActive) {
+				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentCreate' });
+			}
 		},
 		newBasicTractor: function() {
-				// trace('new tractor callback');
-				if(PhaserGame.tutorialOpen) {
-					PhaserGame.removeTutorialGuy();
-				}
-			PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.TRACTOR, size: EquipmentSizes.BASIC });
+			// 
+			if(PhaserGame.tutorialOpen) {
+				PhaserGame.removeTutorialGuy();
+			}
+			if(!PhaserGame.userPromptActive) {
+				PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.TRACTOR, size: EquipmentSizes.BASIC });
+			}
 		},
 		newBasicSkidsteer: function() {
 			if(PhaserGame.tutorialOpen) {
 				PhaserGame.removeTutorialGuy();
 			}
-			PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.SKIDSTEER, size: EquipmentSizes.BASIC });
+			if(!PhaserGame.userPromptActive) {
+				PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.SKIDSTEER, size: EquipmentSizes.BASIC });
+			}
 		},
 		newMediumTractor: function() {
-				// trace('new tractor callback');
-				if(PhaserGame.tutorialOpen) {
-					PhaserGame.removeTutorialGuy();
-				}
-			PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.TRACTOR, size: EquipmentSizes.MEDIUM });
+			// 
+			if(PhaserGame.tutorialOpen) {
+				PhaserGame.removeTutorialGuy();
+			}
+
+			if(!PhaserGame.userPromptActive) {
+				PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.TRACTOR, size: EquipmentSizes.MEDIUM });
+			}
 		},
 		newMediumSkidsteer: function() {
 			if(PhaserGame.tutorialOpen) {
 				PhaserGame.removeTutorialGuy();
 			}
-			PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.SKIDSTEER, size: EquipmentSizes.MEDIUM });
+			if(!PhaserGame.userPromptActive) {
+				PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.SKIDSTEER, size: EquipmentSizes.MEDIUM });
+			}
 		},
 		newHeavyTractor: function() {
-				// trace('new tractor callback');
-				if(PhaserGame.tutorialOpen) {
-					PhaserGame.removeTutorialGuy();
-				}
-			PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.TRACTOR, size: EquipmentSizes.HEAVY });
+			// 
+			if(PhaserGame.tutorialOpen) {
+				PhaserGame.removeTutorialGuy();
+			}
+			if(!PhaserGame.userPromptActive) {
+				PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.TRACTOR, size: EquipmentSizes.HEAVY });
+			}
 		},
 		newHeavySkidsteer: function() {
 			if(PhaserGame.tutorialOpen) {
 				PhaserGame.removeTutorialGuy();
 			}
-			PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.SKIDSTEER, size: EquipmentSizes.HEAVY });
-		},
-		// equipment edit
-		partsMenuClose: function() {
-			if(PhaserGame.tutorialOpen) {
-				PhaserGame.removeTutorialGuy();
+			if(!PhaserGame.userPromptActive) {
+				PWG.EventCenter.trigger({ type: Events.MACHINE_TYPE_SELECTION, value: EquipmentTypes.SKIDSTEER, size: EquipmentSizes.HEAVY });
 			}
-			PWG.EventCenter.trigger({ type: Events.CLOSE_PARTS_MENU });
-		},
-		optionalPartsMenuClose: function() {
-			// trace('optional parts menu close');
-			if(PhaserGame.tutorialOpen) {
-				PhaserGame.removeTutorialGuy();
-			}
-			PWG.EventCenter.trigger({ type: Events.CLOSE_OPTIONAL_PARTS_MENU });
-		},
-		equipmentCreateClose: function() {
-			if(PhaserGame.tutorialOpen) {
-				PhaserGame.removeTutorialGuy();
-			}
-			PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'equipmentList' });
 		},
 		confirmButton: function() {
-			// trace('confirmAction = ', PhaserGame.confirmAction);
+			// 
 			if(PhaserGame.tutorialOpen) {
 				PhaserGame.removeTutorialGuy();
 			}
@@ -3485,6 +3725,9 @@ var gameLogic = {
 					break;
 
 					case 'turnEnd':
+					if(PhaserGame.bonusesNotification) {
+						PhaserGame.removeBonuses();
+					}
 					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'brief' });
 					break;
 
@@ -3494,29 +3737,34 @@ var gameLogic = {
 			}
 		},
 		cancelButton: function() {
+			
 			if(PhaserGame.tutorialOpen) {
 				PhaserGame.removeTutorialGuy();
 			}
-			if(PhaserGame.cancelAction) {
+			if(PhaserGame.promptToCancelMachineEdit) {
+				PhaserGame.promptToCancelMachineEdit = false;
+				
+				PhaserGame.removeMachineDiscardPrompt();
+				
+			} else if(PhaserGame.cancelAction) {
 				PhaserGame.cancelAction.method.call(this, PhaserGame.cancelAction.params);
 				PhaserGame.cancelAction = null;
 			} else {
-				// switch(PWG.ScreenManager.currentId) {
-				// 	case 'brief':
-				// 	PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'world' });
-				// 	break;
-				// 	
-				// 	case 'equipmentEdit':
-				// 	PWG.EventCenter.trigger({ type: Events.SAVE_MACHINE });
-				// 	break;
-				// 	
-				// 	case 'turnEnd':
-				// 	PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'brief' });
-				// 	break;
-				// 	
-				// 	default:
-				// 	break;
-				// }
+				switch(PWG.ScreenManager.currentId) {
+					case 'manual':
+					PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'home' });
+					break;
+					
+					case 'equipmentEdit':
+					if(!PhaserGame.userPromptActive) {
+						PhaserGame.userPromptActive = true;
+						PhaserGame.addMachineDiscardPrompt();
+					}
+					break; 
+					
+					default:
+					break;
+				}
 			}
 		},
 		backButton: function() {
@@ -3532,10 +3780,10 @@ var gameLogic = {
 					break;
 
 					case 'world':
-					// var endTurn = confirm('Are you sure you want to end the turn?');
-					// if(endTurn) {
+					if(!PhaserGame.userPromptActive) {
+						PhaserGame.userPromptActive = true;
 						PhaserGame.showEndTurnPrompt();
-					// }
+					}
 					break; 
 
 					case 'manual':
@@ -3572,6 +3820,7 @@ var gameLogic = {
 			}
 		}
 	},
+	// screen-specific listeners and methods
 	screens: {
 		home: {
 			create: function() {
@@ -3595,9 +3844,7 @@ var gameLogic = {
 		manual: {
 			create: function() {
 				PWG.ViewManager.hideView('global:homeGroup');
-				PWG.ViewManager.showView('global:backButton');
-				
-				
+				PWG.ViewManager.showView('global:cancelButton');
 			},
 			shutdown: function() {
 				PWG.ViewManager.removeView('manualPages', 'manual');
@@ -3610,16 +3857,16 @@ var gameLogic = {
 				var missionBrief = PWG.Utils.clone(PhaserGame.config.dynamicViews.missionBrief);
 				var goalText = PhaserGame.config.dynamicViews.goalText;
 				var wiper = PWG.Utils.clone(PhaserGame.config.dynamicViews.wiper);
-				// trace('wiper = ', wiper);
-				// trace('levelBrief = ', levelBrief, '\tgoalText = ', goalText);
+				// 
+				// 
 				missionBrief.views.briefBg.img = levelBrief.background;
 
 				PWG.Utils.each(
 					levelBrief.text,
 					function(text, idx) {
-						// trace('\ttext['+idx+'] = ' + text);
+						// 
 						var item = PWG.Utils.clone(goalText);
-						// trace('\titem = ', item);
+						// 
 						item.name += idx;
 						// item.views.goal.text = text;
 						// item.views.goal.y += (idx * item.offsetY);
@@ -3629,7 +3876,7 @@ var gameLogic = {
 					},
 					this
 				);
-				// trace('missionBrief config now = ', missionBrief, '\tbrief = ', brief);
+				// 
 				PWG.ViewManager.addView(missionBrief, brief, true);
 				PWG.ViewManager.addView(wiper, brief, true);
 
@@ -3643,7 +3890,7 @@ var gameLogic = {
 
 				var tween = PhaserGame.phaser.add.tween(wiper.view);
 				tween.onComplete.add(function() {
-					// trace('wiper tween complete');
+					// 
 					wiper.view.events.onTweenComplete = null;
 					// PWG.ViewManager.showView('global:confirmButton');
 				});
@@ -3663,7 +3910,7 @@ var gameLogic = {
 			{
 				event: Events.WORLD_ZOOMED_IN,
 				handler: function(event) {
-					// trace('WORLD ZOOMED IN');
+					// 
 					PhaserGame.addTradeRouteViews();
 					PhaserGame.worldZoomedIn = false;
 				}
@@ -3682,7 +3929,7 @@ var gameLogic = {
 					PhaserGame.addTutorialGuy();
 				}
 				var worldMap = PWG.ViewManager.getControllerFromPath('world:worldMap');
-				// trace('worldMap view = ', worldMap.view);
+				// 
 				// worldMap.view.scale.setTo(PhaserGame.config.maxWorldZoom.width, PhaserGame.config.maxWorldZoom.height);
 				// worldMap.view.y = -(gameUnit * 31.2);
 				// worldMap.view.x = -(gameUnit * 8.2);
@@ -3697,7 +3944,7 @@ var gameLogic = {
 					function(sector, idx) {
 						var count = PWG.Utils.objLength(sector);
 						if(count > 0) {
-							// trace('\tthere are ' + count + ' buildings in sector['+idx+'] ', sector);
+							// 
 							var palette = PhaserGame.config.palette;
 							
 							var typeCounts = {
@@ -3713,7 +3960,7 @@ var gameLogic = {
 								},
 								this
 							);
-							// trace('\ttypeCounts = ', typeCounts);
+							// 
 							if(typeCounts.plant > 0) {
 								var buildingPin = PhaserGame.formatBuildingPin(BuildingTypes.PLANT, idx, typeCounts[BuildingTypes.PLANT]);
 								buildingPins.views[buildingPin.name] = buildingPin;
@@ -3757,10 +4004,10 @@ var gameLogic = {
 			{
 				event: Events.OPEN_BUILDINGS_MENU,
 				handler: function(event) {
-					// trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + PhaserGame.partsMenuOpen + ', partsMenuType = ' + this.partsMenuType);
-					if(!this.buildingCreatePromptOpen) {
+					// 
+					if(!PhaserGame.userPromptActive) {
 						PhaserGame.addBuildingCreatePrompt();
-						this.buildingCreatePromptOpen = true;
+						PhaserGame.userPromptActive = true;
 					}
 				}
 			},
@@ -3784,7 +4031,7 @@ var gameLogic = {
 							var view = PWG.ViewManager.getControllerFromPath(viewPath);
 							var frameKey = config.type.toUpperCase() + '_' + config.state.toUpperCase();
 							var frame = TileCellFrames[frameKey];
-							// trace('\tviewPath = ' + viewPath + ', view = ', view);
+							// 
 
 							PWG.ViewManager.setFrame(viewPath, frame);
 							view.config.attrs.frame = frame;
@@ -3803,27 +4050,24 @@ var gameLogic = {
 			{
 				event: Events.CLOSE_BUILDINGS_MENU,
 				handler: function(event) {
-					// trace('close overlay handler, overlay open = ' + this.buildingCreatePromptOpen);
-					if(this.buildingCreatePromptOpen) {
-						// trace('\toverlay-menu = ', (this.views['overlay-menu']));
-						PWG.ViewManager.removeView('buildingCreatePrompt', 'global');
-						PhaserGame.confirmAction = null;
-						PhaserGame.cancelAction = null;
-						PWG.ViewManager.hideView('global:confirmButton');
-						PWG.ViewManager.hideView('global:cancelButton');
-						PWG.ViewManager.showView('global:backButton');
-						this.buildingCreatePromptOpen = false;
-					}
+					// 
+					PWG.ViewManager.removeView('buildingCreatePrompt', 'global');
+					PhaserGame.confirmAction = null;
+					PhaserGame.cancelAction = null;
+					PWG.ViewManager.hideView('global:confirmButton');
+					PWG.ViewManager.hideView('global:cancelButton');
+					PWG.ViewManager.showView('global:backButton');
+					PhaserGame.userPromptActive = false;
 				}
 			}
 			],
 			create: function() {
-				// trace('us detail start, TurnManager.playerData.firstPlay[TutorialTypes.US_DETAIL] = ' + TurnManager.playerData.firstPlay[TutorialTypes.US_DETAIL]);
+				// 
 				if(TurnManager.playerData.firstPlay[TutorialTypes.US_DETAIL]) {
 					PhaserGame.activeTutorial = TutorialTypes.US_DETAIL;
 					PhaserGame.addTutorialGuy();
 				}
-				// trace('BUILD DETAIL GRID, this = ', this);
+				// 
 				var usDetail = PWG.ViewManager.getControllerFromPath('usDetail');
 				var sectorBg = PWG.Utils.clone(PhaserGame.config.dynamicViews.sectorBg);
 				var gridCoordinates = GridManager.grids[PhaserGame.activeSector];
@@ -3833,7 +4077,7 @@ var gameLogic = {
 				PWG.Utils.each(
 					gridCoordinates,
 					function(coordinate, idx) {
-						// trace('\tcoordinate = ', coordinate);
+						// 
 						var item = PWG.Utils.clone(gridItem);
 						item.name += idx;
 						item.x += coordinate.x;
@@ -3857,8 +4101,8 @@ var gameLogic = {
 				PWG.ViewManager.addView(sectorBg, usDetail, true);
 				PWG.ViewManager.addView(usDetailGrid, usDetail, true);
 				
-				if(PhaserGame.notifications[PhaserGame.activeSector].length > 0) {
-					PhaserGame.showNotificationEnvelope();
+				if(PhaserGame.dealerNotifications[PhaserGame.activeSector].length > 0) {
+					PhaserGame.showDealerAvailableIcon();
 				}
 			},
 			shutdown: function() {
@@ -3870,10 +4114,10 @@ var gameLogic = {
 					PWG.ViewManager.hideView('global:confirmButton');
 					PWG.ViewManager.hideView('global:cancelButton');
 					PWG.ViewManager.showView('global:backButton');
-					this.buildingCreatePromptOpen = false;
+					PhaserGame.userPromptActive = false;
 				}
 				PWG.ViewManager.removeGroupChildren('usDetail:usDetailGrid');
-				PhaserGame.hideNotificationEnvelope();
+				PhaserGame.hideDealerAvailableIcon();
 			}
 		},
 		buildingEdit: {
@@ -3882,7 +4126,7 @@ var gameLogic = {
 			{
 				event: Events.BUILDING_STATE_UPDATED,
 				handler: function(event) {
-					// trace('BUILDING_STATE_UPDATED event = ', event);
+					// 
 					var config = event.building.config;
 					if(config.id === PhaserGame.activeBuilding.id) {
 	 					var buildingEditDetails = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditDetails[config.type]);
@@ -3914,17 +4158,17 @@ var gameLogic = {
 				}
 				var buildingEdit = PWG.ViewManager.getControllerFromPath('buildingEdit');
 				var building = PhaserGame.activeBuilding;
-				// trace('building = ', building);
+				// 
 				var buildingEditScreen = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditScreen);
 				var buildingEditDetails = PWG.Utils.clone(PhaserGame.config.dynamicViews.buildingEditDetails[building.type]);
 
 				buildingEditScreen.views.bg.img = buildingEditDetails.bg.img;
 				buildingEditScreen.views.name.text += building.name;
 				buildingEditScreen.views.status.text += building.state.toUpperCase();
-				// trace('BuildingEdit/create, making details for ', building);
+				// 
 				switch(building.type) {
 					case BuildingTypes.PLANT:
-					// trace('\tit is a plant');
+					// 
 					buildingEditDetails.equipment.text += PWG.Utils.objLength(building.equipment) + ' / ' + BuildingManager.PLANT_MAX_MODELS;
 					buildingEditDetails.inventory.text += building.totalInventory + ' / ' + BuildingManager.PLANT_MAX_INVENTORY;
 					buildingEditDetails.dealers.text += PWG.Utils.objLength(building.dealers) + ' / ' + BuildingManager.PLANT_MAX_DEALERS;
@@ -3932,7 +4176,7 @@ var gameLogic = {
 
 					case BuildingTypes.DEALER:
 					var plant = BuildingManager.sectors[PhaserGame.activeSector][building.plantId].config;
-					// trace('\tdealer plant = ', plant);
+					// 
 					buildingEditDetails.plantMachine.text += plant.name + ' / ' + plant.equipment[building.modelId].name;
 					buildingEditDetails.resell.text += '$' + PWG.Utils.formatMoney(building.resell, 0);
 					buildingEditDetails.sales.text += '$' + PWG.Utils.formatMoney(building.totalSales, 0);;
@@ -3951,7 +4195,7 @@ var gameLogic = {
 					},
 					this
 				);
-				// trace('\tbuildingEditScreen now = ', buildingEditScreen);
+				// 
 
 				PWG.ViewManager.addView(buildingEditScreen, buildingEdit, true);
 
@@ -3970,7 +4214,7 @@ var gameLogic = {
 				event: Events.EDIT_MACHINE,
 				handler: function(event) {
 					var config = TurnManager.playerData.sectors[PhaserGame.activeSector][PhaserGame.activeBuilding.id].equipment[event.value];
-					// trace('edit machine: event = ', event, 'config = ', config);
+					// 
 					PhaserGame.activeMachineType = config.type;
 					PhaserGame.activeMachineSize = config.size;
 					PhaserGame.activeMachine = new Machine(config);
@@ -3982,7 +4226,7 @@ var gameLogic = {
 			{
 				event: Events.INVENTORY_ADDED,
 				handler: function(event) {
-					// trace('BUILDING_STATE_UPDATED event = ', event);
+					// 
 					var config = event.plant;
 					if(config.id === PhaserGame.activeBuilding.id) {
 						var available = 'x' + BuildingManager.getMachineModelInventory(config.id, event.machine);;
@@ -4000,7 +4244,7 @@ var gameLogic = {
 				}
 
 				var equipment = PhaserGame.activeBuilding.equipment;
-				// trace('build equipment list = ', equipment);
+				// 
 				var machineList = PWG.Utils.clone(PhaserGame.config.dynamicViews.machineList);
 				var machineIcon = PhaserGame.config.dynamicViews.machineIcon;
 				var emptyIcon = PhaserGame.config.dynamicViews.emptyIcon; 
@@ -4015,17 +4259,17 @@ var gameLogic = {
 				var count = 0;
 				var itemY = 0;
 				var emptyTotal = MACHINE_LIST_ICONS - PWG.Utils.objLength(equipment); 
-				// trace('EMPTY TOTAL = ' + emptyTotal);
+				// 
 				
 				PWG.Utils.each(
 					equipment,
 					function(machine, idx) {
-						// trace('\tadding machine['+idx+']: ', machine);
+						// 
 						var item = PWG.Utils.clone(machineIcon);
 						var available = BuildingManager.getMachineModelInventory(machine.plantId, machine.id);
-						// trace('\titem = ', item);
+						// 
 						item.name = 'machine' + idx;
-						// trace('machine icon = ' + (PhaserGame.config.machineIcons[machine.type][machine.size]));
+						// 
 						item.views.bg.img = PhaserGame.config.machineIcons[machine.type][machine.size];
 						item.views.name.text = machine.name;
 						item.views.cost.text = '$' + machine.cost;
@@ -4080,11 +4324,11 @@ var gameLogic = {
 					);
 					
 					machineList.views[empty.name] = empty;
-					// trace('\tadding empty icon: ', empty);
+					// 
 					count++;
 				}
 				
-				// trace('machineList = ', machineList);
+				// 
 				var equipmentListView = PWG.ViewManager.getControllerFromPath('equipmentList');
 				PWG.ViewManager.addView(machineList, equipmentListView, true);
 				PWG.ViewManager.showView('global:equipmentListGroup');
@@ -4101,7 +4345,7 @@ var gameLogic = {
 				event: Events.MACHINE_TYPE_SELECTION,
 				handler: function(event) {
 					// activate size category buttons
-					// trace('machine type selection, event = ', event);
+					// 
 					PhaserGame.activeMachineType = event.value;
 					var letter = alphabet.UPPER[TurnManager.playerData.modelCount[event.value]];
 					var id = event.value + letter;
@@ -4114,7 +4358,7 @@ var gameLogic = {
 			}
 			],
 			create: function() {
-				// trace('EQUIPMENT CREATE CREATE METHOD');
+				// 
 				if(TurnManager.playerData.firstPlay[TutorialTypes.EQUIPMENT_CREATE]) {
 					PhaserGame.activeTutorial = TutorialTypes.EQUIPMENT_CREATE;
 					PhaserGame.addTutorialGuy();
@@ -4174,7 +4418,7 @@ var gameLogic = {
 			{
 				event: Events.ADD_WHOLESALE_PART, 
 				handler: function(event) {
-					// trace('ADD WHOLESALE PART');
+					// 
 					var type = PhaserGame.activePartType;
 					PhaserGame.activeMachine.setPart(type, event.value, true);
 					// WholesaleManager.usePart(type, PhaserGame.activeMachineSize, event.supplierId);
@@ -4187,7 +4431,7 @@ var gameLogic = {
 			{
 				event: Events.REQUIRED_PART_ADDED,
 				handler: function(event) {
-					// trace('equipmentEdit/' + event.type + ' hander');
+					// 
 					var stars = PWG.ViewManager.getControllerFromPath('equipmentEdit:machineEdit:stars');
 					stars.view.frame++;
 				}
@@ -4196,7 +4440,7 @@ var gameLogic = {
 			{
 				event: Events.ADD_OPTIONAL_PART,
 				handler: function(event) {
-					// trace('add option part, type = ' + event.value);
+					// 
 					PhaserGame.activeMachine.setPart(event.value, 0);
 					PWG.EventCenter.trigger({ type: Events.CLOSE_OPTIONAL_PARTS_MENU });
 				}
@@ -4205,7 +4449,7 @@ var gameLogic = {
 			{
 				event: Events.SHOW_BUILD_GROUP,
 				handler: function(event) {
-					// trace('showBuildGroup, size = ' + event.size);
+					// 
 					PhaserGame.activeMachine.set('size', event.size);
 					this.views['state-group'].children[event.previousGroup].hide();
 					this.views['state-group'].children['editor-group'].show();
@@ -4215,12 +4459,12 @@ var gameLogic = {
 			{
 				event: Events.OPEN_PARTS_MENU,
 				handler: function(event) {
-					trace('open overlay menu handler, value = ' + event.value + ', overlay open = ' + PhaserGame.partsMenuOpen + ', partsMenuType = ' + this.partsMenuType);
-					if(!PhaserGame.partsMenuOpen && !PhaserGame.optionalPartsMenuOpen) {
-						trace('\t')
+					
+					if(!PhaserGame.partsMenuOpen && !PhaserGame.optionalPartsMenuOpen && !PhaserGame.userPromptActive) {
+						PhaserGame.userPromptActive = true;
 						if(this.partsMenuType !== event.value) {
 							// update piece navigator
-							trace('\tthe parts menu type is not the same, resetting sprite frames and rebuilding menu');
+							
 							PhaserGame.resetAllMachinePieceSpriteFrames();
 
 							PWG.ViewManager.hideView(PhaserGame.getCurrentMachinePiecePath());
@@ -4245,9 +4489,10 @@ var gameLogic = {
 			{
 				event: Events.CLOSE_PARTS_MENU,
 				handler: function(event) {
-					// trace('close overlay handler, overlay open = ' + PhaserGame.partsMenuOpen);
+					// 
+					PhaserGame.userPromptActive = false;
 					if(PhaserGame.partsMenuOpen) {
-						// trace('\toverlay-menu = ', (this.views['overlay-menu']));
+						// 
 						// PWG.ViewManager.hideView('partsMenu');
 						PhaserGame.hidePartsMenu();
 						PhaserGame.partsMenuOpen = false;
@@ -4262,7 +4507,7 @@ var gameLogic = {
 			{
 				event: Events.OPEN_WHOLESALE_PARTS_MENU,
 				handler: function(event) {
-					// trace('open wholesale parts menu event handler');
+					// 
 					PhaserGame.removeWholesalePartPrompt();
 					PhaserGame.addWholesalePartsMenu();
 				}
@@ -4271,6 +4516,7 @@ var gameLogic = {
 			{
 				event: Events.CLOSE_WHOLESALE_PARTS_MENU,
 				handler: function(event) {
+					PhaserGame.userPromptActive = false;
 					PhaserGame.removeWholesalePartsMenu();
 					if(PhaserGame.wholesalePromptAdded) {
 						PhaserGame.removeWholesalePartPrompt();
@@ -4281,7 +4527,7 @@ var gameLogic = {
 			{
 				event: Events.OPEN_OPTIONAL_PARTS_MENU,
 				handler: function(event) {
-					if(!PhaserGame.partsMenuOpen && !PhaserGame.optionalPartsMenuOpen) {
+					if(!PhaserGame.partsMenuOpen && !PhaserGame.optionalPartsMenuOpen && !PhaserGame.userPromptActive) {
 						if(!PhaserGame.optionalPartsMenuPopulated) {
 							PhaserGame.populateOptionalPartsMenu.call(this, this.views);
 							PhaserGame.optionalPartsMenuPopulated = true;
@@ -4295,8 +4541,9 @@ var gameLogic = {
 			{
 				event: Events.CLOSE_OPTIONAL_PARTS_MENU,
 				handler: function(event) {
-					// trace('close optional parts menu, optionalPartsMenuOpen: ' + PhaserGame.optionalPartsMenuOpen);
+					// 
 					if(PhaserGame.optionalPartsMenuOpen) {
+						PhaserGame.userPromptActive = false;
 						PWG.ViewManager.hideView('optionalPartsMenu');
 						PhaserGame.optionalPartsMenuOpen = false;
 					}
@@ -4306,9 +4553,10 @@ var gameLogic = {
 			{
 				event: Events.MACHINE_PARTS_COMPLETE,
 				handler: function(event) {
-					// trace('machine complete, event = ', event);
+					// 
 					PhaserGame.hideAllMachinePieceSprites();
 					PhaserGame.confirmAction = null;
+					PhaserGame.machinePartsComplete = true;
 					PWG.ViewManager.showView('global:confirmButton');
 				}
 			},
@@ -4316,10 +4564,10 @@ var gameLogic = {
 			{
 				event: Events.SAVE_MACHINE, 
 				handler: function(event) {
-					// trace('time to save activeMachine: ', PhaserGame.activeMachine);
+					// 
 					PhaserGame.activeMachine.save();
 					if(PhaserGame.newMachine) {
-						// trace('active plant = ', PhaserGame.activeBuilding);
+						// 
 						TurnManager.addMachineModel(PhaserGame.activeMachine.config);
 						PhaserGame.newMachine = false;
 					}
@@ -4387,7 +4635,7 @@ var gameLogic = {
 						
 						if(part.sprite) {
 							var partSprite = PWG.Utils.clone(machinePieceSpriteConfig[type][size][part.name]);
-							// trace('part.name = ' + part.name + ', partSprite = ', partSprite);
+							// 
 							if(idx === 0) {
 								partSprite.attrs.frame = 1;
 							}
@@ -4397,7 +4645,7 @@ var gameLogic = {
 					this
 				);
 
-				// trace('machineEdit now = ', machineEdit);
+				// 
 
 				PWG.ViewManager.addView(machineEdit, equipmentEdit, true);
 
@@ -4405,14 +4653,8 @@ var gameLogic = {
 				PWG.ViewManager.hideView('global:backButton');
 				PWG.ViewManager.showView('global:cancelButton');
 
-				PhaserGame.cancelAction = {
-					method: function() {
-						PhaserGame.addMachineDiscardPrompt();
-					},
-					params: {}
-				};
-
 				PhaserGame.spriteTranslations = gameData.machines[type][size].spriteTranslations;
+				PhaserGame.machinePartsComplete = false;
 				PhaserGame.machineDirty = true;
 			},
 			shutdown: function() {
@@ -4428,6 +4670,7 @@ var gameLogic = {
 				PWG.ViewManager.showView('global:backButton');
 				PhaserGame.cancelAction = null;
 				this.partsMenuType = '';
+				PhaserGame.machinePartsComplete = false;
 				PhaserGame.partsMenuOpen = false;
 				PhaserGame.machineDirty = false;
 			}
@@ -4478,19 +4721,19 @@ var GridManager = function() {
 			},
 			this
 		);
-		// trace('---- grid manager init complete, grids = ', module.grids);
+		// 
 	};
 	
 	module.initBuildings = function(sectors) {
-		// trace('GridManager/initBuildings, buildings = ' + sectors);
+		// 
 		PWG.Utils.each(
 			sectors,
 			function(sector, s) {
-//				// trace('\tsector['+s+'] = ', sector);
+//				// 
 				PWG.Utils.each(
 					sector,
 					function(building, b) {
-						// trace('\t\tbuilding['+b+'] = ', building);
+						// 
 						module.addBuilding(building, s);
 					},
 					this
@@ -4501,12 +4744,12 @@ var GridManager = function() {
 	};
 
 	module.addBuilding = function(building, sector) {
-		// trace('GridManager/addBuilding, sector = ' + sector + ', building = ', building, module.grids);
+		// 
 		if(building.type !== BuildingTypes.TRADE_ROUTE) {
 			var frameKey = building.type.toUpperCase() + '_' + building.state.toUpperCase();
 			module.grids[sector][building.cell].frame = TileCellFrames[frameKey];
 		}
-		// trace('\tsetting grid['+building.sector+']['+building.cell+'].frame to frameKey: ' + frameKey + ', frame = ' + TileCellFrames[frameKey]);
+		// 
 	};
 
 	module.getRandomEmptyCellIndex = function(sector) {
@@ -4525,12 +4768,12 @@ var GridManager = function() {
 			this
 		);
 		randomCellIdx = Math.floor(Math.random() * (emptyCells.length - 1) + 1);
-		// trace('------- returning emptyCells['+randomCellIdx+'] = ' + emptyCells[randomCellIdx] + ', emptyCells = ', emptyCells);
+		// 
 		return emptyCells[randomCellIdx];
 	};
 	
 	module.updateBuildingState = function(sector, cell, type, state) {
-		// trace('GridManager/updateBuildingState, sector: ' + sector + ', cell = ' + cell + ', type = ' + type + ', state = ' + state);
+		// 
 		if(type !== BuildingTypes.TRADE_ROUTE) {
 			var frameKey = type.toUpperCase() + '_' + state.toUpperCase();
 			module.grids[sector][cell].frame = TileCellFrames[frameKey];
@@ -4572,17 +4815,17 @@ var TurnManager = function() {
 	module.playerData = {};
 
 	module.init = function() {
-		// trace('--- TurnManager/init');
+		// 
 		module.playerData = PWG.Utils.clone(PhaserGame.playerData);
-		trace('TURN MANAGER: bank = ' + module.playerData.bank);
+		
 	};
 	
 	module.startTurn = function() {
-		// trace('--- TurnManager/startTurn');
+		// 
 		module.currentData = PWG.Utils.clone(turnData);
-		trace('\tpre initiative, bank ' + module.playerData.bank);
+		
 		module.playerData.bank += gameData.levels[module.playerData.level].startingBank;
-		trace('\tpost initiative, bank = ' + module.playerData.bank);
+		
 		module.tempDealerCount = (module.playerData.buildingCount.dealer);
 		// TurnManager.tempTradeRouteCount = (module.playerData.buildingCount.tradeRoute);
 		module.tempSupplierCount = (module.playerData.suppliers.length) || 0;
@@ -4615,7 +4858,7 @@ var TurnManager = function() {
 	};
 	
 	module.updateBank = function(value) {
-		// trace('--- TurnManager/updateBank, event =', event);
+		// 
 		module.playerData.bank += value;
 		module.currentData.bankAdjustments += value;
 		if(value > 0) {
@@ -4626,7 +4869,7 @@ var TurnManager = function() {
 	};
 
 	module.addBuilding = function(building) {
-		// trace('--- TurnManager/addBuilding, building = ', building);
+		// 
 		module.playerData.sectors[building.sector][building.id] = building;
 		module.currentData.newBuildings.push(building);
 		module.playerData.buildingCount[building.type]++;
@@ -4645,21 +4888,22 @@ var TurnManager = function() {
 			break;
 			
 			default: 
-			// trace('ERROR unknown building type: ' + building.type);
+			// 
 			break;
 		}
-		// trace('adding bonus points for new ' + building.type + ': ' + gameData.bonuses.buildings[building.type]);
+		// 
 		module.playerData.bonusPoints += gameData.bonuses.buildings[building.type];
+
 		PWG.EventCenter.trigger({ type: Events.BONUSES_UPDATED });
 	};
 	
 	module.updateBuilding = function(building) {
-		// trace('--- TurnManager/updateBuilding, building = ', building);
+		// 
 		module.playerData.sectors[building.sector][building.id] = building;
 	};
 	
 	module.addMachineModel = function(model) {
-		// trace('--- TurnManager/addMachineModel, model = ', model);
+		// 
 		// module.playerData.sectors[PhaserGame.activeSector][PhaserGame.activeBuilding.id].equipment[PhaserGame.activeMachine.config.id] = model;
 		BuildingManager.addMachineModelToPlant(PhaserGame.activeSector, PhaserGame.activeBuilding.id, model);
 		module.playerData.modelCount[PhaserGame.activeMachineType]++;
@@ -4672,7 +4916,7 @@ var TurnManager = function() {
 	};
 
 	module.addPlantInventory = function(machine) {
-		// trace('--- TurnManager/addPlantInventory, machine = ', machine);
+		// 
 		module.currentData.newMachines.push(machine);
 		if(machine.type === EquipmentTypes.TRACTOR) {
 			module.currentData.newTractors++;
@@ -4689,9 +4933,9 @@ var TurnManager = function() {
 		PWG.Utils.each(
 			gameData.bonuses.manufacturing,
 			function(machineBonus, key) {
-				// trace('total = ' + total + ', machineBonus = ' + machineBonus + ', key = ' + key);
+				// 
 				if(total >= machineBonus && !module.playerData.bonusesAchieved[key]) {
-					// trace('adding bonus points for ' + machineBonus + ' machines built: ' + gameData.bonuses.manufacturing[key]);
+					// 
 					module.playerData.bonusesAchieved[key] = true;
 					module.playerData.bonusPoints += gameData.bonuses.manufacturing[key];
 					PWG.EventCenter.trigger({ type: Events.BONUSES_UPDATED });
@@ -4706,7 +4950,7 @@ var TurnManager = function() {
 	};
 	
 	module.sellMachine = function(machine, amount) {
-		// trace('TurnManager/sellMachine, amount = ' + amount + ', machine = ', machine);
+		// 
 		module.currentData.machinesSold.push(machine);
 		module.updateBank(amount);
 	};
@@ -4723,14 +4967,14 @@ var TurnManager = function() {
 	};
 	
 	module.wholesaleInventoryEmptied = function(supplier) {
-		trace('TurnManager/wholesaleInventoryEmptied');
+		
 		module.currentData.emptiedWholesaleInventories++;
 		module.playerData.bonusPoints += gameData.bonuses.suppliers.allPartsUsed;
 		PWG.EventCenter.trigger({ type: Events.BONUSES_UPDATED });
 	};
 
 	module.get = function(prop) {
-		// trace('--- TurnManager/get, prop = ', prop);
+		// 
 		if(module.playerData.hasOwnProperty(prop)) {
 			return module.playerData[prop];
 		} else if(module.currentData.hasOwnProperty(prop)) {
@@ -4768,7 +5012,7 @@ var BuildingManager = function() {
 	
 	// BUILDING BASE CLASS
 	function Building(config) {
-		// trace('Building/constructor, config = ', config);
+		// 
 		this.config = config;
 		this.config.state = config.state || BuildingStates.CONSTRUCTION;
 		this.config.age = config.age || 0;
@@ -4778,10 +5022,10 @@ var BuildingManager = function() {
 	Building.prototype.equipment = {};
 	Building.prototype.inventory = {};
 	Building.prototype.update = function() {
-		// trace('Building/update');
+		// 
 		if(this.config.state === BuildingStates.CONSTRUCTION && this.config.age >= this.constructionTime) {
 			this.config.state = BuildingStates.ACTIVE;
-			// trace('building['+this.config.id+'] construction completed');
+			// 
 			PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
 		}
 		this.config.age++;
@@ -4847,7 +5091,7 @@ var BuildingManager = function() {
 					PWG.Utils.each(
 						this.config.equipment,
 						function(machine) {
-							// trace('machine = ', machine);
+							// 
 							if(machine.active) {
 								var productionCost = machine.cost + module.MACHINE_PRODUCTION_COST;
 								if(TurnManager.playerData.bank > productionCost) {
@@ -4855,20 +5099,20 @@ var BuildingManager = function() {
 
 										var allPartsAdded = true;
 										if(PWG.Utils.objLength(machine.wholesaleParts) > 0) {
-											// trace('THIS MACHINE ' + machine.id + ' USES WHOLESALE PARTS');
+											// 
 											PWG.Utils.each(
 												machine.wholesaleParts,
 												function(supplierId, part) {
-													// trace('\tsupplierId = ' + supplierId + ', part = ' + part + ', supplier = ', WholesaleManager.suppliers[supplierId]);
+													// 
 													var supplier = WholesaleManager.suppliers[supplierId];
 													if(supplier.config.quantity > 0) {
 														var partUsed = WholesaleManager.usePart(part, machine.size, supplierId);
 														if(!partUsed) {
-															// trace('\tfailed to add part, deactivating machine');
+															// 
 															this.config.equipment[machine.id].active = false;
 														}
 													} else {
-														// trace('\tand there are none left. :(');
+														// 
 														this.config.equipment[machine.id].active = false;
 														wholesalePartsAdded = false;
 													}
@@ -4878,7 +5122,7 @@ var BuildingManager = function() {
 										}
 
 										if(allPartsAdded) {
-											// trace('manufactured machine: ' +  machine.id + ', dealers: ', this.config.dealers);
+											// 
 											PWG.EventCenter.trigger({ type: Events.UPDATE_BANK, value: (-productionCost) });
 											PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
 											PWG.EventCenter.trigger({ type: Events.INVENTORY_ADDED, plant: this.config, machine: machine.id });
@@ -4890,16 +5134,16 @@ var BuildingManager = function() {
 
 											// TRADE ROUTES
 											if(this.config.inventory[machine.id].length > module.PLANT_MIN_EXPORT_INVENTORY && TurnManager.get('level') >= MIN_TRADE_ROUTE_LEVEL) {
-												trace('trade route check for ' + machine.id);
+												
 												if(!this.config.tradeRoutes.hasOwnProperty(machine.id)) {
-													trace('\tplant['+this.config.id+'].tradeRouteNotifications['+machine.id+'] = ' + this.tradeRouteNotifications[machine.id]);
+													
 													if(!this.tradeRouteNotifications[machine.id]) {
 														module.createTradeRoute(this, machine.id);
 														this.tradeRouteNotifications[machine.id] = true;
 													}
 												} else {
 													var tradeRouteId = this.config.tradeRoutes[machine.id];
-													trace('sending inventory to tradeRouteId = ' + tradeRouteId);
+													
 													var tradeRoute = module.findBuilding(tradeRouteId);
 													if(tradeRoute.config.state === BuildingStates.ACTIVE) {
 														var inventory = this.config.inventory[machine.id];
@@ -4912,7 +5156,7 @@ var BuildingManager = function() {
 											// if there is enough inventory of this machine to sell and it doesn't already have a dealer...
 											if(this.config.inventory[machine.id].length > module.PLANT_MIN_SELL_INVENTORY) {
 												if(!this.config.dealers.hasOwnProperty(machine.id)) {
-													// trace('\tplant['+this.config.id+'].dealerNotifications['+machine.id+'] = ' + this.dealerNotifications[machine.id]);
+													// 
 													if(!this.dealerNotifications[machine.id]) {
 														module.createDealer(this, machine.id);
 														this.dealerNotifications[machine.id] = true;
@@ -4969,7 +5213,7 @@ var BuildingManager = function() {
 		var plant = module.findBuilding(config.plantId);
 		var model = plant.config.equipment[config.modelId];
 		var resellMultiplier = Math.floor(Math.random() * (this.resellMaxMultiplier - 1) + 2);
-		// trace('resellMultilplier = ' + resellMultiplier);
+		// 
 		Building.call(this, config);
 		this.config.resell = config.resell || (resellMultiplier * model.cost) + module.MACHINE_PRODUCTION_COST;
 		this.config.maxPerYear = config.maxPerYear || Math.floor(Math.random() * (module.DEALER_MAX_SALES_PER_YEAR - module.DEALER_MIN_SALES_PER_YEAR) + module.DEALER_MIN_SALES_PER_YEAR);
@@ -4985,14 +5229,14 @@ var BuildingManager = function() {
 	Dealer.prototype.resellMaxMultiplier = 6;
 	Dealer.prototype.quantityPerYear = 25;
 	Dealer.prototype.addInventory = function(plant) {
-		// trace('Dealer/addInventory, dealer = ', this.config, '\tplant = ', plant);
+		// 
 		// if(this.config.inventory.length < this.capacity) {
 		if(this.numberSold < this.config.maxPerYear) {	
 			var modelId = this.config.modelId;
 			if(typeof(plant.inventory[modelId] !== 'undefined')) {
 				try {
 					while(plant.inventory[modelId].length > 0 && this.config.inventory.length < this.capacity) {
-						// trace('\ttransferring inventory to dealer');
+						// 
 						this.config.inventory.push(plant.inventory[modelId].pop());
 						plant.totalInventory--;
 						this.numberSold++;
@@ -5003,7 +5247,7 @@ var BuildingManager = function() {
 		}
 	};
 	Dealer.prototype.update = function() {
-		// trace('dealer/update: ', this);
+		// 
 		Dealer._super.update.apply(this, arguments);
 		if(this.config.state === BuildingStates.ACTIVE) {
 			if(this.config.inventory.length > 0) {
@@ -5012,10 +5256,10 @@ var BuildingManager = function() {
 					if(numToSell > this.config.inventory.length) {
 						numToSell = this.config.inventory.length;
 					}
-					// trace('numToSell = ' + numToSell + ', inventory = ' + this.config.inventory.length);
+					// 
 					while(numToSell > 0) {
 						TurnManager.sellMachine(this.config.inventory.pop(), this.config.resell);
-						// trace('------- Dealer about to sell a machine:', this);
+						// 
 						PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
 						PWG.EventCenter.trigger({ type: Events.MACHINE_SOLD, building: this.config });
 						this.config.totalSales += this.config.resell;
@@ -5049,7 +5293,7 @@ var BuildingManager = function() {
 		this.config.maxPerYear = config.maxPerYear || Math.floor(Math.random() * (module.TRADE_ROUTE_MAX_SALES_PER_YEAR - module.TRADE_ROUTE_MIN_SALES_PER_YEAR) + module.DEALER_MIN_SALES_PER_YEAR);
 		this.config.inventory = config.inventory || [];
 		this.config.totalSales = config.totalSales || 0;
-		// trace('TradeRoute/constructor: ', this);
+		// 
 	}
 	PWG.Utils.inherit(TradeRoute, Building);
 
@@ -5059,13 +5303,13 @@ var BuildingManager = function() {
 	TradeRoute.prototype.resellMaxMultiplier = 10;
 	TradeRoute.prototype.quantityPerYear = 25;
 	TradeRoute.prototype.addInventory = function(plant) {
-		// trace('TradeRoute/addInventory, tradeRoute = ', this.config, '\tplant = ', plant);
+		// 
 		if(this.config.inventory.length < this.capacity) {
 			var modelId = this.config.modelId;
 			if(typeof(plant.inventory[modelId] !== 'undefined')) {
 				try {
 					while(plant.inventory[modelId].length > 0 && this.config.inventory.length < this.capacity) {
-						// trace('\ttransferring inventory to tradeRoute');
+						// 
 						this.config.inventory.push(plant.inventory[modelId].pop());
 						plant.totalInventory--;
 					}
@@ -5075,7 +5319,7 @@ var BuildingManager = function() {
 		}
 	};
 	TradeRoute.prototype.update = function() {
-		// trace('tradeRoute/update: ', this);
+		// 
 		TradeRoute._super.update.apply(this, arguments);
 		if(this.config.state === BuildingStates.ACTIVE) {
 			if(this.config.inventory.length > 0) {
@@ -5084,10 +5328,10 @@ var BuildingManager = function() {
 					if(numToSell > this.config.inventory.length) {
 						numToSell = this.config.inventory.length;
 					}
-					// trace('numToSell = ' + numToSell + ', inventory = ' + this.config.inventory.length);
+					// 
 					while(numToSell > 0) {
 						TurnManager.sellMachine(this.config.inventory.pop(), this.config.resell);
-						// trace('------- TradeRoute about to sell a machine:', this);
+						// 
 						PWG.EventCenter.trigger({ type: Events.BUILDING_STATE_UPDATED, building: this });
 						PWG.EventCenter.trigger({ type: Events.MACHINE_SOLD, building: this.config });
 						this.config.totalSales += this.config.resell;
@@ -5115,7 +5359,7 @@ var BuildingManager = function() {
 	module.tradeRoutes = [];
 	
 	module.init = function() {
-		// trace('initializing building data with: ', TurnManager.playerData.sectors);
+		// 
 		PWG.Utils.each(
 			TurnManager.playerData.sectors,
 			function(sector, s) {
@@ -5123,7 +5367,7 @@ var BuildingManager = function() {
 				PWG.Utils.each(
 					sector,
 					function(building, id) {
-						// trace('\t\tbuildings['+id+'] = ', building);
+						// 
 						if(building.type === BuildingTypes.PLANT) {
 							module.sectors[s][building.id] = new Plant(building);
 						} else if(building.type === BuildingTypes.DEALER) {
@@ -5147,31 +5391,31 @@ var BuildingManager = function() {
 		// PWG.Utils.each(
 		// 	TurnManager.playerData.tradeRoutes,
 		// 	function(tradeRoute) {
-		// 		// trace("BYILDING MANAGER ADDING TRADE ROUTE: ", tradeRoute);
+		// 		// 
 		// 		module.tradeRoutes.push(new TradeRoute(tradeRoute));
 		// 	},
 		// 	this
 		// );
-		// trace('BuildingManager.sectors now = ', module.sectors);
+		// 
 	};
 	
 	module.createPlant = function(config) {
-		// trace('BuildingManager/create, type = ' + type + ', cost = ' + gameData.buildings[type].cost + ', bank = ' + TurnManager.playerData.bank);
+		// 
 		var type = BuildingTypes.PLANT;
 		var count = TurnManager.playerData.buildingCount[type];
-		// trace('\tcount = ' + count);
+		// 
 		config.id = type + count;
 		config.name = type.toUpperCase() + ' ' + (count + 1);
 		
 		if(TurnManager.playerData.bank >= gameData.buildings[type].cost) {
 			var plant = new Plant(config);
-			// trace('\tbuilding made');
+			// 
 			PWG.EventCenter.trigger({ type: Events.UPDATE_BANK, value: (-gameData.buildings[type].cost) });
-			// trace('\tabout to save building data, building  = ', building);
+			// 
 			module.updateBuildings(plant);
 			return true;
 		} else {
-			// trace('no more money');
+			// 
 			return false;
 		}
 	};
@@ -5192,10 +5436,10 @@ var BuildingManager = function() {
 		var dealerName = type.toUpperCase() + ' ' + TurnManager.tempDealerCount;
 		TurnManager.tempDealerCount++;
 		
-		// trace('\tmodelId = ' + modelId + ', count = ' + count);
+		// 
 		model = plant.config.equipment[modelId];
 
-		// trace('model now = ', model);
+		// 
 		if(!plant.config.dealers.hasOwnProperty(model.id)) {
 			var dealer = new Dealer({
 				id: dealerId,
@@ -5206,7 +5450,7 @@ var BuildingManager = function() {
 				sector: plant.config.sector
 			});
 
-			PWG.EventCenter.trigger({ type: Events.ADD_DEALER_NOTIFICATION, plant: plant.config, dealer: dealer });
+			PWG.EventCenter.trigger({ type: Events.ADD_DEALER_OPPORTUNITY, plant: plant.config, dealer: dealer });
 		}
 	};
 	
@@ -5235,6 +5479,9 @@ var BuildingManager = function() {
 	};
 	
 	module.createTradeRoute = function(plant, modelId) {
+		// for testing, to trigger in console: 
+		// var plant1 = BuildingManager.findBuilding('plant1')
+		// BuildingManager.createTradeRoute(plant1, [ a model id from plant1.config.equipement ])
 		var model;
 		var count = PWG.Utils.objLength(plant.config.equipment);
 		var index = 0;
@@ -5245,14 +5492,14 @@ var BuildingManager = function() {
 		var area = TradeRouteLocations[worldLocation];
 
 		var tradeRouteId = type + '_' + area + ((TurnManager.tempTradeRouteCount[area]) + 1);
-		var tradeRouteName = TradeRouteNames[area].toUpperCase() + '\n' + type.toUpperCase() + ' ' + ((TurnManager.tempTradeRouteCount[area]) + 1);
+		var tradeRouteName = TradeRouteNames[area].toUpperCase() + '\n' + TradeRouteNames.global.toUpperCase() + ' ' + ((TurnManager.tempTradeRouteCount[area]) + 1);
 		
 		TurnManager.tempTradeRouteCount[area]++;
 
-		// trace('\tmodelId = ' + modelId + ', count = ' + count);
+		// 
 		model = plant.config.equipment[modelId];
 
-		// trace('model now = ', model);
+		// 
 		if(!plant.config.tradeRoutes.hasOwnProperty(model.id)) {
 			var tradeRoute = new TradeRoute({
 				id: tradeRouteId,
@@ -5264,7 +5511,7 @@ var BuildingManager = function() {
 				sector: plant.config.sector
 			});
 
-			PWG.EventCenter.trigger({ type: Events.ADD_TRADE_ROUTE_NOTIFICATION, plant: plant.config, tradeRoute: tradeRoute });
+			PWG.EventCenter.trigger({ type: Events.ADD_TRADE_ROUTE_OPPORTUNITY, plant: plant.config, tradeRoute: tradeRoute });
 		}
 	};
 
@@ -5332,13 +5579,13 @@ var BuildingManager = function() {
 
 	module.getBuilding = function(sector, cell) {
 		var config = {};
-		// trace('BuildingManager/getBuilding, sector = ' + sector + ', cell = ' + cell);
+		// 
 		
 		PWG.Utils.each(
 			module.sectors[sector],
 			function(building) {
 				if(building.config.cell === cell) {
-					// trace('\tfound it: ', building);
+					// 
 					config = building.config;
 				}
 			},
@@ -5365,7 +5612,7 @@ var BuildingManager = function() {
 	module.getMachineModelInventory = function(plantId, machineId) {
 		var count = 0;
 		var plant = module.findBuilding(plantId);
-		// trace('BuildingManager/getMachineModelInventory, machineId = ' + machineId + ', plant.inventory = ', plant.config.inventory);
+		// 
 		if(plant.config.inventory[machineId]) {
 			count = plant.config.inventory[machineId].length;
 		}
@@ -5373,12 +5620,12 @@ var BuildingManager = function() {
 	};
 	
 	module.addBuildingToTurnManager = function(config) {
-		// trace('save new building, config = ', config);
+		// 
 		TurnManager.addBuilding(config);
 	};
 	
 	module.updateBuildingData = function(config) {
-		// trace('BuildingManager/updateBuildingData, config = ', config);
+		// 
 		TurnManager.updateBuilding(config);
 	};
 
@@ -5408,7 +5655,7 @@ var BuildingManager = function() {
 	};
 	
 	module.removeBuilding = function(sector, buildingId) {
-		// trace('BuildingManager/removeBuilding, sector = ' + sector + ', buildingId = ' + buildingId + ', buildings = ', module.sectors);
+		// 
 		if(module.sectors[sector].hasOwnProperty(buildingId)) {
 			delete module.sectors[sector][buildingId];
 		}
@@ -5439,7 +5686,7 @@ var WholesaleManager = function() {
 	module.PARTS_QUANTITY_MULTIPLIER = 100;			// base part quantity multiplier
 	
 	function Supplier(config) {
-		// trace('Supplier/constructor, config = ', config);
+		// 
 		this.config = config;
 
 		this.config.quantity = config.quantity || module.calculateQuantity();
@@ -5450,12 +5697,12 @@ var WholesaleManager = function() {
 	module.parts = {};
 	
 	module.init = function() {
-		// trace('WholesaleManager/init');
+		// 
 		module.suppliersAdded = 0;
-		module.notificationActive = false;
+		module.supplierPending = false;
 		// establish 
 		module.turnMax = (Math.floor(Math.random() * (module.SUPPLIERS_PER_TURN_MULTIPLIER - 1) + 1)) + TurnManager.playerData.level;
-		// trace('\tturnMax = ' + module.turnMax);
+		// 
 		module.weekLag = 0;
 
 		PWG.Utils.each(
@@ -5476,7 +5723,7 @@ var WholesaleManager = function() {
 		PWG.Utils.each(
 			TurnManager.playerData.suppliers,
 			function(supplier) {
-				// trace('\t\tsuppliers['+supplier.id+'] = ', supplier);
+				// 
 				module.suppliers[supplier.id] = new Supplier(supplier);
 				// only add this supplier to the available parts if it still has inventory
 				// if(supplier.quantity > 0) {
@@ -5489,18 +5736,18 @@ var WholesaleManager = function() {
 	
 	module.update = function() {
 		// there isn't a current notification pending
-		if(!module.notificationActive) {
-			// trace('WholesaleManager/update\n');
+		if(!module.supplierPending) {
+			// 
 			// haven't made max number of suppliers for this turn
 			if(module.suppliersAdded < module.turnMax) { 
 				module.weekLag++;
 				// waited long enough since last new supplier
 				if(module.weekLag > module.WEEK_LAG_AMOUNT) {
-					// trace('\tadded = ' + module.suppliersAdded + ' / ' + module.turnMax + '\n\tweekLag = ' + module.weekLag + ' / ' + module.WEEK_LAG_AMOUNT);
+					// 
 					module.weekLag = 0;
 
 					var diceRoll = PWG.Utils.diceRoll(); 
-					// trace('\tdiceRoll = ' + diceRoll + ', chance = ' + module.POSSIBILE_SUPPLIER_CHANCE);
+					// 
 					// beat add probability test
 					if(diceRoll >= module.POSSIBILE_SUPPLIER_CHANCE) {
 
@@ -5508,18 +5755,18 @@ var WholesaleManager = function() {
 						var parts = gameData.parts;
 						var type = PWG.Utils.randomProperty(PartTypes);
 						// var size = PWG.Utils.randomProperty(EquipmentSizes);
-						// trace('\ttype = ' + type);
+						// 
 						var size = PWG.Utils.randomKey(gameData.parts[type]);
-						// trace('\tsize = ' + size);
+						// 
 						var quality = (Math.floor(Math.random() * (gameData.parts[type][size].length - 1)));
-						// trace('\tquality = ' + quality);
+						// 
 						// don't already have max suppliers for this part type
 						if(PWG.Utils.objLength(module.parts[type][size]) < module.SUPPLIERS_PER_PART_MAX) {
 							config.part = gameData.parts[type][size][quality];
 							config.partType = type;
 							config.partSize = size;
 							config.partDescription = PartDescriptions[type];
-							module.notificationActive = true;
+							module.supplierPending = true;
 							module.createSupplier(config);
 						}
 					}
@@ -5529,7 +5776,7 @@ var WholesaleManager = function() {
 	};
 	
 	module.createSupplier = function(config) {
-		// trace('WholesaleManager/createSupplier, confg = ', config);
+		// 
 		var type = BuildingTypes.SUPPLIER;
 		var count = TurnManager.tempSupplierCount;
 
@@ -5539,17 +5786,17 @@ var WholesaleManager = function() {
 		TurnManager.tempSupplierCount++;
 
 		var supplier = new Supplier(config);
-		PWG.EventCenter.trigger({ type: Events.ADD_SUPPLIER_NOTIFICATION, supplier: supplier });
+		PWG.EventCenter.trigger({ type: Events.ADD_SUPPLIER_OPPORTUNITY, supplier: supplier });
 	};
 
 	module.addSupplier = function(supplier) {
-		// trace('WhoelsaleManager/addSupplier');
-		module.notificationActive = false;
+		// 
+		module.supplierPending = false;
 		module.suppliersAdded++;
 		module.suppliers[supplier.config.id] = supplier;
-		// trace('\tadding supplier to parts['+supplier.config.partType+']['+supplier.config.partSize+']['+supplier.config.id+']');
+		// 
 		module.parts[supplier.config.partType][supplier.config.partSize][supplier.config.id] = supplier.config;
-		// trace('\tparts now = ', module.parts);
+		// 
 		TurnManager.addSupplier(supplier.config);
 	};
 	
@@ -5567,12 +5814,12 @@ var WholesaleManager = function() {
 				);
 			}
 		}
-		// trace('WholesaleManager/hasPart: ' + type + '.' + size + ' = ' + partCount);
+		// 
 		return partCount;
 	};
 	
 	module.usePart = function(type, size, supplierId) {
-		// trace('WholesaleManager/usePart: ' + type + '.' + size + ', supplierId = ' + supplierId);
+		// 
 		var supplier = module.parts[type][size][supplierId];
 		if(supplier) {
 			if(supplier.quantity > 0) {
@@ -5591,7 +5838,7 @@ var WholesaleManager = function() {
 	};
 	
 	module.removeSupplierFromParts = function(supplier) {
-		// trace('WholesaleManager/removeSupplierFromParts');
+		// 
 		delete module.parts[supplier.partType][supplier.partSize][supplier.id];
 		TurnManager.wholesaleInventoryEmptied(supplier);
 	};
@@ -5601,13 +5848,13 @@ var WholesaleManager = function() {
 	};
 	
 	module.calculateCostModifier = function(config) {
-		// trace('WholesaleManager/calculateCostModifier, config = ', config);
+		// 
 		var baseCost = config.part.cost;
-		// trace('baseCost = ' + baseCost);
+		// 
 		var rand = (Math.floor(Math.random() * (module.PARTS_COST_MODIFIER_MAX - module.PARTS_COST_MODIFIER_MIN) + module.PARTS_COST_MODIFIER_MIN));
 		// trace('\trand = ' + rand)
 		var costModifier = rand / 100;
-		// trace('\tcostModifier = ' + costModifier);
+		// 
 		return (baseCost * costModifier) * config.quantity;
 	};
 
@@ -5623,7 +5870,7 @@ var AnimationManager = function() {
 	module.childKeys = {};
 	
 	module.add = function(config) {
-		// trace('AnimationQueue/add, config = ', config);
+		// 
 		if(!module.animations[config.key]) {
 			module.animations[config.key] = [];
 			module.parents[config.key] = PWG.ViewManager.getControllerFromPath(config.parentPath);
@@ -5638,7 +5885,7 @@ var AnimationManager = function() {
 		config.controller.view.events.onAnimationComplete.add(module.onAnimationComplete, this);
 		
 		module.animations[config.key].push(config);
-		// trace('\tadded, active = ' + module.active[config.key]);
+		// 
 		if(!module.active[config.key]) {
 			module.active[config.key] = true;
 			module.start(config.key);
@@ -5658,17 +5905,17 @@ var AnimationManager = function() {
 	};
 	
 	module.start = function(key, name) {
-		// trace('-- AnimationManager/start, anitmations['+key+'].length = ' + module.animations[key].length + ', active = ' + module.active[key]);
+		// 
 		if(module.animations[key].length > 0) {
 			var config = module.animations[key][0];
-			// trace('\tconfig = ', config, '\tanimations['+key+'] = ', module.animations[key]);
+			// 
 			var animation = name || config.animationName;
 
 			if(!module.active[key]) {
 				module.active[key] = true;
 			}
 			var path = config.parentPath + ':' + config.name;
-			// trace('\tcalling play on ' + config.name + ' at path = ' + path + ', animation = ' + animation);
+			// 
 			// PWG.ViewManager.showView(path);
 			PWG.PhaserAnimation.play(config.name, animation, true);
 		} else {
@@ -5677,7 +5924,7 @@ var AnimationManager = function() {
 	
 	module.onAnimationComplete = function(view) {
 		var config = module.findConfig(view.name);
-		// trace('AnimationManager/onAnimationComplete, config.name ' + config.name + ', key = ' + config.key);
+		// 
 		module.active[config.key] = false;
 		module.removeView(config);
 		
@@ -5686,7 +5933,7 @@ var AnimationManager = function() {
 			module.animations[config.key].splice(0, 1);
 			module.start(config.key);
 		}
-		// trace('\tanimations['+config.key+'] now = ', module.animations[config.key]);
+		// 
 	};
 
 	module.findConfig = function(name) {
@@ -5904,34 +6151,34 @@ var GameConfig = function() {
 		var notificationText = {
 			tutorial: {
 				init: {
-					content: 'Hello! Let\'s get started.\nClick the gear below to\ncheck out the game manual.\nOtherwise, click the ignition to\nstart the game.'
+					content: 'Hello! Let\'s get started.\nClick the gear below to\ncheck out the game manual.\nOtherwise, click the ignition\nto start the game.'
 				},
 				world: {
-					content: 'This is the world map.\nClick on a US Sector icon.\nto see to a detailed\nview of the area.'
+					content: '\nThis is the world map.\nClick on a US Sector icon\nto see a detailed\nview of the area.'
 				},
 				usDetail: {
-					content: 'This is a grid of locations\nin this area.\nClick an empty cell\nto create a new Plant.'
+					content: '\nThis is a grid of locations\nin this area.\nClick an empty cell\nto create a new Plant.'
 				},
 				plant: {
-					content: 'Your Plant has finished\nconstruction!\nClick on the Plant\nto see details.'
+					content: '\nYour Plant has finished\nconstruction!\nClick on the Plant\nto see details.'
 				},
 				plantDetails: {
-					content: 'Here are the details\nof your new Plant.\nNot much going on yet.\nClick the wrench.'
+					content: '\nHere are the details\nof your new Plant.\nNot much going on yet.\nClick the wrench.'
 				},
 				equipmentList: {
-					content: 'This is a list of your Plant\'s\nTractors and Skid Steers.\nClick an empty slot\nto add a new model.'
+					content: '\nThis is a list of your Plant\'s\nTractors and Skid Steers.\nClick an empty slot\nto add a new model.'
 				},
 				equipmentCreate: {
-					content: 'Click on a crate to choose\na new Tractor or Skid Steer\nmodel and its size.'
+					content: '\nClick on a crate to choose\na new Tractor or Skid Steer\nmodel and its size.'
 				},
 				equipmentEdit: {
-					content: 'Click the part name to\nsee the parts you can buy.\nThe machine behind me will cycle\nthrough parts to be added.'
+					content: '\nClick the part name to\nsee the parts you can buy.\nThe machine behind me will cycle\nthrough parts to be added.'
 				},
 				dealer: {
-					content: 'Great! Your Plant will now\nbegin manufacturing. Once it has\nmade 3, Dealers will begin\n offering to sell your equipment.\nLook for the envelope in the\nUS Sector screen.'
+					content: 'Great! Your Plant will now\nbegin manufacturing. Once it has\nmade 3, Dealers will begin\noffering to sell your equipment.\nLook for the envelope in the top,\nleft corner of US Sector screen.'
 				},
 				supplier: {
-					content: 'Suppliers will now begin\nto offer you parts as discount\nfor bulk orders.\nLook for the engine icon in\nthe bottom, left corner.'
+					content: 'Suppliers will now begin\nto offer you parts at a\ndiscount for bulk orders.\nLook for the engine icon in\nthe bottom, left corner.'
 				},
 				tradeRoute: {
 					content: 'Now you\'ll want to start establishing\nInternational Trade Routes.\nBe sure to create some new\nTractors and Skid Steers\nas you will need inventory to export.'
@@ -5952,7 +6199,7 @@ var GameConfig = function() {
 			dealer: {
 				content: 'We would like to sell ~{quantity}~\nper year of your\n~{plant}~ ~{model}~\ninventory at $~{resell}~ each.'
 			},
-			supplierPrompt: {
+			supplierAvailableIcon: {
 				content: 'Build Supplier\nRelationship',
 			},
 			supplierNotification: {
@@ -5963,9 +6210,19 @@ var GameConfig = function() {
 			},
 			tradeRoute: {
 				content: 'We would like to import ~{quantity}~\nper year of your ~{plant}~\n~{model}~ inventory\nat $~{resell}~ each.'
+			},
+			transAtlantic: { 
+				content: 'Transatlantic Trade and\nInvestment Partnership (TTIP)\nopens new trade opportunities\nwith the European Union',
+			},
+			transPacific: {
+				content: 'Trans-Pacific Partnership (TPP)\nopens trade to several countries\non both sides of the Pacific.'
+			},
+			impExpBank: {
+				content: 'Reauthorization of the\nExport-Import Bank of the US\nprovides funding to facilitate\ntrading around the world.'
 			}
 		};
 		var notificationPeopleImages = {
+			tutorial: 'tutorialGuy',
 			dealer: 'dealerGirl',
 			supplier: 'supplierGuy',
 			tradeRoutes: {
@@ -6449,7 +6706,7 @@ var GameConfig = function() {
 					bg: {
 						type: 'sprite',
 						name: 'bg',
-						img: 'tutorialGuy',
+						img: '',
 						x: 0,
 						y: 0,
 						attrs: {
@@ -6564,14 +6821,27 @@ var GameConfig = function() {
 						type: 'sprite',
 						name: 'invisButton',
 						img: 'blockWhite',
-						x: 0,
-						y: 0,
+						x: gameW - (gameUnit * 2),
+						y: gameH - (gameUnit * 4.5),
 						attrs: {
-							width: gameW,
-							height: gameH,
+							width: gameUnit * 2,
+							height: gameUnit * 2,
 							alpha: 0
 						},
-						input: gameLogic.input.manualPage
+						input: gameLogic.input.manualPageForward
+					},
+					backPage: {
+						type: 'sprite',
+						name: 'backPage',
+						img: 'buttonBack',
+						x: gameW - (gameUnit * 5),
+						y: gameH - (gameUnit * 4.5),
+						attrs: {
+							width: controlButtons.width,
+							height: controlButtons.height,
+							visible: false
+						},
+						input: gameLogic.input.manualPageBackward
 					}
 				}
 			},
@@ -7790,7 +8060,81 @@ var GameConfig = function() {
 			        fill: ''
 				}
 			},
-			
+			// bonuses
+			bonusesNotification: {
+				type: 'group',
+				name: 'bonusesNotification',
+				attrs: {
+					// visible: false
+				},
+				views: {
+					openedSuitcase: {
+						type: 'sprite',
+						name: 'openedSuitcase',
+						img: 'openedSuitcase',
+						x: 0,
+						y: (gameUnit * 1.5),
+						attrs: {
+							width: gameW,
+							height: gameH
+						},
+						input: gameLogic.input.openedSuitcase
+					},
+					closedSuitcase: {
+						type: 'sprite',
+						name: 'closedSuitcase',
+						img: 'closedSuitcase',
+						x: 0,
+						y: (gameUnit * 1.5),
+						attrs: {
+							width: gameW,
+							height: gameH
+						},
+						input: gameLogic.input.closedSuitcase
+					}
+				}
+			},
+			summaryBonusesText: {
+				type: 'group',
+				name: 'summaryBonusesText',
+				attrs: {
+					visisble: false
+				},
+				views: {
+					title: {
+						type: 'text',
+						name: 'summaryBonusText',
+						text: 'Bonuses',
+						x: 0,
+						y: gameUnit * 3,
+						style: {
+						    font: (fontSizes.lg + 'px Trebuchet MS'),
+					        fill: palette.black
+						},
+						position: {
+							centerX: true
+						}
+					}
+				}
+			},
+			summaryBonusText: {
+				type: 'text',
+				name: 'summaryBonusText',
+				text: '',
+				offsetX: 0,
+				offsetY: (gameUnit * 1.5),
+				x: gameUnit * 2.25,
+				// x: 0,
+				y: gameUnit * 4.5,
+				style: {
+				    font: (fontSizes.sm + 'px Trebuchet MS'),
+			        fill: palette.black//,
+					// 'text-align': 'center'
+				// },
+				// position: {
+				// 	centerX: true
+				}
+			}
 		};
 
 		var config = {
@@ -7798,6 +8142,9 @@ var GameConfig = function() {
 			gameType: 'phaser',
 			// assets
 			assets: {
+				audio: {
+					tractorStartup: 'audio/tractor_startup.mp3'
+				},
 				images: {
 					// generic
 					blockWhite: 'img/block_white.png',
@@ -7807,8 +8154,9 @@ var GameConfig = function() {
 					dashboardBottom: 'img/dashboard_bottom.png',
 					dashboardTop: 'img/dashboard_top.png',
 					submenuBg: 'img/submenu_bg.png',
-					smallEnvelope: 'img/icons/small_envelope.png',
-					smallEngineIcon: 'img/icons/small_engine_icon.png',
+					smallEnvelopeIcon: 'img/icons/small_envelope_icon.png',
+					smallTireIcon: 'img/icons/small_tire_icon.png',
+					smallSuitcaseIcon: 'img/icons/small_suitcase_icon.png',
 					// home
 					homeBg: 'img/screens/start/start.png',
 					// manual
@@ -7977,6 +8325,11 @@ var GameConfig = function() {
 					tradeRouteSouthPacificNotification: 'img/notifications/trade_route_south_pacific.png',
 					tradeRouteSouthAmericaNotification: 'img/notifications/trade_route_south_america.png',
 
+					// BONUSES
+					closedSuitcase: 'img/closed_suitcase.png',
+					openedSuitcase: 'img/opened_suitcase2.png',
+					bonusPoof: 'img/bonus_poof.png',
+					
 					// TURN END
 					turnEnd01: 'img/screens/turn_end/turn_end01.png',
 					turnEnd02: 'img/screens/turn_end/turn_end02.png'
@@ -8323,11 +8676,8 @@ var GameConfig = function() {
 				}
 			},
 			bonusesText: {
-				newPlant: 'New Plant built created 1000 jobs',
-				newDealer: 'New Dealer established',
-				newSupplier: 'New Supplier relationship',
-				newTradeRoutes: 'New Trade Route established',
-				machineManufacturing: '~{machines}~ Machines built'
+				buildings: '~{count}~ new ~{name}~:\n~{bonus}~ jobs created',
+				manufacturing: ''
 			},
 			machineIcons: {
 				tractor: {
@@ -8422,7 +8772,7 @@ var GameConfig = function() {
 								height: (gameUnit * 5),
 								alpha: 0
 							},
-							callback: gameLogic.buttonCallbacks.worldStart,
+							callback: gameLogic.buttonCallbacks.gameStart,
 							context: this,
 							frames: [0, 1, 1, 0]
 						},
@@ -8452,7 +8802,7 @@ var GameConfig = function() {
 						visible: false
 					},
 					views: {
-						stateBg: {
+						manualBg: {
 							type: 'sprite',
 							name: 'manualBg',
 							img: 'manualBg',
@@ -8880,6 +9230,19 @@ var GameConfig = function() {
 								height: gameH
 							},
 							input: gameLogic.input.closedEnvelope
+						},
+						smallSuitcaseIcon: {
+							type: 'sprite',
+							name: 'smallSuitcaseIcon',
+							img: 'smallSuitcaseIcon',
+							x: gameW - (gameUnit * 1.6),
+							y: gameUnit * 2,
+							attrs: {
+								width: gameUnit * 1.5,
+								height: (gameUnit * 1.5) * 0.73,
+								visible: false
+							},
+							input: gameLogic.input.smallSuitcaseIcon
 						}
 					}
 				},
@@ -8891,29 +9254,29 @@ var GameConfig = function() {
 						visible: true
 					},
 					views: {
-						notificationEnvelope: {
+						notificationIcon: {
 							type: 'sprite',
-							name: 'notificationEnvelope',
-							img: 'smallEnvelope',
+							name: 'notificationIcon',
+							img: 'smallEnvelopeIcon',
 							x: gameUnit * 0.1,
 							y: gameUnit * 1.6,
 							attrs: {
 								width: gameUnit * 1.5,
 								height: (gameUnit * 1.5) * 0.6
 							},
-							input: gameLogic.input.notificationEnvelope
+							input: gameLogic.input.notificationIcon
 						},
-						supplierPrompt: {
+						supplierAvailableIcon: {
 							type: 'sprite',
-							name: 'supplierPrompt',
-							img: 'smallEngineIcon',
+							name: 'supplierAvailableIcon',
+							img: 'smallTireIcon',
 							x: gameUnit * 0.1,
-							y: gameUnit * 12.5,
+							y: gameUnit * 12,
 							attrs: {
-								width: (gameUnit * 1.5) * 0.6,
-								height: (gameUnit * 1.5) * 0.6
+								width: (gameUnit * 1.5),
+								height: (gameUnit * 1.5)
 							},
-							input: gameLogic.input.supplierPrompt
+							input: gameLogic.input.supplierAvailableIcon
 							
 						},
 						tradeRouteAlertIcon: {
@@ -9031,8 +9394,8 @@ var GameConfig = function() {
 									    font: (fontSizes.md + 'px Trebuchet MS'),
 								        fill: palette.orange1
 									},
-									x: (gameUnit * 6.33),
-									y: (gameUnit * 0.38)
+									x: (gameUnit * 6.5),
+									y: (gameUnit * 0.4)
 								},
 								turnIndicator: {
 									type: 'sprite',
@@ -9299,7 +9662,7 @@ var GameConfig = function() {
 				{
 					blurbs: [
 					{
-						text: 'Click on the active plant\nto see its details.\nThe wrench takes\nyou a list of the\nplant\'s\nTractor and\nSkid Steer models.',
+						text: 'Click on the active plant\nto see its details.\nThe wrench takes\nyou to a list of the\nplant\'s\nTractor and\nSkid Steer models.',
 						x: (gameUnit * 2),
 						y: (gameUnit * 3)
 					},
@@ -9352,7 +9715,7 @@ var GameConfig = function() {
 						y: (gameUnit * 6)
 					},
 					{
-						text: 'There may be Parts Supplier oppurtunities.\nBuy in bulk to save on manufacturing\ncosts later.',
+						text: 'There may be Parts Supplier opportunities.\nBuy in bulk to save on manufacturing\ncosts later.',
 						x: (gameUnit * 2),
 						y: (gameUnit * 10)
 					}
@@ -9383,12 +9746,12 @@ var GameConfig = function() {
 						y: (gameUnit * 3)
 					},
 					{
-						text: 'After a Plant has manufactured 3 machines,\nRegional Representatives will prompt\nyou to sell through their Dealer.',
+						text: 'After a Plant has manufactured 3 or more\nmachines, envelopes will begin appearing\non the US Sector Grids.\nYou will be prompted to\nsell through a Dealer.',
 						x: (gameUnit * 2),
 						y: (gameUnit * 5.5)
 					},
 					{
-						text: 'Not all Dealers offer the same resale.\nThe first is not always the best.',
+						text: 'Not all Dealers offer the same resale.\nThe first offer is not always the best.',
 						x: (gameUnit * 2),
 						y: (gameUnit * 11)
 					}
@@ -9414,12 +9777,12 @@ var GameConfig = function() {
 				{
 					blurbs: [
 					{
-						text: 'After you sell domestically you,\nmay receive trade opportunities\nleading to increased revenue\nand bonus points.',
+						text: 'After you sell domestically, you\nmay receive trade opportunities\nleading to increased revenue\nand bonus points.',
 						x: (gameUnit * 2),
 						y: (gameUnit * 3)
 					},
 					{
-						text: 'Clicking the prompt returns to\nthe world map and displays\nthe potential trade route.',
+						text: 'Clicking the prompt returns you to\nthe world map and displays\nthe potential trade route.',
 						x: (gameUnit * 2),
 						y: (gameUnit * 5)
 					},
@@ -9456,7 +9819,7 @@ var GameConfig = function() {
 					blurbs:
 					[ 
 					{
-						text: 'Keep track of your bank\nthe turn time,\nand the Bonus Points\nin the top dashboard.',
+						text: 'Keep track of your bank,\nthe turn time,\nand the Bonus Points\nin the top dashboard.',
 						x: (gameUnit * 2),
 						y: (gameUnit * 3)
 					},

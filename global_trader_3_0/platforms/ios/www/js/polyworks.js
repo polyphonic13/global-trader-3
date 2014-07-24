@@ -1,4 +1,4 @@
-/*! polyworksjs v0.1.0 2014-07-21T19:19:05 */
+/*! polyworksjs v0.1.0 2014-07-24T10:33:41 */
 var PWG = {};
 
 // LOGGING
@@ -19,6 +19,9 @@ function trace(message) {
 PWG.Stage = function() {
 	var _aspectRatio = [16, 9];
 	var _maxHeight = 800;
+	var _offsetX = 0;
+	var _offsetY = 0;
+	
 	var _windowListeners = false;
 	var _center;
 	var _callback;
@@ -33,13 +36,23 @@ PWG.Stage = function() {
 		gameY: 0,
 		unit: 0,
 
-		init: function(aspectRatio, maxHeight, resizable, callback, context) {
+		init: function(aspectRatio, maxHeight, offsetX, offsetY, resizable, callback, context) {
+		
 			if(typeof(aspectRatio) !== 'undefined') {
 				_aspectRatio = aspectRatio;
 			}
 			if(typeof(maxHeight) !== 'undefined') {
 				_maxHeight = _maxHeight;
 			}
+			
+			if(typeof(offsetX) !== 'undefined') {
+				_offsetX = offsetX;
+			}
+			
+			if(typeof(offsetY) !== 'undefined') {
+				_offsetY = offsetY;
+			}
+			
 			_callback = callback;
 			_context = context || window;
 
@@ -85,10 +98,16 @@ PWG.Stage = function() {
 			module.gameH = (module.gameW/_aspectRatio[0]) * _aspectRatio[1];
 		}
 
+		module.gameW -= _offsetX;
+		module.gameH -= _offsetY;
+
 		module.unit = module.gameH/_aspectRatio[1];
 		module.gameX = (module.winW/2) - (module.gameW/2);
 		module.gameY = (module.winH/2) - (module.gameH/2);
 
+		module.gameX += _offsetX;
+		module.gameY += _offsetY;
+		
 		// trace('\nwinW = ' + module.winW + ', winH = ' + module.winH + '\ngameW = ' + module.gameW + ', gameH = ' + module.gameH + '\nunit = ' + module.unit + '\ngameX = ' + module.gameX + ', gameY = ' + module.gameY);
 
 		var loadingWidth = module.winW - 80;
@@ -2123,7 +2142,7 @@ var PhaserGame = function() {
 
 	module.camera = null;
 	
-	module.init = function(aspectRatio, maxHeight) {
+	module.init = function(aspectRatio, maxHeight, offsetX, offsetY) {
 		module.loaded = 
 		{
 			images: {},
@@ -2131,7 +2150,7 @@ var PhaserGame = function() {
 		};
 
 		module.stage = PWG.Stage;
-		module.stage.init(aspectRatio, maxHeight, false, _onStageInitialized, module);
+		module.stage.init(aspectRatio, maxHeight, offsetX, offsetY, false, _onStageInitialized, module);
 	};
 	
 	module.destroy = function() {
