@@ -671,6 +671,21 @@ var BuildingManager = function() {
 		}
 	};
 	
+	module.getMachineName = function(count) {
+		if(count > 701) {
+			var first = (Math.floor(count/702)) - 1;
+			var second = Math.floor(((count/26) - 1) % 26);
+			var third = (count % 26);
+			return String(alphabet.UPPER[first] + alphabet.UPPER[second] + alphabet.UPPER[third]);
+		} else if(count > 25) {
+			var first = (Math.floor(count/26)) - 1;
+			var second = (count % 26);
+			return String(alphabet.UPPER[first] + alphabet.UPPER[second]);
+		} else {
+			return alphabet.UPPER[count];
+		}
+	};
+	
 	return module;
 	
 }();
