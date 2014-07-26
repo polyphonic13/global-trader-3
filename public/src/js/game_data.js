@@ -458,14 +458,14 @@ var gameData = {
 			},
 			{
 				description: 'Premium',
-				img: 'bucketMediumStandard',
+				img: 'bucketBasicPremium',
 				cost: 400,
 				build: 75,
 				sell: 1500
 			},
 			{
 				description: 'Deluxe',
-				img: 'bucketHeavyStandard',
+				img: 'bucketBasicDeluxe',
 				cost: 1000,
 				build: 250,
 				sell: 500
@@ -474,7 +474,7 @@ var gameData = {
 			medium: [
 			{
 				description: 'Standard',
-				img: 'bucketBasicPremium',
+				img: 'bucketBasicStandard',
 				cost: 600,
 				build: 100,
 				sell: 2000
@@ -497,14 +497,14 @@ var gameData = {
 			heavy: [
 			{
 				description: 'Standard',
-				img: 'bucketBasicDeluxe',
+				img: 'bucketHeavyStandard',
 				cost: 900,
 				build: 150,
 				sell: 3000
 			},
 			{
 				description: 'Premium',
-				img: 'bucketMediumPremium',
+				img: 'bucketHeavyPremium',
 				cost: 1200,
 				build: 225,
 				sell: 4500
@@ -778,7 +778,7 @@ var gameData = {
 			text: [
 				'Make $100,000 in profits',
 				'Sell 10 machines',
-				'Manufacture 25 machines'
+				'Manufacture 15 machines'
 			]
 		},
 		goals: [
@@ -794,7 +794,7 @@ var gameData = {
 		},
 		{
 			type: 'newMachines',
-			value: 5,
+			value: 15,
 			calculation: 'length'
 		}
 		]
@@ -818,7 +818,7 @@ var gameData = {
 		},
 		{
 			type: 'machinesSold',
-			value: 10,
+			value: 30,
 			calculation: 'length'
 		},
 		{
@@ -841,23 +841,18 @@ var gameData = {
 		},
 		goals: [
 		{
-			type: 'profit',
-			value: 1000000,
-			calculation: 'money'
-		},
-		{
 			type: 'newDealers',
 			value: 3,
 			calculation: 'number'
 		},
 		{
 			type: 'newMachineModels',
-			value: 2,
+			value: 5,
 			calculation: 'length'
 		},
 		{
 			type: 'newMachines',
-			value: 50,
+			value: 100,
 			calculation: 'length'
 		}
 		]
@@ -1012,14 +1007,14 @@ var gameData = {
 		},
 		goals: [
 		{
-			type: 'profit',
-			value: 10000000,
-			calculation: 'money'
-		},
-		{
 			type: 'newTradeRoutes',
 			value: 5,
 			calculation: 'number'
+		},
+		{
+			type: 'profit',
+			value: 10000000,
+			calculation: 'money'
 		}
 		]
 	}

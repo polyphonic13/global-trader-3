@@ -192,7 +192,7 @@ var GameConfig = function() {
 					content: 'Great! Your Plant will now\nbegin manufacturing. Once it has\nmade 3, Dealers will begin\noffering to sell your equipment.\nLook for the envelope in the top,\nleft corner of US Sector screen.'
 				},
 				supplier: {
-					content: 'Suppliers will now begin\nto offer you parts at a\ndiscount for bulk orders.\nLook for the engine icon in\nthe bottom, left corner.'
+					content: 'Suppliers will now begin\nto offer you parts at a\ndiscount for bulk orders.\nLook for the tire icon in\nthe bottom, left corner.'
 				},
 				tradeRoute: {
 					content: 'Now you\'ll want to start establishing\nInternational Trade Routes.\nBe sure to create some new\nTractors and Skid Steers\nas you will need inventory to export.'

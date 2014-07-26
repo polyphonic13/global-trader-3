@@ -228,6 +228,10 @@ var gameLogic = {
 			},
 			// TUTORIAL / MANUAL
 			addManualPage: function(idx) {
+				// trace('addManualPage, PhaserGame.currentManualPage = ' + PhaserGame.currentManualPage);
+				if(PhaserGame.currentManualPage !== '') {
+					PWG.ViewManager.removeView(PhaserGame.currentManualPage, 'manual:manualPages');
+				}
 				var manualPages = PWG.ViewManager.getControllerFromPath('manual:manualPages');
 				var manualPage = PWG.Utils.clone(PhaserGame.config.dynamicViews.manualPage);
 				var manualPageNumber = PWG.Utils.clone(PhaserGame.config.dynamicViews.manualPageNumber);
@@ -278,6 +282,8 @@ var gameLogic = {
 				if(idx > 0) {
 					manualPage.views['backPage'].attrs.visible = true;
 				}
+				PhaserGame.currentManualPage = manualPage.name;
+				// trace('manualPages = ', manualPages);
 				PWG.ViewManager.addView(manualPage, manualPages, true);
 			},
 			nextManualPage: function() {
@@ -1808,10 +1814,11 @@ var gameLogic = {
 		},
 		manualBg: {
 			inputDown: function() {
-				if(!this.manualOpen) {
+				// trace('manualBg/click, PhaserGame.manualOpen = ' + PhaserGame.manualOpen);
+				if(!PhaserGame.manualOpen) {
 					PhaserGame.manualPage = 0;
 					PhaserGame.addManualPage(0);
-					this.manualOpen = true;
+					PhaserGame.manualOpen = true;
 				}
 			}
 		},
@@ -2359,11 +2366,15 @@ var gameLogic = {
 		},
 		manual: {
 			create: function() {
+				PhaserGame.currentManualPage = '';
+				PhaserGame.manualOpen = false;
 				PWG.ViewManager.hideView('global:homeGroup');
 				PWG.ViewManager.showView('global:cancelButton');
 			},
 			shutdown: function() {
-				PWG.ViewManager.removeView('manualPages', 'manual');
+				if(PhaserGame.currentManualPage !== '') {
+					PWG.ViewManager.removeView(PhaserGame.currentManualPage, 'manual:manualPages');
+				}
 			}
 		},
 		brief: {
