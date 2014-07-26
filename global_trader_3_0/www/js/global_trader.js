@@ -1,4 +1,4 @@
-(function(){(typeof console === 'undefined' || typeof console.log === 'undefined')?console={log:function(){}}:console.log('----- Global Trader 3.0 created: 2014-07-24T15:00:58')})();
+(function(){(typeof console === 'undefined' || typeof console.log === 'undefined')?console={log:function(){}}:console.log('----- Global Trader 3.0 created: 2014-07-26T11:16:44')})();
 var Events = {
 	CHANGE_SCREEN: 'changeScreen',
 	CHANGE_STATE: 'changeState',
@@ -713,14 +713,14 @@ var gameData = {
 			},
 			{
 				description: 'Premium',
-				img: 'bucketMediumStandard',
+				img: 'bucketBasicPremium',
 				cost: 400,
 				build: 75,
 				sell: 1500
 			},
 			{
 				description: 'Deluxe',
-				img: 'bucketHeavyStandard',
+				img: 'bucketBasicDeluxe',
 				cost: 1000,
 				build: 250,
 				sell: 500
@@ -729,7 +729,7 @@ var gameData = {
 			medium: [
 			{
 				description: 'Standard',
-				img: 'bucketBasicPremium',
+				img: 'bucketBasicStandard',
 				cost: 600,
 				build: 100,
 				sell: 2000
@@ -752,14 +752,14 @@ var gameData = {
 			heavy: [
 			{
 				description: 'Standard',
-				img: 'bucketBasicDeluxe',
+				img: 'bucketHeavyStandard',
 				cost: 900,
 				build: 150,
 				sell: 3000
 			},
 			{
 				description: 'Premium',
-				img: 'bucketMediumPremium',
+				img: 'bucketHeavyPremium',
 				cost: 1200,
 				build: 225,
 				sell: 4500
@@ -1033,7 +1033,7 @@ var gameData = {
 			text: [
 				'Make $100,000 in profits',
 				'Sell 10 machines',
-				'Manufacture 25 machines'
+				'Manufacture 15 machines'
 			]
 		},
 		goals: [
@@ -1049,7 +1049,7 @@ var gameData = {
 		},
 		{
 			type: 'newMachines',
-			value: 5,
+			value: 15,
 			calculation: 'length'
 		}
 		]
@@ -1073,7 +1073,7 @@ var gameData = {
 		},
 		{
 			type: 'machinesSold',
-			value: 10,
+			value: 30,
 			calculation: 'length'
 		},
 		{
@@ -1096,23 +1096,18 @@ var gameData = {
 		},
 		goals: [
 		{
-			type: 'profit',
-			value: 1000000,
-			calculation: 'money'
-		},
-		{
 			type: 'newDealers',
 			value: 3,
 			calculation: 'number'
 		},
 		{
 			type: 'newMachineModels',
-			value: 2,
+			value: 5,
 			calculation: 'length'
 		},
 		{
 			type: 'newMachines',
-			value: 50,
+			value: 100,
 			calculation: 'length'
 		}
 		]
@@ -1267,14 +1262,14 @@ var gameData = {
 		},
 		goals: [
 		{
-			type: 'profit',
-			value: 10000000,
-			calculation: 'money'
-		},
-		{
 			type: 'newTradeRoutes',
 			value: 5,
 			calculation: 'number'
+		},
+		{
+			type: 'profit',
+			value: 10000000,
+			calculation: 'money'
 		}
 		]
 	}
@@ -1724,6 +1719,10 @@ var gameLogic = {
 			},
 			// TUTORIAL / MANUAL
 			addManualPage: function(idx) {
+				// 
+				if(PhaserGame.currentManualPage !== '') {
+					PWG.ViewManager.removeView(PhaserGame.currentManualPage, 'manual:manualPages');
+				}
 				var manualPages = PWG.ViewManager.getControllerFromPath('manual:manualPages');
 				var manualPage = PWG.Utils.clone(PhaserGame.config.dynamicViews.manualPage);
 				var manualPageNumber = PWG.Utils.clone(PhaserGame.config.dynamicViews.manualPageNumber);
@@ -1774,6 +1773,8 @@ var gameLogic = {
 				if(idx > 0) {
 					manualPage.views['backPage'].attrs.visible = true;
 				}
+				PhaserGame.currentManualPage = manualPage.name;
+				// 
 				PWG.ViewManager.addView(manualPage, manualPages, true);
 			},
 			nextManualPage: function() {
@@ -3169,22 +3170,24 @@ var gameLogic = {
 					}
 				} else {
 					// if failed, reset turn manager to pre-level playerData
-					// 
-					var sectors = TurnManager.playerData.sectors;
-					PWG.Utils.each(
-						sectors,
-						function(sector, idx) {
-							PWG.Utils.each(
-								sector,
-								function(building) {
-									BuildingManager.removeBuilding(idx, building.id);
-								},
-								this
-							);
-						},
-						this
-					);
+					
+					BuildingManager.sectors = [ {}, {}, {}, {}, {} ];
 					TurnManager.playerData = PhaserGame.playerData;
+					// var sectors = TurnManager.playerData.sectors;
+					// PWG.Utils.each(
+					// 	sectors,
+					// 	function(sector, idx) {
+					// 		PWG.Utils.each(
+					// 			sector,
+					// 			function(building) {
+					// 				BuildingManager.removeBuilding(idx, building.id);
+					// 			},
+					// 			this
+					// 		);
+					// 	},
+					// 	this
+					// );
+					// TurnManager.playerData = PhaserGame.playerData;
 				}
 				
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'turnEnd' });
@@ -3304,10 +3307,11 @@ var gameLogic = {
 		},
 		manualBg: {
 			inputDown: function() {
-				if(!this.manualOpen) {
+				// 
+				if(!PhaserGame.manualOpen) {
 					PhaserGame.manualPage = 0;
 					PhaserGame.addManualPage(0);
-					this.manualOpen = true;
+					PhaserGame.manualOpen = true;
 				}
 			}
 		},
@@ -3855,11 +3859,15 @@ var gameLogic = {
 		},
 		manual: {
 			create: function() {
+				PhaserGame.currentManualPage = '';
+				PhaserGame.manualOpen = false;
 				PWG.ViewManager.hideView('global:homeGroup');
 				PWG.ViewManager.showView('global:cancelButton');
 			},
 			shutdown: function() {
-				PWG.ViewManager.removeView('manualPages', 'manual');
+				if(PhaserGame.currentManualPage !== '') {
+					PWG.ViewManager.removeView(PhaserGame.currentManualPage, 'manual:manualPages');
+				}
 			}
 		},
 		brief: {
@@ -4359,7 +4367,8 @@ var gameLogic = {
 					// activate size category buttons
 					// 
 					PhaserGame.activeMachineType = event.value;
-					var letter = alphabet.UPPER[TurnManager.playerData.modelCount[event.value]];
+					var count = TurnManager.playerData.modelCount[event.value];
+					var letter = BuildingManager.getMachineName(count);
 					var id = event.value + letter;
 					var name = event.value.toUpperCase() + ' ' + letter;
 					PhaserGame.activeMachineSize = event.size;
@@ -5673,6 +5682,21 @@ var BuildingManager = function() {
 		}
 	};
 	
+	module.getMachineName = function(count) {
+		if(count > 701) {
+			var first = (Math.floor(count/702)) - 1;
+			var second = Math.floor(((count/26) - 1) % 26);
+			var third = (count % 26);
+			return String(alphabet.UPPER[first] + alphabet.UPPER[second] + alphabet.UPPER[third]);
+		} else if(count > 25) {
+			var first = (Math.floor(count/26)) - 1;
+			var second = (count % 26);
+			return String(alphabet.UPPER[first] + alphabet.UPPER[second]);
+		} else {
+			return alphabet.UPPER[count];
+		}
+	};
+	
 	return module;
 	
 }();
@@ -6190,7 +6214,7 @@ var GameConfig = function() {
 					content: 'Great! Your Plant will now\nbegin manufacturing. Once it has\nmade 3, Dealers will begin\noffering to sell your equipment.\nLook for the envelope in the top,\nleft corner of US Sector screen.'
 				},
 				supplier: {
-					content: 'Suppliers will now begin\nto offer you parts at a\ndiscount for bulk orders.\nLook for the engine icon in\nthe bottom, left corner.'
+					content: 'Suppliers will now begin\nto offer you parts at a\ndiscount for bulk orders.\nLook for the tire icon in\nthe bottom, left corner.'
 				},
 				tradeRoute: {
 					content: 'Now you\'ll want to start establishing\nInternational Trade Routes.\nBe sure to create some new\nTractors and Skid Steers\nas you will need inventory to export.'
