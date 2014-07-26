@@ -1,4 +1,4 @@
-(function(){(typeof console === 'undefined' || typeof console.log === 'undefined')?console={log:function(){}}:console.log('----- Global Trader 3.0 created: 2014-07-26T11:16:44')})();
+(function(){(typeof console === 'undefined' || typeof console.log === 'undefined')?console={log:function(){}}:console.log('----- Global Trader 3.0 created: 2014-07-26T12:05:47')})();
 var Events = {
 	CHANGE_SCREEN: 'changeScreen',
 	CHANGE_STATE: 'changeState',
@@ -162,7 +162,7 @@ var PartDescriptions = {
 var SupplierLocations = [
 	'Goodfield, IL',
 	'Fargo, ND',
-	'Grand Island, NB',
+	'Grand Island, NE',
 	'Wichita, KS',
 	'Benson, MN',
 	'Calhoun, GA',

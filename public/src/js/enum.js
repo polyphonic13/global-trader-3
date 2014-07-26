@@ -102,7 +102,7 @@ var PartDescriptions = {
 var SupplierLocations = [
 	'Goodfield, IL',
 	'Fargo, ND',
-	'Grand Island, NB',
+	'Grand Island, NE',
 	'Wichita, KS',
 	'Benson, MN',
 	'Calhoun, GA',
