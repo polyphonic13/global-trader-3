@@ -1,4 +1,4 @@
-(function(){(typeof console === 'undefined' || typeof console.log === 'undefined')?console={log:function(){}}:console.log('----- Global Trader 3.0 created: 2014-07-26T12:05:47')})();
+(function(){(typeof console === 'undefined' || typeof console.log === 'undefined')?console={log:function(){}}:console.log('----- Global Trader 3.0 created: 2014-07-28T08:15:51')})();
 var Events = {
 	CHANGE_SCREEN: 'changeScreen',
 	CHANGE_STATE: 'changeState',
@@ -9782,7 +9782,7 @@ var GameConfig = function() {
 						y: (gameUnit * 3)
 					},
 					{
-						text: 'After a Plant has manufactured 3 or more\nmachines, envelopes will begin appearing\non the US Sector Grids.\nYou will be prompted to\nsell through a Dealer.',
+						text: 'After a Plant has manufactured 3 or more\nmachines, envelopes will begin appearing\non the US Sector Grids. You will be prompted to\nsell through a Dealer.',
 						x: (gameUnit * 2),
 						y: (gameUnit * 5.5)
 					},
@@ -9796,7 +9796,7 @@ var GameConfig = function() {
 					{
 						img: 'ssDealerGirl',
 						x: (gameUnit * 2),
-						y: (gameUnit * 7),
+						y: (gameUnit * 7.25),
 						width: (gameUnit * 2),
 						height: (gameUnit * 2) * 1.67
 					},
