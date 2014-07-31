@@ -1,4 +1,4 @@
-(function(){(typeof console === 'undefined' || typeof console.log === 'undefined')?console={log:function(){}}:console.log('----- Global Trader 3.0 created: 2014-07-30T20:03:04')})();
+(function(){(typeof console === 'undefined' || typeof console.log === 'undefined')?console={log:function(){}}:console.log('----- Global Trader 3.0 created: 2014-07-30T20:59:15')})();
 var Events = {
 	CHANGE_SCREEN: 'changeScreen',
 	CHANGE_STATE: 'changeState',
@@ -3547,19 +3547,9 @@ var gameLogic = {
 			var ignitionKey = PWG.ViewManager.getControllerFromPath('home:ignitionKey');
 			ignitionKey.view.events.onAnimationComplete.add(PhaserGame.ignitionAnimationCompleted, this);
 			PWG.PhaserAnimation.play(ignitionKey.name, 'turnOn');
-			// HACK: temporarily adding sound directly; need to implement via pwg.
+			// HACK: temporarily adding sound directly; should be implemented via pwg library.
 			var sfx = PhaserGame.phaser.add.audio('tractorStartup');
-			sfx.play();
-			// using phonegap media plugin
-			/*
-			var url = PhaserGame.config.assets.audio.tractorStartup;
-			alert('url = ' + url);
-			alert('media = ' + Media);
-			var media = new Media(url);
-			alert('media = ' + media);
-			media.play();
-			alert('post media play call');
-			*/
+			// sfx.play();
 		},
 		worldReturnButton: function() {
 			// 
@@ -6477,7 +6467,7 @@ var GameConfig = function() {
 						x: (gameUnit * 0.6),
 						y: (gameUnit * 5.75),
 						attrs: {
-							width: gameUnit * 4.8,
+							width: gameUnit * 4.9,
 							height: (gameUnit * 4.8) * 1.1,
 							frame: 0
 						},
@@ -6487,10 +6477,10 @@ var GameConfig = function() {
 						type: 'sprite',
 						name: 'tires',
 						img: 'editTractorBasicTires',
-						x: (gameUnit * 0.15),
+						x: (gameUnit * 0.14),
 						y: (gameUnit * 6.35),
 						attrs: {
-							width: gameUnit * 8.7,
+							width: gameUnit * 8.9,
 							height: (gameUnit * 8.7) * 0.64,
 							frame: 0
 						},
@@ -6503,7 +6493,7 @@ var GameConfig = function() {
 						x: (gameUnit * 3.9),
 						y: (gameUnit * 4.85),
 						attrs: {
-							width: gameUnit * 3.05,
+							width: gameUnit * 3.2,
 							height: (gameUnit * 3.05) * 1.47,
 							frame: 0
 						},
@@ -6515,11 +6505,11 @@ var GameConfig = function() {
 						type: 'sprite',
 						name: 'engine',
 						img: 'editTractorMediumEngine',
-						x: (gameUnit * 1),
+						x: (gameUnit * 0.97),
 						y: (gameUnit * 6.5),
 						attrs: {
-							width: gameUnit * 4,
-							height: (gameUnit * 4) * 1.04,
+							width: gameUnit * 4.2,
+							height: (gameUnit * 4.2) * 1.04,
 							frame: 0
 						},
 						// input: gameLogic.input.engineSprite
@@ -6528,11 +6518,11 @@ var GameConfig = function() {
 						type: 'sprite',
 						name: 'tires',
 						img: 'editTractorMediumTires',
-						x: (gameUnit * 0.35),
-						y: (gameUnit * 4.9),
+						x: (gameUnit * 0.3),
+						y: (gameUnit * 4.85),
 						attrs: {
-							width: gameUnit * 8.1,
-							height: (gameUnit * 8.1) * 0.89,
+							width: gameUnit * 8.36,
+							height: (gameUnit * 8.36) * 0.89,
 							frame: 0
 						},
 						// input: gameLogic.input.tiresSprite
@@ -6541,11 +6531,11 @@ var GameConfig = function() {
 						type: 'sprite',
 						name: 'transmission',
 						img: 'editTractorMediumCab',
-						x: (gameUnit * 3.68),
+						x: (gameUnit * 3.77),
 						y: (gameUnit * 3.4),
 						attrs: {
-							width: gameUnit * 2.33,
-							height: (gameUnit * 2.33) * 2.13,
+							width: gameUnit * 2.4,
+							height: (gameUnit * 2.4) * 2.13,
 							frame: 0
 						},
 						// input: gameLogic.input.transmissionSprite
@@ -6557,10 +6547,10 @@ var GameConfig = function() {
 						name: 'engine',
 						img: 'editTractorHeavyEngine',
 						x: (gameUnit * 0.5),
-						y: (gameUnit * 5.55),
+						y: (gameUnit * 5.5),
 						attrs: {
-							width: gameUnit * 4.66,
-							height: (gameUnit * 4.66) * 1.04,
+							width: gameUnit * 4.7,
+							height: (gameUnit * 4.7) * 1.04,
 							frame: 0
 						},
 						// input: gameLogic.input.engineSprite
@@ -6569,11 +6559,11 @@ var GameConfig = function() {
 						type: 'sprite',
 						name: 'tracks',
 						img: 'editTractorHeavyTracks',
-						x: (gameUnit * 0.35),
+						x: (gameUnit * 0.37),
 						y: (gameUnit * 7.4),
 						attrs: {
-							width: gameUnit * 8.5,
-							height: (gameUnit * 8.5) * 0.57,
+							width: gameUnit * 8.6,
+							height: (gameUnit * 8.6) * 0.57,
 							frame: 0
 						},
 						// input: gameLogic.input.tracksSprite
@@ -6583,10 +6573,10 @@ var GameConfig = function() {
 						name: 'transmission',
 						img: 'editTractorHeavyCab',
 						x: (gameUnit * 2.8),
-						y: (gameUnit * 3.2),
+						y: (gameUnit * 3.05),
 						attrs: {
-							width: gameUnit * 4.75,
-							height: (gameUnit * 4.75) * 1.31,
+							width: gameUnit * 4.9,
+							height: (gameUnit * 4.9) * 1.31,
 							frame: 0
 						},
 						// input: gameLogic.input.transmissionSprite
@@ -6599,11 +6589,11 @@ var GameConfig = function() {
 						type: 'sprite',
 						name: 'bucket',
 						img: 'editSkidsteerBasicBucket',
-						x: (gameUnit * 2),
-						y: (gameUnit * 8.1),
+						x: (gameUnit * 1.8),
+						y: (gameUnit * 8),
 						attrs: {
-							width: gameUnit * 6,
-							height: (gameUnit * 6) * 0.7,
+							width: gameUnit * 6.3,
+							height: (gameUnit * 6.3) * 0.7,
 							frame: 0
 						},
 						// input: gameLogic.input.bucketSprite
@@ -6625,11 +6615,11 @@ var GameConfig = function() {
 						type: 'sprite',
 						name: 'transmission',
 						img: 'editSkidsteerBasicCab',
-						x: (gameUnit * 2.28),
-						y: (gameUnit * 5.64),
+						x: (gameUnit * 2.37),
+						y: (gameUnit * 5.62),
 						attrs: {
-							width: gameUnit * 3.25,
-							height: (gameUnit * 3.25) * 1.09,
+							width: gameUnit * 3.24,
+							height: (gameUnit * 3.24) * 1.09,
 							frame: 0
 						},
 						// input: gameLogic.input.transmissionSprite
@@ -6640,7 +6630,7 @@ var GameConfig = function() {
 						type: 'sprite',
 						name: 'bucket',
 						img: 'editSkidsteerMediumBucket',
-						x: (gameUnit * 2.9),
+						x: (gameUnit * 2.975),
 						y: (gameUnit * 8.35),
 						attrs: {
 							width: gameUnit * 5.2,
@@ -6666,11 +6656,11 @@ var GameConfig = function() {
 						type: 'sprite',
 						name: 'transmission',
 						img: 'editSkidsteerMediumCab',
-						x: (gameUnit * 2.125),
-						y: (gameUnit * 5.62),
+						x: (gameUnit * 2.15),
+						y: (gameUnit * 5.60),
 						attrs: {
-							width: gameUnit * 4,
-							height: (gameUnit * 4) * 0.91,
+							width: gameUnit * 4.15,
+							height: (gameUnit * 4.15) * 0.91,
 							frame: 0
 						},
 						// input: gameLogic.input.transmissionSprite
@@ -6681,11 +6671,11 @@ var GameConfig = function() {
 						type: 'sprite',
 						name: 'bucket',
 						img: 'editSkidsteerHeavyBucket',
-						x: (gameUnit * 1.6),
-						y: (gameUnit * 4.05),
+						x: (gameUnit * 1.61),
+						y: (gameUnit * 4.0),
 						attrs: {
-							width: gameUnit * 7.1,
-							height: (gameUnit * 7.1) * 0.98,
+							width: gameUnit * 7.28,
+							height: (gameUnit * 7.28) * 0.97,
 							frame: 0
 						},
 						// input: gameLogic.input.bucketSprite
@@ -6697,8 +6687,8 @@ var GameConfig = function() {
 						x: (gameUnit * 0.55),
 						y: (gameUnit * 8.25),
 						attrs: {
-							width: gameUnit * 6.75,
-							height: (gameUnit * 6.75) * 0.53,
+							width: gameUnit * 6.9,
+							height: (gameUnit * 6.9) * 0.53,
 							frame: 0
 						},
 						// input: gameLogic.input.tiresSprite
@@ -6707,11 +6697,11 @@ var GameConfig = function() {
 						type: 'sprite',
 						name: 'transmission',
 						img: 'editSkidsteerHeavyCab',
-						x: (gameUnit * 1.69),
+						x: (gameUnit * 1.68),
 						y: (gameUnit * 6.73),
 						attrs: {
-							width: gameUnit * 4.5,
-							height: (gameUnit * 4.5) * 0.69,
+							width: gameUnit * 4.6,
+							height: (gameUnit * 4.6) * 0.69,
 							frame: 0
 						},
 						// input: gameLogic.input.transmissionSprite
@@ -6721,10 +6711,10 @@ var GameConfig = function() {
 						name: 'engine',
 						img: 'editSkidsteerHeavyEngine',
 						x: (gameUnit * 4.05),
-						y: (gameUnit * 9.15),
+						y: (gameUnit * 9.2),
 						attrs: {
-							width: gameUnit * 2.35,
-							height: (gameUnit * 2.35) * 0.69,
+							width: gameUnit * 2.5,
+							height: (gameUnit * 2.5) * 0.69,
 							frame: 0
 						},
 						// input: gameLogic.input.engineSprite
