@@ -2058,7 +2058,7 @@ var gameLogic = {
 			PWG.PhaserAnimation.play(ignitionKey.name, 'turnOn');
 			// HACK: temporarily adding sound directly; should be implemented via pwg library.
 			var sfx = PhaserGame.phaser.add.audio('tractorStartup');
-			// sfx.play();
+			sfx.play();
 		},
 		worldReturnButton: function() {
 			// trace('worldReturnButton callback');
