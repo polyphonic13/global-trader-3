@@ -1,4 +1,4 @@
-(function(){(typeof console === 'undefined' || typeof console.log === 'undefined')?console={log:function(){}}:console.log('----- Global Trader 3.0 created: 2014-07-30T20:59:15')})();
+(function(){(typeof console === 'undefined' || typeof console.log === 'undefined')?console={log:function(){}}:console.log('----- Global Trader 3.0 created: 2014-07-31T13:18:39')})();
 var Events = {
 	CHANGE_SCREEN: 'changeScreen',
 	CHANGE_STATE: 'changeState',
@@ -1495,7 +1495,7 @@ var OFFSET_Y = 15;
 var GAME_NAME = 'global_trader_3_0';
 var FACEBOOK_URL = 'https://www.facebook.com/cnhitrade';
 var TIME_PER_TURN = 52;
-var TURN_TIME_INTERVAL = 3000;
+var TURN_TIME_INTERVAL = 2000;
 var US_DETAIL_GRID_CELLS = 6;
 var MACHINE_LIST_COLUMNS = 2; 
 var MACHINE_LIST_ICONS = 6;
@@ -1596,7 +1596,7 @@ var gameLogic = {
 				
 				PWG.ViewManager.callMethod('global:turnGroup:timerText', 'setText', [''], this);
 
-				PhaserGame.buildYearEndReport();
+				PhaserGame.processEndOfTurn();
 			}
 		},
 		// building state updated
@@ -1805,8 +1805,8 @@ var gameLogic = {
 				PhaserGame.tradeRouteNotifications = {};
 				PhaserGame.availableTradeRoutes = {};
 				PhaserGame.zoomedIn = false;
-				PhaserGame.userPromptActive = false
-				
+				PhaserGame.userPromptActive = false;
+
 				GridManager.init(USSectors, US_DETAIL_GRID_CELLS, US_DETAIL_GRID_CELLS, PWG.Stage.gameW/6);
 
 				PhaserGame.turnActive = true;
@@ -3067,12 +3067,13 @@ var gameLogic = {
 				PhaserGame.userPromptActive = false;
 			},
 			// YEAR END
-			buildYearEndReport: function() {
+			processEndOfTurn: function() {
 				var levelGoals = gameData.levels[TurnManager.playerData.level].goals;
 				var currentData = TurnManager.currentData;
 				PhaserGame.levelPassed = true;
 				// 
-				
+
+				// BUILD SUMMARY REPORT
 				var yearSummary = PWG.Utils.clone(PhaserGame.config.dynamicViews.yearSummary);
 				var summaryGoalText = PhaserGame.config.dynamicViews.summaryGoalText;
 				var summaryText = PhaserGame.config.dynamicViews.summaryText;
@@ -3132,31 +3133,30 @@ var gameLogic = {
 					},
 					this
 				);
-			
-				// there are bonuses for job creation
-				if(currentData.newBuildings.length > 0) {
-					PWG.ViewManager.showView('turnEnd:smallSuitcaseIcon');
-					// PhaserGame.buildBonusReport(currentData);
-				} else {
-					PWG.ViewManager.hideView('turnEnd:smallSuitcaseIcon');
-				}
-				
+
 				item = PWG.Utils.clone(summaryText);
 
 				if(PhaserGame.levelPassed) {
 					item.text = goalsText.passed;
 					item.style.fill = PhaserGame.config.palette.black;
+
+					// there are bonuses for job creation
+					if(currentData.newBuildings.length > 0) {
+						PWG.ViewManager.showView('turnEnd:smallSuitcaseIcon');
+					}
 				} else {
 					item.text = goalsText.failed;
 					item.style.fill = PhaserGame.config.palette.darkRed;
 				}
 				item.name += 'levelPassed';
 				item.y += (levelGoals.length * item.offsetY);
-
 				yearSummary.views[item.name] = item;
-
 				PhaserGame.yearSummary = yearSummary;
-				// 
+
+				// HANDLE PLAYER DATA
+				BuildingManager.reset();
+				WholesaleManager.reset();
+
 				if(PhaserGame.levelPassed) {
 					// only save the player data if the user passed the level. 
 					PhaserGame.playerData = TurnManager.playerData;
@@ -3165,31 +3165,18 @@ var gameLogic = {
 						PhaserGame.setSavedData();
 					} else {
 						PhaserGame.playerData = playerData;
-						
 						PhaserGame.gameCompleted();
 					}
 				} else {
 					// if failed, reset turn manager to pre-level playerData
 					
-					BuildingManager.sectors = [ {}, {}, {}, {}, {} ];
+
+					// delete TurnManager.playerData; 
 					TurnManager.playerData = PhaserGame.playerData;
-					// var sectors = TurnManager.playerData.sectors;
-					// PWG.Utils.each(
-					// 	sectors,
-					// 	function(sector, idx) {
-					// 		PWG.Utils.each(
-					// 			sector,
-					// 			function(building) {
-					// 				BuildingManager.removeBuilding(idx, building.id);
-					// 			},
-					// 			this
-					// 		);
-					// 	},
-					// 	this
-					// );
-					// TurnManager.playerData = PhaserGame.playerData;
+
+					
 				}
-				
+
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'turnEnd' });
 			},
 			addYearEndReport: function() {
@@ -3236,7 +3223,7 @@ var gameLogic = {
 					function(building, type) {
 						if(building.count > 0) {
 							if(building.count > 1) {
-								building.name += 's'
+								building.name += 's';
 							}
 							var text = bonusesText.buildings;
 							
@@ -3278,6 +3265,10 @@ var gameLogic = {
 					method: function() {
 						PhaserGame.confirmAction = null; 
 						// reset player data to original, starting values
+						BuildingManager.sectors = [ {}, {}, {}, {}, {} ];
+						delete TurnManager.playerData; 
+						TurnManager.playerData = {}; 
+
 						PhaserGame.playerData = playerData;
 						// remove need for tutorial though
 						PWG.Utils.each(
@@ -3549,7 +3540,7 @@ var gameLogic = {
 			PWG.PhaserAnimation.play(ignitionKey.name, 'turnOn');
 			// HACK: temporarily adding sound directly; should be implemented via pwg library.
 			var sfx = PhaserGame.phaser.add.audio('tractorStartup');
-			// sfx.play();
+			sfx.play();
 		},
 		worldReturnButton: function() {
 			// 
@@ -4821,7 +4812,6 @@ var TurnManager = function() {
 	
 	var module = {};
 
-	module.turns;
 	module.currentData = {};
 	module.playerData = {};
 
@@ -4834,6 +4824,8 @@ var TurnManager = function() {
 	module.startTurn = function() {
 		// 
 		module.currentData = PWG.Utils.clone(turnData);
+		module.playerData = PWG.Utils.clone(PhaserGame.playerData);
+
 		
 		module.playerData.bank += gameData.levels[module.playerData.level].startingBank;
 		
@@ -4868,6 +4860,12 @@ var TurnManager = function() {
 		);
 	};
 	
+	// module.endTurn = function() {
+	// 	module.currentData = {};
+	// 	module.playerData = {};
+	// 	
+	// };
+
 	module.updateBank = function(value) {
 		// 
 		module.playerData.bank += value;
@@ -5220,7 +5218,9 @@ var BuildingManager = function() {
 	
 	// DEALER
 	function Dealer(config) {
+		
 		config.type = BuildingTypes.DEALER;
+		
 		var plant = module.findBuilding(config.plantId);
 		var model = plant.config.equipment[config.modelId];
 		var resellMultiplier = Math.floor(Math.random() * (this.resellMaxMultiplier - 1) + 2);
@@ -5370,15 +5370,15 @@ var BuildingManager = function() {
 	module.tradeRoutes = [];
 	
 	module.init = function() {
-		// 
+		
 		PWG.Utils.each(
 			TurnManager.playerData.sectors,
 			function(sector, s) {
-				// trace('\tsectors['+s+'] = ', sector)
+ 				trace('\tsectors['+s+'] = ', sector)
 				PWG.Utils.each(
 					sector,
 					function(building, id) {
-						// 
+						
 						if(building.type === BuildingTypes.PLANT) {
 							module.sectors[s][building.id] = new Plant(building);
 						} else if(building.type === BuildingTypes.DEALER) {
@@ -5466,6 +5466,7 @@ var BuildingManager = function() {
 	};
 	
 	module.addDealer = function(dealer) {
+		
 		var plant = module.findBuilding(dealer.config.plantId);
 		plant.associateBuilding(dealer, 'dealers');
 		module.dealers.push(dealer);
@@ -5687,6 +5688,12 @@ var BuildingManager = function() {
 		}
 	};
 	
+	module.reset = function() {
+		module.sectors = [ {}, {}, {}, {}, {} ];
+		module.dealers = [];
+		module.tradeRoutes = [];
+	};
+
 	return module;
 	
 }();
@@ -5884,6 +5891,13 @@ var WholesaleManager = function() {
 		return (baseCost * costModifier) * config.quantity;
 	};
 
+	module.reset = function() {
+		PWG.Utils.destroy(module.suppliers);
+		PWG.Utils.destroy(module.parts);
+		module.supplers = {};
+		module.parts = {};
+	};
+	
 	return module;
 }();
 
@@ -7298,7 +7312,7 @@ var GameConfig = function() {
 					}
 				}
 			},
-			dealerPrompt: { 
+			dealerPrompt: {  
 				type: 'group',
 				name: 'dealerPrompt',
 				views: {
@@ -7745,6 +7759,19 @@ var GameConfig = function() {
 					height: gameUnit * 1.5
 				},
 				views: {
+					// UNCOMMENT AFTER PARTS MENU BUTTON IMAGE ADDED
+					// buttonBg: {
+					// 	type: 'sprite',
+					// 	name: 'partButtonImage',
+					// 	img: 'partsMenuButtonImage',
+					// 	x: (gameW/2) - (gameUnit * 3),
+					// 	y: gameUnit * 2.5,
+					// 	attrs: {
+					// 		width: gameUnit * 6,
+					// 		height: gameUnit * 1,
+					// 		alpha: 0
+					// 	}
+					// },
 					name: {
 						type: 'text',
 						name: 'partName',
@@ -8264,6 +8291,8 @@ var GameConfig = function() {
 					skidsteerHeavyBg: 'img/screens/equipment_edit/skid_steer_heavy.png',
 					optionalPartsPlus: 'img/screens/equipment_edit/optional_parts_plus.png',
 					partsNavigator: 'img/screens/equipment_edit/what_to_buy_menu.png',
+					// UNCOMMENT AFTER PARTS MENU BUTTON IMAGE ADDED
+					// partsMenuButtonImage: 'img/screens/equipment_edit/',
 					// parts icons
 					// frame
 					partsFrame: 'img/screens/equipment_edit/parts_frame.png',
