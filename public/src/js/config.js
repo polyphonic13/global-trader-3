@@ -1286,7 +1286,7 @@ var GameConfig = function() {
 					}
 				}
 			},
-			dealerPrompt: { 
+			dealerPrompt: {  
 				type: 'group',
 				name: 'dealerPrompt',
 				views: {
@@ -1733,6 +1733,19 @@ var GameConfig = function() {
 					height: gameUnit * 1.5
 				},
 				views: {
+					// UNCOMMENT AFTER PARTS MENU BUTTON IMAGE ADDED
+					// buttonBg: {
+					// 	type: 'sprite',
+					// 	name: 'partButtonImage',
+					// 	img: 'partsMenuButtonImage',
+					// 	x: (gameW/2) - (gameUnit * 3),
+					// 	y: gameUnit * 2.5,
+					// 	attrs: {
+					// 		width: gameUnit * 6,
+					// 		height: gameUnit * 1,
+					// 		alpha: 0
+					// 	}
+					// },
 					name: {
 						type: 'text',
 						name: 'partName',
@@ -2252,6 +2265,8 @@ var GameConfig = function() {
 					skidsteerHeavyBg: 'img/screens/equipment_edit/skid_steer_heavy.png',
 					optionalPartsPlus: 'img/screens/equipment_edit/optional_parts_plus.png',
 					partsNavigator: 'img/screens/equipment_edit/what_to_buy_menu.png',
+					// UNCOMMENT AFTER PARTS MENU BUTTON IMAGE ADDED
+					// partsMenuButtonImage: 'img/screens/equipment_edit/',
 					// parts icons
 					// frame
 					partsFrame: 'img/screens/equipment_edit/parts_frame.png',
