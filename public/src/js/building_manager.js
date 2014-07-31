@@ -219,7 +219,9 @@ var BuildingManager = function() {
 	
 	// DEALER
 	function Dealer(config) {
+		trace('Dealer/constructor, config =', config);
 		config.type = BuildingTypes.DEALER;
+		trace('\tattempting to find plantId: ' + config.plantId);
 		var plant = module.findBuilding(config.plantId);
 		var model = plant.config.equipment[config.modelId];
 		var resellMultiplier = Math.floor(Math.random() * (this.resellMaxMultiplier - 1) + 2);
@@ -369,15 +371,15 @@ var BuildingManager = function() {
 	module.tradeRoutes = [];
 	
 	module.init = function() {
-		// trace('initializing building data with: ', TurnManager.playerData.sectors);
+		trace('initializing building data with: ', TurnManager.playerData.sectors);
 		PWG.Utils.each(
 			TurnManager.playerData.sectors,
 			function(sector, s) {
-				// trace('\tsectors['+s+'] = ', sector)
+ 				trace('\tsectors['+s+'] = ', sector)
 				PWG.Utils.each(
 					sector,
 					function(building, id) {
-						// trace('\t\tbuildings['+id+'] = ', building);
+						trace('\t\tbuildings['+id+'] = ', building);
 						if(building.type === BuildingTypes.PLANT) {
 							module.sectors[s][building.id] = new Plant(building);
 						} else if(building.type === BuildingTypes.DEALER) {
@@ -465,6 +467,7 @@ var BuildingManager = function() {
 	};
 	
 	module.addDealer = function(dealer) {
+		trace('BUILDING MANAGER ADDING DEALER: ', dealer);
 		var plant = module.findBuilding(dealer.config.plantId);
 		plant.associateBuilding(dealer, 'dealers');
 		module.dealers.push(dealer);
@@ -686,6 +689,12 @@ var BuildingManager = function() {
 		}
 	};
 	
+	module.reset = function() {
+		module.sectors = [ {}, {}, {}, {}, {} ];
+		module.dealers = [];
+		module.tradeRoutes = [];
+	};
+
 	return module;
 	
 }();

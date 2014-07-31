@@ -21,7 +21,6 @@ var TurnManager = function() {
 	
 	var module = {};
 
-	module.turns;
 	module.currentData = {};
 	module.playerData = {};
 
@@ -34,6 +33,8 @@ var TurnManager = function() {
 	module.startTurn = function() {
 		// trace('--- TurnManager/startTurn');
 		module.currentData = PWG.Utils.clone(turnData);
+		module.playerData = PWG.Utils.clone(PhaserGame.playerData);
+
 		trace('\tpre initiative, bank ' + module.playerData.bank);
 		module.playerData.bank += gameData.levels[module.playerData.level].startingBank;
 		trace('\tpost initiative, bank = ' + module.playerData.bank);
@@ -68,6 +69,12 @@ var TurnManager = function() {
 		);
 	};
 	
+	// module.endTurn = function() {
+	// 	module.currentData = {};
+	// 	module.playerData = {};
+	// 	trace('POST TurnManager/endTurn, currentData now = ', module.currentData, '\tplayerData = ', module.playerData);
+	// };
+
 	module.updateBank = function(value) {
 		// trace('--- TurnManager/updateBank, event =', event);
 		module.playerData.bank += value;

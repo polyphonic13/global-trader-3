@@ -184,5 +184,12 @@ var WholesaleManager = function() {
 		return (baseCost * costModifier) * config.quantity;
 	};
 
+	module.reset = function() {
+		PWG.Utils.destroy(module.suppliers);
+		PWG.Utils.destroy(module.parts);
+		module.supplers = {};
+		module.parts = {};
+	};
+	
 	return module;
 }();

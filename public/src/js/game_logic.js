@@ -1,10 +1,24 @@
+/*
+remove player data: 
+	plants, dealers and traderoutes, by US sector: 
+	delete PhaserGame.playerData.sectors[ x ].[ id ]
+
+	money: 
+	PhaserGame.playerData.bank = x;
+	
+	level: 
+	PhaserGame.playerData.level = x;
+	
+	PhaserGame.setSavedData();
+	
+*/
 var ASPECT_RATIO = [9, 16];
 var OFFSET_X = 0;
 var OFFSET_Y = 15;
 var GAME_NAME = 'global_trader_3_0';
 var FACEBOOK_URL = 'https://www.facebook.com/cnhitrade';
 var TIME_PER_TURN = 52;
-var TURN_TIME_INTERVAL = 3000;
+var TURN_TIME_INTERVAL = 2000;
 var US_DETAIL_GRID_CELLS = 6;
 var MACHINE_LIST_COLUMNS = 2; 
 var MACHINE_LIST_ICONS = 6;
@@ -105,7 +119,7 @@ var gameLogic = {
 				trace('turn ended');
 				PWG.ViewManager.callMethod('global:turnGroup:timerText', 'setText', [''], this);
 
-				PhaserGame.buildYearEndReport();
+				PhaserGame.processEndOfTurn();
 			}
 		},
 		// building state updated
@@ -314,8 +328,8 @@ var gameLogic = {
 				PhaserGame.tradeRouteNotifications = {};
 				PhaserGame.availableTradeRoutes = {};
 				PhaserGame.zoomedIn = false;
-				PhaserGame.userPromptActive = false
-				
+				PhaserGame.userPromptActive = false;
+
 				GridManager.init(USSectors, US_DETAIL_GRID_CELLS, US_DETAIL_GRID_CELLS, PWG.Stage.gameW/6);
 
 				PhaserGame.turnActive = true;
@@ -1576,12 +1590,13 @@ var gameLogic = {
 				PhaserGame.userPromptActive = false;
 			},
 			// YEAR END
-			buildYearEndReport: function() {
+			processEndOfTurn: function() {
 				var levelGoals = gameData.levels[TurnManager.playerData.level].goals;
 				var currentData = TurnManager.currentData;
 				PhaserGame.levelPassed = true;
-				// trace('PhaserGame/buildYearEndReport, levelGoals = ', levelGoals);
-				
+				// trace('PhaserGame/processEndOfTurn, levelGoals = ', levelGoals);
+
+				// BUILD SUMMARY REPORT
 				var yearSummary = PWG.Utils.clone(PhaserGame.config.dynamicViews.yearSummary);
 				var summaryGoalText = PhaserGame.config.dynamicViews.summaryGoalText;
 				var summaryText = PhaserGame.config.dynamicViews.summaryText;
@@ -1641,31 +1656,30 @@ var gameLogic = {
 					},
 					this
 				);
-			
-				// there are bonuses for job creation
-				if(currentData.newBuildings.length > 0) {
-					PWG.ViewManager.showView('turnEnd:smallSuitcaseIcon');
-					// PhaserGame.buildBonusReport(currentData);
-				} else {
-					PWG.ViewManager.hideView('turnEnd:smallSuitcaseIcon');
-				}
-				
+
 				item = PWG.Utils.clone(summaryText);
 
 				if(PhaserGame.levelPassed) {
 					item.text = goalsText.passed;
 					item.style.fill = PhaserGame.config.palette.black;
+
+					// there are bonuses for job creation
+					if(currentData.newBuildings.length > 0) {
+						PWG.ViewManager.showView('turnEnd:smallSuitcaseIcon');
+					}
 				} else {
 					item.text = goalsText.failed;
 					item.style.fill = PhaserGame.config.palette.darkRed;
 				}
 				item.name += 'levelPassed';
 				item.y += (levelGoals.length * item.offsetY);
-
 				yearSummary.views[item.name] = item;
-
 				PhaserGame.yearSummary = yearSummary;
-				// trace('\tlevel PhaserGame.levelPassed = ' + PhaserGame.levelPassed + '\n\tyearSummary = ', yearSummary);
+
+				// HANDLE PLAYER DATA
+				BuildingManager.reset();
+				WholesaleManager.reset();
+
 				if(PhaserGame.levelPassed) {
 					// only save the player data if the user passed the level. 
 					PhaserGame.playerData = TurnManager.playerData;
@@ -1674,31 +1688,18 @@ var gameLogic = {
 						PhaserGame.setSavedData();
 					} else {
 						PhaserGame.playerData = playerData;
-						
 						PhaserGame.gameCompleted();
 					}
 				} else {
 					// if failed, reset turn manager to pre-level playerData
-					trace('\tfailed to pass level, playerData is: ', PhaserGame.playerData);
-					BuildingManager.sectors = [ {}, {}, {}, {}, {} ];
+					trace('LEVEL FAILED');
+
+					// delete TurnManager.playerData; 
 					TurnManager.playerData = PhaserGame.playerData;
-					// var sectors = TurnManager.playerData.sectors;
-					// PWG.Utils.each(
-					// 	sectors,
-					// 	function(sector, idx) {
-					// 		PWG.Utils.each(
-					// 			sector,
-					// 			function(building) {
-					// 				BuildingManager.removeBuilding(idx, building.id);
-					// 			},
-					// 			this
-					// 		);
-					// 	},
-					// 	this
-					// );
-					// TurnManager.playerData = PhaserGame.playerData;
+
+					trace('\tfailed to pass level, playerData is: ', PhaserGame.playerData, '\tturn manager playerData = ', TurnManager.playerData, '\tbuilding manager = ', BuildingManager, '\twholesalemanager = ', WholesaleManager);
 				}
-				
+
 				PWG.EventCenter.trigger({ type: Events.CHANGE_SCREEN, value: 'turnEnd' });
 			},
 			addYearEndReport: function() {
@@ -1745,7 +1746,7 @@ var gameLogic = {
 					function(building, type) {
 						if(building.count > 0) {
 							if(building.count > 1) {
-								building.name += 's'
+								building.name += 's';
 							}
 							var text = bonusesText.buildings;
 							trace('bonusesText['+type+'] = ', text);
@@ -1787,6 +1788,10 @@ var gameLogic = {
 					method: function() {
 						PhaserGame.confirmAction = null; 
 						// reset player data to original, starting values
+						BuildingManager.sectors = [ {}, {}, {}, {}, {} ];
+						delete TurnManager.playerData; 
+						TurnManager.playerData = {}; 
+
 						PhaserGame.playerData = playerData;
 						// remove need for tutorial though
 						PWG.Utils.each(
