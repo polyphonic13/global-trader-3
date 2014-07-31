@@ -1,4 +1,4 @@
-(function(){(typeof console === 'undefined' || typeof console.log === 'undefined')?console={log:function(){}}:console.log('----- Global Trader 3.0 created: 2014-07-28T08:15:51')})();
+(function(){(typeof console === 'undefined' || typeof console.log === 'undefined')?console={log:function(){}}:console.log('----- Global Trader 3.0 created: 2014-07-30T20:03:04')})();
 var Events = {
 	CHANGE_SCREEN: 'changeScreen',
 	CHANGE_STATE: 'changeState',
@@ -1199,8 +1199,8 @@ var gameData = {
 		brief: {
 			background: 'briefBg04',
 			text: [
-				'Establish 3 Trade Routes',
-				'Make $5,000,000 in profits'
+				'Make $5,000,000 in profits',
+				'Establish 3 Trade Routes'
 			]
 		},
 		goals: [
@@ -8092,7 +8092,7 @@ var GameConfig = function() {
 				x: gameUnit * 1.25,
 				y: gameUnit * 6,
 				style: {
-				    font: (fontSizes.md + 'px Trebuchet MS'),
+				    font: (fontSizes.sm + 'px Trebuchet MS'),
 			        fill: ''
 				}
 			},

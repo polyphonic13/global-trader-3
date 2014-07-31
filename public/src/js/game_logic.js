@@ -2056,19 +2056,9 @@ var gameLogic = {
 			var ignitionKey = PWG.ViewManager.getControllerFromPath('home:ignitionKey');
 			ignitionKey.view.events.onAnimationComplete.add(PhaserGame.ignitionAnimationCompleted, this);
 			PWG.PhaserAnimation.play(ignitionKey.name, 'turnOn');
-			// HACK: temporarily adding sound directly; need to implement via pwg.
+			// HACK: temporarily adding sound directly; should be implemented via pwg library.
 			var sfx = PhaserGame.phaser.add.audio('tractorStartup');
-			sfx.play();
-			// using phonegap media plugin
-			/*
-			var url = PhaserGame.config.assets.audio.tractorStartup;
-			alert('url = ' + url);
-			alert('media = ' + Media);
-			var media = new Media(url);
-			alert('media = ' + media);
-			media.play();
-			alert('post media play call');
-			*/
+			// sfx.play();
 		},
 		worldReturnButton: function() {
 			// trace('worldReturnButton callback');
